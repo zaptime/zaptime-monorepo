@@ -33,6 +33,9 @@ export default defineConfig(({ mode }) => {
             // for externalized deps
             globals: {
               vue: "Vue",
+              "@zaptime/core": "ZaptimeCore",
+              "date-fns": "dateFns",
+              "@vueuse/core": "VueUseCore",
             },
           },
         },

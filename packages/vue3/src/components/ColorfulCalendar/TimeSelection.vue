@@ -38,10 +38,6 @@
           <button
             @click.prevent="select(event)"
             class="cal-relative dark:cal-bg-theme-800 cal-transition-all cal-duration-150 hover:dark:cal-bg-theme-600 cal-bg-theme-100 cal-border cal-border-theme-100 cal-flex cal-justify-center cal-items-center cal-w-full cal-pt-[16px] cal-pb-[14px] cal-my-2 dark:cal-border-theme-600 cal-cursor-pointer focus:cal-ring-2 focus:cal-ring-theme-800 focus:cal-ring-opacity-50 focus:cal-outline-none cal-outline-none cal-rounded-md cal-group"
-            :class="{
-              '': isSelected(event),
-              '': !isSelected(event),
-            }"
             v-for="(event, i) in state.events"
             :key="i"
           >
