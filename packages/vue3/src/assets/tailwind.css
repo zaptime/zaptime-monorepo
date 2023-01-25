@@ -1,0 +1,33 @@
+ @import url('./custom-preflight.css');
+
+ @tailwind base;
+ @tailwind components;
+ @tailwind utilities;
+
+ @font-face {
+   font-family: "Basier Circle";
+   font-weight: 400;
+   src: url("./basier-circle/BasierCircle-Regular.otf") format("opentype");
+ }
+
+ @font-face {
+   font-family: "Basier Circle";
+   font-weight: 700;
+   src: url("./basier-circle/BasierCircle-Bold.otf") format("opentype");
+ }
+
+ @font-face {
+   font-family: "Basier Circle";
+   font-weight: 500;
+   src: url("./basier-circle/BasierCircle-Medium.otf") format("opentype");
+ }
+
+ @font-face {
+   font-family: "Basier Circle";
+   font-weight: 600;
+   src: url("./basier-circle/BasierCircle-SemiBold.otf") format("opentype");
+ }
+
+ #zaptime-calendar {
+   font-family: "Basier Circle", serif;
+ }
