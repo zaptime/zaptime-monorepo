@@ -46,8 +46,6 @@ export const getDays = async (
   const dayCountInMonth = getDaysInMonth(date);
   const startDateOfTheMonth = startOfMonth(date);
   let hasAnyEvent = false;
-
-  console.log('test');
   
   const events = await getEvents(
     zapTimeConfig.token,
