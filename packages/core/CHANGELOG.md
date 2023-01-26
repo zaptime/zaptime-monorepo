@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.3
+
+### Patch Changes
+
+- dd6c044: Calendar days in locale fix
+
 ## 0.4.2
 
 ### Patch Changes
