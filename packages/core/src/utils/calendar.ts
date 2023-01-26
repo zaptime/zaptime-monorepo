@@ -64,11 +64,8 @@ export const getDays = async (
       ? getStartOfTheWeekIndex(zapTimeConfig.locale)
       : 0;
 
-  let numberOfDay = parseInt(format(startDateOfTheMonth, "e"));
-
-  numberOfDay -= startOfTheWeekIndex;
+  const numberOfDay = parseInt(format(startDateOfTheMonth, "e", dfnsConfig));
   
-
   const previousMonth = subMonths(startDateOfTheMonth, 1);
 
   const lastDateOfPreviousMonth = lastDayOfMonth(previousMonth);
