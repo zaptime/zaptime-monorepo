@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.4
+
+### Patch Changes
+
+- Next and Previous month button fix
+
 ## 0.4.3
 
 ### Patch Changes

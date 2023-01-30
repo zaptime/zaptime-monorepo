@@ -5,7 +5,7 @@ import {
   format,
   isPast,
   isFuture,
-  intervalToDuration,
+  differenceInCalendarMonths,
 } from "date-fns";
 
 import { getDays as getDaysExternal } from "../utils/calendar";
@@ -141,16 +141,15 @@ export default (calendarId?: string) => {
 
   const prevDisabled = computed(() => {
     const now = new Date();
+
     const newDate = addMonths(date.value, -1);
-    const distance = intervalToDuration({ start: now, end: newDate });
+    const distance = differenceInCalendarMonths(now, newDate);    
     
     if (
       isPast(newDate) &&
-      distance &&
-      distance.months &&
       config.value.min !== undefined
     ) {
-      if (distance.months > config.value.min) {
+      if (distance > config.value.min) {
         return true;
       }
     }
@@ -162,15 +161,13 @@ export default (calendarId?: string) => {
     const now = new Date();
 
     const newDate = addMonths(date.value, 1);
-    const distance = intervalToDuration({ start: now, end: newDate });
-
+    const distance = differenceInCalendarMonths(newDate, now);
+    
     if (
       isFuture(newDate) &&
-      distance &&
-      distance.months &&
       config.value.max !== undefined
     ) {
-      if (distance.months >= config.value.max) {
+      if (distance > config.value.max) {
         return true;
       }
     }
