@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 1.4.17
+
+### Patch Changes
+
+- Height and border radiuses fixes, Initial loading
+- Updated dependencies
+  - @zaptime/core@0.4.5
+
 ## 1.4.16
 
 ### Patch Changes

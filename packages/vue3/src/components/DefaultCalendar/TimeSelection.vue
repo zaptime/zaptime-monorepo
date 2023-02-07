@@ -1,10 +1,10 @@
 <template>
   <div
-    class="cal-px-[50px] cal-pt-4 cal-bg-white cal-mx-auto sm:cal-mx-0 cal-h-full"
+    class="cal-px-[50px] cal-min-h-[524px] cal-pt-4 cal-bg-white cal-mx-auto  sm:cal-mx-0 cal-h-full"
     :class="[
       config.compact
-        ? 'cal-w-[330px] sm:cal-w-[400px] '
-        : 'cal-w-[330px] sm:cal-w-[440px]',
+        ? 'cal-w-[330px] sm:cal-w-[400px] cal-rounded-xl'
+        : 'cal-w-[330px] sm:cal-w-[440px] cal-rounded-r-xl',
     ]"
   >
     <PrimaryButton

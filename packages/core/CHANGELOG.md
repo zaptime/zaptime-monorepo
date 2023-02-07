@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.5
+
+### Patch Changes
+
+- Height and border radiuses fixes, Initial loading
+
 ## 0.4.4
 
 ### Patch Changes

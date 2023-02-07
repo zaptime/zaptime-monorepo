@@ -1,6 +1,6 @@
 <template>
   <div
-    class="sm:cal-px-6 cal-bg-white cal-px-0 cal-h-full cal-flex cal-rounded-xl cal-justify-center"
+    class="sm:cal-px-6 cal-bg-white cal-min-h-[524px] cal-px-0 cal-pb-10 cal-h-full cal-items-end cal-flex cal-rounded-xl cal-justify-center"
     :class="[
       config.compact
         ? 'cal-w-[330px] sm:cal-w-[400px]'
@@ -11,7 +11,7 @@
     <form
       @submit.prevent="onSubmit"
       v-if="selectedEvent !== undefined"
-      class="sm:cal-w-[370px] cal-mt-8"
+      class="sm:cal-w-[370px] cal-mt-6"
       :class="[selectedEvent.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']"
     >
       <h1

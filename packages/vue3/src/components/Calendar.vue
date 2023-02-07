@@ -1,17 +1,11 @@
 <template>
-  <div style="min-height: 400px; height: 400px">
+  <div class="cal-h-full cal-min-h-[360px]">
     <div class="cal-h-full" v-if="view === 'calendar'">
-      <div
-        class="cal-h-full cal-w-[330px] sm:cal-w-[420px] cal-bg-white"
-        v-if="config.compact === true"
-      >
-        <div
-          :key="calendarView"
-          v-if="config.compact === undefined || calendarView === 'pickingDate'"
+      <div class="cal-h-full cal-w-[330px] sm:cal-w-[400px] cal-bg-white"
+        :class="[config.compact ? 'cal-rounded-xl' : '']" v-if="config.compact === true">
+        <div :key="calendarView" v-if="config.compact === undefined || calendarView === 'pickingDate'"
           class="cal-w-full cal-h-full cal-rounded-l-xl cal-px-3 sm:cal-px-[48px] cal-bg-theme-50"
-          :class="[config.compact ? 'cal-rounded-r-xl' : '']"
-          :style="{ backgroundColor: color }"
-        >
+          :class="[config.compact ? 'cal-rounded-r-xl' : '']" :style="{ backgroundColor: color }">
           <Navbar />
 
           <div class="cal-grid cal-grid-cols-7 cal-mt-1 cal-mb-3">
@@ -26,22 +20,17 @@
             <Loader v-if="state.loading" />
           </div>
         </div>
-        <div
-          v-if="config.compact === undefined || calendarView === 'pickingTime'"
-          class="cal-bg-white cal-rounded-r-xl cal-h-full"
-          :class="[config.compact ? 'cal-rounded-l-xl' : '']"
-          :style="{ backgroundColor: color2 }"
-        >
+        <div v-if="config.compact === undefined || calendarView === 'pickingTime'"
+          class="cal-bg-white cal-rounded-r-xl cal-h-full" :class="[config.compact ? 'cal-rounded-l-xl' : '']"
+          :style="{ backgroundColor: color2 }">
           <TimeSelection v-if="!state.loading" />
         </div>
       </div>
 
-      <div class="cal-flex cal-h-full cal-w-[840px] cal-bg-white" v-else>
-        <div
-          :key="calendarView"
-          class="cal-w-[330px] sm:cal-w-[400px] cal-rounded-l-xl cal-px-[48px]"
-          :style="{ backgroundColor: color }"
-        >
+      <div class="cal-flex cal-h-full cal-w-[841px] cal-bg-white"
+        :class="[config.compact ? 'cal-rounded-l-xl' : 'cal-rounded-xl']" v-else>
+        <div :key="calendarView" class="cal-w-[330px] sm:cal-w-[400px]  cal-px-[48px]"
+          :style="{ backgroundColor: color }">
           <Navbar />
 
           <div class="cal-grid cal-grid-cols-7 cal-mt-1 cal-mb-3">
@@ -56,20 +45,14 @@
             <Loader v-if="state.loading" />
           </div>
         </div>
-        <div
-          class="cal-rounded-r-xl cal-border-l cal-border-gray-200"
-          :style="{ backgroundColor: color2 }"
-        >
+        <div class=" cal-border-l cal-border-gray-200" :style="{ backgroundColor: color2 }">
           <TimeSelection v-if="!state.loading" />
         </div>
       </div>
     </div>
 
-    <ConfirmForm
-      v-if="view === 'form'"
-      @goBack="() => setView('calendar')"
-      @booking-confirmed="() => setView('success')"
-    />
+    <ConfirmForm v-if="view === 'form'" @goBack="() => setView('calendar')"
+      @booking-confirmed="() => setView('success')" />
 
     <SuccessMessage v-if="view === 'success'"></SuccessMessage>
   </div>

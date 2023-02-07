@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!state.loading"
-    class="cal-grid cal-grid-cols-7 cal-gap-y-1 cal-w-[304px]"
+    class="cal-grid cal-grid-cols-7 cal-gap-y-1"
   >
     <div
       class="cal-flex mt-2 cal-justify-center"
