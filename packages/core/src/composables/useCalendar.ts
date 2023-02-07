@@ -84,7 +84,6 @@ export default (calendarId?: string) => {
       setState('monthHasEvents', hasAnyEvent);
       setState('days', days);
       setState('eventsLoading', false);
-      setState('loading', false);
     }
   };
 
