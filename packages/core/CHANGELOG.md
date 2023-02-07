@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.8
+
+### Patch Changes
+
+- loading added
+
 ## 0.4.7
 
 ### Patch Changes

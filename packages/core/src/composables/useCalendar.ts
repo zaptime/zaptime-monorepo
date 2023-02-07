@@ -30,7 +30,7 @@ const initCalendarState: ICalendarState = {
   monthHasEvents: false,
   eventsLoading: false,
   selectedDay: null,
-  loading: false,
+  loading: true,
   headers: [],
   dfnsConfig: null,
   attendeeState: null,
@@ -84,6 +84,7 @@ export default (calendarId?: string) => {
       setState('monthHasEvents', hasAnyEvent);
       setState('days', days);
       setState('eventsLoading', false);
+      setState('loading', false);
     }
   };
 
