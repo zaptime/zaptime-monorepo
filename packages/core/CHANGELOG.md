@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.7
+
+### Patch Changes
+
+- loading set to false default
+
 ## 0.4.6
 
 ### Patch Changes
