@@ -1,31 +1,23 @@
 <template>
   <div
     class="sm:cal-px-6 cal-px-0 cal-h-full cal-flex cal-rounded-xl cal-justify-center"
-    :class="[
-      config.compact
-        ? 'cal-w-[330px] sm:cal-w-[400px]'
-        : 'cal-w-[330px] sm:cal-w-[840px]',
-    ]"
+    :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[840px]']"
     :style="{ backgroundColor: color2 }"
   >
     <form
-      @submit.prevent="onSubmit"
       v-if="selectedEvent !== undefined"
       class="sm:cal-w-[370px] cal-mt-8"
       :class="[selectedEvent.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']"
+      @submit.prevent="onSubmit"
     >
       <h1 class="dark:cal-text-theme-200 cal-text-theme-700 cal-text-2xl">
         {{ locale?.confirmationForm?.confirmBooking }}
       </h1>
-      <h2
-        class="dark:cal-text-theme-300 cal-text-theme-600 cal-text-[32px] cal-mt-[15px] cal-font-semibold"
-      >
+      <h2 class="dark:cal-text-theme-300 cal-text-theme-600 cal-text-[32px] cal-mt-[15px] cal-font-semibold">
         {{ getFormattedDay(selectedEvent.start) }}
         {{ getFormattedDayInMonth(selectedEvent.start) }}
       </h2>
-      <h3
-        class="cal-text-theme-400 dark:cal-text-theme-400 cal-font-semibold cal-leading-[48px] cal-text-[32px]"
-      >
+      <h3 class="cal-text-theme-400 dark:cal-text-theme-400 cal-font-semibold cal-leading-[48px] cal-text-[32px]">
         {{ getFormattedTime(selectedEvent.start) }} -
         {{ getFormattedTime(selectedEvent.end) }}
       </h3>
@@ -68,7 +60,10 @@
         </div>
       </div>
 
-      <div v-if="selectedEvent.seats > 1" class="cal-max-w-[370px] cal-mt-6">
+      <div
+        v-if="selectedEvent.seats > 1"
+        class="cal-max-w-[370px] cal-mt-6"
+      >
         <label
           for="email"
           class="cal-block cal-text-sm cal-font-medium dark:cal-text-theme-200 cal-text-theme-700"
@@ -93,7 +88,10 @@
         <SecondaryButton @click="$emit('goBack')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>
-        <PrimaryButton type="submit" @click="$emit('confirmBooking')">
+        <PrimaryButton
+          type="submit"
+          @click="$emit('confirmBooking')"
+        >
           {{ locale?.confirmationForm?.buttons?.confirmBooking }}
         </PrimaryButton>
       </div>
@@ -102,20 +100,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref } from "vue";
-import { useSelectedEvent, book, useConfig } from "@zaptime/core";
-import { useFormatters } from "../../utils/dateFormatters";
-import PrimaryButton from "./atomic/PrimaryButton.vue";
-import SecondaryButton from "./atomic/SecondaryButton.vue";
+import { computed, inject, ref } from 'vue';
+import { useSelectedEvent, book, useConfig } from '@zaptime/core';
+import { useFormatters } from '../../utils/dateFormatters';
+import PrimaryButton from './atomic/PrimaryButton.vue';
+import SecondaryButton from './atomic/SecondaryButton.vue';
 
-const { selectedEvent } = useSelectedEvent(inject("calendarId"));
-const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } =
-  useFormatters(inject("calendarId"));
-const { config } = useConfig(inject("calendarId"));
-const color2 = inject<string>("color2");
+const { selectedEvent } = useSelectedEvent(inject('calendarId'));
+const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useFormatters(inject('calendarId'));
+const { config } = useConfig(inject('calendarId'));
+const color2 = inject<string>('color2');
 
-const email = ref("");
-const name = ref("");
+defineEmits(['confirmBooking', 'goBack']);
+
+const email = ref('');
+const name = ref('');
 const seats = ref(1);
 
 const locale = computed(() => {
@@ -126,11 +125,11 @@ const locale = computed(() => {
 });
 
 const splitName = (name: string) => {
-  let firstName = "";
-  let lastName = "";
+  let firstName = '';
+  let lastName = '';
 
-  if (name !== "") {
-    const splitName = name.split(" ");
+  if (name !== '') {
+    const splitName = name.split(' ');
 
     if (splitName.length > 1) {
       firstName = splitName[0];

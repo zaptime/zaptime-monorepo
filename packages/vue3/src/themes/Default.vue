@@ -1,7 +1,7 @@
 <template>
   <div>
     <Calendar class="basic-theme cal-h-full">
-      <template v-slot:nav>
+      <template #nav>
         <div v-if="config.profileImage">
           <div class="cal-w-full cal-mb-3 cal-pt-3 cal-flex cal-justify-center">
             <img
@@ -10,9 +10,7 @@
               alt="Profile image"
             />
           </div>
-          <p
-            class="cal-text-center cal-text-2xl cal-w-full cal-font-medium dark:cal-text-theme-200 cal-text-theme-700"
-          >
+          <p class="cal-text-center cal-text-2xl cal-w-full cal-font-medium dark:cal-text-theme-200 cal-text-theme-700">
             {{ config.locale?.texts?.introduction }}
           </p>
         </div>
@@ -20,11 +18,7 @@
           :class="{ 'cal-mt-24': !config.profileImage }"
           class="cal-flex cal-justify-between cal-py-4"
         >
-          <p
-            class="cal-ml-3 cal-font-semibold dark:cal-text-theme-200 cal-text-theme-700 cal-text-xl"
-          >
-            {{ monthName }} {{ currentYear }}
-          </p>
+          <p class="cal-ml-3 cal-font-semibold dark:cal-text-theme-200 cal-text-theme-700 cal-text-xl">{{ monthName }} {{ currentYear }}</p>
           <div class="cal-flex cal-mr-1">
             <button
               v-if="!prevDisabled"
@@ -76,39 +70,36 @@
         </div>
       </template>
 
-      <template v-slot:header>
+      <template #header>
         <div
-          class="cal-flex cal-justify-center dark:cal-text-theme-300 cal-font-medium cal-text-theme-700 cal-text-[11px]"
           v-for="header in state.headers"
           :key="header"
+          class="cal-flex cal-justify-center dark:cal-text-theme-300 cal-font-medium cal-text-theme-700 cal-text-[11px]"
         >
           {{ header }}
         </div>
       </template>
 
-      <template v-slot:days>
-        <div v-if="!state.loading" class="cal-grid cal-grid-cols-7 cal-gap-y-1">
+      <template #days>
+        <div
+          v-if="!state.loading"
+          class="cal-grid cal-grid-cols-7 cal-gap-y-1"
+        >
           <div
-            class="cal-flex mt-2 cal-justify-center"
             v-for="(day, i) in state.days"
             :key="i"
+            class="cal-flex mt-2 cal-justify-center"
           >
             <div class="cal-flex cal-items-center cal-justify-center">
               <button
-                :disabled="
-                  !dayHasEvent(day) || (day.isPast && !day.isCurrentMonth)
-                "
+                :disabled="!dayHasEvent(day) || (day.isPast && !day.isCurrentMonth)"
                 :class="{
                   'focus:cal-outline-none dark:cal-text-theme-100 dark:hover:cal-text-theme-300 dark:cal-bg-theme-600 cal-bg-theme-200 focus:cal-ring-2 cal-ring-theme-200':
                     dayHasEvent(day) && !day.isPast && !isSelectedDay(day),
-                  'dark:cal-text-theme-400 cal-cursor-not-allowed':
-                    (day.isPast && !day.isCurrentMonth) || (!dayHasEvent(day) && day.isCurrentMonth),                   
-                  'dark:cal-text-theme-700 dark:hover:cal-text-theme-600 dark:cal-bg-theme-25 cal-bg-theme-500 cal-text-theme-50 cal-font-semibold':
-                    isSelectedDay(day),
-                  'cal-transition-color cal-duration-100 dark:cal-text-theme-100':
-                    !isSelectedDay(day) && dayHasEvent(day) && !day.isPast,
-                  'dark:cal-text-theme-400 cal-text-theme-400 cal-pointer-events-none':
-                    day.isPast,
+                  'dark:cal-text-theme-400 cal-cursor-not-allowed': (day.isPast && !day.isCurrentMonth) || (!dayHasEvent(day) && day.isCurrentMonth),
+                  'dark:cal-text-theme-700 dark:hover:cal-text-theme-600 dark:cal-bg-theme-25 cal-bg-theme-500 cal-text-theme-50 cal-font-semibold': isSelectedDay(day),
+                  'cal-transition-color cal-duration-100 dark:cal-text-theme-100': !isSelectedDay(day) && dayHasEvent(day) && !day.isPast,
+                  'dark:cal-text-theme-400 cal-text-theme-400 cal-pointer-events-none': day.isPast,
                 }"
                 class="cal-w-10 cal-h-10 cal-text-sm cal-rounded-md"
                 @click.prevent="dayClickedLocalProxy(day)"
@@ -120,7 +111,7 @@
         </div>
       </template>
 
-      <template v-slot:loading>
+      <template #loading>
         <svg
           v-if="state.loading"
           class="cal-w-5 cal-h-5 cal-text-indigo-200 cal-animate-spin"
@@ -144,38 +135,28 @@
         </svg>
       </template>
 
-      <template v-slot:default>
+      <template #default>
         <button
-          @click="goPickingDates"
           class="cal-py-3.5 cal-ml-4 cal-mt-5 cal-px-6 cal-bg-theme-700 cal-text-theme-100 cal-rounded-md"
+          @click="goPickingDates"
         >
           {{ config.locale?.confirmationForm?.buttons?.goBack }}
         </button>
         <div
           class="cal-px-[50px] cal-mx-auto sm:cal-mx-0 cal-h-full"
-          :class="[
-            config.compact
-              ? 'cal-w-[330px] sm:cal-w-[400px]'
-              : 'cal-w-[330px] sm:cal-w-[440px]',
-          ]"
+          :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[440px]']"
         >
           <div v-if="!state.loading">
-            <div
-              v-if="state.events && state.events.length > 0 && !state.loading"
-            >
+            <div v-if="state.events && state.events.length > 0 && !state.loading">
               <div class="cal-pt-[54px]">
-                <p
-                  class="cal-text-[32px] dark:cal-text-theme-300 cal-text-theme-600 cal-font-semibold cal-tracking-tighter"
-                >
+                <p class="cal-text-[32px] dark:cal-text-theme-300 cal-text-theme-600 cal-font-semibold cal-tracking-tighter">
                   {{ getFormattedDay(state.events[0].start) }},
                   {{ getFormattedDayInMonth(state.events[0].start) }}
                 </p>
               </div>
               <div class="cal-pt-6 cal-pb-0.5">
                 <p
-                  v-if="
-                    config.locale && config.locale.texts?.choosePreferredTime
-                  "
+                  v-if="config.locale && config.locale.texts?.choosePreferredTime"
                   class="cal-tracking-tighter cal-text-xl cal-font-medium dark:cal-text-theme-200 cal-text-theme-700"
                 >
                   {{ config.locale.texts?.choosePreferredTime }}
@@ -184,18 +165,16 @@
 
               <div class="cal-mt-2 cal-px-1 cal-overflow-y-auto cal-h-40">
                 <button
-                  @click.prevent="select(event)"
-                  class="cal-relative dark:cal-bg-theme-800 cal-transition-all cal-duration-150 hover:dark:cal-bg-theme-600 cal-bg-theme-100 cal-border cal-border-theme-100 cal-flex cal-justify-center cal-items-center cal-w-full cal-pt-[16px] cal-pb-[14px] cal-my-2 dark:cal-border-theme-600 cal-cursor-pointer focus:cal-ring-2 focus:cal-ring-theme-800 focus:cal-ring-opacity-50 focus:cal-outline-none cal-outline-none cal-rounded-md cal-group"
                   v-for="(event, i) in state.events"
                   :key="i"
+                  class="cal-relative dark:cal-bg-theme-800 cal-transition-all cal-duration-150 hover:dark:cal-bg-theme-600 cal-bg-theme-100 cal-border cal-border-theme-100 cal-flex cal-justify-center cal-items-center cal-w-full cal-pt-[16px] cal-pb-[14px] cal-my-2 dark:cal-border-theme-600 cal-cursor-pointer focus:cal-ring-2 focus:cal-ring-theme-800 focus:cal-ring-opacity-50 focus:cal-outline-none cal-outline-none cal-rounded-md cal-group"
+                  @click.prevent="select(event)"
                 >
                   <p
                     class="cal-leading-4"
                     :class="{
-                      'dark:cal-text-white cal-text-theme-700':
-                        isSelected(event),
-                      'dark:cal-text-theme-100 cal-text-theme-800':
-                        !isSelected(event),
+                      'dark:cal-text-white cal-text-theme-700': isSelected(event),
+                      'dark:cal-text-theme-100 cal-text-theme-800': !isSelected(event),
                     }"
                   >
                     {{ getFormattedTime(event.start) }} -
@@ -217,21 +196,18 @@
                 </button>
               </div>
             </div>
-            <div class="cal-w-full" v-else>
+            <div
+              v-else
+              class="cal-w-full"
+            >
               <div
                 v-if="!state.monthHasEvents"
                 class="cal-flex cal-justify-center cal-h-full cal-flex-col cal-items-center"
               >
-                <div
-                  class="cal-flex cal-items-center cal-justify-center cal-h-full cal-mt-24"
-                >
-                  <div
-                    class="cal-px-5 cal-flex cal-items-center cal-justify-center cal-w-40 cal-h-40 dark:cal-text-themered-50 cal-rounded-2xl"
-                  >
+                <div class="cal-flex cal-items-center cal-justify-center cal-h-full cal-mt-24">
+                  <div class="cal-px-5 cal-flex cal-items-center cal-justify-center cal-w-40 cal-h-40 dark:cal-text-themered-50 cal-rounded-2xl">
                     <p
-                      v-if="
-                        config.locale && config.locale.texts?.noEventAvailable
-                      "
+                      v-if="config.locale && config.locale.texts?.noEventAvailable"
                       class="dark:cal-text-theme-gray cal-text-center"
                       v-html="config.locale.texts?.noEventAvailable"
                     ></p>
@@ -242,12 +218,8 @@
                 v-else
                 class="cal-flex cal-justify-center cal-flex-col cal-items-center"
               >
-                <div
-                  class="cal-flex cal-items-center cal-justify-center cal-h-full cal-mt-48"
-                >
-                  <div
-                    class="cal-py-5 cal-flex cal-flex-col cal-items-center cal-justify-center cal-px-7 cal-w-40 dark:cal-text-theme-200 cal-rounded-2xl"
-                  >
+                <div class="cal-flex cal-items-center cal-justify-center cal-h-full cal-mt-48">
+                  <div class="cal-py-5 cal-flex cal-flex-col cal-items-center cal-justify-center cal-px-7 cal-w-40 dark:cal-text-theme-200 cal-rounded-2xl">
                     <svg
                       class="cal-w-12 cal-h-12 dark:cal-text-theme-primary"
                       fill="none"
@@ -275,58 +247,44 @@
         </div>
       </template>
 
-      <template v-slot:loader="{}"></template>
+      <template #loader="{}"></template>
     </Calendar>
   </div>
 </template>
 
 <script lang="ts" setup>
-import Calendar from "../components/Calendar.vue";
-import { useCalendar } from "@zaptime/core";
-import { useFormatters } from "../utils/dateFormatters";
-import useCalendarViewState from "../composables/useCalendarViewState";
+import Calendar from '../components/Calendar.vue';
+import { useCalendar } from '@zaptime/core';
+import { useFormatters } from '../utils/dateFormatters';
+import useCalendarViewState from '../composables/useCalendarViewState';
 
-import { inject } from "vue";
-import IZapTimeConfig from "../types/IZapTimeConfig";
-import { IDay, IEvent } from "@zaptime/core";
+import { inject } from 'vue';
+import IZapTimeConfig from '../types/IZapTimeConfig';
+import { IDay, IEvent } from '@zaptime/core';
 
-const { setView, setCalendarView } = useCalendarViewState(inject("calendarId"));
+const { setView, setCalendarView } = useCalendarViewState(inject('calendarId'));
 
-const {
-  monthName,
-  currentYear,
-  dayClicked,
-  dayHasEvent,
-  prev,
-  prevDisabled,
-  next,
-  selectEvent,
-  isSelected,
-  isSelectedDay,
-  nextDisabled,
-  state,
-} = useCalendar(inject("calendarId"));
+const { monthName, currentYear, dayClicked, dayHasEvent, prev, prevDisabled, next, selectEvent, isSelected, isSelectedDay, nextDisabled, state } = useCalendar(inject('calendarId'));
 
-const config = inject("config") as IZapTimeConfig;
+const config = inject('config') as IZapTimeConfig;
 
-const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } =
-  useFormatters(inject("calendarId"));
+const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useFormatters(inject('calendarId'));
 
 const select = (event: IEvent) => {
   selectEvent(event);
 
   if (config.externalBooking !== true) {
-    setView("form");
+    setView('form');
   }
 };
 
 const dayClickedLocalProxy = (day: IDay) => {
   dayClicked(day);
-  setCalendarView("pickingTime");
+  setCalendarView('pickingTime');
 };
 
 const goPickingDates = () => {
-  setCalendarView("pickingDate");
-  setView("calendar");
+  setCalendarView('pickingDate');
+  setView('calendar');
 };
 </script>

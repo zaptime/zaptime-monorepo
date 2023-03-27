@@ -20,11 +20,7 @@
     </p>
   </div>
   <div class="cal-flex cal-justify-between cal-py-4">
-    <p
-      class="cal-ml-3 cal-font-medium dark:cal-text-theme-200 cal-text-gray-900 cal-text-base"
-    >
-      {{ monthName }} {{ currentYear }}
-    </p>
+    <p class="cal-ml-3 cal-font-medium dark:cal-text-theme-200 cal-text-gray-900 cal-text-base">{{ monthName }} {{ currentYear }}</p>
     <div class="cal-flex cal-mr-1">
       <button
         v-if="!prevDisabled"
@@ -79,11 +75,10 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
-import { useCalendar, useConfig } from "@zaptime/core";
+import { inject } from 'vue';
+import { useCalendar, useConfig } from '@zaptime/core';
 
-const { monthName, currentYear, prev, prevDisabled, next, nextDisabled } =
-  useCalendar(inject("calendarId") as string);
+const { monthName, currentYear, prev, prevDisabled, next, nextDisabled } = useCalendar(inject('calendarId') as string);
 
-const { config } = useConfig(inject("calendarId"));
+const { config } = useConfig(inject('calendarId'));
 </script>

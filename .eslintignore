@@ -1,0 +1,4 @@
+public/
+.changeset
+packages/core/dist
+packages/vue3/dist

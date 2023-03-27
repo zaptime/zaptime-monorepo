@@ -1,35 +1,34 @@
-import IZapTimeConfig from "../types/IZapTimeConfig";
-import DefaultConfig from "../defaultConfig";
+import IZapTimeConfig from '../types/IZapTimeConfig';
+import DefaultConfig from '../defaultConfig';
 import { ref, computed } from 'vue';
 
 interface IConfigState {
-  config: IZapTimeConfig
+  config: IZapTimeConfig;
 }
 
-let _config = ref<Record<string, IConfigState>>({
-  "__DEFAULT__": {
-    config: DefaultConfig
-  }
+const _config = ref<Record<string, IConfigState>>({
+  __DEFAULT__: {
+    config: DefaultConfig,
+  },
 });
 
 export default function useConfig(calendarId?: string) {
-
   if (calendarId !== undefined && _config.value[calendarId] === undefined) {
     _config.value[calendarId] = {
-      config: DefaultConfig
-    }
+      config: DefaultConfig,
+    };
   }
 
   const setConfig = (cfg: IZapTimeConfig) => {
-    if(calendarId === undefined) {
+    if (calendarId === undefined) {
       _config.value.__DEFAULT__.config = cfg;
     } else {
       _config.value[calendarId].config = cfg;
     }
   };
 
-  const config = computed(() => {    
-    if(calendarId === undefined) {
+  const config = computed(() => {
+    if (calendarId === undefined) {
       return _config.value.__DEFAULT__.config;
     } else {
       return _config.value[calendarId].config;
@@ -39,5 +38,5 @@ export default function useConfig(calendarId?: string) {
   return {
     config,
     setConfig,
-  };  
+  };
 }

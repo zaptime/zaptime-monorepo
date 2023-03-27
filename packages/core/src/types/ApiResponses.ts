@@ -1,5 +1,5 @@
-import IEvent from "./IEvent";
-import IStatus from "./IStatus";
+import IEvent from './IEvent';
+import IStatus from './IStatus';
 
 export interface IBookingResponse {
   success: boolean;

@@ -1,8 +1,8 @@
 <template>
   <button
     :disabled="disabled || loading"
-    @click="$emit('click')"
     class="cal-py-2 sm:cal-py-3.5 disabled:cal-opacity-80 disabled:hover:cal-bg-accent-0 cal-inline-flex cal-items-center disabled:cal-cursor-not-allowed sm:cal-px-6 cal-px-4 cal-transition-all cal-duration-75 cal-ease-out hover:dark:cal-bg-theme-200 hover:dark:cal-text-theme-900 cal-font-medium cal-bg-accent-0 cal-text-white hover:cal-bg-accent-1 dark:cal-text-theme-900 dark:cal-bg-theme-300 cal-rounded-md"
+    @click="$emit('click')"
   >
     <svg
       class="cal-animate-spin cal-h-5 cal-mr-3 cal-ease-in cal-w-5 cal-text-white"
@@ -34,4 +34,6 @@ defineProps<{
   disabled?: boolean;
   loading?: boolean;
 }>();
+
+defineEmits(['click']);
 </script>

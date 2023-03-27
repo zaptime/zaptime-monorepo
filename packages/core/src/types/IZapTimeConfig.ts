@@ -1,5 +1,5 @@
-import IZapTimeTheme from "./IZapTimeTheme";
-import IZapTimeLocale from "./IZapTimeLocale";
+import IZapTimeTheme from './IZapTimeTheme';
+import IZapTimeLocale from './IZapTimeLocale';
 
 export default interface IZapTimeConfig {
   token: string;
@@ -10,5 +10,5 @@ export default interface IZapTimeConfig {
   theme?: IZapTimeTheme;
   profileImage?: string;
   externalBooking?: boolean;
-  compact?: boolean,
+  compact?: boolean;
 }

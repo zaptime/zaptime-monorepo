@@ -4,6 +4,7 @@
   "main": "dist/entry.js",
   "types": "dist/entry.d.ts",
   "module": "dist/entry.mjs",
+  "author": "Zaptime s.r.o.",
   "files": [
     "dist"
   ],

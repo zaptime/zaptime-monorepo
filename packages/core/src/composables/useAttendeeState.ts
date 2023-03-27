@@ -1,4 +1,4 @@
-import IStatus from "../types/IStatus";
+import IStatus from '../types/IStatus';
 import { ref, Ref, computed } from 'vue';
 
 type IAttendeeState = Ref<IStatus> | Record<string, Ref<IStatus>>;
@@ -6,12 +6,11 @@ let _attendeeState: IAttendeeState = {};
 
 export default function useAttendeeState(calendarId?: string) {
   const setAttendeeState = (status: IStatus) => {
-
     if (calendarId === undefined) {
       _attendeeState.value = status;
     } else {
       _attendeeState = {
-        calendarId: ref(status)
+        calendarId: ref(status),
       };
     }
   };

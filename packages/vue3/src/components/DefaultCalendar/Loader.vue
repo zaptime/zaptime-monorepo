@@ -1,5 +1,4 @@
 <template>
-  
   <div class="cal-h-[228px]">
     <svg
       class="cal-w-8 cal-h-8 cal-text-gray-400 cal-animate-spin"

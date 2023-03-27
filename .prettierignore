@@ -1,0 +1,12 @@
+.vscode
+node_modules
+public
+dist
+.browserlistrc
+.env
+pnpm-lock.yaml
+.pnpm-store
+.changeset
+
+*.html
+*.json

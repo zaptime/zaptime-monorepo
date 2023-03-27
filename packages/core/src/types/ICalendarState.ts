@@ -1,7 +1,7 @@
-import IEvent from "./IEvent";
-import IStatus from "./IStatus";
-import IDfnsConf from "./IDfnsConf";
-import IDay from "./IDay";
+import IEvent from './IEvent';
+import IStatus from './IStatus';
+import IDfnsConf from './IDfnsConf';
+import IDay from './IDay';
 
 export default interface ICalendarState {
   date: Date;

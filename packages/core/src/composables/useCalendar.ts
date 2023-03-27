@@ -1,23 +1,17 @@
-import { computed, onMounted, reactive, ref, watch, watchEffect } from "vue";
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 
-import {
-  addMonths,
-  format,
-  isPast,
-  isFuture,
-  differenceInCalendarMonths,
-} from "date-fns";
+import { addMonths, format, isPast, isFuture, differenceInCalendarMonths } from 'date-fns';
 
-import { getDays as getDaysExternal } from "../utils/calendar";
-import { getHeaders } from "../utils/localeLogic";
-import { getDfnsConfig } from "../utils/dfnsConfig";
+import { getDays as getDaysExternal } from '../utils/calendar';
+import { getHeaders } from '../utils/localeLogic';
+import { getDfnsConfig } from '../utils/dfnsConfig';
 
-import IEvent from "../types/IEvent";
-import ICalendarState from "../types/ICalendarState";
-import IDay from "../types/IDay";
-import useSelectedEvent from "../composables/useSelectedEvent";
+import IEvent from '../types/IEvent';
+import ICalendarState from '../types/ICalendarState';
+import IDay from '../types/IDay';
+import useSelectedEvent from '../composables/useSelectedEvent';
 
-import useConfig from "../composables/useConfig";
+import useConfig from '../composables/useConfig';
 
 const date = ref(new Date());
 
@@ -34,16 +28,15 @@ const initCalendarState: ICalendarState = {
   headers: [],
   dfnsConfig: null,
   attendeeState: null,
-} 
+};
 
 const _state = reactive<ICalendarStates>({
-  "__DEFAULT__" : { ...initCalendarState}
+  __DEFAULT__: { ...initCalendarState },
 });
 
 export default (calendarId?: string) => {
-
-  if(calendarId !== undefined) {
-    if(_state[calendarId] === undefined) {
+  if (calendarId !== undefined) {
+    if (_state[calendarId] === undefined) {
       _state[calendarId] = { ...initCalendarState };
     }
   }
@@ -51,36 +44,32 @@ export default (calendarId?: string) => {
   const { config } = useConfig(calendarId);
   const { selectedEvent, setSelectedEvent } = useSelectedEvent(calendarId);
 
-  const selectEvent = (event: IEvent) => {    
-    setSelectedEvent(event)
+  const selectEvent = (event: IEvent) => {
+    setSelectedEvent(event);
   };
 
   const state = computed(() => {
-    if(calendarId === undefined) {       
-      return _state["__DEFAULT__"] as ICalendarState;
+    if (calendarId === undefined) {
+      return _state['__DEFAULT__'] as ICalendarState;
     } else {
       return _state[calendarId] as ICalendarState;
     }
   });
 
   const setState = (key: string, value: unknown) => {
-    if(calendarId === undefined) {   
-      //@ts-ignore    
-      _state["__DEFAULT__"][key] = value;
+    if (calendarId === undefined) {
+      //@ts-expect-error TODO: fix type
+      _state['__DEFAULT__'][key] = value;
     } else {
-      //@ts-ignore
+      //@ts-expect-error TODO: fix type
       _state[calendarId][key] = value;
     }
-  }
+  };
 
   const getDays = async (): Promise<void> => {
     setState('eventsLoading', true);
     if (state.value.dfnsConfig !== undefined && state.value.dfnsConfig !== null) {
-      const { days, hasAnyEvent } = await getDaysExternal(
-        date.value,
-        state.value.dfnsConfig,
-        config.value
-      );
+      const { days, hasAnyEvent } = await getDaysExternal(date.value, state.value.dfnsConfig, config.value);
       setState('monthHasEvents', hasAnyEvent);
       setState('days', days);
       setState('eventsLoading', false);
@@ -97,7 +86,7 @@ export default (calendarId?: string) => {
     // setSelectedEvent(undefined);
 
     setState('selectedDay', day);
-    
+
     if (day.events !== undefined) {
       setState('events', day.events);
     }
@@ -144,12 +133,9 @@ export default (calendarId?: string) => {
     const now = new Date();
 
     const newDate = addMonths(date.value, -1);
-    const distance = differenceInCalendarMonths(now, newDate);    
-    
-    if (
-      isPast(newDate) &&
-      config.value.min !== undefined
-    ) {
+    const distance = differenceInCalendarMonths(now, newDate);
+
+    if (isPast(newDate) && config.value.min !== undefined) {
       if (distance > config.value.min) {
         return true;
       }
@@ -163,11 +149,8 @@ export default (calendarId?: string) => {
 
     const newDate = addMonths(date.value, 1);
     const distance = differenceInCalendarMonths(newDate, now);
-    
-    if (
-      isFuture(newDate) &&
-      config.value.max !== undefined
-    ) {
+
+    if (isFuture(newDate) && config.value.max !== undefined) {
       if (distance > config.value.max) {
         return true;
       }
@@ -177,25 +160,20 @@ export default (calendarId?: string) => {
   });
 
   const currentYear = computed(() => {
-    return format(date.value, "y");
+    return format(date.value, 'y');
   });
 
   const monthName = computed(() => {
-    return format(date.value, "LLLL", { locale: state.value.dfnsConfig?.locale });
+    return format(date.value, 'LLLL', {
+      locale: state.value.dfnsConfig?.locale,
+    });
   });
 
-  watch(
-    [
-      () => config.value.locale?.preset,
-      () => config.value.closestAvailableEvent,
-      () => config.value.locale?.startDayOfWeek,
-    ],
-    async () => {
-      await setLocales();
-      //refetch days with new given locales
-      await getDays();
-    }
-  );
+  watch([() => config.value.locale?.preset, () => config.value.closestAvailableEvent, () => config.value.locale?.startDayOfWeek], async () => {
+    await setLocales();
+    //refetch days with new given locales
+    await getDays();
+  });
 
   const setLocales = async () => {
     if (config.value && config.value.locale) {
@@ -205,8 +183,7 @@ export default (calendarId?: string) => {
   };
 
   onMounted(async () => {
-
-    if(state.value.days.length === 0) {      
+    if (state.value.days.length === 0) {
       await setLocales();
       await getDays();
     }
