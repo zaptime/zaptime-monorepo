@@ -7,25 +7,25 @@
  @font-face {
    font-family: "Basier Circle";
    font-weight: 400;
-   src: url("./basier-circle/BasierCircle-Regular.otf") format("opentype");
- }
-
- @font-face {
-   font-family: "Basier Circle";
-   font-weight: 700;
-   src: url("./basier-circle/BasierCircle-Bold.otf") format("opentype");
+   src: url("./basier-circle/regular.woff2") format("opentype");
  }
 
  @font-face {
    font-family: "Basier Circle";
    font-weight: 500;
-   src: url("./basier-circle/BasierCircle-Medium.otf") format("opentype");
+   src: url("./basier-circle/medium.woff2") format("opentype");
  }
 
  @font-face {
    font-family: "Basier Circle";
    font-weight: 600;
-   src: url("./basier-circle/BasierCircle-SemiBold.otf") format("opentype");
+   src: url("./basier-circle/semibold.woff2") format("opentype");
+ }
+
+ @font-face {
+   font-family: "Basier Circle";
+   font-weight: 700;
+   src: url("./basier-circle/bold.woff2") format("opentype");
  }
 
  #zaptime-calendar {
