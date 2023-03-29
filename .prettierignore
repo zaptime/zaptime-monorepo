@@ -8,5 +8,7 @@ pnpm-lock.yaml
 .pnpm-store
 .changeset
 
+packages/iframe/zoid
+
 *.html
 *.json
