@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "vue-tsc --noEmit && vite build && pnpm run merge-files",
     "merge-files": "cat ./zoid/zoid.js ./zoid/zaptime-init.js > ./dist/zaptime.js",
     "preview": "vite preview",
