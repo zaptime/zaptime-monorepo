@@ -1,5 +1,6 @@
 ---
+'iframe': patch
 '@zaptime/vue3': patch
 ---
 
-Fixed build
+Fix build

@@ -6,7 +6,7 @@
     <div
       v-for="(day, i) in state.days"
       :key="i"
-      class="cal-flex mt-2 cal-justify-center"
+      class="cal-flex cal-mt-2 cal-justify-center"
     >
       <div class="cal-flex cal-items-center cal-justify-center">
         <button
