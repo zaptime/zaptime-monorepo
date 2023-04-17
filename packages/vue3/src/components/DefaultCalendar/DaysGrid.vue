@@ -14,7 +14,7 @@
           :class="{
             'focus:cal-outline-none dark:cal-text-theme-100  cal-text-gray-700 dark:hover:cal-text-theme-300 dark:cal-bg-theme-600 cal-bg-gray-100 focus:cal-ring-2 cal-ring-theme-200':
               dayHasEvent(day) && !day.isPast && !isSelectedDay(day),
-            'dark:cal-text-gray-500 cal-cursor-not-allowed': (day.isPast && !day.isCurrentMonth) || (!dayHasEvent(day) && day.isCurrentMonth),
+            'dark:cal-text-gray-500 cal-text-gray-500 cal-cursor-default': (day.isPast && !day.isCurrentMonth) || (!dayHasEvent(day) && day.isCurrentMonth),
             'dark:cal-text-theme-700 dark:hover:cal-text-theme-600 dark:cal-bg-theme-25 cal-bg-accent-0  cal-text-white cal-font-semibold': isSelectedDay(day),
             'cal-transition-color cal-duration-100 dark:cal-text-theme-100 cal-bg-gray-100 hover:cal-bg-gray-200 hover:cal-text-accent-0 cal-text-gray-700': !isSelectedDay(day) && dayHasEvent(day) && !day.isPast,
             'dark:cal-text-gray-500 cal-text-gray-500 cal-pointer-events-none': day.isPast,
