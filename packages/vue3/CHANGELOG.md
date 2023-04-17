@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 1.4.21
+
+### Patch Changes
+
+- Fix color for future event without day selected in current month
+
 ## 1.4.20
 
 ### Patch Changes
