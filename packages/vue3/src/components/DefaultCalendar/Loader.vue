@@ -1,7 +1,7 @@
 <template>
   <div class="cal-h-[228px]">
     <svg
-      class="cal-w-8 cal-h-8 cal-text-gray-400 cal-animate-spin"
+      class="cal-h-8 cal-w-8 cal-animate-spin cal-text-gray-400"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

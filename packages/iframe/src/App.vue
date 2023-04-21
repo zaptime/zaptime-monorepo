@@ -1,23 +1,20 @@
 <script setup lang="ts">
-import {ZapTimeCalendar} from "@zaptime/vue3";
-import {ref, onMounted} from "vue";
-import type {RequestConfig} from './buildConfigFromRequest'
-import {buildConfigFromRequest} from './buildConfigFromRequest'
+import { ZapTimeCalendar } from '@zaptime/vue3';
+import { ref, onMounted } from 'vue';
+import type { RequestConfig } from './buildConfigFromRequest';
+import { buildConfigFromRequest } from './buildConfigFromRequest';
 
 let config = window.xprops.config;
 const remoteConfigLoaded = ref(false);
 
 async function fetchRemoteConfig(token: string) {
   if (token) {
-
     type Response = {
       success: boolean;
-      data: RequestConfig
-    }
+      data: RequestConfig;
+    };
 
-    const res = await fetch(
-        `https://my.zaptime.app/api/configuration?token=${token}`
-    );
+    const res = await fetch(`https://my.zaptime.app/api/configuration?token=${token}`);
     const data: Response = await res.json();
 
     if (data.success) {
@@ -41,12 +38,12 @@ const onEventChanged = (event: unknown) => {
 <template>
   <div v-if="remoteConfigLoaded">
     <ZapTimeCalendar
-        @event-changed="onEventChanged"
-        :config="config"
+      @event-changed="onEventChanged"
+      :config="config"
     ></ZapTimeCalendar>
   </div>
 </template>
 
 <style>
-@import url("/node_modules/@zaptime/vue3/dist/style.css");
+@import url('/node_modules/@zaptime/vue3/dist/style.css');
 </style>

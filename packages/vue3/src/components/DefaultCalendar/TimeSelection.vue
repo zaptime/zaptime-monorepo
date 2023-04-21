@@ -1,7 +1,7 @@
 <template>
   <div
-    class="cal-px-[50px] cal-min-h-[524px] cal-pt-4 cal-bg-white cal-mx-auto sm:cal-mx-0 cal-h-full"
-    :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px] cal-rounded-xl' : 'cal-w-[330px] sm:cal-w-[440px] cal-rounded-r-xl']"
+    class="cal-mx-auto cal-h-full cal-min-h-[524px] cal-bg-white cal-px-[50px] cal-pt-4 dark:cal-bg-theme-900 sm:cal-mx-0"
+    :class="[config.compact ? 'cal-w-[330px] cal-rounded-xl sm:cal-w-[400px]' : 'cal-w-[330px] cal-rounded-r-xl sm:cal-w-[440px]']"
   >
     <PrimaryButton
       v-if="config.compact === true"
@@ -13,52 +13,32 @@
     <div v-if="!state.loading">
       <div v-if="state.events && state.events.length > 0 && !state.loading">
         <div :class="[config.locale?.texts?.introduction || config.profileImage ? 'cal-pt-[54px]' : '']">
-          <p class="cal-text-2xl dark:cal-text-theme-300 cal-text-gray-600 cal-font-semibold cal-tracking-tighter">
+          <p class="cal-text-2xl cal-font-semibold cal-tracking-tighter cal-text-gray-600 dark:cal-text-theme-300">
             {{ getFormattedDay(state.events[0].start) }},
             {{ getFormattedDayInMonth(state.events[0].start) }}
           </p>
         </div>
-        <div class="cal-pt-6 cal-pb-0.5">
+        <div class="cal-pb-0.5 cal-pt-6">
           <p
             v-if="config.locale && config.locale.texts?.choosePreferredTime"
-            class="cal-tracking-tighter cal-text-base cal-font-medium dark:cal-text-theme-200 cal-text-gray-600"
+            class="cal-text-base cal-font-medium cal-tracking-tighter cal-text-gray-600 dark:cal-text-theme-200"
           >
             {{ config.locale.texts?.choosePreferredTime }}
           </p>
         </div>
 
-        <div class="cal-mt-2 cal-px-1 cal-overflow-y-auto cal-h-40">
-          <button
+        <div class="cal-mt-2 cal-h-40 cal-overflow-y-auto cal-px-1">
+          <div
             v-for="(event, i) in state.events"
             :key="i"
-            class="cal-relative dark:cal-bg-theme-800 cal-font-medium cal-transition-all cal-duration-150 cal-flex cal-justify-center cal-items-center cal-w-full cal-my-2 dark:cal-border-theme-600 cal-cursor-pointer focus:cal-ring-2 focus:cal-ring-theme-800 focus:cal-ring-opacity-50 focus:cal-outline-none cal-outline-none cal-rounded-md cal-group"
-            :class="[isSelected(event) ? 'cal-bg-accent-0 cal-text-white' : 'cal-bg-gray-100 cal-text-gray-700 cal-bg-theme-100 hover:cal-bg-gray-200 hover:cal-text-accent-0 hover:dark:cal-bg-theme-600']"
-            @click.prevent="select(event)"
+            class="w-full"
           >
-            <p
-              class="cal-leading-4 cal-flex cal-items-center cal-py-4"
-              :class="{
-                'dark:cal-text-white cal-text-theme-700 ': isSelected(event),
-                'dark:cal-text-theme-100 cal-text-theme-800': !isSelected(event),
-              }"
-            >
-              {{ getFormattedTime(event.start) }} -
-              {{ getFormattedTime(event.end) }}
-            </p>
-            <svg
-              v-if="isSelected(event)"
-              class="cal-absolute cal-w-6 cal-h-6 cal-text-theme-700 dark:cal-text-white cal-top-[13px] cal-right-2"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
+            <ConfirmationButton
+              :event="event"
+              :is-selected="isSelected"
+              @select-event="select"
+            ></ConfirmationButton>
+          </div>
         </div>
       </div>
       <div
@@ -67,10 +47,10 @@
       >
         <div
           v-if="!state.monthHasEvents"
-          class="cal-flex cal-justify-center cal-h-full cal-flex-col cal-items-center"
+          class="cal-flex cal-h-full cal-flex-col cal-items-center cal-justify-center"
         >
-          <div class="cal-flex cal-items-center cal-justify-center cal-h-full cal-mt-24">
-            <div class="cal-px-5 cal-flex cal-items-center cal-justify-center cal-w-40 cal-h-40 dark:cal-text-themered-50 cal-rounded-2xl">
+          <div class="cal-mt-24 cal-flex cal-h-full cal-items-center cal-justify-center">
+            <div class="dark:cal-text-themered-50 cal-flex cal-h-40 cal-w-40 cal-items-center cal-justify-center cal-rounded-2xl cal-px-5">
               <p
                 v-if="config.locale && config.locale.texts?.noEventAvailable"
                 class="dark:cal-text-theme-gray cal-text-center"
@@ -81,12 +61,12 @@
         </div>
         <div
           v-else
-          class="cal-flex cal-justify-center cal-flex-col cal-items-center"
+          class="cal-flex cal-flex-col cal-items-center cal-justify-center"
         >
-          <div class="cal-flex cal-items-center cal-justify-center cal-h-full cal-mt-48">
-            <div class="cal-py-5 cal-flex cal-flex-col cal-items-center cal-justify-center cal-px-7 cal-w-40 dark:cal-text-theme-200 cal-rounded-2xl">
+          <div class="cal-mt-48 cal-flex cal-h-full cal-items-center cal-justify-center">
+            <div class="cal-flex cal-w-40 cal-flex-col cal-items-center cal-justify-center cal-rounded-2xl cal-px-7 cal-py-5 dark:cal-text-theme-200">
               <svg
-                class="cal-w-12 cal-h-12 dark:cal-text-theme-primary"
+                class="dark:cal-text-theme-primary cal-h-12 cal-w-12"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -101,7 +81,7 @@
               </svg>
               <p
                 v-if="config.locale && config.locale.texts?.chooseDate"
-                class="cal-mt-2 dark:cal-text-theme-200 cal-w-40 cal-text-center"
+                class="cal-mt-2 cal-w-40 cal-text-center dark:cal-text-theme-200"
                 v-html="config.locale.texts?.chooseDate"
               ></p>
             </div>
@@ -119,6 +99,7 @@ import useCalendarViewState from '../../composables/useCalendarViewState';
 import PrimaryButton from '../atomic/PrimaryButton.vue';
 import { inject } from 'vue';
 import { IEvent } from '@zaptime/core';
+import ConfirmationButton from './ConfirmationButton.vue';
 
 const { setView, setCalendarView } = useCalendarViewState(inject('calendarId'));
 
@@ -126,7 +107,7 @@ const { selectEvent, isSelected, state } = useCalendar(inject('calendarId'));
 
 const { config } = useConfig(inject('calendarId'));
 
-const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useFormatters(inject('calendarId'));
+const { getFormattedDay, getFormattedDayInMonth } = useFormatters(inject('calendarId'));
 
 const select = (event: IEvent) => {
   selectEvent(event);

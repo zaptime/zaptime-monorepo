@@ -1,11 +1,11 @@
 <template>
   <div
-    class="sm:cal-px-6 cal-pt-24 cal-bg-white cal-px-0 cal-h-full cal-rounded-xl cal-justify-center"
+    class="cal-h-full cal-justify-center cal-rounded-xl cal-bg-white cal-px-0 cal-pt-24 sm:cal-px-6"
     :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[840px]']"
   >
     <div class="cal-flex cal-justify-center">
       <svg
-        class="cal-w-16 cal-h-16 cal-text-accent-0"
+        class="cal-h-16 cal-w-16 cal-text-accent-0"
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
@@ -18,9 +18,9 @@
       </svg>
     </div>
 
-    <h1 class="dark:cal-text-theme-300 cal-text-center cal-text-gray-700 cal-text-2xl cal-mt-4 cal-font-semibold">Congratulations!</h1>
+    <h1 class="cal-mt-4 cal-text-center cal-text-2xl cal-font-semibold cal-text-gray-700 dark:cal-text-theme-300">Congratulations!</h1>
 
-    <h2 class="dark:cal-text-theme-200 cal-text-center cal-text-gray-500 cal-mt-2 cal-font-medium cal-text-2xl">Your seat has been successfully booked.</h2>
+    <h2 class="cal-mt-2 cal-text-center cal-text-2xl cal-font-medium cal-text-gray-500 dark:cal-text-theme-200">Your seat has been successfully booked.</h2>
   </div>
 </template>
 

@@ -27,7 +27,7 @@ import IZapTimeTheme from '../src/types/IZapTimeTheme';
 import { IZapTimeConfig } from '../dist/types/src/entry';
 
 const calypsoTheme: IZapTimeTheme = {
-  mode: 'light',
+  mode: 'dark',
   colors: {
     'accent--1': '#2ED3B7',
     'accent-0': '#15B79E',
@@ -38,7 +38,7 @@ const calypsoTheme: IZapTimeTheme = {
 const config: IZapTimeConfig = {
   token: 'kikuhNJV3zWBeIvIXGryWsubIEZ74dRX',
 
-  compact: true,
+  compact: false,
 
   externalBooking: false,
   // min: 0,

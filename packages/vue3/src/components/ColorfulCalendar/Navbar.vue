@@ -2,10 +2,10 @@
   <div>
     <div
       v-if="config.profileImage"
-      class="cal-w-full cal-mb-3 cal-pt-3 cal-flex cal-justify-center"
+      class="cal-mb-3 cal-flex cal-w-full cal-justify-center cal-pt-3"
     >
       <img
-        class="cal-w-[108px] cal-h-[108px] cal-object-cover cal-object-top cal-rounded-full"
+        class="cal-h-[108px] cal-w-[108px] cal-rounded-full cal-object-cover cal-object-top"
         :src="config.profileImage"
         loading="lazy"
         alt="Profile image"
@@ -13,7 +13,7 @@
     </div>
     <p
       v-if="config.locale?.texts?.introduction"
-      class="cal-text-center cal-text-2xl cal-w-full cal-font-medium dark:cal-text-theme-200 cal-text-theme-700"
+      class="cal-w-full cal-text-center cal-text-2xl cal-font-medium cal-text-theme-700 dark:cal-text-theme-200"
       :class="[config.profileImage ? '' : 'cal-py-12']"
     >
       {{ config.locale?.texts?.introduction }}
@@ -25,17 +25,17 @@
     }"
     class="cal-flex cal-justify-between cal-py-4"
   >
-    <p class="cal-ml-3 cal-font-semibold dark:cal-text-theme-200 cal-text-theme-700 cal-text-xl">{{ monthName }} {{ currentYear }}</p>
-    <div class="cal-flex cal-mr-1">
+    <p class="cal-ml-3 cal-text-xl cal-font-semibold cal-text-theme-700 dark:cal-text-theme-200">{{ monthName }} {{ currentYear }}</p>
+    <div class="cal-mr-1 cal-flex">
       <button
         v-if="!prevDisabled"
         :disabled="prevDisabled"
         :class="{ 'cal-cursor-not-allowed': prevDisabled }"
-        class="cal-flex cal-justify-center cal-items-center"
+        class="cal-flex cal-items-center cal-justify-center"
         @click.prevent="prev"
       >
         <svg
-          class="cal-rotate-180 dark:cal-text-theme-500 cal-text-theme-500"
+          class="cal-rotate-180 cal-text-theme-500 dark:cal-text-theme-500"
           width="32"
           height="32"
           viewBox="0 0 32 32"
@@ -54,11 +54,11 @@
         v-if="!nextDisabled"
         :disabled="nextDisabled"
         :class="{ 'cal-cursor-not-allowed': nextDisabled }"
-        class="cal-flex cal-justify-center cal-items-center"
+        class="cal-flex cal-items-center cal-justify-center"
         @click.prevent="next"
       >
         <svg
-          class="dark:cal-text-theme-500 cal-text-theme-500"
+          class="cal-text-theme-500 dark:cal-text-theme-500"
           width="32"
           height="32"
           viewBox="0 0 32 32"

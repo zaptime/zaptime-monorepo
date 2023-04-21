@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="cal-w-5 cal-h-5 cal-text-indigo-200 cal-animate-spin"
+    class="cal-h-5 cal-w-5 cal-animate-spin cal-text-indigo-200"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"

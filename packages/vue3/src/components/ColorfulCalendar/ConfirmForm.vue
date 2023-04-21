@@ -1,31 +1,31 @@
 <template>
   <div
-    class="sm:cal-px-6 cal-px-0 cal-h-full cal-flex cal-rounded-xl cal-justify-center"
+    class="cal-flex cal-h-full cal-justify-center cal-rounded-xl cal-px-0 sm:cal-px-6"
     :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[840px]']"
     :style="{ backgroundColor: color2 }"
   >
     <form
       v-if="selectedEvent !== undefined"
-      class="sm:cal-w-[370px] cal-mt-8"
+      class="cal-mt-8 sm:cal-w-[370px]"
       :class="[selectedEvent.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']"
       @submit.prevent="onSubmit"
     >
-      <h1 class="dark:cal-text-theme-200 cal-text-theme-700 cal-text-2xl">
+      <h1 class="cal-text-2xl cal-text-theme-700 dark:cal-text-theme-200">
         {{ locale?.confirmationForm?.confirmBooking }}
       </h1>
-      <h2 class="dark:cal-text-theme-300 cal-text-theme-600 cal-text-[32px] cal-mt-[15px] cal-font-semibold">
+      <h2 class="cal-mt-[15px] cal-text-[32px] cal-font-semibold cal-text-theme-600 dark:cal-text-theme-300">
         {{ getFormattedDay(selectedEvent.start) }}
         {{ getFormattedDayInMonth(selectedEvent.start) }}
       </h2>
-      <h3 class="cal-text-theme-400 dark:cal-text-theme-400 cal-font-semibold cal-leading-[48px] cal-text-[32px]">
+      <h3 class="cal-text-[32px] cal-font-semibold cal-leading-[48px] cal-text-theme-400 dark:cal-text-theme-400">
         {{ getFormattedTime(selectedEvent.start) }} -
         {{ getFormattedTime(selectedEvent.end) }}
       </h3>
 
-      <div class="cal-max-w-[370px] cal-mt-6">
+      <div class="cal-mt-6 cal-max-w-[370px]">
         <label
           for="email"
-          class="cal-block cal-text-sm cal-font-medium dark:cal-text-theme-200 cal-text-theme-700"
+          class="cal-block cal-text-sm cal-font-medium cal-text-theme-700 dark:cal-text-theme-200"
           >{{ locale?.confirmationForm?.name?.label }}</label
         >
         <div class="cal-mt-2">
@@ -34,16 +34,16 @@
             type="text"
             autocomplete="name"
             name="name"
-            class="cal-bg-theme-50 dark:cal-bg-theme-150 cal-text-base cal-font-medium dark:cal-text-theme-100 cal-text-theme-900 cal-border-2 cal-py-3.5 cal-px-5 dark:cal-placeholder-theme-800 cal-placeholder-theme-300 dark:cal-border-theme-800 cal-border-theme-300 focus:cal-ring-theme-500 focus:cal-border-theme-500 focus:cal-outline-none cal-block cal-w-full sm:cal-text-sm cal-rounded-md"
+            class="dark:cal-bg-theme-150 cal-block cal-w-full cal-rounded-md cal-border-2 cal-border-theme-300 cal-bg-theme-50 cal-px-5 cal-py-3.5 cal-text-base cal-font-medium cal-text-theme-900 cal-placeholder-theme-300 focus:cal-border-theme-500 focus:cal-outline-none focus:cal-ring-theme-500 dark:cal-border-theme-800 dark:cal-text-theme-100 dark:cal-placeholder-theme-800 sm:cal-text-sm"
             :placeholder="locale?.confirmationForm?.name?.placeholder"
           />
         </div>
       </div>
 
-      <div class="cal-max-w-[370px] cal-mt-6">
+      <div class="cal-mt-6 cal-max-w-[370px]">
         <label
           for="email"
-          class="cal-block cal-text-sm cal-font-medium dark:cal-text-theme-200 cal-text-theme-700"
+          class="cal-block cal-text-sm cal-font-medium cal-text-theme-700 dark:cal-text-theme-200"
         >
           {{ locale?.confirmationForm?.email?.label }}</label
         >
@@ -54,7 +54,7 @@
             type="email"
             name="email"
             autocomplete="email"
-            class="cal-bg-theme-50 dark:cal-bg-theme-150 cal-text-base cal-font-medium dark:cal-text-theme-100 cal-text-theme-900 cal-border-2 cal-py-3.5 cal-px-5 dark:cal-placeholder-theme-800 cal-placeholder-theme-300 dark:cal-border-theme-800 cal-border-theme-300 focus:cal-ring-theme-500 focus:cal-border-theme-500 focus:cal-outline-none cal-block cal-w-full sm:cal-text-sm cal-rounded-md"
+            class="dark:cal-bg-theme-150 cal-block cal-w-full cal-rounded-md cal-border-2 cal-border-theme-300 cal-bg-theme-50 cal-px-5 cal-py-3.5 cal-text-base cal-font-medium cal-text-theme-900 cal-placeholder-theme-300 focus:cal-border-theme-500 focus:cal-outline-none focus:cal-ring-theme-500 dark:cal-border-theme-800 dark:cal-text-theme-100 dark:cal-placeholder-theme-800 sm:cal-text-sm"
             :placeholder="locale?.confirmationForm?.email?.placeholder"
           />
         </div>
@@ -62,11 +62,11 @@
 
       <div
         v-if="selectedEvent.seats > 1"
-        class="cal-max-w-[370px] cal-mt-6"
+        class="cal-mt-6 cal-max-w-[370px]"
       >
         <label
           for="email"
-          class="cal-block cal-text-sm cal-font-medium dark:cal-text-theme-200 cal-text-theme-700"
+          class="cal-block cal-text-sm cal-font-medium cal-text-theme-700 dark:cal-text-theme-200"
         >
           {{ locale?.confirmationForm?.seats?.label }}</label
         >
@@ -78,13 +78,13 @@
             :max="selectedEvent.seats"
             name="seats"
             autocomplete="off"
-            class="cal-bg-theme-50 dark:cal-bg-theme-150 cal-text-base cal-font-medium cal-text-theme-100 cal-border-2 cal-py-3.5 cal-px-5 cal-placeholder-theme-800 cal-border-theme-800 focus:cal-ring-theme-500 focus:cal-border-theme-500 focus:cal-outline-none cal-block cal-w-full sm:cal-text-sm cal-rounded-md"
+            class="dark:cal-bg-theme-150 cal-block cal-w-full cal-rounded-md cal-border-2 cal-border-theme-800 cal-bg-theme-50 cal-px-5 cal-py-3.5 cal-text-base cal-font-medium cal-text-theme-100 cal-placeholder-theme-800 focus:cal-border-theme-500 focus:cal-outline-none focus:cal-ring-theme-500 sm:cal-text-sm"
             :placeholder="locale?.confirmationForm?.seats?.placeholder"
           />
         </div>
       </div>
 
-      <div class="cal-flex cal-justify-between cal-mt-[32px]">
+      <div class="cal-mt-[32px] cal-flex cal-justify-between">
         <SecondaryButton @click="$emit('goBack')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>

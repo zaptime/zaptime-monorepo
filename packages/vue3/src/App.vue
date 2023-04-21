@@ -73,21 +73,21 @@ const borderRadius = computed(() => {
 
 <style>
 #zaptime-calendar {
-  --c-zaptime-25: v-bind(config?.theme?.colors?.[ '25']);
-  --c-zaptime-50: v-bind(config?.theme?.colors?.[ '50']);
-  --c-zaptime-100: v-bind(config?.theme?.colors?.[ '100']);
-  --c-zaptime-200: v-bind(config?.theme?.colors?.[ '200']);
-  --c-zaptime-300: v-bind(config?.theme?.colors?.[ '300']);
-  --c-zaptime-400: v-bind(config?.theme?.colors?.[ '400']);
-  --c-zaptime-500: v-bind(config?.theme?.colors?.[ '500']);
-  --c-zaptime-600: v-bind(config?.theme?.colors?.[ '600']);
-  --c-zaptime-700: v-bind(config?.theme?.colors?.[ '700']);
-  --c-zaptime-800: v-bind(config?.theme?.colors?.[ '800']);
-  --c-zaptime-900: v-bind(config?.theme?.colors?.[ '900']);
+  --c-zaptime-25: v-bind(config?.theme?.colors?.[ '25'] || '#FCFCFD');
+  --c-zaptime-50: v-bind(config?.theme?.colors?.[ '50'] || '#F9FAFB');
+  --c-zaptime-100: v-bind(config?.theme?.colors?.[ '100'] || '#F3F4F6');
+  --c-zaptime-200: v-bind(config?.theme?.colors?.[ '200'] || '#E5E7EB');
+  --c-zaptime-300: v-bind(config?.theme?.colors?.[ '300'] || '#D2D6DB');
+  --c-zaptime-400: v-bind(config?.theme?.colors?.[ '400'] || '#9DA4AE');
+  --c-zaptime-500: v-bind(config?.theme?.colors?.[ '500'] || '#6C737F');
+  --c-zaptime-600: v-bind(config?.theme?.colors?.[ '600'] || '#4D5761');
+  --c-zaptime-700: v-bind(config?.theme?.colors?.[ '700'] || '#384250');
+  --c-zaptime-800: v-bind(config?.theme?.colors?.[ '800'] || '#1F2A37');
+  --c-zaptime-900: v-bind(config?.theme?.colors?.[ '900'] || '#111927');
 
-  --c-zaptime-accent--1: v-bind(config?.theme?.colors?.[ 'accent--1']);
-  --c-zaptime-accent-0: v-bind(config?.theme?.colors?.[ 'accent-0']);
-  --c-zaptime-accent-1: v-bind(config?.theme?.colors?.[ 'accent-1']);
+  --c-zaptime-accent--1: v-bind(config?.theme?.colors?.[ 'accent--1'] || '#2ED3B7');
+  --c-zaptime-accent-0: v-bind(config?.theme?.colors?.[ 'accent-0'] || '#15B79E');
+  --c-zaptime-accent-1: v-bind(config?.theme?.colors?.[ 'accent-1'] || '#0E9384');
 
   --radius-zaptime: v-bind(borderRadius);
 }

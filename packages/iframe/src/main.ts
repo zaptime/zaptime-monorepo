@@ -1,12 +1,6 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import {
-  IZapTimeConfig,
-  book as bookZaptime,
-  reserve as reserveZaptime,
-  confirm as confirmZaptime,
-  cancel as cancelZaptime,
-} from "@zaptime/vue3";
+import { createApp } from 'vue';
+import App from './App.vue';
+import { IZapTimeConfig, book as bookZaptime, reserve as reserveZaptime, confirm as confirmZaptime, cancel as cancelZaptime } from '@zaptime/vue3';
 
 interface BookAndReservePayload {
   email: string;
@@ -46,4 +40,4 @@ window.ZaptimeProxy = {
   },
 };
 
-createApp(App).mount("#app");
+createApp(App).mount('#app');

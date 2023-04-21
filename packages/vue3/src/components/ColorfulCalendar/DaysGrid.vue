@@ -6,20 +6,20 @@
     <div
       v-for="(day, i) in state.days"
       :key="i"
-      class="cal-flex mt-2 cal-justify-center"
+      class="mt-2 cal-flex cal-justify-center"
     >
       <div class="cal-flex cal-items-center cal-justify-center">
         <button
           :disabled="!dayHasEvent(day) || (day.isPast && !day.isCurrentMonth)"
           :class="{
-            'focus:cal-outline-none dark:cal-text-theme-100 dark:hover:cal-text-theme-300 dark:cal-bg-theme-600 cal-bg-theme-200 focus:cal-ring-2 cal-ring-theme-200':
+            'cal-bg-theme-200 cal-ring-theme-200 focus:cal-outline-none focus:cal-ring-2 dark:cal-bg-theme-600 dark:cal-text-theme-100 dark:hover:cal-text-theme-300':
               dayHasEvent(day) && !day.isPast && !isSelectedDay(day),
-            'dark:cal-text-theme-400 cal-cursor-not-allowed': (day.isPast && !day.isCurrentMonth) || (!dayHasEvent(day) && day.isCurrentMonth),
-            'dark:cal-text-theme-700 dark:hover:cal-text-theme-600 dark:cal-bg-theme-25 cal-bg-theme-500 cal-text-theme-50 cal-font-semibold': isSelectedDay(day),
+            'cal-cursor-not-allowed dark:cal-text-theme-400': (day.isPast && !day.isCurrentMonth) || (!dayHasEvent(day) && day.isCurrentMonth),
+            'cal-bg-theme-500 cal-font-semibold cal-text-theme-50 dark:cal-bg-theme-25 dark:cal-text-theme-700 dark:hover:cal-text-theme-600': isSelectedDay(day),
             'cal-transition-color cal-duration-100 dark:cal-text-theme-100': !isSelectedDay(day) && dayHasEvent(day) && !day.isPast,
-            'dark:cal-text-theme-400 cal-text-theme-400 cal-pointer-events-none': day.isPast,
+            'cal-pointer-events-none cal-text-theme-400 dark:cal-text-theme-400': day.isPast,
           }"
-          class="cal-w-10 cal-h-10 cal-text-sm cal-rounded-md"
+          class="cal-h-10 cal-w-10 cal-rounded-md cal-text-sm"
           @click.prevent="dayClickedLocalProxy(day)"
         >
           {{ day.label }}

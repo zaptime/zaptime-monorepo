@@ -1,7 +1,7 @@
 <template>
   <label
     for="email"
-    class="cal-block cal-text-sm cal-font-medium dark:cal-text-theme-200 cal-text-gray-500"
+    class="cal-block cal-text-sm cal-font-medium cal-text-gray-500 dark:cal-text-theme-200"
   >
     {{ label }}
   </label>
@@ -12,7 +12,7 @@
       :type="type"
       :name="name"
       :autocomplete="autocomplete"
-      class="cal-bg-gray-50 dark:cal-bg-theme-150 cal-text-base cal-font-medium dark:cal-text-theme-100 cal-text-theme-900 cal-border-2 cal-py-3.5 cal-px-5 dark:cal-placeholder-theme-800 cal-placeholder-gray-400 dark:cal-border-theme-800 cal-border-gray-300 focus:cal-ring-theme-500 focus:cal-border-gray-400 focus:cal-outline-none cal-block cal-w-full sm:cal-text-sm cal-rounded-md"
+      class="cal-block cal-w-full cal-rounded-md cal-border cal-border-gray-300 cal-bg-gray-50 cal-px-5 cal-py-3.5 cal-text-base cal-font-medium cal-text-theme-900 cal-placeholder-gray-400 focus:cal-border-gray-400 focus:cal-outline-none focus:cal-ring-theme-500 dark:cal-border-theme-600 dark:cal-bg-theme-800 dark:cal-text-theme-100 dark:cal-placeholder-theme-500 sm:cal-text-sm"
       :placeholder="placeholder"
       @change="onChange"
     />
