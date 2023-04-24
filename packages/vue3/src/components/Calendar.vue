@@ -60,9 +60,9 @@
             <DaysGrid />
           </div>
 
-          <div class="cal-flex cal-items-center cal-justify-center">
+          <!-- <div class="cal-flex cal-items-center cal-justify-center">
             <Loader v-if="state.loading" />
-          </div>
+          </div> -->
         </div>
         <div
           class="cal-border-l cal-border-theme-200 dark:cal-border-theme-700"
