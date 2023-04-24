@@ -29,9 +29,18 @@ import { IZapTimeConfig } from '../dist/types/src/entry';
 const calypsoTheme: IZapTimeTheme = {
   mode: 'dark',
   colors: {
-    'accent--1': '#2ED3B7',
-    'accent-0': '#15B79E',
-    'accent-1': '#0E9384',
+    'accent--1': '#9e7700',
+    'accent-0': '#ffc000',
+    'accent-1': '#ffcc31',
+    // 100: '#CBCBCD',
+    // 200: '#828488',
+    // 300: '#575B62',
+    // 400: '#494D55',
+    // 500: '#3C4048',
+    // 600: '#32363E',
+    // 700: '#272A30',
+    // 800: '#272A30',
+    // 900: '#13171E',
   },
 };
 
@@ -45,13 +54,13 @@ const config: IZapTimeConfig = {
   // max: 1,
   // externalBooking: false,
   // compact: true,
-  profileImage: 'https://images.pexels.com/photos/718978/pexels-photo-718978.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+  profileImage: 'https://media.licdn.com/dms/image/D4E03AQE3gawFsTv2rA/profile-displayphoto-shrink_800_800/0/1674467277976?e=1687996800&v=beta&t=cuvWY8CocEGn1fFSpncV6PE5aZBRWoPaXXL_atHYf34',
 
   locale: {
     preset: 'en',
     startDayOfWeek: 'sun',
     texts: {
-      introduction: 'Meet with Jessica Jones',
+      introduction: 'Book a Topol walktrough',
     },
     confirmationForm: {
       confirmBooking: 'Confirm booking',

@@ -4,12 +4,12 @@
       <div class="cal-flex cal-items-center cal-justify-center">
         <button
           :class="{
-            'cal-text-white cal-bg-black cal-cursor-pointer cal-font-bold cal-focus:ring cal-focus:ring-gray-700': dayHasEvent(
+            'cal-text-white cal-bg-black cal-cursor-pointer cal-font-bold cal-focus:ring cal-focus:ring-theme-700': dayHasEvent(
               day
             ),
           }"
           :disabled="!dayHasEvent(day)"
-          class="cal-w-8 cal-h-8 cal-text-gray-800 cal-text-xs cal-font-light cal-capitalize cal-rounded-full"
+          class="cal-w-8 cal-h-8 cal-text-theme-800 cal-text-xs cal-font-light cal-capitalize cal-rounded-full"
           @click="dayClicked(day)"
         >
           {{ day.label }}
@@ -25,7 +25,7 @@
         <div class="cal-mr-3 cal-space-x-1">
           <button @click="movePrev">
             <svg
-              class="cal-w-4 cal-h-4 cal-text-gray-900"
+              class="cal-w-4 cal-h-4 cal-text-theme-900"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -41,7 +41,7 @@
           </button>
           <button @click="moveNext">
             <svg
-              class="cal-w-4 cal-h-4 cal-text-gray-900"
+              class="cal-w-4 cal-h-4 cal-text-theme-900"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -64,7 +64,7 @@
         <div v-if="events.length > 0">
           <div class="cal-px-4 cal-pt-4">
             <p
-              class="cal-font-serif cal-leading-4 cal-tracking-tighter cal-text-center cal-text-gray-900"
+              class="cal-font-serif cal-leading-4 cal-tracking-tighter cal-text-center cal-text-theme-900"
             >
               {{ getFormattedDay(events[0].start) }},
               {{ getFormattedDayInMonth(events[0].start) }}
@@ -74,8 +74,8 @@
           <div class="cal-h-56 cal-px-6 cal-mt-2 cal-overflow-y-scroll">
             <button
               @click="selectEvent(event)"
-              class="cal-relative cal-flex cal-justify-center cal-w-full cal-py-1 cal-my-2 cal-font-normal cal-text-gray-900 cal-border cal-border-gray-400 cal-cursor-pointer focus:cal-ring-1 focus:cal-ring-gray-900 focus:cal-outline-none cal-group"
-              :class="{ 'cal-bg-gray-900': isSelected(event) }"
+              class="cal-relative cal-flex cal-justify-center cal-w-full cal-py-1 cal-my-2 cal-font-normal cal-text-theme-900 cal-border cal-border-theme-400 cal-cursor-pointer focus:cal-ring-1 focus:cal-ring-theme-900 focus:cal-outline-none cal-group"
+              :class="{ 'cal-bg-theme-900': isSelected(event) }"
               v-for="(event, i) in events"
               :key="i"
             >

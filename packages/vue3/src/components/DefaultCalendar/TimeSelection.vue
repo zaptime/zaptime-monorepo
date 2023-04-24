@@ -10,44 +10,53 @@
     >
       {{ config.locale?.confirmationForm?.buttons?.goBack }}
     </PrimaryButton>
-    <div v-if="!state.loading">
-      <div v-if="state.events && state.events.length > 0 && !state.loading">
-        <div :class="[config.locale?.texts?.introduction || config.profileImage ? 'cal-pt-[54px]' : '']">
-          <p class="cal-text-2xl cal-font-semibold cal-tracking-tighter cal-text-gray-600 dark:cal-text-theme-300">
-            {{ getFormattedDay(state.events[0].start) }},
-            {{ getFormattedDayInMonth(state.events[0].start) }}
-          </p>
-        </div>
-        <div class="cal-pb-0.5 cal-pt-6">
-          <p
-            v-if="config.locale && config.locale.texts?.choosePreferredTime"
-            class="cal-text-base cal-font-medium cal-tracking-tighter cal-text-gray-600 dark:cal-text-theme-200"
-          >
-            {{ config.locale.texts?.choosePreferredTime }}
-          </p>
-        </div>
-
-        <Switch
-          v-model="hourCycleSwitchValue"
-          class="cal-py-3"
-        >
-          <template #before> am/pm </template>
-          <template #after> 24h </template>
-        </Switch>
-
-        <TimeZonePicker class="cal-px-1"></TimeZonePicker>
-
-        <div class="cal-mt-2 cal-h-40 cal-overflow-y-auto cal-px-1">
-          <div
-            v-for="(event, i) in state.events"
-            :key="i"
-            class="w-full"
-          >
-            <ConfirmationButton
-              :event="event"
-              @select-event="select(event)"
-            ></ConfirmationButton>
+    <div
+      v-if="!state.loading"
+      class="cal-h-full"
+    >
+      <div
+        v-if="state.events && state.events.length > 0 && !state.loading"
+        class="cal-flex cal-h-full cal-flex-col cal-justify-between"
+      >
+        <div>
+          <div :class="[config.locale?.texts?.introduction || config.profileImage ? 'cal-pt-[54px]' : '']">
+            <p class="cal-text-2xl cal-font-semibold cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-300">
+              {{ getFormattedDay(state.events[0].start) }},
+              {{ getFormattedDayInMonth(state.events[0].start) }}
+            </p>
           </div>
+          <div class="cal-pb-0.5 cal-pt-6">
+            <p
+              v-if="config.locale && config.locale.texts?.choosePreferredTime"
+              class="cal-text-base cal-font-medium cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-200"
+            >
+              {{ config.locale.texts?.choosePreferredTime }}
+            </p>
+          </div>
+
+          <div class="cal-mt-2 cal-h-40 cal-overflow-y-auto cal-px-1">
+            <div
+              v-for="(event, i) in state.events"
+              :key="i"
+              class="w-full"
+            >
+              <ConfirmationButton
+                :event="event"
+                @select-event="select(event)"
+              ></ConfirmationButton>
+            </div>
+          </div>
+        </div>
+
+        <div class="cal-flex cal-items-center cal-space-x-2 cal-pb-4">
+          <TimeZonePicker class="cal-px-1"></TimeZonePicker>
+          <Switch
+            v-model="hourCycleSwitchValue"
+            class="cal-py-3"
+          >
+            <template #before> am/pm </template>
+            <template #after> 24h </template>
+          </Switch>
         </div>
       </div>
       <div
@@ -62,7 +71,7 @@
             <div class="dark:cal-text-themered-50 cal-flex cal-h-40 cal-w-40 cal-items-center cal-justify-center cal-rounded-2xl cal-px-5">
               <p
                 v-if="config.locale && config.locale.texts?.noEventAvailable"
-                class="dark:cal-text-theme-gray cal-text-center"
+                class="dark:cal-text-theme-theme cal-text-center"
                 v-html="config.locale.texts?.noEventAvailable"
               ></p>
             </div>

@@ -10,14 +10,14 @@
       :class="[selectedEvent.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']"
       @submit.prevent="onSubmit"
     >
-      <h1 class="cal-text-2xl cal-font-medium cal-text-gray-500 dark:cal-text-theme-500">
+      <h1 class="cal-text-2xl cal-font-medium cal-text-theme-500 dark:cal-text-theme-500">
         {{ locale?.confirmationForm?.confirmBooking }}
       </h1>
-      <h2 class="cal-mt-[24px] cal-text-2xl cal-font-semibold cal-text-gray-700 dark:cal-text-theme-100">
+      <h2 class="cal-mt-[24px] cal-text-2xl cal-font-semibold cal-text-theme-700 dark:cal-text-theme-100">
         {{ getFormattedDay(selectedEvent.start) }}
         {{ getFormattedDayInMonth(selectedEvent.start) }}
       </h2>
-      <h3 class="cal-text-[24px] cal-font-semibold cal-leading-[36px] cal-text-gray-500 dark:cal-text-theme-300">
+      <h3 class="cal-text-[24px] cal-font-semibold cal-leading-[36px] cal-text-theme-500 dark:cal-text-theme-300">
         {{ getFormattedTime(selectedEvent.start) }} -
         {{ getFormattedTime(selectedEvent.end) }}
       </h3>

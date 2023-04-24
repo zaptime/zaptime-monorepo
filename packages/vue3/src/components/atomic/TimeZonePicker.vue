@@ -6,29 +6,32 @@
           class="cal-relative cal-w-full cal-cursor-default cal-overflow-hidden cal-rounded-md cal-bg-white cal-text-left focus:cal-outline-none focus:cal-ring-accent-0 focus-visible:cal-ring-2 focus-visible:cal-ring-accent-0 focus-visible:cal-ring-opacity-75 focus-visible:cal-ring-offset-2 focus-visible:cal-ring-offset-teal-300 dark:cal-bg-theme-700 sm:cal-text-sm"
         >
           <ComboboxInput
-            class="cal-w-full cal-border-none cal-bg-theme-100 cal-py-2 cal-pl-3 cal-pr-10 cal-text-sm cal-leading-5 cal-text-gray-900 focus:cal-outline-none focus:cal-ring-0 dark:cal-bg-theme-800 dark:cal-text-theme-100"
-            :displayValue="(timezone: any) => timezone.text"
+            id="zaptime-timezone-picker"
+            ref="selectText"
+            class="cal-w-full cal-border-none cal-bg-theme-100 cal-py-2 cal-pl-3 cal-pr-10 cal-text-sm cal-leading-5 cal-text-theme-900 focus:cal-outline-none focus:cal-ring-0 dark:cal-bg-theme-800 dark:cal-text-theme-100"
+            :displayValue="(t: any) => getSpeficicRegion(t)"
             @change="query = $event.target.value"
+            @focus="selectAllText"
           />
           <ComboboxButton class="cal-absolute cal-inset-y-0 cal-right-0 cal-flex cal-items-center cal-pr-2">
             <ChevronUpDownIcon
-              class="cal-h-5 cal-w-5 cal-text-gray-400"
+              class="cal-h-5 cal-w-5 cal-text-theme-400"
               aria-hidden="true"
             />
           </ComboboxButton>
         </div>
         <TransitionRoot
           leave="cal-transition cal-ease-in cal-duration-100"
-          leaveFrom="cal-opacity-100"
-          leaveTo="cal-opacity-0"
+          leaveFrom="cal-opacity-100 "
+          leaveTo="cal-opacity-0 "
           @after-leave="query = ''"
         >
           <ComboboxOptions
-            class="cal-absolute cal-mt-1 cal-max-h-60 cal-w-full cal-overflow-auto cal-rounded-md cal-bg-white cal-py-1 cal-pl-0 cal-text-base cal-shadow-lg cal-ring-1 cal-ring-black cal-ring-opacity-5 focus:cal-outline-none dark:cal-bg-theme-700 sm:cal-text-sm"
+            class="cal-absolute -cal-top-3 cal-mt-1 cal-max-h-60 cal-w-[300px] -cal-translate-y-full cal-overflow-auto cal-rounded-md cal-bg-white cal-py-1 cal-pl-0 cal-text-base cal-shadow-lg cal-ring-1 cal-ring-black cal-ring-opacity-5 focus:cal-outline-none dark:cal-bg-theme-700 sm:cal-text-sm"
           >
             <div
               v-if="timezones.length === 0 && query !== ''"
-              class="cal-relative cal-cursor-default cal-select-none cal-px-4 cal-py-2 cal-text-gray-700 dark:cal-text-theme-100"
+              class="cal-relative cal-cursor-default cal-select-none cal-px-4 cal-py-2 cal-text-theme-700 dark:cal-text-theme-100"
             >
               Nothing found.
             </div>
@@ -53,7 +56,7 @@
                     class="cal-block cal-truncate"
                     :class="{ 'cal-font-medium': selected, 'cal-font-normal': !selected }"
                   >
-                    {{ timezone.text }}
+                    {{ timezone.value }}
                   </span>
                   <!-- <span
                     v-if="selected"
@@ -82,13 +85,14 @@ import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
 import timzonesJson from '../../timezones.json';
 import { useCurrentTimezone, useCalendar } from '@zaptime/core';
 
-const { timezone, setTimezone } = useCurrentTimezone();
+const { timezone, setTimezone, clientOriginalTimezone } = useCurrentTimezone();
 const { getDays } = useCalendar(inject('calendarId'));
 
 type TimeZone = typeof timzonesJson;
 const timezones: TimeZone = timzonesJson;
 
 const query = ref('');
+const selectText = ref();
 
 const selectedTimezone = computed({
   get() {
@@ -109,6 +113,21 @@ const selectedTimezone = computed({
     await getDays();
   },
 });
+
+function getSpeficicRegion(tz: TimeZone[0]) {
+  if (tz.utc.includes(clientOriginalTimezone)) {
+    return clientOriginalTimezone;
+  }
+
+  return tz.utc[0];
+}
+
+function selectAllText() {
+  const input = document.querySelector('#zaptime-timezone-picker') as HTMLInputElement;
+  if (input) {
+    input.select();
+  }
+}
 
 const filteredTimezones = computed(() => {
   if (query.value === '') {

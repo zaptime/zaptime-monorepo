@@ -16,9 +16,9 @@ export const useFormatters = (calendarId?: string) => {
     }
 
     if (hourCycle.value === 'h11') {
-      return format(utcToZonedTime(parseISO(date), timezone.value), 'KK:mmaaa', { locale: locale });
+      return format(utcToZonedTime(parseISO(date), timezone.value), 'K:mmaaa', { locale: locale });
     } else {
-      return format(utcToZonedTime(parseISO(date), timezone.value), 'kk:mm', { locale: locale });
+      return format(utcToZonedTime(parseISO(date), timezone.value), 'K:mm', { locale: locale });
     }
   };
 

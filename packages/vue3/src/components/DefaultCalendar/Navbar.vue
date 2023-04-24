@@ -13,14 +13,14 @@
     </div>
     <p
       v-if="config.locale?.texts?.introduction"
-      class="cal-w-full cal-text-center cal-text-2xl cal-font-medium cal-text-gray-600 dark:cal-text-theme-200"
+      class="cal-w-full cal-text-center cal-text-2xl cal-font-medium cal-text-theme-600 dark:cal-text-theme-200"
       :class="[config.profileImage ? '' : 'cal-py-12']"
     >
       {{ config.locale?.texts?.introduction }}
     </p>
   </div>
   <div class="cal-flex cal-justify-between cal-py-4">
-    <p class="cal-ml-3 cal-text-base cal-font-medium cal-text-gray-900 dark:cal-text-theme-200">{{ monthName }} {{ currentYear }}</p>
+    <p class="cal-ml-3 cal-text-base cal-font-medium cal-text-theme-900 dark:cal-text-theme-200">{{ monthName }} {{ currentYear }}</p>
     <div class="cal-mr-1 cal-flex">
       <button
         v-if="!prevDisabled"

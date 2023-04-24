@@ -1,6 +1,6 @@
 <template>
   <div class="cal-flex cal-items-center">
-    <span class="cal-mr-2 cal-text-theme-700 dark:cal-text-theme-200">
+    <span class="cal-mr-1 cal-text-sm cal-text-theme-700 dark:cal-text-theme-200">
       <slot name="before"></slot>
     </span>
     <Switch
@@ -16,7 +16,7 @@
         class="cal-pointer-events-none cal-inline-block cal-h-[20px] cal-w-[20px] cal-transform cal-rounded-full cal-bg-white cal-shadow-lg cal-ring-0 cal-transition cal-duration-200 cal-ease-in-out dark:cal-bg-theme-100"
       />
     </Switch>
-    <span class="cal-ml-2 cal-text-theme-700 dark:cal-text-theme-200">
+    <span class="cal-ml-1 cal-text-sm cal-text-theme-700 dark:cal-text-theme-200">
       <slot name="after"></slot>
     </span>
   </div>

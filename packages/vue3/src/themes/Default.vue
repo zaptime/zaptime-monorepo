@@ -208,7 +208,7 @@
                   <div class="dark:cal-text-themered-50 cal-flex cal-h-40 cal-w-40 cal-items-center cal-justify-center cal-rounded-2xl cal-px-5">
                     <p
                       v-if="config.locale && config.locale.texts?.noEventAvailable"
-                      class="dark:cal-text-theme-gray cal-text-center"
+                      class="dark:cal-text-theme-theme cal-text-center"
                       v-html="config.locale.texts?.noEventAvailable"
                     ></p>
                   </div>
