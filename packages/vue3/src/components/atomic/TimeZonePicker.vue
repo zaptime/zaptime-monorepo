@@ -23,11 +23,14 @@
         <TransitionRoot
           leave="cal-transition cal-ease-in cal-duration-100"
           leaveFrom="cal-opacity-100 "
-          leaveTo="cal-opacity-0 "
+          leaveTo="cal-opacity-0"
+          enter="cal-transition-all cal-duration-300 cal-ease-out"
+          enter-from="cal-opacity-0 -cal-translate-y-[30px]"
+          enter-to="cal-opacity-100 -cal-translate-y-[37px]"
           @after-leave="query = ''"
         >
           <ComboboxOptions
-            class="cal-absolute -cal-top-3 cal-mt-1 cal-max-h-60 cal-w-[300px] -cal-translate-y-full cal-overflow-auto cal-rounded-md cal-bg-white cal-py-1 cal-pl-0 cal-text-base cal-shadow-lg cal-ring-1 cal-ring-black cal-ring-opacity-5 focus:cal-outline-none dark:cal-bg-theme-700 sm:cal-text-sm"
+            class="cal-absolute -cal-top-3 cal-mt-1 cal-max-h-60 cal-w-[300px] -cal-translate-y-full cal-overflow-auto cal-rounded-md cal-bg-white cal-py-1 cal-pl-0 cal-text-base cal-shadow-lg cal-ring-1 cal-ring-black cal-ring-opacity-5 focus:cal-outline-none dark:cal-bg-theme-800 sm:cal-text-sm"
           >
             <div
               v-if="timezones.length === 0 && query !== ''"
