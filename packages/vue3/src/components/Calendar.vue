@@ -12,7 +12,7 @@
         <div
           v-if="config.compact === undefined || calendarView === 'pickingDate'"
           :key="calendarView"
-          class="cal-h-full cal-w-full cal-rounded-l-xl cal-bg-theme-50 cal-px-3 sm:cal-px-[48px]"
+          class="cal-h-full cal-w-full cal-rounded-l-xl cal-bg-theme-50 cal-px-3 dark:cal-bg-theme-900 sm:cal-px-[48px]"
           :class="[config.compact ? 'cal-rounded-r-xl' : '']"
           :style="{ backgroundColor: color }"
         >
@@ -73,11 +73,16 @@
       </div>
     </div>
 
-    <ConfirmForm
-      v-if="view === 'form'"
-      @go-back="() => setView('calendar')"
-      @booking-confirmed="() => setView('success')"
-    />
+    <Transition
+      name="slide-fade"
+      mode="out-in"
+    >
+      <ConfirmForm
+        v-if="view === 'form'"
+        @go-back="() => setView('calendar')"
+        @booking-confirmed="() => setView('success')"
+      />
+    </Transition>
 
     <SuccessMessage v-if="view === 'success'"></SuccessMessage>
   </div>
@@ -118,3 +123,23 @@ const { config } = useConfig(inject('calendarId'));
 const color = inject<string>('color');
 const color2 = inject<string>('color2');
 </script>
+
+<style>
+/*
+  Enter and leave animations can use different
+  durations and timing functions.
+*/
+.slide-fade-enter-active {
+  transition: all 150ms ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
+</style>

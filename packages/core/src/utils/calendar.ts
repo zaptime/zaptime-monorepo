@@ -4,14 +4,15 @@ import IZapTimeConfig from '../types/IZapTimeConfig';
 import IDfnsConf from '../types/IDfnsConf';
 
 import { format, getDaysInMonth, startOfMonth, subMonths, lastDayOfMonth, subDays, endOfMonth, addDays, isPast, isToday, isThisMonth } from 'date-fns';
+import { format as formatTz, utcToZonedTime } from 'date-fns-tz';
 
 import { getEvents } from '../api/api';
 import { getStartOfTheWeekIndex } from '../utils/localeLogic';
 
-export const getEventsForDay = (date: Date, events: IEvent[]): IEvent[] | undefined => {
+export const getEventsForDay = (date: Date, events: IEvent[], timeZone: string): IEvent[] | undefined => {
   const collectedEvents: IEvent[] = [];
   for (const event of events) {
-    if (format(date, 'd') === format(new Date(event.start), 'd')) {
+    if (formatTz(utcToZonedTime(date, timeZone), 'd', { timeZone: timeZone }) === formatTz(utcToZonedTime(new Date(event.start), timeZone), 'd', { timeZone: timeZone })) {
       collectedEvents.push(event);
     }
   }
@@ -23,7 +24,7 @@ export const getEventsForDay = (date: Date, events: IEvent[]): IEvent[] | undefi
   return undefined;
 };
 
-export const getDays = async (date: Date, dfnsConfig: IDfnsConf, zapTimeConfig: IZapTimeConfig): Promise<{ days: IDay[]; hasAnyEvent: boolean }> => {
+export const getDays = async (date: Date, dfnsConfig: IDfnsConf, zapTimeConfig: IZapTimeConfig, timezone: string): Promise<{ days: IDay[]; hasAnyEvent: boolean }> => {
   const dayCountInMonth = getDaysInMonth(date);
   const startDateOfTheMonth = startOfMonth(date);
   let hasAnyEvent = false;
@@ -59,7 +60,7 @@ export const getDays = async (date: Date, dfnsConfig: IDfnsConf, zapTimeConfig: 
       isPast: isPast(iteratedDate) && !isToday(iteratedDate),
       isCurrentMonth: true,
       isToday: isToday(iteratedDate),
-      events: getEventsForDay(iteratedDate, events),
+      events: getEventsForDay(iteratedDate, events, timezone),
     });
   }
 

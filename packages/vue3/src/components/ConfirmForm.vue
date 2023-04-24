@@ -97,6 +97,7 @@ const { selectedEvent } = useSelectedEvent(inject('calendarId'));
 const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useFormatters(inject('calendarId'));
 const { config } = useConfig(inject('calendarId'));
 const color2 = inject<string>('color2');
+const calendarId = inject<string>('calendarId');
 
 const email = ref('');
 const name = ref('');
@@ -136,7 +137,7 @@ const onSubmit = async () => {
   disabled.value = true;
 
   const { firstName, lastName } = splitName(name.value);
-  await book(email.value, firstName, lastName, seats.value);
+  await book(email.value, firstName, lastName, seats.value, calendarId);
   emits('booking-confirmed');
 
   disabled.value = false;

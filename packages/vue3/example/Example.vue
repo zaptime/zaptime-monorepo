@@ -45,13 +45,13 @@ const config: IZapTimeConfig = {
   // max: 1,
   // externalBooking: false,
   // compact: true,
-  profileImage: 'https://images.pexels.com/photos/1933873/pexels-photo-1933873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+  profileImage: 'https://images.pexels.com/photos/718978/pexels-photo-718978.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
 
   locale: {
     preset: 'en',
     startDayOfWeek: 'sun',
     texts: {
-      introduction: 'Hello mother fucker',
+      introduction: 'Meet with Jessica Jones',
     },
     confirmationForm: {
       confirmBooking: 'Confirm booking',

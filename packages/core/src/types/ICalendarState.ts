@@ -7,7 +7,6 @@ export default interface ICalendarState {
   date: Date;
   days: IDay[];
   events: IEvent[];
-  eventsLoading: boolean;
   monthHasEvents: boolean;
   selectedDay: IDay | null;
   loading: boolean;

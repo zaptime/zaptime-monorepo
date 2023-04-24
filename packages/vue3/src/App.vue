@@ -10,10 +10,10 @@
 </template>
 
 <script setup lang="ts">
-import { provide, watch, computed } from 'vue';
+import { provide, watch, computed, onMounted } from 'vue';
 
 import Calendar from './components/Calendar.vue';
-import { useConfig, useSelectedEvent } from '@zaptime/core';
+import { useConfig, useCalendar, useSelectedEvent } from '@zaptime/core';
 import defaultConfig from './defaultConfig';
 import useCompactSwticher from './composables/useCompactSwitcher';
 import useAlphaColors from './composables/useAlphaColors';
@@ -49,6 +49,8 @@ provide('color2', color2);
 // Automatically switches to compact on mobile
 useCompactSwticher(props.calendarId);
 
+const { init: initCalendar } = useCalendar(props.calendarId);
+
 watch(selectedEvent, (newV) => {
   emit('event-changed', newV);
 });
@@ -68,6 +70,10 @@ const borderRadius = computed(() => {
   }
 
   return '24px';
+});
+
+onMounted(async () => {
+  await initCalendar();
 });
 </script>
 

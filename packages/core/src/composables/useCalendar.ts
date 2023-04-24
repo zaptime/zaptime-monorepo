@@ -1,4 +1,4 @@
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 
 import { addMonths, format, isPast, isFuture, differenceInCalendarMonths } from 'date-fns';
 
@@ -12,6 +12,7 @@ import IDay from '../types/IDay';
 import useSelectedEvent from '../composables/useSelectedEvent';
 
 import useConfig from '../composables/useConfig';
+import useCurrentTimezone from './useCurrentTimezone';
 
 const date = ref(new Date());
 
@@ -22,7 +23,6 @@ const initCalendarState: ICalendarState = {
   days: [],
   events: [],
   monthHasEvents: false,
-  eventsLoading: false,
   selectedDay: null,
   loading: true,
   headers: [],
@@ -43,6 +43,7 @@ export default (calendarId?: string) => {
 
   const { config } = useConfig(calendarId);
   const { selectedEvent, setSelectedEvent } = useSelectedEvent(calendarId);
+  const { timezone } = useCurrentTimezone();
 
   const selectEvent = (event: IEvent) => {
     setSelectedEvent(event);
@@ -67,12 +68,12 @@ export default (calendarId?: string) => {
   };
 
   const getDays = async (): Promise<void> => {
-    setState('eventsLoading', true);
+    setState('loading', true);
+
     if (state.value.dfnsConfig !== undefined && state.value.dfnsConfig !== null) {
-      const { days, hasAnyEvent } = await getDaysExternal(date.value, state.value.dfnsConfig, config.value);
+      const { days, hasAnyEvent } = await getDaysExternal(date.value, state.value.dfnsConfig, config.value, timezone.value);
       setState('monthHasEvents', hasAnyEvent);
       setState('days', days);
-      setState('eventsLoading', false);
       setState('loading', false);
     }
   };
@@ -182,14 +183,16 @@ export default (calendarId?: string) => {
     }
   };
 
-  onMounted(async () => {
+  const init = async () => {
     if (state.value.days.length === 0) {
       await setLocales();
       await getDays();
     }
-  });
+  };
 
   return {
+    getDays,
+    init,
     selectEvent,
     nextDisabled,
     prevDisabled,

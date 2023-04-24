@@ -1,9 +1,12 @@
-import { format, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 import { cs, enUS } from 'date-fns/locale';
-import { useCalendar } from '@zaptime/core';
+import { useCalendar, useCurrentTimezone, useHourCycle } from '@zaptime/core';
+import { format, utcToZonedTime } from 'date-fns-tz';
 
 export const useFormatters = (calendarId?: string) => {
   const { config } = useCalendar(calendarId);
+  const { timezone } = useCurrentTimezone();
+  const { hourCycle } = useHourCycle();
 
   const getFormattedTime = (date: string) => {
     let locale = enUS;
@@ -11,7 +14,12 @@ export const useFormatters = (calendarId?: string) => {
     if (config.value.locale?.preset === 'cs') {
       locale = cs;
     }
-    return format(parseISO(date), 'kk:mm', { locale: locale });
+
+    if (hourCycle.value === 'h11') {
+      return format(utcToZonedTime(parseISO(date), timezone.value), 'KK:mmaaa', { locale: locale });
+    } else {
+      return format(utcToZonedTime(parseISO(date), timezone.value), 'kk:mm', { locale: locale });
+    }
   };
 
   //e.g. Thursday
@@ -21,7 +29,7 @@ export const useFormatters = (calendarId?: string) => {
     if (config.value.locale?.preset === 'cs') {
       locale = cs;
     }
-    return format(parseISO(date), 'EEEE', { locale: locale });
+    return format(utcToZonedTime(parseISO(date), timezone.value), 'EEEE', { locale: locale, timeZone: timezone.value });
   };
 
   //e. g. November 21
@@ -31,7 +39,7 @@ export const useFormatters = (calendarId?: string) => {
     if (config.value.locale?.preset === 'cs') {
       locale = cs;
     }
-    return format(parseISO(date), 'd. MMMM', { locale: locale });
+    return format(utcToZonedTime(parseISO(date), timezone.value), 'd. MMMM', { locale: locale, timeZone: timezone.value });
   };
 
   return {

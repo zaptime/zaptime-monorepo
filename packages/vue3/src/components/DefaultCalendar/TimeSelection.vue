@@ -27,6 +27,16 @@
           </p>
         </div>
 
+        <Switch
+          v-model="hourCycleSwitchValue"
+          class="cal-py-3"
+        >
+          <template #before> am/pm </template>
+          <template #after> 24h </template>
+        </Switch>
+
+        <TimeZonePicker class="cal-px-1"></TimeZonePicker>
+
         <div class="cal-mt-2 cal-h-40 cal-overflow-y-auto cal-px-1">
           <div
             v-for="(event, i) in state.events"
@@ -35,8 +45,7 @@
           >
             <ConfirmationButton
               :event="event"
-              :is-selected="isSelected"
-              @select-event="select"
+              @select-event="select(event)"
             ></ConfirmationButton>
           </div>
         </div>
@@ -93,21 +102,38 @@
 </template>
 
 <script setup lang="ts">
-import { useCalendar, useConfig } from '@zaptime/core';
+import { useCalendar, useConfig, useHourCycle } from '@zaptime/core';
 import { useFormatters } from '../../utils/dateFormatters';
 import useCalendarViewState from '../../composables/useCalendarViewState';
 import PrimaryButton from '../atomic/PrimaryButton.vue';
-import { inject } from 'vue';
+import { inject, computed } from 'vue';
 import { IEvent } from '@zaptime/core';
-import ConfirmationButton from './ConfirmationButton.vue';
+import ConfirmationButton from './TimeConfirmationButton.vue';
+import TimeZonePicker from '../atomic/TimeZonePicker.vue';
+import Switch from '../atomic/Switch.vue';
+
+const { hourCycle } = useHourCycle();
 
 const { setView, setCalendarView } = useCalendarViewState(inject('calendarId'));
 
-const { selectEvent, isSelected, state } = useCalendar(inject('calendarId'));
+const { selectEvent, state } = useCalendar(inject('calendarId'));
 
 const { config } = useConfig(inject('calendarId'));
 
 const { getFormattedDay, getFormattedDayInMonth } = useFormatters(inject('calendarId'));
+
+const hourCycleSwitchValue = computed({
+  get() {
+    return hourCycle.value === 'h23';
+  },
+  set() {
+    if (hourCycle.value === 'h11') {
+      hourCycle.value = 'h23';
+    } else {
+      hourCycle.value = 'h11';
+    }
+  },
+});
 
 const select = (event: IEvent) => {
   selectEvent(event);
