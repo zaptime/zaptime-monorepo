@@ -1,8 +1,11 @@
 <template>
-  <div class="cal-flex cal-items-center">
-    <span class="cal-mr-1 cal-text-sm cal-text-theme-700 dark:cal-text-theme-200">
+  <SwitchGroup
+    as="div"
+    class="cal-flex cal-items-center"
+  >
+    <SwitchLabel class="cal-mr-1 cal-text-xs cal-text-theme-700 dark:cal-text-theme-200">
       <slot name="before"></slot>
-    </span>
+    </SwitchLabel>
     <Switch
       :model-value="modelValue"
       :class="modelValue ? 'cal-bg-theme-200 dark:cal-bg-theme-700' : 'cal-bg-theme-200 dark:cal-bg-theme-700'"
@@ -16,14 +19,14 @@
         class="cal-pointer-events-none cal-inline-block cal-h-[20px] cal-w-[20px] cal-transform cal-rounded-full cal-bg-white cal-shadow-lg cal-ring-0 cal-transition cal-duration-200 cal-ease-in-out dark:cal-bg-theme-100"
       />
     </Switch>
-    <span class="cal-ml-1 cal-text-sm cal-text-theme-700 dark:cal-text-theme-200">
+    <SwitchLabel class="cal-ml-1 cal-text-xs cal-text-theme-700 dark:cal-text-theme-200">
       <slot name="after"></slot>
-    </span>
-  </div>
+    </SwitchLabel>
+  </SwitchGroup>
 </template>
 
 <script setup lang="ts">
-import { Switch } from '@headlessui/vue';
+import { Switch, SwitchLabel, SwitchGroup } from '@headlessui/vue';
 
 defineProps({
   modelValue: {

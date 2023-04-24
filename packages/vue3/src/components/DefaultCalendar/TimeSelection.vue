@@ -14,98 +14,109 @@
       v-if="!state.loading"
       class="cal-h-full"
     >
-      <div
-        v-if="state.events && state.events.length > 0 && !state.loading"
-        class="cal-flex cal-h-full cal-flex-col cal-justify-between"
-      >
-        <div>
-          <div :class="[config.locale?.texts?.introduction || config.profileImage ? 'cal-pt-[54px]' : '']">
-            <p class="cal-text-2xl cal-font-semibold cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-300">
-              {{ getFormattedDay(state.events[0].start) }},
-              {{ getFormattedDayInMonth(state.events[0].start) }}
-            </p>
-          </div>
-          <div class="cal-pb-0.5 cal-pt-6">
-            <p
-              v-if="config.locale && config.locale.texts?.choosePreferredTime"
-              class="cal-text-base cal-font-medium cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-200"
-            >
-              {{ config.locale.texts?.choosePreferredTime }}
-            </p>
-          </div>
-
-          <div class="cal-mt-2 cal-h-40 cal-overflow-y-auto cal-px-1">
-            <div
-              v-for="(event, i) in state.events"
-              :key="i"
-              class="w-full"
-            >
-              <ConfirmationButton
-                :event="event"
-                @select-event="select(event)"
-              ></ConfirmationButton>
-            </div>
-          </div>
-        </div>
-
-        <div class="cal-flex cal-items-center cal-space-x-2 cal-pb-4">
-          <TimeZonePicker class="cal-px-1"></TimeZonePicker>
-          <Switch
-            v-model="hourCycleSwitchValue"
-            class="cal-py-3"
-          >
-            <template #before> am/pm </template>
-            <template #after> 24h </template>
-          </Switch>
-        </div>
-      </div>
-      <div
-        v-else
-        class="cal-w-full"
+      <Transition
+        enter-active-class="cal-duration-100 cal-transition-all cal-ease-out"
+        enter-from-class="cal-opacity-0 cal-translate-y-[4px]"
+        enter-to-class="cal-opacity-100 cal-translate-x-0"
+        leave-active-class="cal-duration-100 cal-ease-out"
+        leave-from-class="cal-opacity-100"
+        leave-to-class="cal-opacity-0 cal-translate-x-[1px]"
+        mode="out-in"
       >
         <div
-          v-if="!state.monthHasEvents"
-          class="cal-flex cal-h-full cal-flex-col cal-items-center cal-justify-center"
+          v-if="state.events && state.events.length > 0 && !state.loading"
+          class="cal-flex cal-h-full cal-flex-col cal-justify-between"
         >
-          <div class="cal-mt-24 cal-flex cal-h-full cal-items-center cal-justify-center">
-            <div class="dark:cal-text-themered-50 cal-flex cal-h-40 cal-w-40 cal-items-center cal-justify-center cal-rounded-2xl cal-px-5">
+          <div>
+            <div :class="[config.locale?.texts?.introduction || config.profileImage ? 'cal-pt-[54px]' : '']">
+              <p class="cal-text-2xl cal-font-semibold cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-300">
+                {{ getFormattedDay(state.events[0].start) }},
+                {{ getFormattedDayInMonth(state.events[0].start) }}
+              </p>
+            </div>
+            <div class="cal-pb-0.5 cal-pt-6">
               <p
-                v-if="config.locale && config.locale.texts?.noEventAvailable"
-                class="dark:cal-text-theme-theme cal-text-center"
-                v-html="config.locale.texts?.noEventAvailable"
-              ></p>
+                v-if="config.locale && config.locale.texts?.choosePreferredTime"
+                class="cal-text-base cal-font-medium cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-200"
+              >
+                {{ config.locale.texts?.choosePreferredTime }}
+              </p>
+            </div>
+
+            <div class="cal-mt-2 cal-h-40 cal-overflow-y-auto cal-px-1">
+              <div
+                v-for="(event, i) in state.events"
+                :key="i"
+                class="w-full"
+              >
+                <ConfirmationButton
+                  :event="event"
+                  @select-event="select(event)"
+                ></ConfirmationButton>
+              </div>
             </div>
           </div>
+
+          <div class="cal-flex cal-items-center cal-space-x-2 cal-pb-4">
+            <TimeZonePicker class="cal-px-1"></TimeZonePicker>
+            <Switch
+              v-model="hourCycleSwitchValue"
+              class="cal-py-3"
+            >
+              <template #before> am/pm </template>
+              <template #after> 24h </template>
+            </Switch>
+          </div>
         </div>
+
         <div
           v-else
-          class="cal-flex cal-flex-col cal-items-center cal-justify-center"
+          class="cal-w-full"
         >
-          <div class="cal-mt-48 cal-flex cal-h-full cal-items-center cal-justify-center">
-            <div class="cal-flex cal-w-40 cal-flex-col cal-items-center cal-justify-center cal-rounded-2xl cal-px-7 cal-py-5 dark:cal-text-theme-200">
-              <svg
-                class="dark:cal-text-theme-primary cal-h-12 cal-w-12"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              <p
-                v-if="config.locale && config.locale.texts?.chooseDate"
-                class="cal-mt-2 cal-w-40 cal-text-center dark:cal-text-theme-200"
-                v-html="config.locale.texts?.chooseDate"
-              ></p>
+          <div
+            v-if="!state.monthHasEvents"
+            class="cal-flex cal-h-full cal-flex-col cal-items-center cal-justify-center"
+          >
+            <div class="cal-mt-24 cal-flex cal-h-full cal-items-center cal-justify-center">
+              <div class="dark:cal-text-themered-50 cal-flex cal-h-40 cal-w-40 cal-items-center cal-justify-center cal-rounded-2xl cal-px-5">
+                <p
+                  v-if="config.locale && config.locale.texts?.noEventAvailable"
+                  class="dark:cal-text-theme-theme cal-text-center"
+                  v-html="config.locale.texts?.noEventAvailable"
+                ></p>
+              </div>
+            </div>
+          </div>
+          <div
+            v-else
+            class="cal-flex cal-flex-col cal-items-center cal-justify-center"
+          >
+            <div class="cal-mt-48 cal-flex cal-h-full cal-items-center cal-justify-center">
+              <div class="cal-flex cal-w-40 cal-flex-col cal-items-center cal-justify-center cal-rounded-2xl cal-px-7 cal-py-5 dark:cal-text-theme-200">
+                <svg
+                  class="dark:cal-text-theme-primary cal-h-12 cal-w-12"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                <p
+                  v-if="config.locale && config.locale.texts?.chooseDate"
+                  class="cal-mt-2 cal-w-40 cal-text-center dark:cal-text-theme-200"
+                  v-html="config.locale.texts?.chooseDate"
+                ></p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Transition>
     </div>
   </div>
 </template>

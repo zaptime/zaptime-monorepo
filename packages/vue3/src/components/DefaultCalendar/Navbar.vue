@@ -30,7 +30,7 @@
         @click.prevent="prev"
       >
         <svg
-          class="cal-h-6 cal-w-6 cal-rotate-180 cal-text-accent-1"
+          class="cal-h-6 cal-w-6 cal-rotate-180 cal-text-accent-1 hover:cal-text-accent-0"
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -54,7 +54,7 @@
         @click.prevent="next"
       >
         <svg
-          class="cal-h-6 cal-w-6 cal-text-accent-1"
+          class="cal-h-6 cal-w-6 cal-text-accent-1 hover:cal-text-accent-0"
           width="24"
           height="24"
           viewBox="0 0 24 24"
