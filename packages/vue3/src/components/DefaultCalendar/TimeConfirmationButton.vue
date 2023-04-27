@@ -46,11 +46,9 @@ const { isSelected } = useCalendar(inject('calendarId'));
 const target = ref();
 const confirmationState = ref(false);
 
-interface Props {
+defineProps<{
   event: IEvent;
-}
-
-defineProps<Props>();
+}>();
 
 const emit = defineEmits(['selectEvent']);
 
