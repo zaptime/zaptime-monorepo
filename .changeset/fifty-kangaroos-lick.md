@@ -1,6 +1,7 @@
 ---
 'iframe': patch
+'@zaptime/core': patch
 '@zaptime/vue3': patch
 ---
 
-Animations, Timezones Support
+Bump

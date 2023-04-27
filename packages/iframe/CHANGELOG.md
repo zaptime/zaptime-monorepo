@@ -1,5 +1,13 @@
 # iframe
 
+## 0.0.4
+
+### Patch Changes
+
+- 3905d5a: Animations, Timezones Support
+- Updated dependencies [3905d5a]
+  - @zaptime/vue3@1.4.24
+
 ## 0.0.3
 
 ### Patch Changes

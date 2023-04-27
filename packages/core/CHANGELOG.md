@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.9
+
+### Patch Changes
+
+- f66b102:
+
 ## 0.4.8
 
 ### Patch Changes

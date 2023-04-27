@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 1.4.24
+
+### Patch Changes
+
+- 3905d5a: Animations, Timezones Support
+- Updated dependencies [f66b102]
+  - @zaptime/core@0.4.9
+
 ## 1.4.23
 
 ### Patch Changes
