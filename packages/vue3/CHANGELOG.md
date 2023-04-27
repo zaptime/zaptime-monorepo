@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 1.4.23
+
+### Patch Changes
+
+- ca376d4: Fix build
+
 ## 1.4.22
 
 ### Patch Changes

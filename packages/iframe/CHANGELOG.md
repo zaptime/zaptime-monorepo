@@ -1,5 +1,13 @@
 # iframe
 
+## 0.0.3
+
+### Patch Changes
+
+- ca376d4: Fix build
+- Updated dependencies [ca376d4]
+  - @zaptime/vue3@1.4.23
+
 ## 0.0.2
 
 ### Patch Changes

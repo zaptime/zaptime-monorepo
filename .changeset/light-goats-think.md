@@ -3,4 +3,4 @@
 '@zaptime/vue3': patch
 ---
 
-Fix build
+Animations, Timezones Support
