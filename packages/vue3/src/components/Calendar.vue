@@ -12,7 +12,7 @@
         <div
           v-if="config.compact === undefined || calendarView === 'pickingDate'"
           :key="calendarView"
-          class="cal-h-full cal-w-full cal-rounded-l-xl cal-bg-theme-50 cal-px-3 dark:cal-bg-theme-900 sm:cal-px-[48px]"
+          class="cal-h-full cal-w-full cal-rounded-l-xl cal-bg-theme-50 cal-px-3 cal-pb-1 dark:cal-bg-theme-900 sm:cal-px-[48px]"
           :class="[config.compact ? 'cal-rounded-r-xl' : '']"
           :style="{ backgroundColor: color }"
         >
@@ -25,10 +25,6 @@
           <div class="cal-mb-14">
             <DaysGrid />
           </div>
-
-          <div class="cal-flex cal-items-center cal-justify-center">
-            <Loader v-if="state.loading" />
-          </div>
         </div>
         <div
           v-if="config.compact === undefined || calendarView === 'pickingTime'"
@@ -36,7 +32,7 @@
           :class="[config.compact ? 'cal-rounded-l-xl' : '']"
           :style="{ backgroundColor: color2 }"
         >
-          <TimeSelection v-if="!state.loading" />
+          <TimeSelection />
         </div>
       </div>
 
@@ -59,16 +55,12 @@
           <div class="cal-mb-14 cal-w-full">
             <DaysGrid />
           </div>
-
-          <!-- <div class="cal-flex cal-items-center cal-justify-center">
-            <Loader v-if="state.loading" />
-          </div> -->
         </div>
         <div
           class="cal-border-l cal-border-theme-200 dark:cal-border-theme-700"
           :style="{ backgroundColor: color2 }"
         >
-          <TimeSelection v-if="!state.loading" />
+          <TimeSelection />
         </div>
       </div>
     </div>

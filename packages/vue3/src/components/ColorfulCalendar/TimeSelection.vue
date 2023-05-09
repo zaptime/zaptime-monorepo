@@ -86,19 +86,21 @@
           <div class="cal-mt-48 cal-flex cal-h-full cal-items-center cal-justify-center">
             <div class="cal-flex cal-w-40 cal-flex-col cal-items-center cal-justify-center cal-rounded-2xl cal-px-7 cal-py-5 dark:cal-text-theme-200">
               <svg
-                class="dark:cal-text-theme-primary cal-h-12 cal-w-12"
+                width="18"
+                height="20"
+                viewBox="0 0 18 20"
                 fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
+                  d="M16.5 9.58332V7.33332C16.5 5.93319 16.5 5.23313 16.2275 4.69835C15.9878 4.22794 15.6054 3.84549 15.135 3.60581C14.6002 3.33332 13.9001 3.33332 12.5 3.33332H5.5C4.09987 3.33332 3.3998 3.33332 2.86502 3.60581C2.39462 3.84549 2.01217 4.22794 1.77248 4.69835C1.5 5.23313 1.5 5.93319 1.5 7.33332V14.3333C1.5 15.7335 1.5 16.4335 1.77248 16.9683C2.01217 17.4387 2.39462 17.8212 2.86502 18.0608C3.3998 18.3333 4.09987 18.3333 5.5 18.3333H9.41667M16.5 8.33332H1.5M12.3333 1.66666V4.99999M5.66667 1.66666V4.99999M14 17.5V12.5M11.5 15H16.5"
+                  stroke="#3F3F46"
+                  stroke-width="1.5"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
+
               <p
                 v-if="config.locale && config.locale.texts?.chooseDate"
                 class="cal-mt-2 cal-w-40 cal-text-center dark:cal-text-theme-200"
