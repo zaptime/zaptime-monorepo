@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.10
+
+### Patch Changes
+
+- b29a013: Bump
+
 ## 0.4.9
 
 ### Patch Changes

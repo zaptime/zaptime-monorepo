@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 1.4.25
+
+### Patch Changes
+
+- b29a013: Bump
+- Updated dependencies [b29a013]
+  - @zaptime/core@0.4.10
+
 ## 1.4.24
 
 ### Patch Changes

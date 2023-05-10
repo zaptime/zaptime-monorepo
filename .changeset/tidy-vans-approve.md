@@ -4,4 +4,4 @@
 '@zaptime/vue3': patch
 ---
 
-Bump
+Animation fixes, better icons
