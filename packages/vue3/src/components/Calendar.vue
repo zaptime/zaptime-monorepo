@@ -72,7 +72,7 @@
       <ConfirmForm
         v-if="view === 'form'"
         @go-back="() => setView('calendar')"
-        @booking-confirmed="() => setView('success')"
+        @booking-confirmed="onBookingConfirmed"
       />
     </Transition>
 
@@ -86,14 +86,13 @@ import { inject } from 'vue';
 import ConfirmForm from './ConfirmForm.vue';
 import Navbar from './DefaultCalendar/Navbar.vue';
 import Header from './DefaultCalendar/Header.vue';
-import Loader from './DefaultCalendar/Loader.vue';
 import TimeSelection from './DefaultCalendar/TimeSelection.vue';
 import DaysGrid from './DefaultCalendar/DaysGrid.vue';
 import SuccessMessage from './DefaultCalendar/SuccessMessage.vue';
 
 import useCalendarViewState from '../composables/useCalendarViewState';
 
-import { useCalendar, useConfig } from '@zaptime/core';
+import { useConfig } from '@zaptime/core';
 
 defineProps({
   bgClass: {
@@ -105,15 +104,19 @@ defineProps({
   },
 });
 
-defineEmits(['goBack', 'bookingConfirmed']);
+const emit = defineEmits(['booking-confirmed']);
 
 const { view, calendarView, setView } = useCalendarViewState(inject('calendarId'));
 
-const { state } = useCalendar(inject('calendarId'));
 const { config } = useConfig(inject('calendarId'));
 
 const color = inject<string>('color');
 const color2 = inject<string>('color2');
+
+function onBookingConfirmed() {
+  setView('success');
+  emit('booking-confirmed');
+}
 </script>
 
 <style>

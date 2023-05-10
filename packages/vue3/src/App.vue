@@ -4,7 +4,7 @@
     class="cal-antialiased"
   >
     <div :class="[config.theme?.mode === 'light' ? '' : 'cal-dark']">
-      <Calendar></Calendar>
+      <Calendar @booking-confirmed="emit('booking-confirmed')"></Calendar>
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@ const props = withDefaults(
   },
 );
 
-const emit = defineEmits(['event-changed']);
+const emit = defineEmits(['event-changed', 'booking-confirmed']);
 
 provide('calendarId', props.calendarId);
 

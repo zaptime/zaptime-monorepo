@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 1.4.27
+
+### Patch Changes
+
+- Add callback for successful booking
+
 ## 1.4.26
 
 ### Patch Changes
