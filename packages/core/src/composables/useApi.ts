@@ -4,13 +4,15 @@ import useConfig from './useConfig';
 
 import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi } from '../api/api';
 import { IBookingResponse } from '../types/ApiResponses';
+import useCurrentTimezone from './useCurrentTimezone';
 
 export const book = async (email: string, firstName?: string, lastName?: string, seats = 1, calendarId?: string): Promise<IBookingResponse> => {
   const { selectedEvent } = useSelectedEvent(calendarId);
   const { config } = useConfig(calendarId);
+  const { timezone } = useCurrentTimezone();
 
   if (selectedEvent.value !== undefined && config.value !== undefined) {
-    return await bookApi(email, config.value.token, selectedEvent.value, firstName, lastName, seats);
+    return await bookApi(email, config.value.token, selectedEvent.value, timezone.value, firstName, lastName, seats);
   }
 
   throw new Error('Booking event failed because event was not selected!');
@@ -20,9 +22,10 @@ export const reserve = async (email: string, firstName?: string, lastName?: stri
   const { selectedEvent } = useSelectedEvent(calendarId);
   const { config } = useConfig(calendarId);
   const { setAttendeeState } = useAttendeeState(calendarId);
+  const { timezone } = useCurrentTimezone();
 
   if (selectedEvent.value !== undefined && config.value !== undefined) {
-    const data = await reserveApi(email, config.value.token, selectedEvent.value, firstName, lastName, seats);
+    const data = await reserveApi(email, config.value.token, selectedEvent.value, timezone.value, firstName, lastName, seats);
 
     setAttendeeState(data.data.event_attendee);
 

@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.12
+
+### Patch Changes
+
+- add timezone to book and reserve, time formatter fix
+
 ## 0.4.11
 
 ### Patch Changes

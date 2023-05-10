@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 1.4.28
+
+### Patch Changes
+
+- add timezone to book and reserve, time formatter fix
+- Updated dependencies
+  - @zaptime/core@0.4.12
+
 ## 1.4.27
 
 ### Patch Changes

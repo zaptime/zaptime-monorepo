@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
   baseURL: 'https://api.zaptime.app/api/',
 });
 
-export const book = async (email: string, token: string, event: IEvent, firstName?: string, lastName?: string, seats = 1): Promise<IBookingResponse> => {
+export const book = async (email: string, token: string, event: IEvent, timezone: string, firstName?: string, lastName?: string, seats = 1): Promise<IBookingResponse> => {
   try {
     const { data } = await axiosInstance.post<IBookingResponse>('/book-event', {
       token: token,
@@ -21,6 +21,7 @@ export const book = async (email: string, token: string, event: IEvent, firstNam
       start: event.start,
       end: event.end,
       recurring_event_id: event.recurringEventId,
+      timezone: timezone,
     });
     return data;
   } catch (err) {
@@ -28,7 +29,7 @@ export const book = async (email: string, token: string, event: IEvent, firstNam
   }
 };
 
-export const reserve = async (email: string, token: string, event: IEvent, firstName?: string, lastName?: string, seats = 1): Promise<IBookingResponse> => {
+export const reserve = async (email: string, token: string, event: IEvent, timezone: string, firstName?: string, lastName?: string, seats = 1): Promise<IBookingResponse> => {
   try {
     const { data } = await axiosInstance.post<IBookingResponse>('/reserve-event', {
       token: token,
@@ -41,6 +42,7 @@ export const reserve = async (email: string, token: string, event: IEvent, first
       start: event.start,
       end: event.end,
       recurring_event_id: event.recurringEventId,
+      timezone: timezone,
     });
 
     return data;
