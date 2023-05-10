@@ -30,3 +30,8 @@ For the publishing we use changesets.
 4. Commit changes
 5. Run `pnpm publish -r`. This command will publish all packages that have
    bumped versions not yet present in the registry.
+
+### Deploy iframe to Cloud Flare
+
+`pnpm --filter iframe run build`
+`pnpm --filter iframe run deploy`
