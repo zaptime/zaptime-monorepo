@@ -1,5 +1,15 @@
 # @zaptime/vue3
 
+## 1.4.26
+
+### Patch Changes
+
+- timezone in calendar conversion, month and day formatting
+- c5f9b55: Animation fixes, better icons
+- Updated dependencies
+- Updated dependencies [c5f9b55]
+  - @zaptime/core@0.4.11
+
 ## 1.4.25
 
 ### Patch Changes

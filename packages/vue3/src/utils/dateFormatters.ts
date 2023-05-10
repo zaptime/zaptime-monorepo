@@ -39,7 +39,7 @@ export const useFormatters = (calendarId?: string) => {
     if (config.value.locale?.preset === 'cs') {
       locale = cs;
     }
-    return format(utcToZonedTime(parseISO(date), timezone.value), 'd. MMMM', { locale: locale, timeZone: timezone.value });
+    return format(utcToZonedTime(parseISO(date), timezone.value), 'MMM d', { locale: locale, timeZone: timezone.value });
   };
 
   return {

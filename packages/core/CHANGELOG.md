@@ -1,5 +1,12 @@
 # @zaptime/core
 
+## 0.4.11
+
+### Patch Changes
+
+- timezone in calendar conversion, month and day formatting
+- c5f9b55: Animation fixes, better icons
+
 ## 0.4.10
 
 ### Patch Changes

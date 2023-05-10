@@ -3,8 +3,8 @@ import IEvent from '../types/IEvent';
 import IZapTimeConfig from '../types/IZapTimeConfig';
 import IDfnsConf from '../types/IDfnsConf';
 
-import { format, getDaysInMonth, startOfMonth, subMonths, lastDayOfMonth, subDays, endOfMonth, addDays, isPast, isToday, isThisMonth } from 'date-fns';
-import { format as formatTz, utcToZonedTime } from 'date-fns-tz';
+import { getDaysInMonth, startOfMonth, subMonths, lastDayOfMonth, subDays, endOfMonth, addDays, isPast, isToday, isThisMonth } from 'date-fns';
+import { format, utcToZonedTime } from 'date-fns-tz';
 
 import { getEvents } from '../api/api';
 import { getStartOfTheWeekIndex } from '../utils/localeLogic';
@@ -12,7 +12,7 @@ import { getStartOfTheWeekIndex } from '../utils/localeLogic';
 export const getEventsForDay = (date: Date, events: IEvent[], timeZone: string): IEvent[] | undefined => {
   const collectedEvents: IEvent[] = [];
   for (const event of events) {
-    if (formatTz(utcToZonedTime(date, timeZone), 'd', { timeZone: timeZone }) === formatTz(utcToZonedTime(new Date(event.start), timeZone), 'd', { timeZone: timeZone })) {
+    if (format(utcToZonedTime(date, timeZone), 'd', { timeZone: timeZone }) === format(utcToZonedTime(new Date(event.start), timeZone), 'd', { timeZone: timeZone })) {
       collectedEvents.push(event);
     }
   }
@@ -29,7 +29,7 @@ export const getDays = async (date: Date, dfnsConfig: IDfnsConf, zapTimeConfig: 
   const startDateOfTheMonth = startOfMonth(date);
   let hasAnyEvent = false;
 
-  const events = await getEvents(zapTimeConfig.token, getStartDate(date, zapTimeConfig), format(endOfMonth(date), 'yyyy-MM-dd'));
+  const events = await getEvents(zapTimeConfig.token, getStartDate(date, zapTimeConfig, timezone), format(endOfMonth(date), 'yyyy-MM-dd', { timeZone: timezone }));
 
   if (Object.keys(events).length > 0) {
     hasAnyEvent = true;
@@ -37,7 +37,7 @@ export const getDays = async (date: Date, dfnsConfig: IDfnsConf, zapTimeConfig: 
 
   const startOfTheWeekIndex = zapTimeConfig && zapTimeConfig.locale !== undefined ? getStartOfTheWeekIndex(zapTimeConfig.locale) : 0;
 
-  const numberOfDay = parseInt(format(startDateOfTheMonth, 'e', dfnsConfig));
+  const numberOfDay = parseInt(format(startDateOfTheMonth, 'e', { ...dfnsConfig, timeZone: timezone }));
 
   const previousMonth = subMonths(startDateOfTheMonth, 1);
 
@@ -47,7 +47,7 @@ export const getDays = async (date: Date, dfnsConfig: IDfnsConf, zapTimeConfig: 
 
   for (let k = 1; k < numberOfDay; k++) {
     days.unshift({
-      label: format(subDays(lastDateOfPreviousMonth, k - 1), 'd'),
+      label: format(subDays(lastDateOfPreviousMonth, k - 1), 'd', { timeZone: timezone }),
       isPast: true,
     });
   }
@@ -83,10 +83,10 @@ export const getDays = async (date: Date, dfnsConfig: IDfnsConf, zapTimeConfig: 
   return { days, hasAnyEvent };
 };
 
-const getStartDate = (date: Date, zapTimeConfig: IZapTimeConfig): string => {
+const getStartDate = (date: Date, zapTimeConfig: IZapTimeConfig, timezone: string): string => {
   if (isThisMonth(date) && zapTimeConfig.closestAvailableEvent !== undefined) {
-    return format(addDays(date, zapTimeConfig.closestAvailableEvent), 'yyyy-MM-dd');
+    return format(addDays(date, zapTimeConfig.closestAvailableEvent), 'yyyy-MM-dd', { timeZone: timezone });
   }
 
-  return format(startOfMonth(date), 'yyyy-MM-dd');
+  return format(startOfMonth(date), 'yyyy-MM-dd', { timeZone: timezone });
 };

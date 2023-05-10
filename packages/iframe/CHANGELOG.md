@@ -1,5 +1,14 @@
 # iframe
 
+## 0.0.6
+
+### Patch Changes
+
+- c5f9b55: Animation fixes, better icons
+- Updated dependencies
+- Updated dependencies [c5f9b55]
+  - @zaptime/vue3@1.4.26
+
 ## 0.0.5
 
 ### Patch Changes
