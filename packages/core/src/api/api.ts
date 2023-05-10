@@ -3,12 +3,13 @@ import IEvent from '../types/IEvent';
 import IStatus from '../types/IStatus';
 import { IBookingResponse, IAvailableEventsResponse } from '../types/ApiResponses';
 import { format } from 'date-fns';
+import { CustomField } from '../types/ApiParams';
 
 const axiosInstance = axios.create({
   baseURL: 'https://api.zaptime.app/api/',
 });
 
-export const book = async (email: string, token: string, event: IEvent, firstName?: string, lastName?: string, seats = 1): Promise<IBookingResponse> => {
+export const book = async (email: string, token: string, event: IEvent, firstName?: string, lastName?: string, customFields: CustomField[] = [], seats = 1): Promise<IBookingResponse> => {
   try {
     const { data } = await axiosInstance.post<IBookingResponse>('/book-event', {
       token: token,
@@ -21,6 +22,7 @@ export const book = async (email: string, token: string, event: IEvent, firstNam
       start: event.start,
       end: event.end,
       recurring_event_id: event.recurringEventId,
+      customFields: customFields,
     });
     return data;
   } catch (err) {

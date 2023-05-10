@@ -4,13 +4,14 @@ import useConfig from './useConfig';
 
 import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi } from '../api/api';
 import { IBookingResponse } from '../types/ApiResponses';
+import { BookParamsOptions } from '../types/ApiParams';
 
-export const book = async (email: string, firstName?: string, lastName?: string, seats = 1, calendarId?: string): Promise<IBookingResponse> => {
+export const book = async ({ email, firstName, lastName, calendarId, customFields, seats = 1 }: BookParamsOptions): Promise<IBookingResponse> => {
   const { selectedEvent } = useSelectedEvent(calendarId);
   const { config } = useConfig(calendarId);
 
   if (selectedEvent.value !== undefined && config.value !== undefined) {
-    return await bookApi(email, config.value.token, selectedEvent.value, firstName, lastName, seats);
+    return await bookApi(email, config.value.token, selectedEvent.value, firstName, lastName, customFields, seats);
   }
 
   throw new Error('Booking event failed because event was not selected!');

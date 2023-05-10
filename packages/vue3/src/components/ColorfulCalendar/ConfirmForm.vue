@@ -145,6 +145,12 @@ const splitName = (name: string) => {
 
 const onSubmit = async () => {
   const { firstName, lastName } = splitName(name.value);
-  await book(email.value, firstName, lastName, seats.value);
+
+  await book({
+    email: email.value,
+    firstName,
+    lastName,
+    seats: seats.value,
+  });
 };
 </script>

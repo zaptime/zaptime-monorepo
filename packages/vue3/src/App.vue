@@ -17,9 +17,9 @@ import { useConfig, useCalendar, useSelectedEvent } from '@zaptime/core';
 import defaultConfig from './defaultConfig';
 import useCompactSwticher from './composables/useCompactSwitcher';
 import useAlphaColors from './composables/useAlphaColors';
-
-import IZapTimeConfig from './types/IZapTimeConfig';
 import mergeObjects from './utils/mergeObjects';
+
+import type { IZapTimeConfig } from '@zaptime/core';
 
 const props = withDefaults(
   defineProps<{
@@ -65,7 +65,6 @@ watch(
 
 const borderRadius = computed(() => {
   if (borderRadius.value !== 'full') {
-    // @ts-expect-error TODO: add border radius to config
     return config?.value.theme?.borderRadius;
   }
 

@@ -23,8 +23,70 @@
 
 <script setup lang="ts">
 import { default as ZaptimeCalendar } from '../src/App.vue';
-import IZapTimeTheme from '../src/types/IZapTimeTheme';
-import { IZapTimeConfig } from '../dist/types/src/entry';
+import type { IZapTimeConfig, IZapTimeTheme, IZapTimeCustomFieldSelect } from '@zaptime/core';
+import { ref } from 'vue';
+
+const customFields = ref<IZapTimeCustomFieldSelect[]>([
+  {
+    name: 'pluginSeats',
+    type: 'select',
+    label: 'How many customers do you have?',
+    placeholder: 'Select the number of customers',
+    selectedValue: 0,
+    options: [
+      {
+        value: 1000,
+        label: '1 000',
+      },
+      {
+        value: 2000,
+        label: '2 000',
+      },
+      {
+        value: 3000,
+        label: '3 000',
+      },
+      {
+        value: 4000,
+        label: '4 000',
+      },
+      {
+        value: 5000,
+        label: '5 000',
+      },
+    ],
+  },
+
+  {
+    name: 'pluginSeats2',
+    type: 'select',
+    label: 'How many customers do you have Honzik?',
+    placeholder: 'Select the number of customers',
+    selectedValue: 0,
+    options: [
+      {
+        value: 1000,
+        label: '1 000',
+      },
+      {
+        value: 2000,
+        label: '2 000',
+      },
+      {
+        value: 3000,
+        label: '3 000',
+      },
+      {
+        value: 4000,
+        label: '4 000',
+      },
+      {
+        value: 5000,
+        label: '5 000',
+      },
+    ],
+  },
+]);
 
 const calypsoTheme: IZapTimeTheme = {
   mode: 'dark',
@@ -60,7 +122,7 @@ const config: IZapTimeConfig = {
     preset: 'en',
     startDayOfWeek: 'sun',
     texts: {
-      introduction: 'Book a Topol walktrough',
+      introduction: 'Book a Topol Demo',
     },
     confirmationForm: {
       confirmBooking: 'Confirm booking',
@@ -84,6 +146,7 @@ const config: IZapTimeConfig = {
     },
   },
   theme: calypsoTheme,
+  customFields: customFields.value,
 };
 </script>
 

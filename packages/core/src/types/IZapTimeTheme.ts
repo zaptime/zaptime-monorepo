@@ -1,6 +1,7 @@
 export default interface IZapTimeTheme {
   preset?: 'basic' | 'elegant' | 'playful';
   mode?: 'light' | 'dark';
+  borderRadius?: string; // 4px or full
   colors?: {
     white?: string;
     black?: string;
@@ -15,5 +16,9 @@ export default interface IZapTimeTheme {
     '700'?: string;
     '800'?: string;
     '900'?: string;
+
+    'accent--1'?: string;
+    'accent-0'?: string;
+    'accent-1'?: string;
   };
 }
