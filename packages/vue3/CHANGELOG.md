@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 1.4.30
+
+### Patch Changes
+
+- light theme logo fix, increase size for times
+
 ## 1.4.29
 
 ### Patch Changes

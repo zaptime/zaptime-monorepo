@@ -43,7 +43,7 @@
               </p>
             </div>
 
-            <div class="cal-mt-2 cal-h-40 cal-overflow-y-auto cal-px-1">
+            <div class="cal-mt-2 cal-h-[320px] cal-overflow-y-auto cal-px-1">
               <div
                 v-for="(event, i) in state.events"
                 :key="i"
@@ -92,7 +92,7 @@
             class="cal-flex cal-flex-col cal-items-center cal-justify-center"
           >
             <div class="cal-mt-48 cal-flex cal-h-full cal-items-center cal-justify-center">
-              <div class="cal-flex cal-w-40 cal-flex-col cal-items-center cal-justify-center cal-rounded-2xl cal-px-7 cal-py-5 dark:cal-text-theme-200">
+              <div class="cal-flex cal-w-40 cal-flex-col cal-items-center cal-justify-center cal-rounded-2xl cal-px-7 cal-py-5 cal-text-theme-700 dark:cal-text-theme-200">
                 <svg
                   width="54"
                   height="60"
@@ -111,7 +111,7 @@
 
                 <p
                   v-if="config.locale && config.locale.texts?.chooseDate"
-                  class="cal-mt-2 cal-w-40 cal-text-center dark:cal-text-theme-200"
+                  class="cal-mt-2 cal-w-40 cal-text-center cal-text-theme-900 dark:cal-text-theme-200"
                   v-html="config.locale.texts?.chooseDate"
                 ></p>
               </div>
