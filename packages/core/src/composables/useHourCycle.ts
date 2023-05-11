@@ -1,8 +1,11 @@
 import { ref } from 'vue';
 
-const clientOriginalHourCycle = Intl.DateTimeFormat(navigator.language, { hour: 'numeric' }).resolvedOptions().hourCycle;
+type HourCycles = 'h23' | 'h11' | 'h12' | 'h24' | undefined;
+let clientOriginalHourCycle: HourCycles = 'h23';
 
-type HourCycles = typeof clientOriginalHourCycle;
+if (typeof window !== 'undefined') {
+  clientOriginalHourCycle = Intl.DateTimeFormat(navigator.language, { hour: 'numeric' }).resolvedOptions().hourCycle;
+}
 
 const hourCycle = ref<HourCycles>(clientOriginalHourCycle);
 
