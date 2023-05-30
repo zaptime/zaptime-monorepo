@@ -1,7 +1,7 @@
 {
   "name": "@zaptime/core",
   "description": "Core library for Zaptime",
-  "version": "0.4.14",
+  "version": "0.4.15",
   "main": "dist/entry.js",
   "types": "dist/entry.d.ts",
   "module": "dist/entry.mjs",
@@ -15,20 +15,20 @@
     "build": "tsup ./src/entry.ts --dts --format esm,cjs --external vue "
   },
   "dependencies": {
-    "axios": "^0.27.2",
-    "date-fns": "^2.28.0",
+    "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0"
   },
   "peerDependencies": {
     "vue": "^3.2.37"
   },
   "devDependencies": {
-    "@babel/types": "^7.21.4",
-    "@types/node": "^18.15.11",
+    "@babel/types": "^7.22.4",
+    "@types/node": "^20.2.5",
     "tsup": "^6.7.0",
-    "typescript": "^4.9.5",
-    "vite": "^3.0.0",
-    "vue": "^3.2.47"
+    "typescript": "^5.0.4",
+    "vite": "^4.3.9",
+    "vue": "^3.3.4"
   },
   "publishConfig": {
     "access": "public"

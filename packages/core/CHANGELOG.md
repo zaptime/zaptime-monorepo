@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.15
+
+### Patch Changes
+
+- Update deps, fix types
+
 ## 0.4.14
 
 ### Patch Changes

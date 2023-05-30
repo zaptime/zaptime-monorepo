@@ -1,7 +1,7 @@
 {
   "name": "iframe",
   "private": true,
-  "version": "0.0.11",
+  "version": "0.0.12",
   "type": "module",
   "scripts": {
     "build": "vue-tsc --noEmit && vite build && pnpm run merge-files",
@@ -14,6 +14,7 @@
     "vue": "^3.2.47"
   },
   "devDependencies": {
+    "@types/node": "^18.15.11",
     "@vitejs/plugin-vue": "^4.1.0",
     "typescript": "^5.0.2",
     "vite": "^4.2.1",

@@ -1,8 +1,8 @@
 {
   "name": "@zaptime/vue3",
-  "version": "1.4.31",
+  "version": "1.4.32",
   "author": "Zaptime s.r.o.",
-  "types": "./dist/types/src/entry.d.ts",
+  "types": "./dist/types/entry.d.ts",
   "files": [
     "dist"
   ],
@@ -11,7 +11,7 @@
     ".": {
       "import": "./dist/zaptime-vue3.es.js",
       "require": "./dist/zaptime-vue3.umd.js",
-      "types": "./dist/types/src/entry.d.ts"
+      "types": "./dist/types/entry.d.ts"
     }
   },
   "scripts": {
@@ -24,26 +24,26 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.13",
-    "@heroicons/vue": "^2.0.17",
-    "@vueuse/core": "^9.13.0",
+    "@heroicons/vue": "^2.0.18",
+    "@vueuse/core": "^10.1.2",
     "@zaptime/core": "workspace:*",
-    "axios": "^0.27.2",
-    "date-fns": "^2.28.0",
+    "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/types": "^7.21.4",
-    "@types/node": "^18.15.11",
-    "@types/web-bluetooth": "^0.0.16",
-    "@vitejs/plugin-vue": "^3.0.0",
+    "@babel/types": "^7.22.4",
+    "@types/node": "^20.2.5",
+    "@types/web-bluetooth": "^0.0.17",
+    "@vitejs/plugin-vue": "^4.2.3",
     "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.14",
+    "postcss": "^8.4.24",
     "rollup-plugin-visualizer": "^5.6.0",
-    "tailwindcss": "^3.3.1",
-    "typescript": "^4.9.5",
-    "vite": "^3.0.0",
-    "vue": "^3.2.47",
-    "vue-tsc": "^1.6.0"
+    "tailwindcss": "^3.3.2",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.9",
+    "vue": "^3.3.4",
+    "vue-tsc": "^1.6.5"
   },
   "publishConfig": {
     "access": "public"

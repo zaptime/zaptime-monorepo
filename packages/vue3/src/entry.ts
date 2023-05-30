@@ -4,4 +4,4 @@ export { book, reserve, confirm, cancel } from '@zaptime/core';
 export { default as useCalendarViewState } from './composables/useCalendarViewState';
 export { default as ZapTimeCalendar } from './App.vue';
 
-export { IZapTimeConfig };
+export type { IZapTimeConfig };
