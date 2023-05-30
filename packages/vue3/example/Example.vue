@@ -54,12 +54,14 @@ const config: IZapTimeConfig = {
   // max: 1,
   // externalBooking: false,
   // compact: true,
+
   profileImage: 'https://media.licdn.com/dms/image/D4E03AQE3gawFsTv2rA/profile-displayphoto-shrink_800_800/0/1674467277976?e=1687996800&v=beta&t=cuvWY8CocEGn1fFSpncV6PE5aZBRWoPaXXL_atHYf34',
 
   locale: {
-    preset: 'sv',
+    preset: 'en',
     hideTimePreferences: false,
     startDayOfWeek: 'sun',
+
     texts: {
       introduction: 'Book a Topol walktrough',
     },
