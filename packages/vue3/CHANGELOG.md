@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 1.4.31
+
+### Patch Changes
+
+- Formatting refactors, New languages added, Types refactoring, Translation fixes, Picking time form external booking fixed
+- Updated dependencies
+  - @zaptime/core@0.4.14
+
 ## 1.4.30
 
 ### Patch Changes

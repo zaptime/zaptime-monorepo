@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.14
+
+### Patch Changes
+
+- Formatting refactors, New languages added, Types refactoring, Translation fixes, Picking time form external booking fixed
+
 ## 0.4.13
 
 ### Patch Changes
