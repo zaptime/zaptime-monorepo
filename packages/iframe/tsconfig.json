@@ -5,7 +5,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "declaration": true,
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "strict": true,
     "jsx": "preserve",
     "resolveJsonModule": true,
