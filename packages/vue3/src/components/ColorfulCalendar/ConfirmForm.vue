@@ -101,13 +101,12 @@
 
 <script setup lang="ts">
 import { computed, inject, ref } from 'vue';
-import { useSelectedEvent, book, useConfig } from '@zaptime/core';
-import { useFormatters } from '../../utils/dateFormatters';
+import { useSelectedEvent, book, useConfig, useDateFormatters } from '@zaptime/core';
 import PrimaryButton from './atomic/PrimaryButton.vue';
 import SecondaryButton from './atomic/SecondaryButton.vue';
 
 const { selectedEvent } = useSelectedEvent(inject('calendarId'));
-const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useFormatters(inject('calendarId'));
+const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
 const { config } = useConfig(inject('calendarId'));
 const color2 = inject<string>('color2');
 

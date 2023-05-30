@@ -30,7 +30,6 @@
           <div>
             <div :class="[config.locale?.texts?.introduction || config.profileImage ? 'cal-pt-[54px]' : '']">
               <p class="cal-text-2xl cal-font-semibold cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-300">
-                {{ getFormattedDay(state.events[0].start) }},
                 {{ getFormattedDayInMonth(state.events[0].start) }}
               </p>
             </div>
@@ -127,8 +126,7 @@
 </template>
 
 <script setup lang="ts">
-import { useCalendar, useConfig, useHourCycle } from '@zaptime/core';
-import { useFormatters } from '../../utils/dateFormatters';
+import { useCalendar, useConfig, useHourCycle, useDateFormatters } from '@zaptime/core';
 import useCalendarViewState from '../../composables/useCalendarViewState';
 import PrimaryButton from '../atomic/PrimaryButton.vue';
 import { inject, computed } from 'vue';
@@ -144,7 +142,7 @@ const { selectEvent, state } = useCalendar(inject('calendarId'));
 
 const { config } = useConfig(inject('calendarId'));
 
-const { getFormattedDay, getFormattedDayInMonth } = useFormatters(inject('calendarId'));
+const { getFormattedDay, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
 
 const hourCycleSwitchValue = computed({
   get() {

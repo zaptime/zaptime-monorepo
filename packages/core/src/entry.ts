@@ -8,5 +8,6 @@ export { default as useConfig } from './composables/useConfig';
 export { default as useSelectedEvent } from './composables/useSelectedEvent';
 export { default as useCurrentTimezone } from './composables/useCurrentTimezone';
 export { default as useHourCycle } from './composables/useHourCycle';
+export { useDateFormatters } from './composables/useDateFormatters';
 
 export { IDay, IEvent, IZapTimeConfig };

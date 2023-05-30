@@ -115,8 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import { useCalendar, useConfig } from '@zaptime/core';
-import { useFormatters } from '../../utils/dateFormatters';
+import { useCalendar, useConfig, useDateFormatters } from '@zaptime/core';
 import useCalendarViewState from '../../composables/useCalendarViewState';
 import PrimaryButton from '../atomic/PrimaryButton.vue';
 import { inject } from 'vue';
@@ -128,7 +127,7 @@ const { selectEvent, isSelected, state } = useCalendar(inject('calendarId'));
 
 const { config } = useConfig(inject('calendarId'));
 
-const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useFormatters(inject('calendarId'));
+const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
 
 const select = (event: IEvent) => {
   selectEvent(event);

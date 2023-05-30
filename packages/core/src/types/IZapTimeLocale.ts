@@ -16,6 +16,7 @@ export default interface IZapTimeLocale {
     chooseDate?: string;
     noEventAvailable?: string;
     choosePreferredTime?: string;
+    pickTime?: string;
   };
 
   confirmationForm?: {

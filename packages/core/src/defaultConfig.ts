@@ -8,6 +8,7 @@ const config: IZapTimeConfig = {
       chooseDate: 'Choose date',
       noEventAvailable: 'There is no event available for chosen month.',
       choosePreferredTime: 'Choose preferred time',
+      pickTime: 'Pick time',
     },
     confirmationForm: {
       confirmBooking: 'Confirm booking',

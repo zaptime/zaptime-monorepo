@@ -28,20 +28,21 @@
       class="cal-inline-flex cal-h-12 cal-w-1/2 cal-justify-center"
       @click="emit('selectEvent')"
     >
-      Pick time
+      {{ config.locale && config.locale.texts?.pickTime }}
     </PrimaryButton>
   </div>
 </template>
 
 <script setup lang="ts">
 import { IEvent } from '@zaptime/core';
-import { useCalendar } from '@zaptime/core';
+import { useCalendar, useDateFormatters, useConfig } from '@zaptime/core';
 import { ref, inject } from 'vue';
-import { useFormatters } from '../../utils/dateFormatters';
 import { onClickOutside } from '@vueuse/core';
 import PrimaryButton from '../atomic/PrimaryButton.vue';
-const { getFormattedTime } = useFormatters(inject('calendarId'));
+
+const { getFormattedTime } = useDateFormatters(inject('calendarId'));
 const { isSelected } = useCalendar(inject('calendarId'));
+const { config } = useConfig(inject('calendarId'));
 
 const target = ref();
 const confirmationState = ref(false);

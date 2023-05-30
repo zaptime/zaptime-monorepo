@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
       plugins: [vue()],
       build: {
         cssCodeSplit: false,
-        sourcemap: true,
+        sourcemap: false,
         lib: {
           entry: resolve(__dirname, 'src/entry.ts'),
           name: 'zaptime-vue3',

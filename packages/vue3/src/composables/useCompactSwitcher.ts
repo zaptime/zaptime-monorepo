@@ -1,7 +1,6 @@
 import { useBreakpoints } from '@vueuse/core';
 import { watch } from 'vue';
-import { useConfig } from '@zaptime/core';
-import IZapTimeConfig from '../types/IZapTimeConfig';
+import { useConfig, IZapTimeConfig } from '@zaptime/core';
 
 export default function useCompactSwitcher(calendarId?: string) {
   const { config, setConfig } = useConfig(calendarId);
