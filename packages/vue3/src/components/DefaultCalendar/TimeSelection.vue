@@ -57,7 +57,10 @@
             </div>
           </div>
 
-          <div class="cal-flex cal-items-center cal-space-x-2 cal-pb-4">
+          <div
+            v-if="!config.locale?.hideTimePreferences"
+            class="cal-flex cal-items-center cal-space-x-2 cal-pb-4"
+          >
             <TimeZonePicker class="cal-px-1"></TimeZonePicker>
             <Switch
               v-model="hourCycleSwitchValue"

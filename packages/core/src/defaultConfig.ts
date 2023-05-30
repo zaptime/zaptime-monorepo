@@ -1,7 +1,7 @@
 import IZapTimeConfig from './types/IZapTimeConfig';
 
 const config: IZapTimeConfig = {
-  token: 'ftwIxLA2ZHvPnDN04WAXpt0q0srSfV49',
+  token: 'oG77Ft7Wv6v9stJTOw8cbMmW7zENDzXl',
   locale: {
     preset: 'en',
     texts: {
@@ -31,6 +31,7 @@ const config: IZapTimeConfig = {
   },
   theme: {
     preset: 'basic',
+    borderRadius: '0.375rem',
   },
 };
 

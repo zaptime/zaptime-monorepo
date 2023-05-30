@@ -13,13 +13,9 @@
 import { provide, watch, computed, onMounted } from 'vue';
 
 import Calendar from './components/Calendar.vue';
-import { useConfig, useCalendar, useSelectedEvent } from '@zaptime/core';
-import defaultConfig from './defaultConfig';
+import { useConfig, useCalendar, IZapTimeConfig, useSelectedEvent } from '@zaptime/core';
 import useCompactSwticher from './composables/useCompactSwitcher';
 import useAlphaColors from './composables/useAlphaColors';
-
-import IZapTimeConfig from './types/IZapTimeConfig';
-import mergeObjects from './utils/mergeObjects';
 
 const props = withDefaults(
   defineProps<{
@@ -27,7 +23,7 @@ const props = withDefaults(
     calendarId?: string;
   }>(),
   {
-    config: () => defaultConfig,
+    config: undefined,
     calendarId: undefined,
   },
 );
@@ -40,7 +36,7 @@ const { setConfig, config } = useConfig(props.calendarId);
 
 const { selectedEvent } = useSelectedEvent(props.calendarId);
 
-setConfig(mergeObjects(defaultConfig, props.config));
+setConfig(props.config);
 
 const { color, color2 } = useAlphaColors(props.calendarId);
 provide('color', color);
@@ -59,13 +55,12 @@ watch(selectedEvent, (newV) => {
 watch(
   () => props.config,
   () => {
-    setConfig({ ...defaultConfig, ...props.config });
+    setConfig(props.config);
   },
 );
 
 const borderRadius = computed(() => {
   if (borderRadius.value !== 'full') {
-    // @ts-expect-error TODO: add border radius to config
     return config?.value.theme?.borderRadius;
   }
 
@@ -73,7 +68,13 @@ const borderRadius = computed(() => {
 });
 
 onMounted(async () => {
-  await initCalendar();
+  if (props.config === undefined || props.config.token === undefined) {
+    console.error(
+      "Zaptime error: Token is required, please enter your acquired token into the configuration. See more in the documentation: https://docs.zaptime.app/guide/vue-installation.html. If you don't have a token, you can acquire one at https://zaptime.app.",
+    );
+  } else {
+    await initCalendar();
+  }
 });
 </script>
 

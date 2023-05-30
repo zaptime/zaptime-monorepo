@@ -10,6 +10,7 @@ export default interface IZapTimeLocale {
     sat?: string;
     sun?: string;
   };
+  hideTimePreferences?: boolean;
   texts?: {
     introduction?: string;
     chooseDate?: string;

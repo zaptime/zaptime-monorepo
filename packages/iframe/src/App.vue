@@ -38,8 +38,8 @@ const onEventChanged = (event: unknown) => {
 <template>
   <div v-if="remoteConfigLoaded">
     <ZapTimeCalendar
-      @event-changed="onEventChanged"
       :config="config"
+      @event-changed="onEventChanged"
     ></ZapTimeCalendar>
   </div>
 </template>

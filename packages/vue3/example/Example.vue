@@ -23,10 +23,9 @@
 
 <script setup lang="ts">
 import { default as ZaptimeCalendar } from '../src/App.vue';
-import IZapTimeTheme from '../src/types/IZapTimeTheme';
-import { IZapTimeConfig } from '../dist/types/src/entry';
+import { IZapTimeConfig } from '@zaptime/core';
 
-const calypsoTheme: IZapTimeTheme = {
+const calypsoTheme: IZapTimeConfig['theme'] = {
   mode: 'dark',
   colors: {
     'accent--1': '#9e7700',
@@ -50,6 +49,7 @@ const config: IZapTimeConfig = {
   compact: false,
 
   externalBooking: false,
+
   // min: 0,
   // max: 1,
   // externalBooking: false,
@@ -58,6 +58,7 @@ const config: IZapTimeConfig = {
 
   locale: {
     preset: 'en',
+    hideTimePreferences: false,
     startDayOfWeek: 'sun',
     texts: {
       introduction: 'Book a Topol walktrough',

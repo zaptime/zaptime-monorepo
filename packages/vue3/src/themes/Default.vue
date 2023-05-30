@@ -254,12 +254,11 @@
 
 <script lang="ts" setup>
 import Calendar from '../components/Calendar.vue';
-import { useCalendar } from '@zaptime/core';
+import { useCalendar, IZapTimeConfig } from '@zaptime/core';
 import { useFormatters } from '../utils/dateFormatters';
 import useCalendarViewState from '../composables/useCalendarViewState';
 
 import { inject } from 'vue';
-import IZapTimeConfig from '../types/IZapTimeConfig';
 import { IDay, IEvent } from '@zaptime/core';
 
 const { setView, setCalendarView } = useCalendarViewState(inject('calendarId'));
