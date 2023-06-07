@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 1.4.33
+
+### Patch Changes
+
+- Reactivity for merged object fix, color for selected event when external booking fixed
+- Updated dependencies
+  - @zaptime/core@0.4.16
+
 ## 1.4.32
 
 ### Patch Changes

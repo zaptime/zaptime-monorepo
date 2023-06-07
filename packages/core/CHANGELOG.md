@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.16
+
+### Patch Changes
+
+- Reactivity for merged object fix, color for selected event when external booking fixed
+
 ## 0.4.15
 
 ### Patch Changes
