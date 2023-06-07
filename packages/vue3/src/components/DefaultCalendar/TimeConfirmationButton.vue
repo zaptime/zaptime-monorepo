@@ -38,14 +38,14 @@
       class="w-full cal-flex cal-items-center cal-space-x-2"
     >
       <button
-        class="cal-group cal-relative cal-my-2 cal-inline-flex cal-w-full cal-cursor-pointer cal-items-center cal-justify-center cal-rounded-md cal-font-medium cal-outline-none cal-transition-all cal-duration-150 cal-ease-out focus:cal-outline-none focus:cal-ring-2 focus:cal-ring-theme-800 focus:cal-ring-opacity-50 dark:cal-border-theme-600"
+        class="cal-group cal-relative cal-my-2 cal-inline-flex cal-w-full cal-cursor-pointer cal-items-center cal-justify-center cal-rounded-md cal-font-medium cal-outline-none cal-ring-offset-2 cal-ring-offset-theme-700 cal-transition-all cal-duration-150 cal-ease-out focus:cal-outline-none focus:cal-ring-2 focus:cal-ring-accent-0"
         :class="[isSelected(event) ? 'cal-bg-accent-0 cal-text-white' : 'cal-bg-theme-100 cal-text-theme-700 hover:cal-bg-theme-200 hover:cal-text-accent-0 dark:cal-bg-theme-800 hover:dark:cal-bg-theme-600']"
         @click.prevent="emit('selectEvent')"
       >
         <span
           class="cal-flex cal-items-center cal-py-4 cal-leading-4"
           :class="{
-            'cal-text-theme-700 dark:cal-text-white ': isSelected(event),
+            'cal-text-white ': isSelected(event),
             'cal-text-theme-800 dark:cal-text-theme-100': !isSelected(event),
           }"
         >
