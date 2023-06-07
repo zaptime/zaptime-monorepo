@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 1.4.34
+
+### Patch Changes
+
+- Fix light theme offset background
+
 ## 1.4.33
 
 ### Patch Changes
