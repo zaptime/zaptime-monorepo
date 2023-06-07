@@ -37,7 +37,7 @@ export const getDays = async (date: Date, dfnsConfig: IDfnsConf, zapTimeConfig: 
 
   const startOfTheWeekIndex = zapTimeConfig && zapTimeConfig.locale !== undefined ? getStartOfTheWeekIndex(zapTimeConfig.locale) : 0;
 
-  const numberOfDay = parseInt(format(startDateOfTheMonth, 'e', { ...dfnsConfig, timeZone: timezone }));
+  const numberOfDay = parseInt(format(startDateOfTheMonth, 'e', { ...dfnsConfig, timeZone: timezone })) - startOfTheWeekIndex;
 
   const previousMonth = subMonths(startDateOfTheMonth, 1);
 
