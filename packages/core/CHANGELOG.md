@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.17
+
+### Patch Changes
+
+- Fix start day of the week in cs language
+
 ## 0.4.16
 
 ### Patch Changes
