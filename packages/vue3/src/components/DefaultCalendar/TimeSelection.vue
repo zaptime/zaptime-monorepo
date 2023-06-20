@@ -1,6 +1,6 @@
 <template>
   <div
-    class="cal-mx-auto cal-h-full cal-min-h-[524px] cal-bg-white cal-px-[50px] cal-pt-4 dark:cal-bg-theme-900 sm:cal-mx-0"
+    class="cal-mx-auto cal-h-full cal-min-h-[524px] cal-bg-white cal-px-[20px] cal-pt-4 dark:cal-bg-theme-900 sm:cal-mx-0"
     :class="[config.compact ? 'cal-w-[330px] cal-rounded-xl sm:cal-w-[400px]' : 'cal-w-[330px] cal-rounded-r-xl sm:cal-w-[440px]']"
   >
     <PrimaryButton
@@ -58,7 +58,7 @@
 
           <div
             v-if="!config.locale?.hideTimePreferences"
-            class="cal-flex cal-items-center cal-space-x-2 cal-pb-4"
+            class="cal-mt-5 cal-flex cal-items-center cal-space-x-2 cal-pb-4 sm:cal-mt-0"
           >
             <TimeZonePicker class="cal-px-1"></TimeZonePicker>
             <Switch

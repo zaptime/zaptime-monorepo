@@ -1,9 +1,9 @@
 import { useBreakpoints } from '@vueuse/core';
 import { watch } from 'vue';
-import { useConfig, IZapTimeConfig } from '@zaptime/core';
+import { useConfig } from '@zaptime/core';
 
 export default function useCompactSwitcher(calendarId?: string) {
-  const { config, setConfig } = useConfig(calendarId);
+  const { config } = useConfig(calendarId);
 
   const originalCompactPreference = config.value.compact === true ? true : false;
 
@@ -13,14 +13,15 @@ export default function useCompactSwitcher(calendarId?: string) {
 
   const isSmaller = breakpoints.smaller('large');
 
+  if (isSmaller.value === true) {
+    config.value.compact = true;
+  }
+
   watch(isSmaller, (value) => {
-    const cfg: IZapTimeConfig = { ...config.value };
     if (value === true) {
-      cfg.compact = true;
-      setConfig(cfg);
+      config.value.compact = true;
     } else {
-      cfg.compact = originalCompactPreference;
-      setConfig(cfg);
+      config.value.compact = originalCompactPreference;
     }
   });
 }

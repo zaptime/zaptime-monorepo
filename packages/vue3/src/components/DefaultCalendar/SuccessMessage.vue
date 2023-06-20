@@ -1,6 +1,6 @@
 <template>
   <div
-    class="cal-h-full cal-justify-center cal-rounded-xl cal-bg-white cal-px-0 cal-pt-24 dark:cal-bg-theme-900 sm:cal-px-6"
+    class="cal-h-full cal-justify-center cal-rounded-xl cal-bg-white cal-px-0 cal-pb-20 cal-pt-24 dark:cal-bg-theme-900 sm:cal-px-6"
     :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[840px]']"
   >
     <div class="cal-flex cal-justify-center">

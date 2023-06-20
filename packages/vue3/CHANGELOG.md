@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 1.4.37
+
+### Patch Changes
+
+- Compact switcher fixed, responsivity fixes
+
 ## 1.4.36
 
 ### Patch Changes

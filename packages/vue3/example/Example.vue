@@ -44,7 +44,7 @@ const calypsoTheme: IZapTimeConfig['theme'] = {
 };
 
 const config: IZapTimeConfig = {
-  token: 'kikuhNJV3zWBeIvIXGryWsubIEZ74dRX',
+  token: 'kPRrAtlXbgnCqi309Zjvr5Lq6RRPfYgc',
 
   compact: false,
 
@@ -59,6 +59,7 @@ const config: IZapTimeConfig = {
 
   locale: {
     preset: 'en',
+
     hideTimePreferences: false,
     startDayOfWeek: 'sun',
 

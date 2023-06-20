@@ -143,7 +143,7 @@
           {{ config.locale?.confirmationForm?.buttons?.goBack }}
         </button>
         <div
-          class="cal-mx-auto cal-h-full cal-px-[50px] sm:cal-mx-0"
+          class="cal-mx-auto cal-h-full cal-px-[30px] sm:cal-mx-0"
           :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[440px]']"
         >
           <div v-if="!state.loading">
