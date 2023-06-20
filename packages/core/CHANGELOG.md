@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.18
+
+### Patch Changes
+
+- Hour formatter fix
+
 ## 0.4.17
 
 ### Patch Changes

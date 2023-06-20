@@ -23,7 +23,7 @@ export const useDateFormatters = (calendarId?: string) => {
 
   const getFormattedTime = (date: string) => {
     if (hourCycle.value === 'h11') {
-      return format(utcToZonedTime(parseISO(date), timezone.value), 'K:mmaaa', dateFnsConfig);
+      return format(utcToZonedTime(parseISO(date), timezone.value), 'h:mmaaa', dateFnsConfig);
     } else {
       return format(utcToZonedTime(parseISO(date), timezone.value), 'H:mm', dateFnsConfig);
     }
