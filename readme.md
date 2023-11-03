@@ -8,7 +8,7 @@
 ## How to start the project
 
 ```
-pnpm instal
+pnpm install
 ```
 
 ```
