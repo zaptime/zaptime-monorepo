@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 0.4.19
+
+### Patch Changes
+
+- Remove axios and use native fetch
+
 ## 0.4.18
 
 ### Patch Changes

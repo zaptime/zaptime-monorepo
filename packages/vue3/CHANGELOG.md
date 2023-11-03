@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 1.4.38
+
+### Patch Changes
+
+- Remove axios and use native fetch
+- Updated dependencies
+  - @zaptime/core@0.4.19
+
 ## 1.4.37
 
 ### Patch Changes

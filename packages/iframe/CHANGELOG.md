@@ -1,5 +1,13 @@
 # iframe
 
+## 0.0.18
+
+### Patch Changes
+
+- Remove axios and use native fetch
+- Updated dependencies
+  - @zaptime/vue3@1.4.38
+
 ## 0.0.17
 
 ### Patch Changes
