@@ -3,7 +3,7 @@ import IStatus from '../types/IStatus';
 import { IBookingResponse, IAvailableEventsResponse } from '../types/ApiResponses';
 import { format } from 'date-fns';
 
-const baseUrl = 'https://api.zaptime.app/api/';
+const baseUrl = 'https://api.zaptime.app/api';
 
 export const book = async (email: string, token: string, event: IEvent, timezone: string, firstName?: string, lastName?: string, seats = 1): Promise<IBookingResponse> => {
   try {
@@ -65,7 +65,7 @@ export const confirm = async (status: IStatus): Promise<boolean> => {
   try {
     const data = await fetch(
       baseUrl +
-        '/confirm-event/' +
+        '/confirm-event?' +
         new URLSearchParams({
           event_attendee_id: status.id.toString(),
         }),
@@ -88,7 +88,7 @@ export const cancel = async (status: IStatus): Promise<boolean> => {
   try {
     const data = await fetch(
       baseUrl +
-        '/cancel-event' +
+        '/cancel-event?' +
         new URLSearchParams({
           event_attendee_id: status.id.toString(),
         }),
@@ -112,7 +112,7 @@ export const getEvents = async (token: string, from: string, until: string): Pro
   try {
     const data: IAvailableEventsResponse = await fetch(
       baseUrl +
-        '/available-events' +
+        '/available-events?' +
         new URLSearchParams({
           token: token,
           from: from,
