@@ -28,9 +28,9 @@ onMounted(async () => {
   remoteConfigLoaded.value = true;
 });
 
-const onEventChanged = (event: unknown) => {
-  if (window.xprops.onEventChanged) {
-    window.xprops.onEventChanged(event);
+const onTimeSlotChanged = (timeSlot: unknown) => {
+  if (window.xprops.onTimeSlotChanged) {
+    window.xprops.onTimeSlotChanged(timeSlot);
   }
 };
 </script>
@@ -39,7 +39,7 @@ const onEventChanged = (event: unknown) => {
   <div v-if="remoteConfigLoaded">
     <ZapTimeCalendar
       :config="config"
-      @event-changed="onEventChanged"
+      @time-slot-changed="onTimeSlotChanged"
     ></ZapTimeCalendar>
   </div>
 </template>

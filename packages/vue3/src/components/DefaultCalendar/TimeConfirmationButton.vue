@@ -8,7 +8,7 @@
       <button
         class="cal-group cal-my-2 cal-inline-flex cal-cursor-pointer cal-items-center cal-justify-center cal-rounded-md cal-bg-theme-100 cal-font-medium cal-outline-none cal-transition-all cal-duration-150 cal-ease-out focus:cal-outline-none focus:cal-ring-2 focus:cal-ring-theme-800 focus:cal-ring-opacity-50 dark:cal-border-theme-600 dark:cal-bg-theme-800"
         :class="[
-          isSelected(event) ? 'cal-bg-accent-0 cal-text-white' : 'cal-bg-theme-100 cal-text-theme-700 hover:cal-bg-theme-200 hover:cal-text-accent-0 hover:dark:cal-bg-theme-600',
+          isSelected(timeSlot) ? 'cal-bg-accent-0 cal-text-white' : 'cal-bg-theme-100 cal-text-theme-700 hover:cal-bg-theme-200 hover:cal-text-accent-0 hover:dark:cal-bg-theme-600',
           confirmationState ? ' cal-w-1/2' : 'cal-w-full',
         ]"
         @click.prevent="confirmationState = true"
@@ -16,19 +16,19 @@
         <span
           class="cal-flex cal-items-center cal-py-4 cal-leading-4"
           :class="{
-            'cal-text-theme-700 dark:cal-text-white ': isSelected(event),
-            'cal-text-theme-800 dark:cal-text-theme-100': !isSelected(event),
+            'cal-text-theme-700 dark:cal-text-white ': isSelected(timeSlot),
+            'cal-text-theme-800 dark:cal-text-theme-100': !isSelected(timeSlot),
           }"
         >
-          {{ getFormattedTime(event.start) }} -
-          {{ getFormattedTime(event.end) }}
+          {{ getFormattedTime(timeSlot.start) }} -
+          {{ getFormattedTime(timeSlot.end) }}
         </span>
       </button>
 
       <PrimaryButton
         v-show="confirmationState"
         class="cal-inline-flex cal-h-12 cal-w-1/2 cal-justify-center"
-        @click="emit('selectEvent')"
+        @click="emit('selectTimeSlot')"
       >
         {{ config.locale && config.locale.texts?.pickTime }}
       </PrimaryButton>
@@ -39,21 +39,21 @@
     >
       <button
         class="cal-group cal-relative cal-my-2 cal-inline-flex cal-w-full cal-cursor-pointer cal-items-center cal-justify-center cal-rounded-md cal-font-medium cal-outline-none cal-ring-offset-2 cal-transition-all cal-duration-150 cal-ease-out focus:cal-outline-none focus:cal-ring-2 focus:cal-ring-accent-0 dark:cal-ring-offset-theme-700"
-        :class="[isSelected(event) ? 'cal-bg-accent-0 cal-text-white' : 'cal-bg-theme-100 cal-text-theme-700 hover:cal-bg-theme-200 hover:cal-text-accent-0 dark:cal-bg-theme-800 hover:dark:cal-bg-theme-600']"
-        @click.prevent="emit('selectEvent')"
+        :class="[isSelected(timeSlot) ? 'cal-bg-accent-0 cal-text-white' : 'cal-bg-theme-100 cal-text-theme-700 hover:cal-bg-theme-200 hover:cal-text-accent-0 dark:cal-bg-theme-800 hover:dark:cal-bg-theme-600']"
+        @click.prevent="emit('selectTimeSlot')"
       >
         <span
           class="cal-flex cal-items-center cal-py-4 cal-leading-4"
           :class="{
-            'cal-text-white ': isSelected(event),
-            'cal-text-theme-800 dark:cal-text-theme-100': !isSelected(event),
+            'cal-text-white ': isSelected(timeSlot),
+            'cal-text-theme-800 dark:cal-text-theme-100': !isSelected(timeSlot),
           }"
         >
-          {{ getFormattedTime(event.start) }} -
-          {{ getFormattedTime(event.end) }}
+          {{ getFormattedTime(timeSlot.start) }} -
+          {{ getFormattedTime(timeSlot.end) }}
         </span>
         <svg
-          v-if="isSelected(event)"
+          v-if="isSelected(timeSlot)"
           class="cal-absolute cal-right-5 cal-h-6 cal-w-6"
           fill="currentColor"
           viewBox="0 0 20 20"
@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { IEvent } from '@zaptime/core';
+import type { TimeSlot } from '@zaptime/core';
 import { useCalendar, useDateFormatters, useConfig } from '@zaptime/core';
 import { ref, inject } from 'vue';
 import { onClickOutside } from '@vueuse/core';
@@ -86,10 +86,10 @@ const target = ref();
 const confirmationState = ref(false);
 
 defineProps<{
-  event: IEvent;
+  timeSlot: TimeSlot;
 }>();
 
-const emit = defineEmits(['selectEvent']);
+const emit = defineEmits(['selectTimeSlot']);
 
 onClickOutside(target, () => {
   confirmationState.value = false;

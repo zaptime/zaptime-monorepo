@@ -24,13 +24,13 @@
         mode="out-in"
       >
         <div
-          v-if="state.events && state.events.length > 0 && !state.loading"
+          v-if="state.timeSlots && state.timeSlots.length > 0 && !state.loading"
           class="cal-flex cal-h-full cal-flex-col cal-justify-between"
         >
           <div>
             <div :class="[config.locale?.texts?.introduction || config.profileImage ? 'cal-pt-[54px]' : '']">
               <p class="cal-text-2xl cal-font-semibold cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-300">
-                {{ getFormattedDayInMonth(state.events[0].start) }}
+                {{ getFormattedDayInMonth(state.timeSlots[0].start) }}
               </p>
             </div>
             <div class="cal-pb-0.5 cal-pt-6">
@@ -44,13 +44,13 @@
 
             <div class="cal-mt-2 cal-h-[320px] cal-overflow-y-auto cal-px-1">
               <div
-                v-for="(event, i) in state.events"
+                v-for="(timeSlot, i) in state.timeSlots"
                 :key="i"
                 class="w-full"
               >
                 <ConfirmationButton
-                  :event="event"
-                  @select-event="select(event)"
+                  :time-slot="timeSlot"
+                  @select-time-slot="select(timeSlot)"
                 ></ConfirmationButton>
               </div>
             </div>
@@ -76,15 +76,15 @@
           class="cal-w-full"
         >
           <div
-            v-if="!state.monthHasEvents"
+            v-if="!state.monthHasTimeSlots"
             class="cal-flex cal-h-full cal-flex-col cal-items-center cal-justify-center"
           >
             <div class="cal-mt-24 cal-flex cal-h-full cal-items-center cal-justify-center">
               <div class="dark:cal-text-themered-50 cal-flex cal-h-40 cal-w-40 cal-items-center cal-justify-center cal-rounded-2xl cal-px-5">
                 <p
-                  v-if="config.locale && config.locale.texts?.noEventAvailable"
+                  v-if="config.locale && config.locale.texts?.noTimeSlotAvailable"
                   class="dark:cal-text-theme-theme cal-text-center"
-                  v-html="config.locale.texts?.noEventAvailable"
+                  v-html="config.locale.texts?.noTimeSlotAvailable"
                 ></p>
               </div>
             </div>
@@ -130,7 +130,7 @@ import { useCalendar, useConfig, useHourCycle, useDateFormatters } from '@zaptim
 import useCalendarViewState from '../../composables/useCalendarViewState';
 import PrimaryButton from '../atomic/PrimaryButton.vue';
 import { inject, computed } from 'vue';
-import { IEvent } from '@zaptime/core';
+import type { TimeSlot } from '@zaptime/core';
 import ConfirmationButton from './TimeConfirmationButton.vue';
 import TimeZonePicker from '../atomic/TimeZonePicker.vue';
 import Switch from '../atomic/Switch.vue';
@@ -138,11 +138,11 @@ const { hourCycle } = useHourCycle();
 
 const { setView, setCalendarView } = useCalendarViewState(inject('calendarId'));
 
-const { selectEvent, state } = useCalendar(inject('calendarId'));
+const { selectTimeSlot, state } = useCalendar(inject('calendarId'));
 
 const { config } = useConfig(inject('calendarId'));
 
-const { getFormattedDay, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
+const { getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
 
 const hourCycleSwitchValue = computed({
   get() {
@@ -157,8 +157,8 @@ const hourCycleSwitchValue = computed({
   },
 });
 
-const select = (event: IEvent) => {
-  selectEvent(event);
+const select = (timeSlot: TimeSlot) => {
+  selectTimeSlot(timeSlot);
 
   if (config.value.externalBooking !== true) {
     setView('form');

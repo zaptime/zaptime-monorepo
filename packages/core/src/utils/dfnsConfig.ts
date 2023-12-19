@@ -1,5 +1,5 @@
-import IZapTimeLocale from '../types/IZapTimeLocale';
-import IDfnsConf from '../types/IDfnsConf';
+import ZaptimeLocale from '../types/ZaptimeLocale';
+import DfnsConfig from '../types/DfnsConfig';
 
 // const languages = [
 // 'af',
@@ -80,12 +80,12 @@ import IDfnsConf from '../types/IDfnsConf';
 // 'zhTW',
 // ];
 
-export const getDfnsConfig = async (locale: IZapTimeLocale | undefined): Promise<IDfnsConf> => {
+export const getDfnsConfig = async (locale: ZaptimeLocale | undefined): Promise<DfnsConfig> => {
   let dateFnsLocale = undefined;
 
   if (locale === undefined) {
     dateFnsLocale = await import('date-fns/locale/en-US');
-    const dfnsConf: IDfnsConf = {
+    const dfnsConf: DfnsConfig = {
       locale: dateFnsLocale.default,
     };
 
@@ -128,7 +128,7 @@ export const getDfnsConfig = async (locale: IZapTimeLocale | undefined): Promise
     dateFnsLocale = await import('date-fns/locale/en-US');
   }
 
-  const dfnsConf: IDfnsConf = {
+  const dfnsConf: DfnsConfig = {
     locale: dateFnsLocale.default,
   };
 

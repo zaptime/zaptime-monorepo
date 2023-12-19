@@ -5,21 +5,21 @@
     :style="{ backgroundColor: color2 }"
   >
     <form
-      v-if="selectedEvent !== undefined"
+      v-if="selectedTimeSlot !== undefined"
       class="cal-mt-8 sm:cal-w-[370px]"
-      :class="[selectedEvent.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']"
+      :class="[selectedTimeSlot.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']"
       @submit.prevent="onSubmit"
     >
       <h1 class="cal-text-2xl cal-text-theme-700 dark:cal-text-theme-200">
         {{ locale?.confirmationForm?.confirmBooking }}
       </h1>
       <h2 class="cal-mt-[15px] cal-text-[32px] cal-font-semibold cal-text-theme-600 dark:cal-text-theme-300">
-        {{ getFormattedDay(selectedEvent.start) }}
-        {{ getFormattedDayInMonth(selectedEvent.start) }}
+        {{ getFormattedDay(selectedTimeSlot.start) }}
+        {{ getFormattedDayInMonth(selectedTimeSlot.start) }}
       </h2>
       <h3 class="cal-text-[32px] cal-font-semibold cal-leading-[48px] cal-text-theme-400 dark:cal-text-theme-400">
-        {{ getFormattedTime(selectedEvent.start) }} -
-        {{ getFormattedTime(selectedEvent.end) }}
+        {{ getFormattedTime(selectedTimeSlot.start) }} -
+        {{ getFormattedTime(selectedTimeSlot.end) }}
       </h3>
 
       <div class="cal-mt-6 cal-max-w-[370px]">
@@ -61,7 +61,7 @@
       </div>
 
       <div
-        v-if="selectedEvent.seats > 1"
+        v-if="selectedTimeSlot.seats > 1"
         class="cal-mt-6 cal-max-w-[370px]"
       >
         <label
@@ -75,7 +75,7 @@
             v-model="seats"
             type="number"
             :min="1"
-            :max="selectedEvent.seats"
+            :max="selectedTimeSlot.seats"
             name="seats"
             autocomplete="off"
             class="dark:cal-bg-theme-150 cal-block cal-w-full cal-rounded-md cal-border-2 cal-border-theme-800 cal-bg-theme-50 cal-px-5 cal-py-3.5 cal-text-base cal-font-medium cal-text-theme-100 cal-placeholder-theme-800 focus:cal-border-theme-500 focus:cal-outline-none focus:cal-ring-theme-500 sm:cal-text-sm"
@@ -101,11 +101,11 @@
 
 <script setup lang="ts">
 import { computed, inject, ref } from 'vue';
-import { useSelectedEvent, book, useConfig, useDateFormatters } from '@zaptime/core';
+import { useSelectedTimeSlot, book, useConfig, useDateFormatters } from '@zaptime/core';
 import PrimaryButton from './atomic/PrimaryButton.vue';
 import SecondaryButton from './atomic/SecondaryButton.vue';
 
-const { selectedEvent } = useSelectedEvent(inject('calendarId'));
+const { selectedTimeSlot } = useSelectedTimeSlot(inject('calendarId'));
 const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
 const { config } = useConfig(inject('calendarId'));
 const color2 = inject<string>('color2');
@@ -144,6 +144,12 @@ const splitName = (name: string) => {
 
 const onSubmit = async () => {
   const { firstName, lastName } = splitName(name.value);
-  await book(email.value, firstName, lastName, seats.value);
+
+  await book({
+    email: email.value,
+    firstName,
+    lastName,
+    seats: seats.value,
+  });
 };
 </script>

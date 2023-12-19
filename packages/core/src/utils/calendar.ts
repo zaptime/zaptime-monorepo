@@ -1,38 +1,38 @@
-import IDay from '../types/IDay';
-import IEvent from '../types/IEvent';
-import IZapTimeConfig from '../types/IZapTimeConfig';
-import IDfnsConf from '../types/IDfnsConf';
+import Day from '../types/Day';
+import TimeSlot from '../types/TimeSlot';
+import ZaptimeConfig from '../types/ZaptimeConfig';
+import type DfnsConfig from '../types/DfnsConfig';
 
 import { getDaysInMonth, startOfMonth, subMonths, lastDayOfMonth, subDays, endOfMonth, addDays, isPast, isToday, isThisMonth } from 'date-fns';
 import { format, utcToZonedTime } from 'date-fns-tz';
 
-import { getEvents } from '../api/api';
+import { getAvailableTimeSlots } from '../api/api';
 import { getStartOfTheWeekIndex } from '../utils/localeLogic';
 
-export const getEventsForDay = (date: Date, events: IEvent[], timeZone: string): IEvent[] | undefined => {
-  const collectedEvents: IEvent[] = [];
-  for (const event of events) {
-    if (format(utcToZonedTime(date, timeZone), 'd', { timeZone: timeZone }) === format(utcToZonedTime(new Date(event.start), timeZone), 'd', { timeZone: timeZone })) {
-      collectedEvents.push(event);
+export const getTimeSlotsForDivenDate = (date: Date, timeSlots: TimeSlot[], timeZone: string): TimeSlot[] | undefined => {
+  const collectedTimeSlots: TimeSlot[] = [];
+  for (const timeSlot of timeSlots) {
+    if (format(utcToZonedTime(date, timeZone), 'd', { timeZone: timeZone }) === format(utcToZonedTime(new Date(timeSlot.start), timeZone), 'd', { timeZone: timeZone })) {
+      collectedTimeSlots.push(timeSlot);
     }
   }
 
-  if (collectedEvents.length > 0) {
-    return collectedEvents;
+  if (collectedTimeSlots.length > 0) {
+    return collectedTimeSlots;
   }
 
   return undefined;
 };
 
-export const getDays = async (date: Date, dfnsConfig: IDfnsConf, zapTimeConfig: IZapTimeConfig, timezone: string): Promise<{ days: IDay[]; hasAnyEvent: boolean }> => {
+export const getDays = async (date: Date, dfnsConfig: DfnsConfig, zapTimeConfig: ZaptimeConfig, timezone: string): Promise<{ days: Day[]; hasAnyTimeSlot: boolean }> => {
   const dayCountInMonth = getDaysInMonth(date);
   const startDateOfTheMonth = startOfMonth(date);
-  let hasAnyEvent = false;
+  let hasAnyTimeSlot = false;
 
-  const events = await getEvents(zapTimeConfig.token, getStartDate(date, zapTimeConfig, timezone), format(endOfMonth(date), 'yyyy-MM-dd', { timeZone: timezone }));
+  const timeSlots = await getAvailableTimeSlots(zapTimeConfig.token, getStartDate(date, zapTimeConfig, timezone), format(endOfMonth(date), 'yyyy-MM-dd', { timeZone: timezone }));
 
-  if (Object.keys(events).length > 0) {
-    hasAnyEvent = true;
+  if (Object.keys(timeSlots).length > 0) {
+    hasAnyTimeSlot = true;
   }
 
   const startOfTheWeekIndex = zapTimeConfig && zapTimeConfig.locale !== undefined ? getStartOfTheWeekIndex(zapTimeConfig.locale) : 0;
@@ -43,7 +43,7 @@ export const getDays = async (date: Date, dfnsConfig: IDfnsConf, zapTimeConfig: 
 
   const lastDateOfPreviousMonth = lastDayOfMonth(previousMonth);
 
-  const days: IDay[] = [];
+  const days: Day[] = [];
 
   for (let k = 1; k < numberOfDay; k++) {
     days.unshift({
@@ -58,9 +58,10 @@ export const getDays = async (date: Date, dfnsConfig: IDfnsConf, zapTimeConfig: 
       label: i.toString(),
       date: iteratedDate,
       isPast: isPast(iteratedDate) && !isToday(iteratedDate),
+      // TODO: isCurrentMonth possibly unnecessary seems like it's always true
       isCurrentMonth: true,
       isToday: isToday(iteratedDate),
-      events: getEventsForDay(iteratedDate, events, timezone),
+      timeSlots: getTimeSlotsForDivenDate(iteratedDate, timeSlots, timezone),
     });
   }
 
@@ -75,17 +76,17 @@ export const getDays = async (date: Date, dfnsConfig: IDfnsConf, zapTimeConfig: 
   for (let j = 1; j <= nextMonthRemainingDays - startOfTheWeekIndex; j++) {
     days.push({
       label: j.toString(),
-      events: undefined,
+      timeSlots: undefined,
       isPast: true,
     });
   }
 
-  return { days, hasAnyEvent };
+  return { days, hasAnyTimeSlot };
 };
 
-const getStartDate = (date: Date, zapTimeConfig: IZapTimeConfig, timezone: string): string => {
-  if (isThisMonth(date) && zapTimeConfig.closestAvailableEvent !== undefined) {
-    return format(addDays(date, zapTimeConfig.closestAvailableEvent), 'yyyy-MM-dd', { timeZone: timezone });
+const getStartDate = (date: Date, zapTimeConfig: ZaptimeConfig, timezone: string): string => {
+  if (isThisMonth(date) && zapTimeConfig.closestBookableDay !== undefined) {
+    return format(addDays(date, zapTimeConfig.closestBookableDay), 'yyyy-MM-dd', { timeZone: timezone });
   }
 
   return format(startOfMonth(date), 'yyyy-MM-dd', { timeZone: timezone });

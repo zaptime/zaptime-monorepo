@@ -13,13 +13,13 @@
 import { provide, watch, computed, onMounted } from 'vue';
 
 import Calendar from './components/Calendar.vue';
-import { useConfig, useCalendar, IZapTimeConfig, useSelectedEvent } from '@zaptime/core';
+import { useConfig, useCalendar, ZaptimeConfig, useSelectedTimeSlot } from '@zaptime/core';
 import useCompactSwticher from './composables/useCompactSwitcher';
 import useAlphaColors from './composables/useAlphaColors';
 
 const props = withDefaults(
   defineProps<{
-    config: IZapTimeConfig;
+    config: ZaptimeConfig;
     calendarId?: string;
   }>(),
   {
@@ -28,13 +28,13 @@ const props = withDefaults(
   },
 );
 
-const emit = defineEmits(['event-changed', 'booking-confirmed']);
+const emit = defineEmits(['time-slot-changed', 'booking-confirmed']);
 
 provide('calendarId', props.calendarId);
 
 const { setConfig, config } = useConfig(props.calendarId);
 
-const { selectedEvent } = useSelectedEvent(props.calendarId);
+const { selectedTimeSlot } = useSelectedTimeSlot(props.calendarId);
 
 setConfig(props.config);
 
@@ -47,8 +47,8 @@ useCompactSwticher(props.calendarId);
 
 const { init: initCalendar } = useCalendar(props.calendarId);
 
-watch(selectedEvent, (newV) => {
-  emit('event-changed', newV);
+watch(selectedTimeSlot, (newV) => {
+  emit('time-slot-changed', newV);
 });
 
 // checks for external props change and sets config to core

@@ -1,8 +1,8 @@
-import IZapTimeLocale from '../types/IZapTimeLocale';
-import IDfnsConf from '../types/IDfnsConf';
+import ZaptimeLocale from '../types/ZaptimeLocale';
+import DfnsConfig from '../types/DfnsConfig';
 
 import { format } from 'date-fns';
-export const getHeaders = (locale: IZapTimeLocale, dfnsConfig: IDfnsConf): string[] => {
+export const getHeaders = (locale: ZaptimeLocale, dfnsConfig: DfnsConfig): string[] => {
   let sun = '';
 
   if (locale && locale.headers && locale.headers.sun) {
@@ -81,7 +81,7 @@ export const getHeaders = (locale: IZapTimeLocale, dfnsConfig: IDfnsConf): strin
   return autoHeaders;
 };
 
-export const getStartOfTheWeekIndex = (locale: IZapTimeLocale): number => {
+export const getStartOfTheWeekIndex = (locale: ZaptimeLocale): number => {
   const dayToIndex = {
     sun: 0,
     mon: 1,

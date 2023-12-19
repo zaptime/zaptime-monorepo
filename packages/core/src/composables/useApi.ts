@@ -1,55 +1,131 @@
-import useAttendeeState from './useAttendeeState';
-import useSelectedEvent from './useSelectedEvent';
+import useReservationStatus from './useReservationStatus';
+import useSelectedTimeSlot from './useSelectedTimeSlot';
 import useConfig from './useConfig';
 
 import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi } from '../api/api';
-import { IBookingResponse } from '../types/ApiResponses';
-import useCurrentTimezone from './useCurrentTimezone';
+import { TimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
 
-export const book = async (email: string, firstName?: string, lastName?: string, seats = 1, calendarId?: string): Promise<IBookingResponse> => {
-  const { selectedEvent } = useSelectedEvent(calendarId);
+export interface IBookingOptions {
+  /**
+   * Email of the attendee
+   */
+  email: string;
+
+  /**
+   * First name of the attendee
+   */
+  firstName?: string;
+
+  /**
+   * Last name of the attendee
+   */
+  lastName?: string;
+
+  /**
+   * Number of seats to book
+   *
+   * @default 1
+   */
+  seats?: number;
+
+  /**
+   * Calendar Id
+   */
+  calendarId?: string;
+}
+
+/**
+ * Book Attandee to specific time slot.
+ *
+ * @see https://docs.zaptime.app/guide/vue-working-with-time-slots.html#book
+ * @param options
+ */
+export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> => {
+  const { email, firstName, lastName, seats = 1, calendarId } = options;
+  const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
   const { config } = useConfig(calendarId);
-  const { timezone } = useCurrentTimezone();
 
-  if (selectedEvent.value !== undefined && config.value !== undefined) {
-    return await bookApi(email, config.value.token, selectedEvent.value, timezone.value, firstName, lastName, seats);
+  if (selectedTimeSlot.value !== undefined && config.value !== undefined) {
+    return await bookApi({
+      email,
+      token: config.value.token,
+      timeSlot: selectedTimeSlot.value,
+      firstName,
+      lastName,
+      seats,
+    });
   }
 
-  throw new Error('Booking event failed because event was not selected!');
+  throw new Error('Booking a time slot failed because time slot was not selected!');
 };
 
-export const reserve = async (email: string, firstName?: string, lastName?: string, seats = 1, calendarId?: string): Promise<IBookingResponse> => {
-  const { selectedEvent } = useSelectedEvent(calendarId);
+/**
+ * Reserve an timeslot for the attendee
+ *
+ * @see https://docs.zaptime.app/guide/vue-working-with-time-slots.html#reserve
+ * @param options
+ */
+export const reserve = async (options: IBookingOptions): Promise<PrepareReservationResponse> => {
+  const { email, firstName, lastName, seats = 1, calendarId } = options;
+
+  const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
+
+  console.log(selectedTimeSlot.value);
+
   const { config } = useConfig(calendarId);
-  const { setAttendeeState } = useAttendeeState(calendarId);
-  const { timezone } = useCurrentTimezone();
+  const { setReservationStatus } = useReservationStatus(calendarId);
 
-  if (selectedEvent.value !== undefined && config.value !== undefined) {
-    const data = await reserveApi(email, config.value.token, selectedEvent.value, timezone.value, firstName, lastName, seats);
+  if (selectedTimeSlot.value !== undefined && config.value !== undefined) {
+    const data = await reserveApi({
+      email: email,
+      token: config.value.token,
+      timeSlot: selectedTimeSlot.value,
+      firstName: firstName,
+      lastName: lastName,
+      seats: seats,
+    });
 
-    setAttendeeState(data.data.event_attendee);
+    setReservationStatus(data.data);
 
     return data;
   }
 
-  throw new Error('Booking event failed because event was not selected!');
+  throw new Error('Booking a time slot failed because time slot was not selected!');
 };
 
+/**
+ * Confirm previously reserved time slot
+ *
+ * @see https://docs.zaptime.app/guide/vue-working-with-time-slots.html#confirm
+ * @param calendarId
+ */
 export const confirm = async (calendarId?: string): Promise<boolean> => {
-  const { attendeeState } = useAttendeeState(calendarId);
+  console.log('test');
 
-  if (attendeeState.value !== undefined) {
-    return await confirmApi(attendeeState.value);
+  const { reservationStatus } = useReservationStatus(calendarId);
+  const { config } = useConfig(calendarId);
+
+  console.log(reservationStatus.value);
+
+  if (reservationStatus.value !== undefined) {
+    return await confirmApi(config.value.token, reservationStatus.value);
   }
 
   return false;
 };
 
+/**
+ * Cancel previously reserved time slot
+ *
+ * @see https://docs.zaptime.app/guide/vue-working-with-time-slots.html#cancel
+ * @param calendarId
+ */
 export const cancel = async (calendarId?: string): Promise<boolean> => {
-  const { attendeeState } = useAttendeeState(calendarId);
+  const { reservationStatus } = useReservationStatus(calendarId);
+  const { config } = useConfig(calendarId);
 
-  if (attendeeState.value !== undefined) {
-    return await cancelApi(attendeeState.value);
+  if (reservationStatus.value !== undefined) {
+    return await cancelApi(config.value.token, reservationStatus.value);
   }
 
   return false;

@@ -1,4 +1,4 @@
-export default interface IZapTimeTheme {
+export default interface ZaptimeTheme {
   preset?: 'basic' | 'elegant' | 'playful';
   mode?: 'light' | 'dark';
   borderRadius?: string; // 4px or full

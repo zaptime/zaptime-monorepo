@@ -1,10 +1,10 @@
-import IEvent from './IEvent';
+import TimeSlot from './TimeSlot';
 
-export default interface IDay {
+export default interface Day {
   label: string;
   date?: Date;
   isPast?: boolean;
-  events?: IEvent[];
+  timeSlots?: TimeSlot[];
   isCurrentMonth?: boolean;
   isToday?: boolean;
 }

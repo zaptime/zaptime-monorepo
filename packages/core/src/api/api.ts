@@ -1,130 +1,160 @@
-import IEvent from '../types/IEvent';
-import IStatus from '../types/IStatus';
-import { IBookingResponse, IAvailableEventsResponse } from '../types/ApiResponses';
-import { format } from 'date-fns';
+import type TimeSlot from '../types/TimeSlot';
+import type Status from '../types/Status';
+import type { TimeSlotResponse, AvailableTimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
 
-const baseUrl = 'https://api.zaptime.app/api';
+const baseUrl = 'https://api.zaptime.app/';
 
-export const book = async (email: string, token: string, event: IEvent, timezone: string, firstName?: string, lastName?: string, seats = 1): Promise<IBookingResponse> => {
+const bookUrl = baseUrl + 'time-slots/book';
+const reserveUrl = baseUrl + 'reservations/prepare';
+const confirmUrl = baseUrl + 'reservations/';
+const cancelUrl = baseUrl + 'reservations/';
+const availableTimeSlotsUrl = baseUrl + 'time-slots';
+
+export interface IOptions {
+  /**
+   * Email of the attendee
+   */
+  email: string;
+
+  /**
+   * Token of the calendar
+   */
+  token: string;
+
+  /**
+   * Time slot
+   */
+  timeSlot: TimeSlot;
+
+  /**
+   * First name of the attendee
+   */
+  firstName?: string;
+
+  /**
+   * Last name of the attendee
+   */
+  lastName?: string;
+
+  /**
+   * Number of seats to book
+   *
+   * @default 1
+   */
+  seats?: number;
+}
+
+export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
+  const { email, token, timeSlot, firstName, lastName, seats = 1 } = options;
+
   try {
-    const data = await fetch(baseUrl + '/book-event', {
+    const data = await fetch(bookUrl, {
       method: 'POST',
       body: JSON.stringify({
-        token: token,
-        event_id: event.eventId,
-        date: format(new Date(event.start), 'yyyy-MM-dd'),
+        start: timeSlot.start,
+        end: timeSlot.end,
         email: email,
         seats: seats,
         firstname: firstName,
-        lastName: lastName,
-        start: event.start,
-        end: event.end,
-        recurring_event_id: event.recurringEventId,
-        timezone: timezone,
+        lastname: lastName,
       }),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
       },
     }).then((response) => response.json());
 
     return data;
   } catch (err) {
-    throw new Error('Booking event failed!');
+    throw new Error('Booking time slot failed!');
   }
 };
 
-export const reserve = async (email: string, token: string, event: IEvent, timezone: string, firstName?: string, lastName?: string, seats = 1): Promise<IBookingResponse> => {
+export const reserve = async (options: IOptions): Promise<PrepareReservationResponse> => {
+  const { email, token, timeSlot, firstName, lastName, seats = 1 } = options;
+
   try {
-    const data = await fetch(baseUrl + '/reserve-event', {
+    const data = await fetch(reserveUrl, {
       method: 'POST',
       body: JSON.stringify({
-        token: token,
-        event_id: event.eventId,
-        date: format(new Date(event.start), 'yyyy-MM-dd'),
+        start: timeSlot.start,
+        end: timeSlot.end,
         email: email,
         seats: seats,
         firstname: firstName,
-        lastName: lastName,
-        start: event.start,
-        end: event.end,
-        recurring_event_id: event.recurringEventId,
-        timezone: timezone,
+        lastname: lastName,
       }),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
       },
     }).then((response) => response.json());
 
     return data;
   } catch (err) {
-    throw new Error('Reserving event failed!');
+    throw new Error('Reserving time slot failed!');
   }
 };
 
-export const confirm = async (status: IStatus): Promise<boolean> => {
+export const confirm = async (token: string, status: Status): Promise<boolean> => {
   try {
-    const data = await fetch(
-      baseUrl +
-        '/confirm-event?' +
-        new URLSearchParams({
-          event_attendee_id: status.id.toString(),
-        }),
-      {
-        method: 'POST',
-        body: JSON.stringify(status),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
+    const data = await fetch(confirmUrl + status.uuid + '/confirm', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
       },
-    ).then((response) => response.json());
+    }).then((response) => response.json());
 
     return data.success;
   } catch (err) {
-    throw new Error('Event confirmation failed!');
+    throw new Error('Time slot confirmation failed!');
   }
 };
 
-export const cancel = async (status: IStatus): Promise<boolean> => {
+export const cancel = async (token: string, status: Status): Promise<boolean> => {
   try {
-    const data = await fetch(
-      baseUrl +
-        '/cancel-event?' +
-        new URLSearchParams({
-          event_attendee_id: status.id.toString(),
-        }),
-      {
-        method: 'POST',
-        body: JSON.stringify(status),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
+    const data = await fetch(cancelUrl + status.uuid, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
       },
-    ).then((resposne) => resposne.json());
+    }).then((resposne) => resposne.json());
 
     return data.success;
   } catch (err) {
-    throw new Error('Reserving event failed!');
+    throw new Error('Reserving time slot failed!');
   }
 };
 
 //token=token&from=from&until=until&group_by_day=group_by_day
-export const getEvents = async (token: string, from: string, until: string): Promise<IEvent[]> => {
+export const getAvailableTimeSlots = async (token: string, from: string, until: string): Promise<TimeSlot[]> => {
   try {
-    const data: IAvailableEventsResponse = await fetch(
-      baseUrl +
-        '/available-events?' +
+    const data: AvailableTimeSlotResponse = await fetch(
+      availableTimeSlotsUrl +
+        '?' +
         new URLSearchParams({
-          token: token,
           from: from,
           until: until,
-          group_by_day: '1',
         }),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      },
     ).then((response) => response.json());
 
     return data.data;
   } catch (err) {
     console.log(err);
 
-    throw new Error('Getting available events failed!');
+    throw new Error('Getting available time slots failed!');
   }
 };

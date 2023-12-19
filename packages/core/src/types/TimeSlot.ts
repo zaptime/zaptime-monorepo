@@ -1,7 +1,5 @@
-export default interface IEvent {
+export default interface TimeSlot {
   calendarId: number;
-  recurringEventId: number;
-  eventId: number | null;
   end: string;
   start: string;
   readableType: string;

@@ -12,11 +12,11 @@
     :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[440px]']"
   >
     <div v-if="!state.loading">
-      <div v-if="state.events && state.events.length > 0 && !state.loading">
+      <div v-if="state.timeSlots && state.timeSlots.length > 0 && !state.loading">
         <div class="cal-pt-[54px]">
           <p class="cal-text-[32px] cal-font-semibold cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-300">
-            {{ getFormattedDay(state.events[0].start) }},
-            {{ getFormattedDayInMonth(state.events[0].start) }}
+            {{ getFormattedDay(state.timeSlots[0].start) }},
+            {{ getFormattedDayInMonth(state.timeSlots[0].start) }}
           </p>
         </div>
         <div class="cal-pb-0.5 cal-pt-6">
@@ -30,23 +30,23 @@
 
         <div class="cal-mt-2 cal-h-64 cal-overflow-y-auto cal-px-1">
           <button
-            v-for="(event, i) in state.events"
+            v-for="(timeSlot, i) in state.timeSlots"
             :key="i"
             class="cal-group cal-relative cal-my-2 cal-flex cal-w-full cal-cursor-pointer cal-items-center cal-justify-center cal-rounded-md cal-border cal-border-theme-100 cal-bg-theme-100 cal-pb-[14px] cal-pt-[16px] cal-outline-none cal-transition-all cal-duration-150 focus:cal-outline-none focus:cal-ring-2 focus:cal-ring-theme-800 focus:cal-ring-opacity-50 dark:cal-border-theme-600 dark:cal-bg-theme-800 hover:dark:cal-bg-theme-600"
-            @click.prevent="select(event)"
+            @click.prevent="select(timeSlot)"
           >
             <span
               class="cal-leading-4"
               :class="{
-                'py-4 cal-text-theme-700 dark:cal-text-white': isSelected(event),
-                'cal-text-theme-800 dark:cal-text-theme-100': !isSelected(event),
+                'py-4 cal-text-theme-700 dark:cal-text-white': isSelected(timeSlot),
+                'cal-text-theme-800 dark:cal-text-theme-100': !isSelected(timeSlot),
               }"
             >
-              {{ getFormattedTime(event.start) }} -
-              {{ getFormattedTime(event.end) }}
+              {{ getFormattedTime(timeSlot.start) }} -
+              {{ getFormattedTime(timeSlot.end) }}
             </span>
             <svg
-              v-if="isSelected(event)"
+              v-if="isSelected(timeSlot)"
               class="cal-absolute cal-right-2 cal-top-[13px] cal-h-5 cal-w-5 cal-text-theme-700 dark:cal-text-white"
               fill="currentColor"
               viewBox="0 0 20 20"
@@ -66,15 +66,15 @@
         class="cal-w-full"
       >
         <div
-          v-if="!state.monthHasEvents"
+          v-if="!state.monthHasTimeSlots"
           class="cal-flex cal-h-full cal-flex-col cal-items-center cal-justify-center"
         >
           <div class="cal-mt-24 cal-flex cal-h-full cal-items-center cal-justify-center">
             <div class="cal-flex cal-h-40 cal-w-40 cal-items-center cal-justify-center cal-rounded-2xl cal-px-5 dark:cal-text-theme-50">
               <p
-                v-if="config.locale && config.locale.texts?.noEventAvailable"
+                v-if="config.locale && config.locale.texts?.noTimeSlotAvailable"
                 class="dark:cal-text-theme-theme cal-text-center"
-                v-html="config.locale.texts?.noEventAvailable"
+                v-html="config.locale.texts?.noTimeSlotAvailable"
               ></p>
             </div>
           </div>
@@ -119,18 +119,18 @@ import { useCalendar, useConfig, useDateFormatters } from '@zaptime/core';
 import useCalendarViewState from '../../composables/useCalendarViewState';
 import PrimaryButton from '../atomic/PrimaryButton.vue';
 import { inject } from 'vue';
-import { IEvent } from '@zaptime/core';
+import { TimeSlot } from '@zaptime/core';
 
 const { setView, setCalendarView } = useCalendarViewState(inject('calendarId'));
 
-const { selectEvent, isSelected, state } = useCalendar(inject('calendarId'));
+const { selectTimeSlot, isSelected, state } = useCalendar(inject('calendarId'));
 
 const { config } = useConfig(inject('calendarId'));
 
 const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
 
-const select = (event: IEvent) => {
-  selectEvent(event);
+const select = (timeSlot: TimeSlot) => {
+  selectTimeSlot(timeSlot);
 
   if (config.value.externalBooking !== true) {
     setView('form');

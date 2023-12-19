@@ -1,4 +1,4 @@
-export default interface IZapTimeLocale {
+export default interface ZaptimeLocale {
   preset?: string;
   startDayOfWeek?: 'sun' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat';
   headers?: {
@@ -14,7 +14,7 @@ export default interface IZapTimeLocale {
   texts?: {
     introduction?: string;
     chooseDate?: string;
-    noEventAvailable?: string;
+    noTimeSlotAvailable?: string;
     choosePreferredTime?: string;
     pickTime?: string;
   };

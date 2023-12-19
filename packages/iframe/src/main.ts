@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import { IZapTimeConfig, book as bookZaptime, reserve as reserveZaptime, confirm as confirmZaptime, cancel as cancelZaptime } from '@zaptime/vue3';
+import { ZaptimeConfig, book as bookZaptime, reserve as reserveZaptime, confirm as confirmZaptime, cancel as cancelZaptime } from '@zaptime/vue3';
 
 interface BookAndReservePayload {
   email: string;
@@ -12,8 +12,8 @@ interface BookAndReservePayload {
 declare global {
   interface Window {
     xprops: {
-      config: IZapTimeConfig;
-      onEventChanged(event: unknown): void;
+      config: ZaptimeConfig;
+      onTimeSlotChanged(timeSlot: unknown): void;
     };
 
     ZaptimeProxy: {
@@ -27,10 +27,10 @@ declare global {
 
 window.ZaptimeProxy = {
   book(payload) {
-    bookZaptime(payload.email);
+    bookZaptime({ email: payload.email });
   },
   reserve(payload) {
-    reserveZaptime(payload.email);
+    reserveZaptime({ email: payload.email });
   },
   confirm(calendarId) {
     confirmZaptime(calendarId);

@@ -4,10 +4,11 @@
     class="cal-flex cal-px-4"
   >
     <div style="padding-top: 20px; padding-left: 20px">
-      <ZaptimeCalendar
-        calendarId="calendar-1"
-        :config="config"
-      ></ZaptimeCalendar>
+      <button @click="reserveDemocall">Create reservation</button>
+
+      <button @click="confirmDemocall">Confirm reservation</button>
+
+      <ZaptimeCalendar :config="config"></ZaptimeCalendar>
     </div>
 
     <!-- <ZaptimeCalendar
@@ -23,9 +24,21 @@
 
 <script setup lang="ts">
 import { default as ZaptimeCalendar } from '../src/App.vue';
-import { IZapTimeConfig } from '@zaptime/core';
+import { ZaptimeConfig, reserve, confirm } from '@zaptime/core';
 
-const calypsoTheme: IZapTimeConfig['theme'] = {
+function confirmDemocall() {
+  confirm();
+}
+
+function reserveDemocall() {
+  reserve({
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john@doe.test',
+  });
+}
+
+const calypsoTheme: ZaptimeConfig['theme'] = {
   mode: 'dark',
   colors: {
     'accent--1': '#9e7700',
@@ -43,19 +56,20 @@ const calypsoTheme: IZapTimeConfig['theme'] = {
   },
 };
 
-const config: IZapTimeConfig = {
+const config: ZaptimeConfig = {
   token: 'kPRrAtlXbgnCqi309Zjvr5Lq6RRPfYgc',
 
   compact: false,
 
-  externalBooking: false,
+  externalBooking: true,
 
+  closestBookableDay: 1,
   // min: 0,
   // max: 1,
   // externalBooking: false,
   // compact: true,
 
-  profileImage: 'https://media.licdn.com/dms/image/D4E03AQE3gawFsTv2rA/profile-displayphoto-shrink_800_800/0/1674467277976?e=1687996800&v=beta&t=cuvWY8CocEGn1fFSpncV6PE5aZBRWoPaXXL_atHYf34',
+  profileImage: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
 
   locale: {
     preset: 'en',
@@ -64,7 +78,7 @@ const config: IZapTimeConfig = {
     startDayOfWeek: 'sun',
 
     texts: {
-      introduction: 'Book a Topol walktrough',
+      introduction: 'Book a meeting with me',
     },
     confirmationForm: {
       confirmBooking: 'Confirm booking',

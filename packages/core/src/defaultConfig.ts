@@ -1,12 +1,12 @@
-import IZapTimeConfig from './types/IZapTimeConfig';
+import ZaptimeConfig from './types/ZaptimeConfig';
 
-const config: IZapTimeConfig = {
+const config: ZaptimeConfig = {
   token: 'oG77Ft7Wv6v9stJTOw8cbMmW7zENDzXl',
   locale: {
     preset: 'en',
     texts: {
       chooseDate: 'Choose date',
-      noEventAvailable: 'There is no event available for chosen month.',
+      noTimeSlotAvailable: 'There is no time slot available for chosen month.',
       choosePreferredTime: 'Choose preferred time',
       pickTime: 'Pick time',
     },

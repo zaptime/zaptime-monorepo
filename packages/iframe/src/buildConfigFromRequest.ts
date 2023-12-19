@@ -1,4 +1,4 @@
-import type { IZapTimeConfig } from '@zaptime/vue3';
+import type { ZaptimeConfig } from '@zaptime/vue3';
 
 export type RequestConfig = {
   language: 'en' | 'cs';
@@ -14,19 +14,19 @@ export type RequestConfig = {
   noEventAvailableLocaleText: string;
   choosePreferredTimeLocaleText: string;
 };
-export const buildConfigFromRequest = (request: RequestConfig, token: string): IZapTimeConfig => {
+export const buildConfigFromRequest = (request: RequestConfig, token: string): ZaptimeConfig => {
   return {
     token: token,
     min: request.visibleMonthsInThePast || 0,
     max: request.visibleMonthsInTheFuture || 2,
-    closestAvailableEvent: request.closestBookableDay || 3,
+    closestBookableDay: request.closestBookableDay || 3,
     locale: {
       preset: request.language,
       startDayOfWeek: request.startDayOfTheWeek,
 
       texts: {
         chooseDate: request.chooseDateLocaleText,
-        noEventAvailable: request.noEventAvailableLocaleText,
+        noTimeSlotAvailable: request.noEventAvailableLocaleText,
         choosePreferredTime: request.choosePreferredTimeLocaleText,
       },
 

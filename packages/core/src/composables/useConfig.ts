@@ -1,11 +1,11 @@
-import IZapTimeConfig from '../types/IZapTimeConfig';
+import ZaptimeConfig from '../types/ZaptimeConfig';
 import defaultConfig from '../defaultConfig';
 import { ref, computed } from 'vue';
 import mergeObjects from '../utils/mergeObjects';
 import { reactifyObject } from '@vueuse/core';
 
 interface IConfigState {
-  config: IZapTimeConfig;
+  config: ZaptimeConfig;
 }
 
 const _config = ref<Record<string, IConfigState>>({
@@ -21,7 +21,7 @@ export default function useConfig(calendarId?: string) {
     };
   }
 
-  const setConfig = (cfg: IZapTimeConfig) => {
+  const setConfig = (cfg: ZaptimeConfig) => {
     if (calendarId === undefined) {
       _config.value.__DEFAULT__.config = reactifyObject(mergeObjects(defaultConfig, cfg));
     } else {

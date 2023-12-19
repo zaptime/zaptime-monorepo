@@ -6,31 +6,31 @@ import { getDays as getDaysExternal } from '../utils/calendar';
 import { getHeaders } from '../utils/localeLogic';
 import { getDfnsConfig } from '../utils/dfnsConfig';
 
-import IEvent from '../types/IEvent';
-import ICalendarState from '../types/ICalendarState';
-import IDay from '../types/IDay';
-import useSelectedEvent from '../composables/useSelectedEvent';
+import TimeSlot from '../types/TimeSlot';
+import CalendarState from '../types/CalendarState';
+import Day from '../types/Day';
+import useSelectedTimeSlot from './useSelectedTimeSlot';
 
 import useConfig from '../composables/useConfig';
 import useCurrentTimezone from './useCurrentTimezone';
 
 const date = ref(new Date());
 
-type ICalendarStates = Record<string, ICalendarState>;
+type CalendarStates = Record<string, CalendarState>;
 
-const initCalendarState: ICalendarState = {
+const initCalendarState: CalendarState = {
   date: new Date(),
   days: [],
-  events: [],
-  monthHasEvents: false,
+  timeSlots: [],
+  monthHasTimeSlots: false,
   selectedDay: null,
   loading: true,
   headers: [],
-  dfnsConfig: null,
-  attendeeState: null,
+  dfnsConfig: undefined,
+  attendeeState: undefined,
 };
 
-const _state = reactive<ICalendarStates>({
+const _state = reactive<CalendarStates>({
   __DEFAULT__: { ...initCalendarState },
 });
 
@@ -42,18 +42,18 @@ export default (calendarId?: string) => {
   }
 
   const { config } = useConfig(calendarId);
-  const { selectedEvent, setSelectedEvent } = useSelectedEvent(calendarId);
+  const { selectedTimeSlot, setSelectedTimeSlot } = useSelectedTimeSlot(calendarId);
   const { timezone } = useCurrentTimezone();
 
-  const selectEvent = (event: IEvent) => {
-    setSelectedEvent(event);
+  const selectTimeSlot = (timeSlot: TimeSlot) => {
+    setSelectedTimeSlot(timeSlot);
   };
 
   const state = computed(() => {
     if (calendarId === undefined) {
-      return _state['__DEFAULT__'] as ICalendarState;
+      return _state['__DEFAULT__'] as CalendarState;
     } else {
-      return _state[calendarId] as ICalendarState;
+      return _state[calendarId] as CalendarState;
     }
   });
 
@@ -71,38 +71,36 @@ export default (calendarId?: string) => {
     setState('loading', true);
 
     if (state.value.dfnsConfig !== undefined && state.value.dfnsConfig !== null) {
-      const { days, hasAnyEvent } = await getDaysExternal(date.value, state.value.dfnsConfig, config.value, timezone.value);
-      setState('monthHasEvents', hasAnyEvent);
+      const { days, hasAnyTimeSlot } = await getDaysExternal(date.value, state.value.dfnsConfig, config.value, timezone.value);
+      setState('monthHasTimeSlots', hasAnyTimeSlot);
       setState('days', days);
       setState('loading', false);
     }
   };
 
-  const isSelectedDay = (day: IDay) => {
+  const isSelectedDay = (day: Day) => {
     return day === state.value.selectedDay;
   };
 
-  const dayClicked = (day: IDay) => {
-    //clear selected event when clicking to another day
-    // setSelectedEvent(undefined);
-
+  const dayClicked = (day: Day) => {
+    //clear selected time slot when clicking to another day
     setState('selectedDay', day);
 
-    if (day.events !== undefined) {
-      setState('events', day.events);
+    if (day.timeSlots !== undefined) {
+      setState('timeSlots', day.timeSlots);
     }
   };
 
-  const dayHasEvent = (day: IDay): boolean => {
-    return day.events !== undefined;
+  const dayHasTimeSlot = (day: Day): boolean => {
+    return day.timeSlots !== undefined;
   };
 
-  const isSelected = (event: IEvent): boolean => {
-    if (selectedEvent.value === undefined) {
+  const isSelected = (timeSlot: TimeSlot): boolean => {
+    if (selectedTimeSlot.value === undefined) {
       return false;
     }
 
-    return selectedEvent.value.start === event.start;
+    return selectedTimeSlot.value.start === timeSlot.start;
   };
 
   const next = async (): Promise<void> => {
@@ -110,7 +108,7 @@ export default (calendarId?: string) => {
       return;
     }
 
-    setState('events', []);
+    setState('timeSlots', []);
     setState('loading', true);
     date.value = addMonths(date.value, 1);
 
@@ -123,7 +121,7 @@ export default (calendarId?: string) => {
       return;
     }
 
-    setState('events', []);
+    setState('timeSlots', []);
     setState('loading', true);
     date.value = addMonths(date.value, -1);
     await getDays();
@@ -170,7 +168,7 @@ export default (calendarId?: string) => {
     });
   });
 
-  watch([() => config.value.locale?.preset, () => config.value.closestAvailableEvent, () => config.value.locale?.startDayOfWeek], async () => {
+  watch([() => config.value.locale?.preset, () => config.value.closestBookableDay, () => config.value.locale?.startDayOfWeek], async () => {
     await setLocales();
     //refetch days with new given locales
     await getDays();
@@ -193,13 +191,13 @@ export default (calendarId?: string) => {
   return {
     getDays,
     init,
-    selectEvent,
+    selectTimeSlot,
     nextDisabled,
     prevDisabled,
     next,
     prev,
     dayClicked,
-    dayHasEvent,
+    dayHasTimeSlot,
     isSelected,
     isSelectedDay,
     currentYear: currentYear,

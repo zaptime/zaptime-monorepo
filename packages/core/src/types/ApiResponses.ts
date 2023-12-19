@@ -1,18 +1,16 @@
-import IEvent from './IEvent';
-import IStatus from './IStatus';
+import TimeSlot from './TimeSlot';
+import Status from './Status';
 
-export interface IBookingResponse {
+export interface TimeSlotResponse {
   success: boolean;
   data: {
-    event_attendee: IStatus;
+    event_attendee: Status;
     created_at: string;
     email: string;
     end: string;
-    event_id: number;
     firstname: string;
     id: number;
     lastname?: string;
-    integration_event_id?: number;
     phone?: string;
     seats: number;
     start: string;
@@ -24,7 +22,14 @@ export interface IBookingResponse {
   };
 }
 
-export interface IAvailableEventsResponse {
+export interface AvailableTimeSlotResponse {
   success: boolean;
-  data: IEvent[];
+  data: TimeSlot[];
+}
+
+export interface PrepareReservationResponse {
+  success: boolean;
+  data: {
+    uuid: string;
+  };
 }
