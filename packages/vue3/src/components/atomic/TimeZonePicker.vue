@@ -40,13 +40,13 @@
             </div>
 
             <div
-              v-for="(timezone, id) in filteredTimezones"
+              v-for="(tz, id) in filteredTimezones"
               :key="id"
             >
               <ComboboxOption
                 v-slot="{ selected, active }"
                 as="template"
-                :value="timezone"
+                :value="tz"
               >
                 <li
                   class="cal-relative cal-cursor-default cal-select-none cal-list-none cal-py-2 cal-pl-2 cal-pr-4"
@@ -59,7 +59,7 @@
                     class="cal-block cal-truncate"
                     :class="{ 'cal-font-medium': selected, 'cal-font-normal': !selected }"
                   >
-                    {{ timezone.value }}
+                    {{ tz.value }}
                   </span>
                   <!-- <span
                     v-if="selected"
