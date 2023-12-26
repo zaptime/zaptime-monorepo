@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 1.0.0
+
+### Major Changes
+
+- See docs.
+
 ## 0.4.19
 
 ### Patch Changes

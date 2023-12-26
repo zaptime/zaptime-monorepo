@@ -1,5 +1,16 @@
 # @zaptime/vue3
 
+## 2.0.0
+
+### Major Changes
+
+- See docs.
+
+### Patch Changes
+
+- Updated dependencies
+  - @zaptime/core@1.0.0
+
 ## 1.4.38
 
 ### Patch Changes
