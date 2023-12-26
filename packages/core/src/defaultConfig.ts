@@ -5,10 +5,10 @@ const config: ZaptimeConfig = {
   locale: {
     preset: 'en',
     texts: {
-      chooseDate: 'Choose date',
+      chooseDate: 'Choose a date',
       noTimeSlotAvailable: 'There is no time slot available for chosen month.',
       choosePreferredTime: 'Choose preferred time',
-      pickTime: 'Pick time',
+      pickTime: 'Pick a time',
     },
     confirmationForm: {
       confirmBooking: 'Confirm booking',
