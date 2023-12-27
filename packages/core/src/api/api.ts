@@ -4,7 +4,7 @@ import type { TimeSlotResponse, AvailableTimeSlotResponse, PrepareReservationRes
 
 const baseUrl = 'https://api.zaptime.app/';
 
-const bookUrl = baseUrl + 'time-slots/book';
+const bookUrl = baseUrl + 'reservations';
 const reserveUrl = baseUrl + 'reservations/prepare';
 const confirmUrl = baseUrl + 'reservations/';
 const cancelUrl = baseUrl + 'reservations/';

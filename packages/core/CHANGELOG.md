@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 1.0.1
+
+### Patch Changes
+
+- Fix booking URL
+
 ## 1.0.0
 
 ### Major Changes
