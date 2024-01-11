@@ -7,6 +7,10 @@ var Zaptime = zoid.create({
   },
 
   props: {
+    type: {
+      type: "string",
+      required: false,
+    },
     config: {
       type: "object",
       required: true,

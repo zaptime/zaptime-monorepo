@@ -1,19 +1,23 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import { ZaptimeConfig, book as bookZaptime, reserve as reserveZaptime, confirm as confirmZaptime, cancel as cancelZaptime } from '@zaptime/vue3';
+import type { MultipleEventTypesConfig } from './components/MultipleEventTypes.vue';
+import type { TimeSlot } from '@zaptime/core';
+import './assets/style.css';
 
-interface BookAndReservePayload {
+type BookAndReservePayload = {
   email: string;
   firstName?: string;
   lastName?: string;
   seats?: number;
   calendarId?: string;
-}
+};
 declare global {
   interface Window {
     xprops: {
-      config: ZaptimeConfig;
-      onTimeSlotChanged(timeSlot: unknown): void;
+      type?: 'single' | 'multiple';
+      config: ZaptimeConfig | MultipleEventTypesConfig;
+      onTimeSlotChanged(timeSlot: TimeSlot): void;
     };
 
     ZaptimeProxy: {
