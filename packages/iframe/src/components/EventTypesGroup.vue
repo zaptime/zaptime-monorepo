@@ -64,12 +64,12 @@ import { ZaptimeConfig } from '@zaptime/vue3';
 import { ref } from 'vue';
 import EventType from './EventType.vue';
 
-export type MultipleEventTypesConfig = {
+export type EventTypeGroup = {
   title: string;
-  token: string;
+  token: string; // toto nwm co jsem myslel wtf
   description?: string;
   avatar?: string;
-  theme?: ZaptimeConfig['theme'];
+  theme: ZaptimeConfig['theme'];
   eventTypes: EventTypeConfig[];
 };
 
@@ -81,7 +81,7 @@ export type EventTypeConfig = {
 };
 
 const props = defineProps<{
-  config: MultipleEventTypesConfig;
+  config: EventTypeGroup;
 }>();
 
 const selectedEventTypeToken = ref();

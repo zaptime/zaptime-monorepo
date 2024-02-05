@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import type { EventTypeConfig } from './MultipleEventTypes.vue';
+import type { EventTypeConfig } from './EventTypesGroup.vue';
 
 const props = defineProps<{
   config: EventTypeConfig;

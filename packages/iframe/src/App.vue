@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { ZaptimeConfig, TimeSlot } from '@zaptime/core';
 import EventType from './components/EventType.vue';
-import MultipleEventTypes from './components/MultipleEventTypes.vue';
-import type { MultipleEventTypesConfig } from './components/MultipleEventTypes.vue';
+import EventTypeGroup from './components/EventTypesGroup.vue';
+import type { EventTypeGroup as IEventTypeGroup } from './components/EventTypesGroup.vue';
 
 const type = window.xprops.type ? window.xprops.type : 'single';
 const config = window.xprops.config;
@@ -13,7 +13,7 @@ const onTimeSlotChanged = (timeSlot: TimeSlot) => {
   }
 };
 
-function isSingleConfig(_config: ZaptimeConfig | MultipleEventTypesConfig, type: 'single' | 'multiple'): _config is ZaptimeConfig {
+function isSingleConfig(_config: ZaptimeConfig | IEventTypeGroup, type: 'single' | 'multiple'): _config is ZaptimeConfig {
   return type === 'single';
 }
 </script>
@@ -32,7 +32,7 @@ function isSingleConfig(_config: ZaptimeConfig | MultipleEventTypesConfig, type:
     </div>
 
     <div v-else>
-      <MultipleEventTypes :config="config" />
+      <EventTypeGroup :config="config" />
     </div>
   </div>
 </template>
