@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 1.0.2
+
+### Patch Changes
+
+- fix: automatically select first available day with time slot
+
 ## 1.0.1
 
 ### Patch Changes

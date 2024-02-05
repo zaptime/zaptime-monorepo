@@ -67,11 +67,32 @@ export default (calendarId?: string) => {
     }
   };
 
+  function getFirstAvailableDayWithTimeSlot(days: Day[]): Day | undefined {
+    for (const day of days) {
+      if (day.timeSlots !== undefined && day.timeSlots.length > 0) {
+        return day;
+      }
+    }
+  }
+
   const getDays = async (): Promise<void> => {
     setState('loading', true);
 
     if (state.value.dfnsConfig !== undefined && state.value.dfnsConfig !== null) {
       const { days, hasAnyTimeSlot } = await getDaysExternal(date.value, state.value.dfnsConfig, config.value, timezone.value);
+
+      if (hasAnyTimeSlot) {
+        const firstAvailableDayWithTimeSlot = getFirstAvailableDayWithTimeSlot(days);
+
+        if (firstAvailableDayWithTimeSlot !== undefined) {
+          setState('selectedDay', firstAvailableDayWithTimeSlot);
+
+          if (firstAvailableDayWithTimeSlot.timeSlots !== undefined) {
+            setState('timeSlots', firstAvailableDayWithTimeSlot.timeSlots);
+          }
+        }
+      }
+
       setState('monthHasTimeSlots', hasAnyTimeSlot);
       setState('days', days);
       setState('loading', false);
