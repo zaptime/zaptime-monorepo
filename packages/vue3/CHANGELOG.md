@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 2.0.2
+
+### Patch Changes
+
+- Fix: day formatting in confirmation form
+
 ## 2.0.1
 
 ### Patch Changes

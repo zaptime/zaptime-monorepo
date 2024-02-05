@@ -14,7 +14,6 @@
         {{ locale?.confirmationForm?.confirmBooking }}
       </h1>
       <h2 class="cal-mt-[24px] cal-text-2xl cal-font-semibold cal-text-theme-700 dark:cal-text-theme-100">
-        {{ getFormattedDay(selectedTimeSlot.start) }}
         {{ getFormattedDayInMonth(selectedTimeSlot.start) }}
       </h2>
       <h3 class="cal-text-[24px] cal-font-semibold cal-leading-[36px] cal-text-theme-500 dark:cal-text-theme-300">
@@ -93,7 +92,7 @@ import CalInput from './DefaultCalendar/CalInput.vue';
 const emits = defineEmits(['booking-confirmed', 'go-back']);
 
 const { selectedTimeSlot } = useSelectedTimeSlot(inject('calendarId'));
-const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
+const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
 const { config } = useConfig(inject('calendarId'));
 const color2 = inject<string>('color2');
 const calendarId = inject<string>('calendarId');

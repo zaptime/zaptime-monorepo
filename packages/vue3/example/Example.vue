@@ -61,7 +61,7 @@ const config: ZaptimeConfig = {
 
   compact: false,
 
-  externalBooking: true,
+  externalBooking: false,
 
   closestBookableDay: 1,
   // min: 0,
