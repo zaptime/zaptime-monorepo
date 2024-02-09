@@ -69,7 +69,7 @@ export default (calendarId?: string) => {
 
   function getFirstAvailableDayWithTimeSlot(days: Day[]): Day | undefined {
     for (const day of days) {
-      if (day.timeSlots !== undefined && day.timeSlots.length > 0) {
+      if (day.timeSlots !== undefined && day.timeSlots.length > 0 && !day.isPast) {
         return day;
       }
     }
