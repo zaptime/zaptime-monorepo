@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "dev-legacy": "vite build --watch",
-    "dev": "pnpm run build --watch",
+    "devasd": "pnpm run build --watch",
     "build": "tsup ./src/entry.ts --dts --format esm,cjs --external vue "
   },
   "dependencies": {

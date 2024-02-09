@@ -61,12 +61,12 @@
 <script setup lang="ts">
 import EventTypeCard from './EventTypeCard.vue';
 import { ZaptimeConfig } from '@zaptime/vue3';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import EventType from './EventType.vue';
+import { fetchRemoteGroupConfig } from '../buildConfigFromRequest';
 
 export type EventTypeGroup = {
   title: string;
-  token: string; // toto nwm co jsem myslel wtf
   description?: string;
   avatar?: string;
   theme: ZaptimeConfig['theme'];
@@ -81,8 +81,10 @@ export type EventTypeConfig = {
 };
 
 const props = defineProps<{
-  config: EventTypeGroup;
+  token: string;
 }>();
+
+const config = ref<EventTypeGroup>();
 
 const selectedEventTypeToken = ref();
 
@@ -93,6 +95,10 @@ function selectEventTypeToken(token: string) {
 function goBack() {
   selectedEventTypeToken.value = null;
 }
+
+onMounted(async () => {
+  config.value = await fetchRemoteGroupConfig('mVlRIHzRWmI0ZYHDETlfDQsnRV9X4hZF');
+});
 </script>
 
 <style></style>

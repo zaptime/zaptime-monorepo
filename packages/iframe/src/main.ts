@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import { ZaptimeConfig, book as bookZaptime, reserve as reserveZaptime, confirm as confirmZaptime, cancel as cancelZaptime } from '@zaptime/vue3';
-import type { MultipleEventTypesConfig } from './components/MultipleEventTypes.vue';
+import type { EventTypeConfig } from './components/EventTypesGroup.vue';
 import type { TimeSlot } from '@zaptime/core';
 import './assets/style.css';
 
@@ -16,7 +16,7 @@ declare global {
   interface Window {
     xprops: {
       type?: 'single' | 'multiple';
-      config: ZaptimeConfig | MultipleEventTypesConfig;
+      config: ZaptimeConfig | EventTypeConfig;
       onTimeSlotChanged(timeSlot: TimeSlot): void;
     };
 
