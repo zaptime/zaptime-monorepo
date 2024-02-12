@@ -37,7 +37,7 @@ export async function fetchRemoteGroupConfig(eventGroupToken: string): Promise<E
       data: EventTypeGroup;
     };
 
-    const res = await fetch('http://api.zaptime.app/event-type-groups/' + eventGroupToken);
+    const res = await fetch('https://api.zaptime.app/event-type-groups/' + eventGroupToken);
 
     const data: Response = await res.json();
 
