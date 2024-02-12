@@ -58,6 +58,11 @@ export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
         firstname: firstName,
         lastname: lastName,
       }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
     }).then((response) => response.json());
 
     return data;
