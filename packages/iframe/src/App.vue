@@ -1,49 +1,75 @@
 <script setup lang="ts">
-import { ZapTimeCalendar } from '@zaptime/vue3';
-import { ref, onMounted } from 'vue';
-import type { RequestConfig } from './buildConfigFromRequest';
-import { buildConfigFromRequest } from './buildConfigFromRequest';
+import { ZaptimeConfig, TimeSlot } from '@zaptime/core';
+import EventType from './components/EventType.vue';
+import EventTypeGroup from './components/EventTypesGroup.vue';
+import type { EventTypeGroup as IEventTypeGroup } from './components/EventTypesGroup.vue';
+import { fetchRemoteGroupConfig } from './buildConfigFromRequest';
+import { onMounted, ref } from 'vue';
+const type = window.xprops.type ? window.xprops.type : 'single';
+const config = ref(window.xprops.config);
+const loaded = ref(false);
 
-let config = window.xprops.config;
-const remoteConfigLoaded = ref(false);
-
-async function fetchRemoteConfig(token: string) {
-  if (token) {
-    type Response = {
-      success: boolean;
-      data: RequestConfig;
-    };
-
-    const res = await fetch(`https://my.zaptime.app/api/configuration?token=${token}`);
-    const data: Response = await res.json();
-
-    if (data.success) {
-      config = buildConfigFromRequest(data.data, token);
-    }
-  }
-}
-
-onMounted(async () => {
-  await fetchRemoteConfig(config.token);
-  remoteConfigLoaded.value = true;
-});
-
-const onTimeSlotChanged = (timeSlot: unknown) => {
+function onTimeSlotChanged(timeSlot: TimeSlot) {
   if (window.xprops.onTimeSlotChanged) {
     window.xprops.onTimeSlotChanged(timeSlot);
   }
-};
+}
+
+function isSingleConfig(_config: ZaptimeConfig | IEventTypeGroup, type: 'single' | 'multiple'): _config is ZaptimeConfig {
+  return type === 'single';
+}
+
+async function loadConfig() {
+  if (type == 'multiple') {
+    config.value = await fetchRemoteGroupConfig(config.value.token);
+  }
+  loaded.value = true;
+}
+
+onMounted(async () => {
+  await loadConfig();
+});
 </script>
 
 <template>
-  <div v-if="remoteConfigLoaded">
-    <ZapTimeCalendar
-      :config="config"
-      @time-slot-changed="onTimeSlotChanged"
-    ></ZapTimeCalendar>
+  <div
+    id="iframe-app"
+    :class="[config.theme?.mode === 'dark' ? 'dark' : '']"
+  >
+    <div v-if="config && loaded">
+      <div v-if="isSingleConfig(config, type)">
+        <EventType
+          :config="config"
+          @time-slot-changed="onTimeSlotChanged"
+        >
+        </EventType>
+      </div>
+
+      <div v-else>
+        <EventTypeGroup :config="config" />
+      </div>
+    </div>
   </div>
 </template>
 
 <style>
-@import url('/node_modules/@zaptime/vue3/dist/style.css');
+#iframe-app {
+  --c-gray-25: v-bind(config?.theme?.colors?.[ '25'] || '#FCFCFD');
+  --c-gray-50: v-bind(config?.theme?.colors?.[ '50'] || '#F9FAFB');
+  --c-gray-100: v-bind(config?.theme?.colors?.[ '100'] || '#F3F4F6');
+  --c-gray-200: v-bind(config?.theme?.colors?.[ '200'] || '#E5E7EB');
+  --c-gray-300: v-bind(config?.theme?.colors?.[ '300'] || '#D2D6DB');
+  --c-gray-400: v-bind(config?.theme?.colors?.[ '400'] || '#9DA4AE');
+  --c-gray-500: v-bind(config?.theme?.colors?.[ '500'] || '#6C737F');
+  --c-gray-600: v-bind(config?.theme?.colors?.[ '600'] || '#4D5761');
+  --c-gray-700: v-bind(config?.theme?.colors?.[ '700'] || '#384250');
+  --c-gray-800: v-bind(config?.theme?.colors?.[ '800'] || '#1F2A37');
+  --c-gray-900: v-bind(config?.theme?.colors?.[ '900'] || '#111927');
+
+  --c-accent--1: v-bind(config?.theme?.colors?.[ 'accent--1'] || '#2ED3B7');
+  --c-accent-0: v-bind(config?.theme?.colors?.[ 'accent-0'] || '#15B79E');
+  --c-accent-1: v-bind(config?.theme?.colors?.[ 'accent-1'] || '#0E9384');
+
+  --radius: v-bind(config.theme?.borderRadius || '6px');
+}
 </style>
