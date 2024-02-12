@@ -80,17 +80,17 @@ onMounted(async () => {
 
 <style>
 #zaptime-calendar {
-  --c-zaptime-25: v-bind(config?.theme?.colors?.[ '25'] || '#FCFCFD');
-  --c-zaptime-50: v-bind(config?.theme?.colors?.[ '50'] || '#F9FAFB');
-  --c-zaptime-100: v-bind(config?.theme?.colors?.[ '100'] || '#F3F4F6');
-  --c-zaptime-200: v-bind(config?.theme?.colors?.[ '200'] || '#E5E7EB');
-  --c-zaptime-300: v-bind(config?.theme?.colors?.[ '300'] || '#D2D6DB');
-  --c-zaptime-400: v-bind(config?.theme?.colors?.[ '400'] || '#9DA4AE');
-  --c-zaptime-500: v-bind(config?.theme?.colors?.[ '500'] || '#6C737F');
-  --c-zaptime-600: v-bind(config?.theme?.colors?.[ '600'] || '#4D5761');
+  --c-zaptime-25: v-bind(config?.theme?.colors?.[ '25'] || '#f8fafc');
+  --c-zaptime-50: v-bind(config?.theme?.colors?.[ '50'] || '#f8fafc');
+  --c-zaptime-100: v-bind(config?.theme?.colors?.[ '100'] || '#f1f5f9');
+  --c-zaptime-200: v-bind(config?.theme?.colors?.[ '200'] || '#e2e8f0');
+  --c-zaptime-300: v-bind(config?.theme?.colors?.[ '300'] || '#cbd5e1');
+  --c-zaptime-400: v-bind(config?.theme?.colors?.[ '400'] || '#64748b');
+  --c-zaptime-500: v-bind(config?.theme?.colors?.[ '500'] || '#475569');
+  --c-zaptime-600: v-bind(config?.theme?.colors?.[ '600'] || '#334155');
   --c-zaptime-700: v-bind(config?.theme?.colors?.[ '700'] || '#384250');
-  --c-zaptime-800: v-bind(config?.theme?.colors?.[ '800'] || '#1F2A37');
-  --c-zaptime-900: v-bind(config?.theme?.colors?.[ '900'] || '#111927');
+  --c-zaptime-800: v-bind(config?.theme?.colors?.[ '800'] || '#1e293b');
+  --c-zaptime-900: v-bind(config?.theme?.colors?.[ '900'] || '#020617');
 
   --c-zaptime-accent--1: v-bind(config?.theme?.colors?.[ 'accent--1'] || '#2ED3B7');
   --c-zaptime-accent-0: v-bind(config?.theme?.colors?.[ 'accent-0'] || '#15B79E');

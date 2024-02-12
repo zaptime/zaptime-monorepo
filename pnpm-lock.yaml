@@ -79,6 +79,9 @@ importers:
 
   packages/iframe:
     dependencies:
+      '@zaptime/core':
+        specifier: workspace:*
+        version: link:../core
       '@zaptime/vue3':
         specifier: workspace:*
         version: link:../vue3
@@ -92,6 +95,15 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^4.2.3
         version: 4.2.3(vite@4.3.9)(vue@3.3.4)
+      autoprefixer:
+        specifier: ^10.4.14
+        version: 10.4.14(postcss@8.4.24)
+      postcss:
+        specifier: ^8.4.24
+        version: 8.4.24
+      tailwindcss:
+        specifier: ^3.3.2
+        version: 3.3.2
       typescript:
         specifier: ^5.0.4
         version: 5.0.4

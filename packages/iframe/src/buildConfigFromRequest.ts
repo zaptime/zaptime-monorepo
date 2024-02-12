@@ -1,58 +1,50 @@
-import type { ZaptimeConfig } from '@zaptime/vue3';
+import { ZaptimeConfig } from '@zaptime/core';
+import type { EventTypeGroup } from './components/EventTypesGroup.vue';
 
-export type RequestConfig = {
-  language: 'en' | 'cs';
-  primaryColor: string;
-  secondaryColor: string;
-  activeTextColor: string;
-  startDayOfTheWeek: 'mon' | 'sun';
-  closestBookableDay: number;
-  secondaryColorHover: string;
-  chooseDateLocaleText: string;
-  visibleMonthsInThePast: number;
-  visibleMonthsInTheFuture: number;
-  noEventAvailableLocaleText: string;
-  choosePreferredTimeLocaleText: string;
-};
-export const buildConfigFromRequest = (request: RequestConfig, token: string): ZaptimeConfig => {
-  return {
-    token: token,
-    min: request.visibleMonthsInThePast || 0,
-    max: request.visibleMonthsInTheFuture || 2,
-    closestBookableDay: request.closestBookableDay || 3,
-    locale: {
-      preset: request.language,
-      startDayOfWeek: request.startDayOfTheWeek,
+type ConfigWithoutToken = Omit<ZaptimeConfig, 'token'>;
 
-      texts: {
-        chooseDate: request.chooseDateLocaleText,
-        noTimeSlotAvailable: request.noEventAvailableLocaleText,
-        choosePreferredTime: request.choosePreferredTimeLocaleText,
+export async function fetchRemoteConfig(token: string): Promise<ZaptimeConfig> {
+  if (token) {
+    type Response = {
+      success: boolean;
+      data: {
+        configuration: ConfigWithoutToken;
+      };
+    };
+
+    const res = await fetch('https://api.zaptime.app/configuration', {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
       },
+    });
 
-      // confirmationForm: {
-      //     confirmBooking: confirmBookingLocaleText.value,
-      //     name: {
-      //         label: nameFormInputLocaleText.value.label,
-      //         placeholder: nameFormInputLocaleText.value.placeholder
-      //     },
-      //     email: {
-      //         label: emailFormInputLocaleText.value.label,
-      //         placeholder: emailFormInputLocaleText.value.placeholder
-      //     },
-      //     buttons: {
-      //         confirmBooking: confirmationButtonLocaleText.value,
-      //         goBack: goBackButtonLocaleText.value
-      //     }
-      // }
-    },
-    theme: {
-      mode: 'light',
-      colors: {
-        'accent--1': request.primaryColor,
-        'accent-0': request.secondaryColorHover,
-        'accent-1': request.secondaryColor,
-      },
-    },
-  };
-};
+    const data: Response = await res.json();
+
+    if (data.success) {
+      return { ...data.data.configuration, ...{ token } };
+    }
+  }
+
+  throw new Error('Invalid token');
+}
+
+export async function fetchRemoteGroupConfig(eventGroupToken: string): Promise<EventTypeGroup> {
+  if (eventGroupToken) {
+    type Response = {
+      success: boolean;
+      data: EventTypeGroup;
+    };
+
+    const res = await fetch('http://api.zaptime.app/event-type-groups/' + eventGroupToken);
+
+    const data: Response = await res.json();
+
+    if (data.success) {
+      return data.data;
+    }
+  }
+
+  throw new Error('Invalid token');
+}

@@ -11,3 +11,11 @@ pnpm run merge-files
 merges the files together (order of the files matters).
 
 Build handles all the scripts together automatically.
+
+# Local development
+
+For local we can go around zoid with running dev script, this script runs App.vue directly and fakes the `window.xprops`
+
+# Local development iframe testing
+
+Run the example.html on local server
