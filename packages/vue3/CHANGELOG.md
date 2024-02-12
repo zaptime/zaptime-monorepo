@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 2.0.5
+
+### Patch Changes
+
+- Fix: booking, smaller image size
+- Updated dependencies
+  - @zaptime/core@1.0.4
+
 ## 2.0.4
 
 ### Patch Changes

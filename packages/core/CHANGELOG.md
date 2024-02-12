@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 1.0.4
+
+### Patch Changes
+
+- Fix: booking, smaller image size
+
 ## 1.0.3
 
 ### Patch Changes
