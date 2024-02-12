@@ -15,7 +15,7 @@ type BookAndReservePayload = {
 declare global {
   interface Window {
     xprops: {
-      type?: 'single' | 'multiple';
+      type?: 'single' | 'group';
       config: ZaptimeConfig | EventTypeGroup;
       onTimeSlotChanged(timeSlot: TimeSlot): void;
     };

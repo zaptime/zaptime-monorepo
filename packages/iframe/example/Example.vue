@@ -7,7 +7,7 @@ import App from '../src/App.vue';
 
 // Faking xprops for the example
 window.xprops = {
-  type: 'multiple',
+  type: 'group',
   config: {
     token: 'mVlRIHzRWmI0ZYHDETlfDQsnRV9X4hZF',
   },

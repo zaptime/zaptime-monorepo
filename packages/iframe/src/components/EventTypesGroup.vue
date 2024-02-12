@@ -29,10 +29,9 @@
     </div>
     <div
       v-if="selectedEventTypeToken"
-      class="h-[524px]"
+      class="min-h-[618px]"
     >
       <button
-        v-if="selectedEventTypeToken"
         class="text-white mt-4 sm:absolute top-4 left-4"
         @click="goBack"
       >

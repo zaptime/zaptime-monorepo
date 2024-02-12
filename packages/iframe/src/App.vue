@@ -15,12 +15,12 @@ function onTimeSlotChanged(timeSlot: TimeSlot) {
   }
 }
 
-function isSingleConfig(_config: ZaptimeConfig | IEventTypeGroup, type: 'single' | 'multiple'): _config is ZaptimeConfig {
+function isSingleConfig(_config: ZaptimeConfig | IEventTypeGroup, type: 'single' | 'group'): _config is ZaptimeConfig {
   return type === 'single';
 }
 
 async function loadConfig() {
-  if (type == 'multiple') {
+  if (type === 'group') {
     config.value = await fetchRemoteGroupConfig(config.value.token);
   }
   loaded.value = true;

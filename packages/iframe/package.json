@@ -8,7 +8,7 @@
     "build": "vue-tsc --noEmit && vite build && pnpm run merge-files",
     "merge-files": "cat ./zoid/zoid.js ./zoid/zaptime-init.js > ./dist/zaptime.js",
     "preview": "vite preview",
-    "deploy": "CLOUDFLARE_ACCOUNT_ID=ba3f25490fcc7591a079aa5d771245ad npx wrangler pages publish dist --commit-dirty=true"
+    "deploy": "CLOUDFLARE_ACCOUNT_ID=ba3f25490fcc7591a079aa5d771245ad npx wrangler pages deploy dist --commit-dirty=true"
   },
   "dependencies": {
     "@zaptime/core": "workspace:*",

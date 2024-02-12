@@ -3,13 +3,13 @@ import App from './Example.vue';
 import '../src/assets/style.css';
 
 import { ZaptimeConfig } from '@zaptime/vue3';
-import type { MultipleEventTypesConfig } from '../src/components/MultipleEventTypes.vue';
+import type { EventTypeGroup } from '../src/components/EventTypesGroup.vue';
 
 declare global {
   interface Window {
     xprops: {
-      type?: 'single' | 'multiple';
-      config: ZaptimeConfig | MultipleEventTypesConfig;
+      type?: 'single' | 'group';
+      config: ZaptimeConfig | EventTypeGroup;
     };
   }
 }

@@ -1,9 +1,15 @@
 var Zaptime = zoid.create({
   tag: "zaptime-component",
   url: "https://iframe.zaptime.app",
+
   dimensions: {
-    width: "880px",
-    height: "570px",
+    width: "100%",
+    height: "100%",
+  },
+
+  autoResize:{
+    width: false,
+    height: true
   },
 
   props: {
