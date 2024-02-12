@@ -5,7 +5,7 @@
       class="cal-mb-3 cal-flex cal-w-full cal-justify-center cal-pt-3"
     >
       <img
-        class="cal-h-[108px] cal-w-[108px] cal-rounded-full cal-object-cover cal-object-top"
+        class="cal-h-[96px] cal-w-[96px] cal-rounded-full cal-object-cover cal-object-top"
         :src="config.profileImage"
         loading="lazy"
         alt="Profile image"
