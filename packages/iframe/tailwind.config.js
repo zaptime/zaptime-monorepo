@@ -7,7 +7,6 @@ module.exports = {
     extend: {
       colors: {
         gray: {
-          25: 'var(--c-gray-25)',
           50: 'var(--c-gray-50)',
           100: 'var(--c-gray-100)',
           200: 'var(--c-gray-200)',
@@ -18,6 +17,7 @@ module.exports = {
           700: 'var(--c-gray-700)',
           800: 'var(--c-gray-800)',
           900: 'var(--c-gray-900)',
+          950: 'var(--c-gray-950)',
         },
 
         accent: {

@@ -4,6 +4,8 @@ import type { ZaptimeConfig } from '@zaptime/vue3';
 import type { TimeSlot } from '@zaptime/core';
 import { ref, onMounted } from 'vue';
 import { fetchRemoteConfig } from '../buildConfigFromRequest';
+import mergeRecursive from '../utills/mergeObjects';
+import { resolve } from 'path';
 
 const props = defineProps<{
   config: ZaptimeConfig;
@@ -19,11 +21,14 @@ const remoteConfigLoaded = ref(false);
 
 async function mergeWithRemoteConfig() {
   const obtainedConfig = await fetchRemoteConfig(props.config.token);
-
   console.log(obtainedConfig);
+
   if (obtainedConfig) {
-    resolvedConfig.value = { ...obtainedConfig };
+    resolvedConfig.value = mergeRecursive(obtainedConfig, resolvedConfig.value);
   }
+
+  console.log(resolvedConfig.value);
+
   remoteConfigLoaded.value = true;
 }
 

@@ -3,19 +3,32 @@ import type { ZaptimeConfig, TimeSlot } from '@zaptime/core';
 import EventType from './components/EventType.vue';
 import EventTypeGroup from './components/EventTypesGroup.vue';
 import type { EventTypeGroup as IEventTypeGroup } from './components/EventTypesGroup.vue';
-
+import { fetchRemoteGroupConfig } from './buildConfigFromRequest';
+import { onMounted, ref } from 'vue';
 const type = window.xprops.type ? window.xprops.type : 'single';
-const config = window.xprops.config;
+const config = ref(window.xprops.config);
+const loaded = ref(false);
 
-const onTimeSlotChanged = (timeSlot: TimeSlot) => {
+function onTimeSlotChanged(timeSlot: TimeSlot) {
   if (window.xprops.onTimeSlotChanged) {
     window.xprops.onTimeSlotChanged(timeSlot);
   }
-};
+}
 
 function isSingleConfig(_config: ZaptimeConfig | IEventTypeGroup, type: 'single' | 'multiple'): _config is ZaptimeConfig {
   return type === 'single';
 }
+
+async function loadConfig() {
+  if (type == 'multiple') {
+    config.value = await fetchRemoteGroupConfig(config.value.token);
+  }
+  loaded.value = true;
+}
+
+onMounted(async () => {
+  await loadConfig();
+});
 </script>
 
 <template>
@@ -23,16 +36,18 @@ function isSingleConfig(_config: ZaptimeConfig | IEventTypeGroup, type: 'single'
     id="iframe-app"
     :class="[config.theme?.mode === 'dark' ? 'dark' : '']"
   >
-    <div v-if="isSingleConfig(config, type)">
-      <EventType
-        :config="config"
-        @time-slot-changed="onTimeSlotChanged"
-      >
-      </EventType>
-    </div>
+    <div v-if="config && loaded">
+      <div v-if="isSingleConfig(config, type)">
+        <EventType
+          :config="config"
+          @time-slot-changed="onTimeSlotChanged"
+        >
+        </EventType>
+      </div>
 
-    <div v-else>
-      <EventTypeGroup :config="config" />
+      <div v-else>
+        <EventTypeGroup :config="config" />
+      </div>
     </div>
   </div>
 </template>

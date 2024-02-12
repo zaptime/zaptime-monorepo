@@ -5,7 +5,7 @@
   >
     <div class="inline-flex justify-between w-full items-center">
       <span class="text-gray-700 dark:text-gray-200 font-medium">
-        {{ config.title }}
+        {{ config.name }}
       </span>
 
       <svg
@@ -26,7 +26,7 @@
       </svg>
     </div>
 
-    <div class="text-sm text-left mt-4">
+    <div class="text-sm self-start text-left mt-4">
       <span
         v-if="config.description"
         class="text-gray-600 dark:text-gray-300 line-clamp-3"

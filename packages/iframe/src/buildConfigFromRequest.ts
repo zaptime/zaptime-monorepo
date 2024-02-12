@@ -21,7 +21,7 @@ export async function fetchRemoteConfig(token: string): Promise<ZaptimeConfig> {
     const data: Response = await res.json();
 
     if (data.success) {
-      return { ...data.data, ...{ token } };
+      return { ...data.data.configuration, ...{ token } };
     }
   }
 
@@ -35,12 +35,7 @@ export async function fetchRemoteGroupConfig(eventGroupToken: string): Promise<E
       data: EventTypeGroup;
     };
 
-    const res = await fetch('http://api.zaptime.app/event-type-groups/' + eventGroupToken, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    });
+    const res = await fetch('http://api.zaptime.app/event-type-groups/' + eventGroupToken);
 
     const data: Response = await res.json();
 

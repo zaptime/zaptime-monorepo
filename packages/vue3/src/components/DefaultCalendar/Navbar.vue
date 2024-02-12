@@ -13,7 +13,7 @@
     </div>
     <p
       v-if="config.locale?.texts?.introduction"
-      class="cal-w-full cal-text-center cal-text-2xl cal-font-medium cal-text-theme-600 dark:cal-text-theme-200"
+      class="cal-w-full cal-text-center cal-font-medium cal-text-theme-600 dark:cal-text-theme-200"
       :class="[config.profileImage ? '' : 'cal-py-12']"
     >
       {{ config.locale?.texts?.introduction }}
