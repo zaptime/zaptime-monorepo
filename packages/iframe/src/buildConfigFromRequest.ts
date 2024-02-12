@@ -7,7 +7,9 @@ export async function fetchRemoteConfig(token: string): Promise<ZaptimeConfig> {
   if (token) {
     type Response = {
       success: boolean;
-      data: ConfigWithoutToken;
+      data: {
+        configuration: ConfigWithoutToken;
+      };
     };
 
     const res = await fetch('https://api.zaptime.app/configuration', {

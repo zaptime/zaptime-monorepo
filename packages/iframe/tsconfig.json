@@ -10,7 +10,6 @@
     "jsx": "preserve",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "allowJs": false,
     "lib": ["esnext", "dom"],
     "outDir": "./dist/types",
     "types": ["node"],    
@@ -18,3 +17,4 @@
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": ["node_modules"],
 }
+

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ZaptimeConfig, TimeSlot } from '@zaptime/core';
+import { ZaptimeConfig, TimeSlot } from '@zaptime/core';
 import EventType from './components/EventType.vue';
 import EventTypeGroup from './components/EventTypesGroup.vue';
 import type { EventTypeGroup as IEventTypeGroup } from './components/EventTypesGroup.vue';

@@ -66,6 +66,7 @@ import EventType from './EventType.vue';
 
 export type EventTypeGroup = {
   title: string;
+  token: string;
   description?: string;
   avatar?: string;
   theme: ZaptimeConfig['theme'];
