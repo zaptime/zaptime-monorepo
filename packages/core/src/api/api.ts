@@ -2,13 +2,7 @@ import type TimeSlot from '../types/TimeSlot';
 import type Status from '../types/Status';
 import type { TimeSlotResponse, AvailableTimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
 
-const baseUrl = 'https://api.zaptime.app/';
-
-const bookUrl = baseUrl + 'reservations';
-const reserveUrl = baseUrl + 'reservations/prepare';
-const confirmUrl = baseUrl + 'reservations/';
-const cancelUrl = baseUrl + 'reservations/';
-const availableTimeSlotsUrl = baseUrl + 'time-slots';
+const defaultBaseUrl = 'https://api.zaptime.app/';
 
 export interface IOptions {
   /**
@@ -42,13 +36,18 @@ export interface IOptions {
    * @default 1
    */
   seats?: number;
+
+  /**
+   * Base URL override
+   */
+  baseUrl?: string;
 }
 
 export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
-  const { email, token, timeSlot, firstName, lastName, seats = 1 } = options;
+  const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl } = options;
 
   try {
-    const data = await fetch(bookUrl, {
+    const data = await fetch(getBookUrl(baseUrl), {
       method: 'POST',
       body: JSON.stringify({
         start: timeSlot.start,
@@ -72,10 +71,10 @@ export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
 };
 
 export const reserve = async (options: IOptions): Promise<PrepareReservationResponse> => {
-  const { email, token, timeSlot, firstName, lastName, seats = 1 } = options;
+  const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl } = options;
 
   try {
-    const data = await fetch(reserveUrl, {
+    const data = await fetch(getReserveUrl(baseUrl), {
       method: 'POST',
       body: JSON.stringify({
         start: timeSlot.start,
@@ -98,9 +97,9 @@ export const reserve = async (options: IOptions): Promise<PrepareReservationResp
   }
 };
 
-export const confirm = async (token: string, status: Status): Promise<boolean> => {
+export const confirm = async (token: string, status: Status, baseUrl = defaultBaseUrl): Promise<boolean> => {
   try {
-    const data = await fetch(confirmUrl + status.uuid + '/confirm', {
+    const data = await fetch(getConfirmUrl(baseUrl, status.uuid), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -115,9 +114,9 @@ export const confirm = async (token: string, status: Status): Promise<boolean> =
   }
 };
 
-export const cancel = async (token: string, status: Status): Promise<boolean> => {
+export const cancel = async (token: string, status: Status, baseUrl = defaultBaseUrl): Promise<boolean> => {
   try {
-    const data = await fetch(cancelUrl + status.uuid, {
+    const data = await fetch(getCancelUrl(baseUrl, status.uuid), {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -133,10 +132,10 @@ export const cancel = async (token: string, status: Status): Promise<boolean> =>
 };
 
 //token=token&from=from&until=until&group_by_day=group_by_day
-export const getAvailableTimeSlots = async (token: string, from: string, until: string): Promise<TimeSlot[]> => {
+export const getAvailableTimeSlots = async (token: string, from: string, until: string, baseUrl = defaultBaseUrl): Promise<TimeSlot[]> => {
   try {
     const data: AvailableTimeSlotResponse = await fetch(
-      availableTimeSlotsUrl +
+      getAvailableTimeSlotsUrl(baseUrl) +
         '?' +
         new URLSearchParams({
           from: from,
@@ -158,3 +157,23 @@ export const getAvailableTimeSlots = async (token: string, from: string, until: 
     throw new Error('Getting available time slots failed!');
   }
 };
+
+function getBookUrl(baseUrl: string) {
+  return baseUrl + 'reservations';
+}
+
+function getReserveUrl(baseUrl: string) {
+  return baseUrl + 'reservations/prepare';
+}
+
+function getConfirmUrl(baseUrl: string, uuid: string) {
+  return baseUrl + 'reservations/' + uuid + '/confirm';
+}
+
+function getCancelUrl(baseUrl: string, uuid: string) {
+  return baseUrl + 'reservations/' + uuid;
+}
+
+function getAvailableTimeSlotsUrl(baseUrl: string) {
+  return baseUrl + 'time-slots';
+}

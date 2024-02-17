@@ -11,4 +11,5 @@ export default interface ZaptimeConfig {
   profileImage?: string;
   externalBooking?: boolean;
   compact?: boolean;
+  apiBaseUrl?: string;
 }

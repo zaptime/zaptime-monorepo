@@ -52,6 +52,8 @@ const config: ZaptimeConfig = {
 
   compact: false,
 
+  apiBaseUrl: 'https://api.zaptime.test/',
+
   externalBooking: false,
 
   // min: 0,

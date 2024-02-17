@@ -53,6 +53,7 @@ export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> 
       firstName,
       lastName,
       seats,
+      baseUrl: config.value.apiBaseUrl,
     });
   }
 
@@ -70,8 +71,6 @@ export const reserve = async (options: IBookingOptions): Promise<PrepareReservat
 
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
 
-  console.log(selectedTimeSlot.value);
-
   const { config } = useConfig(calendarId);
   const { setReservationStatus } = useReservationStatus(calendarId);
 
@@ -83,6 +82,7 @@ export const reserve = async (options: IBookingOptions): Promise<PrepareReservat
       firstName: firstName,
       lastName: lastName,
       seats: seats,
+      baseUrl: config.value.apiBaseUrl,
     });
 
     setReservationStatus(data.data);
@@ -100,15 +100,11 @@ export const reserve = async (options: IBookingOptions): Promise<PrepareReservat
  * @param calendarId
  */
 export const confirm = async (calendarId?: string): Promise<boolean> => {
-  console.log('test');
-
   const { reservationStatus } = useReservationStatus(calendarId);
   const { config } = useConfig(calendarId);
 
-  console.log(reservationStatus.value);
-
   if (reservationStatus.value !== undefined) {
-    return await confirmApi(config.value.token, reservationStatus.value);
+    return await confirmApi(config.value.token, reservationStatus.value, config.value.apiBaseUrl);
   }
 
   return false;
@@ -125,7 +121,7 @@ export const cancel = async (calendarId?: string): Promise<boolean> => {
   const { config } = useConfig(calendarId);
 
   if (reservationStatus.value !== undefined) {
-    return await cancelApi(config.value.token, reservationStatus.value);
+    return await cancelApi(config.value.token, reservationStatus.value, config.value.apiBaseUrl);
   }
 
   return false;

@@ -29,7 +29,7 @@ export const getDays = async (date: Date, dfnsConfig: DfnsConfig, zapTimeConfig:
   const startDateOfTheMonth = startOfMonth(date);
   let hasAnyTimeSlot = false;
 
-  const timeSlots = await getAvailableTimeSlots(zapTimeConfig.token, getStartDate(date, zapTimeConfig, timezone), format(endOfMonth(date), 'yyyy-MM-dd', { timeZone: timezone }));
+  const timeSlots = await getAvailableTimeSlots(zapTimeConfig.token, getStartDate(date, zapTimeConfig, timezone), format(endOfMonth(date), 'yyyy-MM-dd', { timeZone: timezone }), zapTimeConfig.apiBaseUrl);
 
   if (Object.keys(timeSlots).length > 0) {
     hasAnyTimeSlot = true;
