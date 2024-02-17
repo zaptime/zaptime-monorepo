@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 1.0.5
+
+### Patch Changes
+
+- Vue 3.4 upgrade
+
 ## 1.0.4
 
 ### Patch Changes
