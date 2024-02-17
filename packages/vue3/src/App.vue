@@ -60,7 +60,7 @@ watch(
 );
 
 const borderRadius = computed(() => {
-  if (borderRadius.value !== 'full') {
+  if (config?.value.theme?.borderRadius !== 'full') {
     return config?.value.theme?.borderRadius;
   }
 
