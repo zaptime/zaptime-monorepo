@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 1.0.6
+
+### Patch Changes
+
+- Redirect after successful booking, option to change baseUrl
+
 ## 1.0.5
 
 ### Patch Changes

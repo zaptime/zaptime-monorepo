@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 2.0.7
+
+### Patch Changes
+
+- Redirect after successful booking, option to change baseUrl
+- Updated dependencies
+  - @zaptime/core@1.0.6
+
 ## 2.0.6
 
 ### Patch Changes
