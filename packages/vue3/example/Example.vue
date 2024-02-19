@@ -54,6 +54,8 @@ const config: ZaptimeConfig = {
 
   apiBaseUrl: 'https://api.zaptime.test/',
 
+  // redirectAfterBookingUrl: 'https://google.com',
+
   externalBooking: false,
 
   // min: 0,

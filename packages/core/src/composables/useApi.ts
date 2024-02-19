@@ -46,15 +46,23 @@ export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> 
   const { config } = useConfig(calendarId);
 
   if (selectedTimeSlot.value !== undefined && config.value !== undefined) {
-    return await bookApi({
-      email,
-      token: config.value.token,
-      timeSlot: selectedTimeSlot.value,
-      firstName,
-      lastName,
-      seats,
-      baseUrl: config.value.apiBaseUrl,
-    });
+    try {
+      await bookApi({
+        email,
+        token: config.value.token,
+        timeSlot: selectedTimeSlot.value,
+        firstName,
+        lastName,
+        seats,
+        baseUrl: config.value.apiBaseUrl,
+      });
+
+      if (config.value.redirectAfterBookingUrl !== undefined) {
+        window.location.href = config.value.redirectAfterBookingUrl;
+      }
+    } catch (e) {
+      throw new Error('Booking a time slot failed because time slot was not selected!');
+    }
   }
 
   throw new Error('Booking a time slot failed because time slot was not selected!');

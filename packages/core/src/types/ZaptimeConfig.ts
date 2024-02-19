@@ -12,4 +12,5 @@ export default interface ZaptimeConfig {
   externalBooking?: boolean;
   compact?: boolean;
   apiBaseUrl?: string;
+  redirectAfterBookingUrl?: string;
 }
