@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 2.0.8
+
+### Patch Changes
+
+- 8beea6d: fix: booking time slot
+- Updated dependencies [8beea6d]
+  - @zaptime/core@1.0.7
+
 ## 2.0.7
 
 ### Patch Changes

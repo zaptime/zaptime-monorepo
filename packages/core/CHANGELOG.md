@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 1.0.7
+
+### Patch Changes
+
+- 8beea6d: fix: booking time slot
+
 ## 1.0.6
 
 ### Patch Changes
