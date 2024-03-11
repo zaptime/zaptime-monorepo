@@ -27,6 +27,7 @@
     "@heroicons/vue": "^2.1.1",
     "@vueuse/core": "^10.7.2",
     "@zaptime/core": "workspace:*",
+    "analytics": "^0.8.11",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0"
   },

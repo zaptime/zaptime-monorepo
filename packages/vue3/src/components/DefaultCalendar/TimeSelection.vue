@@ -134,6 +134,8 @@ import type { TimeSlot } from '@zaptime/core';
 import ConfirmationButton from './TimeConfirmationButton.vue';
 import TimeZonePicker from '../atomic/TimeZonePicker.vue';
 import Switch from '../atomic/Switch.vue';
+import analytics from '../../analytics';
+
 const { hourCycle } = useHourCycle();
 
 const { setView, setCalendarView } = useCalendarViewState(inject('calendarId'));
@@ -161,6 +163,10 @@ const select = (timeSlot: TimeSlot) => {
   selectTimeSlot(timeSlot);
 
   if (config.value.externalBooking !== true) {
+    analytics.track('time_slot_selected', {
+      timeSlot: timeSlot.start,
+    });
+
     setView('form');
   }
 };

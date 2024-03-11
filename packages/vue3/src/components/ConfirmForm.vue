@@ -88,6 +88,7 @@ import { useSelectedTimeSlot, book, useConfig, useDateFormatters } from '@zaptim
 import PrimaryButton from './atomic/PrimaryButton.vue';
 import SecondaryButton from './atomic/SecondaryButton.vue';
 import CalInput from './DefaultCalendar/CalInput.vue';
+import analytics from '../analytics';
 
 const emits = defineEmits(['booking-confirmed', 'go-back']);
 
@@ -142,6 +143,10 @@ const onSubmit = async () => {
     lastName,
     seats: seats.value,
     calendarId,
+  });
+
+  analytics.track('booking_confirmed', {
+    timeSlot: selectedTimeSlot.value ? selectedTimeSlot.value.start : undefined,
   });
 
   emits('booking-confirmed');
