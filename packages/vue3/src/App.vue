@@ -17,6 +17,8 @@ import { useConfig, useCalendar, ZaptimeConfig, useSelectedTimeSlot } from '@zap
 import useCompactSwticher from './composables/useCompactSwitcher';
 import useAlphaColors from './composables/useAlphaColors';
 import { getAnalytics, buildConfig } from './analytics';
+import { fetchRemoteConfig } from './utils/fetchConfig';
+import deepMergeObject from './utils/mergeObjects';
 
 const props = withDefaults(
   defineProps<{
@@ -36,8 +38,6 @@ provide('calendarId', props.calendarId);
 const { setConfig, config } = useConfig(props.calendarId);
 
 const { selectedTimeSlot } = useSelectedTimeSlot(props.calendarId);
-
-setConfig(props.config);
 
 const { color, color2 } = useAlphaColors(props.calendarId);
 provide('color', color);
@@ -80,6 +80,12 @@ onMounted(async () => {
     );
   } else {
     analytics?.track('calendar-opened');
+
+    const config = await fetchRemoteConfig(props.config.token);
+
+    const mergedConfig = deepMergeObject(props.config, config);
+
+    setConfig(mergedConfig);
 
     await initCalendar();
   }
