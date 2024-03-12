@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 2.0.9
+
+### Patch Changes
+
+- Add introduction text as html, catch disabled event type error
+- Updated dependencies
+  - @zaptime/core@1.0.8
+
 ## 2.0.8
 
 ### Patch Changes

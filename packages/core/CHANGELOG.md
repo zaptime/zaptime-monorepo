@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 1.0.8
+
+### Patch Changes
+
+- Add introduction text as html, catch disabled event type error
+
 ## 1.0.7
 
 ### Patch Changes
