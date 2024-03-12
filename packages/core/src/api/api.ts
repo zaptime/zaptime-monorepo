@@ -134,7 +134,7 @@ export const cancel = async (token: string, status: Status, baseUrl = defaultBas
 //token=token&from=from&until=until&group_by_day=group_by_day
 export const getAvailableTimeSlots = async (token: string, from: string, until: string, baseUrl = defaultBaseUrl): Promise<TimeSlot[]> => {
   try {
-    const data: AvailableTimeSlotResponse = await fetch(
+    const res = await fetch(
       getAvailableTimeSlotsUrl(baseUrl) +
         '?' +
         new URLSearchParams({
@@ -148,12 +148,19 @@ export const getAvailableTimeSlots = async (token: string, from: string, until: 
           Authorization: 'Bearer ' + token,
         },
       },
-    ).then((response) => response.json());
+    );
+
+    if (res.status === 403) {
+      throw new Error('Disabled');
+    }
+
+    const data: AvailableTimeSlotResponse = await res.json();
 
     return data.data;
   } catch (err) {
-    console.log(err);
-
+    if ((err as Error).message === 'Disabled') {
+      throw new Error('Disabled');
+    }
     throw new Error('Getting available time slots failed!');
   }
 };
