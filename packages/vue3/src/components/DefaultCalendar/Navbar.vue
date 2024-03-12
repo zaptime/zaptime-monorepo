@@ -11,13 +11,12 @@
         alt="Profile image"
       />
     </div>
-    <p
+    <div
       v-if="config.locale?.texts?.introduction"
       class="cal-w-full cal-text-center cal-font-medium cal-text-theme-600 dark:cal-text-theme-200"
       :class="[config.profileImage ? '' : 'cal-py-12']"
-    >
-      {{ config.locale?.texts?.introduction }}
-    </p>
+      v-html="config.locale?.texts?.introduction"
+    ></div>
   </div>
   <div class="cal-flex cal-justify-between cal-py-4">
     <p class="cal-ml-3 cal-text-base cal-font-medium cal-text-theme-900 dark:cal-text-theme-200">{{ monthName }} {{ currentYear }}</p>
