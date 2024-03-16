@@ -7,6 +7,14 @@ import umamiAnalyticsPlugin from './plugins/umamiPlugin';
 let analytics: AnalyticsInstance;
 
 export function getAnalytics(init?: any) {
+  if (typeof window === 'undefined') {
+    return undefined;
+  }
+
+  if (init === undefined && analytics === undefined) {
+    return undefined;
+  }
+
   if (analytics === undefined) {
     analytics = Analytics(init);
   }

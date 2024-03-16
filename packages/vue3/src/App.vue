@@ -73,13 +73,14 @@ onMounted(async () => {
   const analytics = getAnalytics(buildConfig([]));
 
   if (props.config === undefined || props.config.token === undefined) {
-    analytics.track('calendar-error-invalid-token');
+    analytics?.track('calendar-error-invalid-token');
 
     console.error(
       "Zaptime error: Token is required, please enter your acquired token into the configuration. See more in the documentation: https://docs.zaptime.app/guide/vue-installation.html. If you don't have a token, you can acquire one at https://zaptime.app.",
     );
   } else {
-    analytics.track('calendar-opened');
+    analytics?.track('calendar-opened');
+
     await initCalendar();
   }
 });

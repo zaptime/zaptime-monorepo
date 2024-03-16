@@ -29,7 +29,7 @@
           type="text"
           name="name"
           autocomplete="name"
-          @blur="() => analytics.track('name_entered')"
+          @blur="() => analytics?.track('name_entered')"
         ></CalInput>
       </div>
 
@@ -41,7 +41,7 @@
           type="email"
           name="email"
           autocomplete="email"
-          @blur="() => analytics.track('email_entered')"
+          @blur="() => analytics?.track('email_entered')"
         ></CalInput>
       </div>
 
@@ -149,7 +149,7 @@ const onSubmit = async () => {
     calendarId,
   });
 
-  analytics.track('booking_confirmed', {
+  analytics?.track('booking_confirmed', {
     timeSlot: selectedTimeSlot.value ? selectedTimeSlot.value.start : undefined,
   });
 
