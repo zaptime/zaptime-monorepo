@@ -14,38 +14,45 @@ export function getAnalytics(init?: any) {
   return analytics;
 }
 
-export function buildConfig({ name, token }: { name: string; token: string }) {
+type InitAnalyticsData = {
+  name: string;
+  data: any;
+};
+
+export function buildConfig(initData: InitAnalyticsData[]) {
   const plugins = [];
 
-  switch (name) {
-    case 'google-analytics':
-      plugins.push(
-        googleAnalyticsPlugin({
-          measurementIds: [token],
-          enabled: true,
-        }),
-      );
-      break;
+  for (const data of initData) {
+    switch (data.name) {
+      case 'google-analytics':
+        plugins.push(
+          googleAnalyticsPlugin({
+            measurementIds: [data.data.measurementId],
+            enabled: true,
+          }),
+        );
+        break;
 
-    case 'facebook-pixel':
-      plugins.push(
-        facebokPixelAnalyticsPlugin({
-          pixelId: token,
-          enabled: true,
-        }),
-      );
-      break;
-    case 'umami':
-      plugins.push(
-        umamiAnalyticsPlugin({
-          dataWebsiteId: '68081e5a-e0e3-45d3-b472-f0162a022d75',
-          src: 'https://umami-zaptime.vercel.app/script.js',
-          enabled: true,
-        }),
-      );
-      break;
-    default:
-      throw new Error(`Unknown Analytics Plugin Option: ${name}`);
+      case 'facebook-pixel':
+        plugins.push(
+          facebokPixelAnalyticsPlugin({
+            pixelId: data.data.pixelId,
+            enabled: true,
+          }),
+        );
+        break;
+      case 'umami':
+        plugins.push(
+          umamiAnalyticsPlugin({
+            dataWebsiteId: data.data.dataWebsiteId,
+            src: data.data.src,
+            enabled: true,
+          }),
+        );
+        break;
+      default:
+        throw new Error(`Unknown Analytics Plugin Option: ${name}`);
+    }
   }
 
   const config = {
