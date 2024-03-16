@@ -16,7 +16,7 @@ import Calendar from './components/Calendar.vue';
 import { useConfig, useCalendar, ZaptimeConfig, useSelectedTimeSlot } from '@zaptime/core';
 import useCompactSwticher from './composables/useCompactSwitcher';
 import useAlphaColors from './composables/useAlphaColors';
-import analytics from './analytics';
+import { getAnalytics, buildConfig } from './analytics';
 
 const props = withDefaults(
   defineProps<{
@@ -69,6 +69,9 @@ const borderRadius = computed(() => {
 });
 
 onMounted(async () => {
+  // perepared entry for backend
+  const analytics = getAnalytics(buildConfig([]));
+
   if (props.config === undefined || props.config.token === undefined) {
     analytics.track('calendar-error-invalid-token');
 
