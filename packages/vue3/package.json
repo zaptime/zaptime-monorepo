@@ -23,12 +23,16 @@
     "vue": "^3.0.0"
   },
   "dependencies": {
+    "@analytics/google-analytics": "^1.0.7",
     "@headlessui/vue": "^1.7.19",
     "@heroicons/vue": "^2.1.1",
     "@vueuse/core": "^10.7.2",
     "@zaptime/core": "workspace:*",
+    "analytics": "^0.8.11",
     "date-fns": "^2.30.0",
-    "date-fns-tz": "^2.0.0"
+    "date-fns-tz": "^2.0.0",
+    "load-script": "^2.0.0",
+    "react-facebook-pixel": "^1.0.4"
   },
   "devDependencies": {
     "@babel/types": "^7.23.9",

@@ -16,6 +16,7 @@ import Calendar from './components/Calendar.vue';
 import { useConfig, useCalendar, ZaptimeConfig, useSelectedTimeSlot } from '@zaptime/core';
 import useCompactSwticher from './composables/useCompactSwitcher';
 import useAlphaColors from './composables/useAlphaColors';
+import { getAnalytics, buildConfig } from './analytics';
 
 const props = withDefaults(
   defineProps<{
@@ -68,11 +69,17 @@ const borderRadius = computed(() => {
 });
 
 onMounted(async () => {
+  // perepared entry for backend
+  const analytics = getAnalytics(buildConfig([]));
+
   if (props.config === undefined || props.config.token === undefined) {
+    analytics.track('calendar-error-invalid-token');
+
     console.error(
       "Zaptime error: Token is required, please enter your acquired token into the configuration. See more in the documentation: https://docs.zaptime.app/guide/vue-installation.html. If you don't have a token, you can acquire one at https://zaptime.app.",
     );
   } else {
+    analytics.track('calendar-opened');
     await initCalendar();
   }
 });
