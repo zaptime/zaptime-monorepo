@@ -48,11 +48,11 @@ const calypsoTheme: ZaptimeConfig['theme'] = {
 };
 
 const config: ZaptimeConfig = {
-  token: 'kPRrAtlXbgnCqi309Zjvr5Lq6RRPfYgc',
+  token: 'mlRgAVeQGqSoMjLzh5LGyyAF6xtSKKRi',
 
   compact: false,
 
-  apiBaseUrl: 'https://api.zaptime.test/',
+  // apiBaseUrl: 'https://api.zaptime.test/',
 
   // redirectAfterBookingUrl: 'https://google.com',
 
