@@ -29,6 +29,7 @@
           type="text"
           name="name"
           autocomplete="name"
+          @blur="() => analytics.track('name_entered')"
         ></CalInput>
       </div>
 
@@ -40,6 +41,7 @@
           type="email"
           name="email"
           autocomplete="email"
+          @blur="() => analytics.track('email_entered')"
         ></CalInput>
       </div>
 
@@ -88,7 +90,7 @@ import { useSelectedTimeSlot, book, useConfig, useDateFormatters } from '@zaptim
 import PrimaryButton from './atomic/PrimaryButton.vue';
 import SecondaryButton from './atomic/SecondaryButton.vue';
 import CalInput from './DefaultCalendar/CalInput.vue';
-import analytics from '../analytics';
+import { getAnalytics } from '../analytics';
 
 const emits = defineEmits(['booking-confirmed', 'go-back']);
 
@@ -103,6 +105,8 @@ const name = ref('');
 const seats = ref(1);
 
 const disabled = ref(false);
+
+const analytics = getAnalytics();
 
 const locale = computed(() => {
   if (config === undefined) {
