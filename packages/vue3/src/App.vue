@@ -24,6 +24,7 @@ import useCompactSwticher from './composables/useCompactSwitcher';
 import useAlphaColors from './composables/useAlphaColors';
 import { useInitialization } from './composables/useInitialization';
 import CalendarDisabled from './components/CalendarDisabled.vue';
+import deepMergeObject from './utils/mergeObjects';
 
 const props = withDefaults(
   defineProps<{
@@ -61,7 +62,7 @@ watch(selectedTimeSlot, (newV) => {
 watch(
   () => props.config,
   () => {
-    setConfig(props.config);
+    setConfig(deepMergeObject(props.config, config.value));
   },
 );
 
