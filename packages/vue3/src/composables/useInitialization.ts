@@ -37,7 +37,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
 
         isEnabled.value = true;
 
-        const mergedConfig = deepMergeObject(config, initData.val.configuration);
+        const mergedConfig = deepMergeObject(initData.val.configuration, { ...config });
 
         // perepared entry for backend
         const analytics = getAnalytics(buildConfig([]));

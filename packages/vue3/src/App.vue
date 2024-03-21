@@ -61,8 +61,8 @@ watch(selectedTimeSlot, (newV) => {
 // checks for external props change and sets config to core
 watch(
   () => props.config,
-  () => {
-    setConfig(deepMergeObject(props.config, config.value));
+  (newValue) => {
+    setConfig(deepMergeObject({ ...config.value }, { ...newValue }));
   },
 );
 

@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { default as ZaptimeCalendar } from '../src/App.vue';
 import { ZaptimeConfig, reserve, confirm } from '@zaptime/core';
-
+import { ref } from 'vue';
 function confirmDemocall() {
   confirm();
 }
@@ -38,16 +38,16 @@ function reserveDemocall() {
   });
 }
 
-const calypsoTheme: ZaptimeConfig['theme'] = {
-  mode: 'dark',
-  colors: {
-    'accent--1': '#9e7700',
-    'accent-0': '#ffc000',
-    'accent-1': '#ffcc31',
-  },
-};
+// const calypsoTheme: ZaptimeConfig['theme'] = {
+//   mode: 'dark',
+//   colors: {
+//     accentLight: '#9e7700',
+//     accentBase: '#ffc000',
+//     accentDark: '#ffcc31',
+//   },
+// };
 
-const config: ZaptimeConfig = {
+const config = ref<ZaptimeConfig>({
   token: 'mlRgAVeQGqSoMjLzh5LGyyAF6xtSKKRi',
 
   compact: false,
@@ -96,7 +96,7 @@ const config: ZaptimeConfig = {
     },
   },
   // theme: calypsoTheme,
-};
+});
 </script>
 
 <style>
