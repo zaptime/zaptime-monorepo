@@ -5,7 +5,7 @@
   >
     <div class="cal-flex cal-justify-center">
       <svg
-        class="cal-h-16 cal-w-16 cal-text-accent-0"
+        class="cal-h-16 cal-w-16 cal-text-accent-base"
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"

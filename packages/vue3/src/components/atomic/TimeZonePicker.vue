@@ -3,7 +3,7 @@
     <Combobox v-model="selectedTimezone">
       <div class="cal-relative cal-mt-1">
         <div
-          class="cal-relative cal-w-full cal-cursor-default cal-overflow-hidden cal-rounded-md cal-bg-white cal-text-left focus:cal-outline-none focus:cal-ring-accent-0 focus-visible:cal-ring-2 focus-visible:cal-ring-accent-0 focus-visible:cal-ring-opacity-75 focus-visible:cal-ring-offset-2 focus-visible:cal-ring-offset-teal-300 dark:cal-bg-theme-700 sm:cal-text-sm"
+          class="cal-relative cal-w-full cal-cursor-default cal-overflow-hidden cal-rounded-md cal-bg-white cal-text-left focus:cal-outline-none focus:cal-ring-accent-base focus-visible:cal-ring-2 focus-visible:cal-ring-accent-base focus-visible:cal-ring-opacity-75 focus-visible:cal-ring-offset-2 focus-visible:cal-ring-offset-teal-300 dark:cal-bg-theme-700 sm:cal-text-sm"
         >
           <ComboboxInput
             id="zaptime-timezone-picker"
@@ -51,7 +51,7 @@
                 <li
                   class="cal-relative cal-cursor-default cal-select-none cal-list-none cal-py-2 cal-pl-2 cal-pr-4"
                   :class="{
-                    'cal-bg-accent-0 cal-text-white dark:cal-text-theme-900': active,
+                    'cal-bg-accent-base cal-text-white dark:cal-text-theme-900': active,
                     'cal-text-theme-900 dark:cal-text-theme-100': !active,
                   }"
                 >
@@ -64,7 +64,7 @@
                   <!-- <span
                     v-if="selected"
                     class="cal-absolute cal-inset-y-0 cal-left-0 cal-flex cal-items-center cal-pl-3"
-                    :class="{ 'cal-text-white': active, 'cal-text-accent-0': !active }"
+                    :class="{ 'cal-text-white': active, 'cal-text-accent-base': !active }"
                   >
                     <CheckIcon
                       class="cal-h-5 cal-w-5"

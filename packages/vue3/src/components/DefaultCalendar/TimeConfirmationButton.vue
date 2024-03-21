@@ -8,7 +8,7 @@
       <button
         class="cal-group cal-my-2 cal-inline-flex cal-cursor-pointer cal-items-center cal-justify-center cal-rounded-md cal-bg-theme-100 cal-font-medium cal-outline-none cal-transition-all cal-duration-150 cal-ease-out focus:cal-outline-none focus:cal-ring-2 focus:cal-ring-theme-800 focus:cal-ring-opacity-50 dark:cal-border-theme-600 dark:cal-bg-theme-800"
         :class="[
-          isSelected(timeSlot) ? 'cal-bg-accent-0 cal-text-white' : 'cal-bg-theme-100 cal-text-theme-700 hover:cal-bg-theme-200 hover:cal-text-accent-0 hover:dark:cal-bg-theme-600',
+          isSelected(timeSlot) ? 'cal-bg-accent-base cal-text-white' : 'cal-bg-theme-100 cal-text-theme-700 hover:cal-bg-theme-200 hover:cal-text-accent-base hover:dark:cal-bg-theme-600',
           confirmationState ? ' cal-w-1/2' : 'cal-w-full',
         ]"
         @click.prevent="confirmationState = true"
@@ -38,8 +38,8 @@
       class="w-full cal-flex cal-items-center cal-space-x-2"
     >
       <button
-        class="cal-group cal-relative cal-my-2 cal-inline-flex cal-w-full cal-cursor-pointer cal-items-center cal-justify-center cal-rounded-md cal-font-medium cal-outline-none cal-ring-offset-2 cal-transition-all cal-duration-150 cal-ease-out focus:cal-outline-none focus:cal-ring-2 focus:cal-ring-accent-0 dark:cal-ring-offset-theme-700"
-        :class="[isSelected(timeSlot) ? 'cal-bg-accent-0 cal-text-white' : 'cal-bg-theme-100 cal-text-theme-700 hover:cal-bg-theme-200 hover:cal-text-accent-0 dark:cal-bg-theme-800 hover:dark:cal-bg-theme-600']"
+        class="cal-group cal-relative cal-my-2 cal-inline-flex cal-w-full cal-cursor-pointer cal-items-center cal-justify-center cal-rounded-md cal-font-medium cal-outline-none cal-ring-offset-2 cal-transition-all cal-duration-150 cal-ease-out focus:cal-outline-none focus:cal-ring-2 focus:cal-ring-accent-base dark:cal-ring-offset-theme-700"
+        :class="[isSelected(timeSlot) ? 'cal-bg-accent-base cal-text-white' : 'cal-bg-theme-100 cal-text-theme-700 hover:cal-bg-theme-200 hover:cal-text-accent-base dark:cal-bg-theme-800 hover:dark:cal-bg-theme-600']"
         @click.prevent="emit('selectTimeSlot')"
       >
         <span

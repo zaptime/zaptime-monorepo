@@ -32,7 +32,8 @@
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "load-script": "^2.0.0",
-    "react-facebook-pixel": "^1.0.4"
+    "react-facebook-pixel": "^1.0.4",
+    "ts-results": "^3.3.0"
   },
   "devDependencies": {
     "@babel/types": "^7.23.9",

@@ -17,8 +17,8 @@ export default interface ZaptimeTheme {
     '800'?: string;
     '900'?: string;
 
-    'accent--1'?: string;
-    'accent-0'?: string;
-    'accent-1'?: string;
+    accentLight?: string;
+    accentBase?: string;
+    accentDark?: string;
   };
 }

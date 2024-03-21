@@ -16,8 +16,8 @@
               'cal-bg-theme-100 cal-font-medium  cal-text-theme-700 cal-ring-theme-200 focus:cal-outline-none focus:cal-ring-2 dark:cal-bg-theme-800 dark:cal-text-theme-100 dark:hover:cal-text-theme-300':
                 dayHasTimeSlot(day) && !day.isPast && !isSelectedDay(day),
               'cal-cursor-default cal-text-theme-500 dark:cal-text-theme-300': (day.isPast && !day.isCurrentMonth) || (!dayHasTimeSlot(day) && day.isCurrentMonth),
-              'cal-bg-accent-0 cal-font-semibold cal-text-white  dark:cal-bg-accent-0 dark:cal-text-white': isSelectedDay(day),
-              'cal-transition-color cal-bg-theme-100 cal-text-theme-700 cal-duration-100 hover:cal-bg-theme-200 hover:cal-text-accent-0 hover:dark:cal-bg-theme-700 hover:dark:cal-text-accent-0':
+              'cal-bg-accent-base cal-font-semibold cal-text-white  dark:cal-bg-accent-base dark:cal-text-white': isSelectedDay(day),
+              'cal-transition-color cal-bg-theme-100 cal-text-theme-700 cal-duration-100 hover:cal-bg-theme-200 hover:cal-text-accent-base hover:dark:cal-bg-theme-700 hover:dark:cal-text-accent-base':
                 !isSelectedDay(day) && dayHasTimeSlot(day) && !day.isPast,
               'cal-pointer-events-none cal-text-theme-500 dark:cal-text-theme-300': day.isPast,
             }"

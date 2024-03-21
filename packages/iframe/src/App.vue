@@ -66,9 +66,9 @@ onMounted(async () => {
   --c-gray-800: v-bind(config?.theme?.colors?.[ '800'] || '#1F2A37');
   --c-gray-900: v-bind(config?.theme?.colors?.[ '900'] || '#111927');
 
-  --c-accent--1: v-bind(config?.theme?.colors?.[ 'accent--1'] || '#2ED3B7');
-  --c-accent-0: v-bind(config?.theme?.colors?.[ 'accent-0'] || '#15B79E');
-  --c-accent-1: v-bind(config?.theme?.colors?.[ 'accent-1'] || '#0E9384');
+  --c-accent-light: v-bind(config?.theme?.colors?.accentLight || '#2ED3B7');
+  --c-accent-base: v-bind(config?.theme?.colors?.accentBase || '#15B79E');
+  --c-accent-dark: v-bind(config?.theme?.colors?.accentDark || '#0E9384');
 
   --radius: v-bind(config.theme?.borderRadius || '6px');
 }
