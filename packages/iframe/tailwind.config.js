@@ -21,9 +21,9 @@ module.exports = {
         },
 
         accent: {
-          '-1': 'var(--c-accent--1)',
-          0: 'var(--c-accent-0)',
-          1: 'var(--c-accent-1)',
+          '-1': 'var(--c-accent-light)',
+          0: 'var(--c-accent-base)',
+          1: 'var(--c-accent-dark)',
         },
       },
       borderRadius: {

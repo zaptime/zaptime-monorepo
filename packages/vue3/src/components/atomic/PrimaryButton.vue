@@ -1,7 +1,7 @@
 <template>
   <button
     :disabled="disabled || loading"
-    class="cal-inline-flex cal-items-center cal-rounded-md cal-bg-accent-0 cal-px-4 cal-py-3 cal-font-medium cal-text-white cal-transition-all cal-duration-75 cal-ease-out hover:cal-bg-accent-1 disabled:cal-cursor-not-allowed disabled:cal-opacity-80 disabled:hover:cal-bg-accent-0 dark:cal-bg-accent-0 dark:cal-text-theme-900 hover:dark:cal-bg-accent-1 hover:dark:cal-text-theme-900 sm:cal-px-6 sm:cal-py-3.5"
+    class="cal-inline-flex cal-items-center cal-rounded-md cal-bg-accent-base cal-px-4 cal-py-3 cal-font-medium cal-text-white cal-transition-all cal-duration-75 cal-ease-out hover:cal-bg-accent-dark disabled:cal-cursor-not-allowed disabled:cal-opacity-80 disabled:hover:cal-bg-accent-base dark:cal-bg-accent-base dark:cal-text-theme-900 hover:dark:cal-bg-accent-dark hover:dark:cal-text-theme-900 sm:cal-px-6 sm:cal-py-3.5"
     @click="$emit('click')"
   >
     <svg

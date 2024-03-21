@@ -39,9 +39,9 @@ module.exports = {
         },
 
         accent: {
-          '-1': 'var(--c-zaptime-accent--1)',
-          0: 'var(--c-zaptime-accent-0)',
-          1: 'var(--c-zaptime-accent-1)',
+          light: 'var(--c-zaptime-accent-light)',
+          base: 'var(--c-zaptime-accent-base)',
+          dark: 'var(--c-zaptime-accent-dark)',
         },
 
         // accent: {

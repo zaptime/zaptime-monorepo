@@ -95,7 +95,7 @@ const config: ZaptimeConfig = {
       },
     },
   },
-  theme: calypsoTheme,
+  // theme: calypsoTheme,
 };
 </script>
 
