@@ -1,5 +1,16 @@
 # @zaptime/vue3
 
+## 3.0.0
+
+### Major Changes
+
+- Fetch config directly in Vue component, accent colors name changed
+
+### Patch Changes
+
+- Updated dependencies
+  - @zaptime/core@2.0.0
+
 ## 2.0.9
 
 ### Patch Changes

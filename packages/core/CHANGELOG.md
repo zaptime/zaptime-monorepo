@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.0.0
+
+### Major Changes
+
+- Fetch config directly in Vue component, accent colors name changed
+
 ## 1.0.8
 
 ### Patch Changes
