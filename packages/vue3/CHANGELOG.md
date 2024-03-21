@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.0.2
+
+### Patch Changes
+
+- Priority merging and watch config fix
+
 ## 3.0.1
 
 ### Patch Changes
