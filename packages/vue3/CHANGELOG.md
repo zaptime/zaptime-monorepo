@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.0.1
+
+### Patch Changes
+
+- Deep merge config with existing config when confing changes via prop
+
 ## 3.0.0
 
 ### Major Changes
