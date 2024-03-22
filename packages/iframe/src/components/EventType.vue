@@ -2,35 +2,13 @@
 import { ZapTimeCalendar } from '@zaptime/vue3';
 import type { ZaptimeConfig } from '@zaptime/vue3';
 import type { TimeSlot } from '@zaptime/core';
-import { ref, onMounted } from 'vue';
-import { fetchRemoteConfig } from '../buildConfigFromRequest';
-import mergeRecursive from '../utills/mergeObjects';
-
-const props = defineProps<{
+defineProps<{
   config: ZaptimeConfig;
 }>();
-
-const resolvedConfig = ref<ZaptimeConfig>();
 
 const emit = defineEmits<{
   (event: 'time-slot-changed', timeSlot: TimeSlot): void;
 }>();
-
-const remoteConfigLoaded = ref(false);
-
-async function mergeWithRemoteConfig() {
-  const obtainedConfig = await fetchRemoteConfig(props.config.token);
-
-  if (obtainedConfig) {
-    resolvedConfig.value = mergeRecursive(obtainedConfig, resolvedConfig.value);
-  }
-
-  remoteConfigLoaded.value = true;
-}
-
-onMounted(async () => {
-  await mergeWithRemoteConfig();
-});
 
 const onTimeSlotChanged = (timeSlot: TimeSlot) => {
   emit('time-slot-changed', timeSlot);
@@ -38,9 +16,9 @@ const onTimeSlotChanged = (timeSlot: TimeSlot) => {
 </script>
 
 <template>
-  <div v-if="remoteConfigLoaded">
+  <div>
     <ZapTimeCalendar
-      :config="resolvedConfig"
+      :config="config"
       @time-slot-changed="onTimeSlotChanged"
     ></ZapTimeCalendar>
   </div>
