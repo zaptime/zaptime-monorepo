@@ -57,6 +57,9 @@ importers:
       date-fns-tz:
         specifier: ^2.0.0
         version: 2.0.0(date-fns@2.30.0)
+      ts-results:
+        specifier: ^3.3.0
+        version: 3.3.0
     devDependencies:
       '@babel/types':
         specifier: ^7.23.9
@@ -146,9 +149,6 @@ importers:
       react-facebook-pixel:
         specifier: ^1.0.4
         version: 1.0.4
-      ts-results:
-        specifier: ^3.3.0
-        version: 3.3.0
     devDependencies:
       '@babel/types':
         specifier: ^7.23.9

@@ -1,9 +1,10 @@
 import useReservationStatus from './useReservationStatus';
 import useSelectedTimeSlot from './useSelectedTimeSlot';
 import useConfig from './useConfig';
-
-import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi } from '../api/api';
+import { Success, Errors } from '../types/InitData';
+import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi, fetchRemoteConfig } from '../api/api';
 import { TimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
+import { Result } from 'ts-results';
 
 export interface IBookingOptions {
   /**
@@ -135,4 +136,16 @@ export const cancel = async (calendarId?: string): Promise<boolean> => {
   }
 
   return false;
+};
+
+/**
+ * Fetches remote Zaptime configuration. Contains additional data about the Event Type configuration.
+ *
+ * @see https://zaptime.docs.apiary.io/#reference/0/event-types-collection/initialize-event-type
+ * @param calendarId
+ */
+
+export const fetchRemoteConfiguration = async (calendarId?: string): Promise<Result<Success, Errors>> => {
+  const { config } = useConfig(calendarId);
+  return await fetchRemoteConfig(config.value.token, config.value.apiBaseUrl);
 };

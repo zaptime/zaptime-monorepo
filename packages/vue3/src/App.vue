@@ -19,12 +19,11 @@
 import { provide, watch, computed, onMounted } from 'vue';
 
 import Calendar from './components/Calendar.vue';
-import { useConfig, ZaptimeConfig, useSelectedTimeSlot } from '@zaptime/core';
+import { useConfig, ZaptimeConfig, useSelectedTimeSlot, mergeObjects } from '@zaptime/core';
 import useCompactSwticher from './composables/useCompactSwitcher';
 import useAlphaColors from './composables/useAlphaColors';
 import { useInitialization } from './composables/useInitialization';
 import CalendarDisabled from './components/CalendarDisabled.vue';
-import deepMergeObject from './utils/mergeObjects';
 
 const props = withDefaults(
   defineProps<{
@@ -62,7 +61,7 @@ watch(selectedTimeSlot, (newV) => {
 watch(
   () => props.config,
   (newValue) => {
-    setConfig(deepMergeObject({ ...config.value }, { ...newValue }));
+    setConfig(mergeObjects({ ...config.value }, { ...newValue }));
   },
 );
 

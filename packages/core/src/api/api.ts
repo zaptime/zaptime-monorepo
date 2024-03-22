@@ -1,7 +1,8 @@
 import type TimeSlot from '../types/TimeSlot';
 import type Status from '../types/Status';
 import type { TimeSlotResponse, AvailableTimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
-
+import { Ok, Err, Result } from 'ts-results';
+import { InitData, Success, Errors } from '../types/InitData';
 const defaultBaseUrl = 'https://api.zaptime.app/';
 
 export interface IOptions {
@@ -164,6 +165,35 @@ export const getAvailableTimeSlots = async (token: string, from: string, until: 
     throw new Error('Getting available time slots failed!');
   }
 };
+
+export async function fetchRemoteConfig(token: string, baseUrl = defaultBaseUrl): Promise<Result<Success, Errors>> {
+  if (token) {
+    type Response = {
+      success: boolean;
+      data: InitData;
+    };
+
+    try {
+      const res = await fetch(baseUrl + 'event-types/init', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      });
+
+      const data: Response = await res.json();
+
+      if (data.success) {
+        return new Ok(data.data);
+      }
+    } catch (e) {
+      return new Err('invalidToken');
+    }
+  }
+  return new Err('invalidToken');
+}
 
 function getBookUrl(baseUrl: string) {
   return baseUrl + 'reservations';

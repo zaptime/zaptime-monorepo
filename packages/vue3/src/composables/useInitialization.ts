@@ -1,10 +1,7 @@
 import type { ZaptimeConfig } from '@zaptime/core';
-import { useConfig, useCalendar } from '@zaptime/core';
-
+import { useConfig, useCalendar, mergeObjects, fetchRemoteConfiguration } from '@zaptime/core';
 import { ref } from 'vue';
 import { getAnalytics, buildConfig } from '../analytics';
-import { fetchRemoteConfig } from '../utils/fetchConfig';
-import deepMergeObject from '../utils/mergeObjects';
 
 export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
   const isEnabled = ref(false);
@@ -26,7 +23,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
         "Zaptime error: Token is required, please enter your acquired token into the configuration. See more in the documentation: https://docs.zaptime.app/guide/vue-installation.html. If you don't have a token, you can acquire one at https://zaptime.app.",
       );
     } else {
-      const initData = await fetchRemoteConfig(config.token);
+      const initData = await fetchRemoteConfiguration(config.token);
 
       if (initData.ok) {
         if (initData.val.disabled) {
@@ -37,7 +34,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
 
         isEnabled.value = true;
 
-        const mergedConfig = deepMergeObject(initData.val.configuration, { ...config });
+        const mergedConfig = mergeObjects(initData.val.configuration, { ...config });
 
         // perepared entry for backend
         const analytics = getAnalytics(buildConfig([]));

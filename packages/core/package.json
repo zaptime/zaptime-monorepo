@@ -17,7 +17,8 @@
   "dependencies": {
     "@vueuse/core": "^10.7.2",
     "date-fns": "^2.30.0",
-    "date-fns-tz": "^2.0.0"
+    "date-fns-tz": "^2.0.0",
+    "ts-results": "^3.3.0"
   },
   "peerDependencies": {
     "vue": "^3.4.0"
