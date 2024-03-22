@@ -145,7 +145,6 @@ export const cancel = async (calendarId?: string): Promise<boolean> => {
  * @param calendarId
  */
 
-export const fetchRemoteConfiguration = async (calendarId?: string): Promise<Result<Success, Errors>> => {
-  const { config } = useConfig(calendarId);
-  return await fetchRemoteConfig(config.value.token, config.value.apiBaseUrl);
+export const fetchRemoteConfiguration = async (token: string, apiBaseUrl?: string): Promise<Result<Success, Errors>> => {
+  return await fetchRemoteConfig(token, apiBaseUrl);
 };
