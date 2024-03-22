@@ -38,12 +38,12 @@
 
       <div
         v-else
-        class="cal-flex cal-h-full cal-w-[841px] cal-bg-white dark:cal-bg-theme-900"
-        :class="[config.compact ? 'cal-rounded-l-xl' : 'cal-rounded-xl']"
+        class="cal-flex cal-h-full cal-w-[841px] cal-rounded-l-xl cal-bg-white dark:cal-bg-theme-900"
+        :class="['cal-rounded-xl', classes]"
       >
         <div
           :key="calendarView"
-          class="cal-w-[330px] cal-px-[48px] sm:cal-w-[400px]"
+          class="cal-w-[330px] cal-rounded-l-xl cal-px-[48px] sm:cal-w-[400px]"
           :style="{ backgroundColor: color }"
         >
           <Navbar />
@@ -57,7 +57,7 @@
           </div>
         </div>
         <div
-          class="cal-border-l cal-border-theme-200 dark:cal-border-theme-700"
+          class="cal-rounded-r-xl cal-border-l cal-border-theme-200 dark:cal-border-theme-700"
           :style="{ backgroundColor: color2 }"
         >
           <TimeSelection />
@@ -71,12 +71,16 @@
     >
       <ConfirmForm
         v-if="view === 'form'"
+        :class="[classes]"
         @go-back="() => setView('calendar')"
         @booking-confirmed="onBookingConfirmed"
       />
     </Transition>
 
-    <SuccessMessage v-if="view === 'success'"></SuccessMessage>
+    <SuccessMessage
+      v-if="view === 'success'"
+      :class="[classes]"
+    ></SuccessMessage>
   </div>
 </template>
 
@@ -96,6 +100,10 @@ import { useConfig } from '@zaptime/core';
 
 defineProps({
   bgClass: {
+    type: String,
+    default: null,
+  },
+  classes: {
     type: String,
     default: null,
   },

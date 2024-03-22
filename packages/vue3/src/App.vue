@@ -3,9 +3,13 @@
     id="zaptime-calendar"
     class="cal-antialiased"
   >
-    <div :class="[config.theme?.mode === 'light' ? '' : 'cal-dark']">
+    <div
+      class=""
+      :class="[config.theme?.mode === 'light' ? '' : 'cal-dark']"
+    >
       <Calendar
         v-if="isEnabled"
+        :classes="String($attrs['class'])"
         @booking-confirmed="emit('booking-confirmed')"
       ></Calendar>
       <div v-if="!isEnabled && initLoaded">
