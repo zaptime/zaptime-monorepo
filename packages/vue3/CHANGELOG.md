@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.0.4
+
+### Patch Changes
+
+- Fix fetching external config
+- Updated dependencies
+  - @zaptime/core@2.0.2
+
 ## 3.0.3
 
 ### Patch Changes

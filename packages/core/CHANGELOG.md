@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.0.2
+
+### Patch Changes
+
+- Fix fetching external config
+
 ## 2.0.1
 
 ### Patch Changes
