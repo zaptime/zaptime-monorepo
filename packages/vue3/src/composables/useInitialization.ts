@@ -23,7 +23,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
         "Zaptime error: Token is required, please enter your acquired token into the configuration. See more in the documentation: https://docs.zaptime.app/guide/vue-installation.html. If you don't have a token, you can acquire one at https://zaptime.app.",
       );
     } else {
-      const initData = await fetchRemoteConfiguration(config.token);
+      const initData = await fetchRemoteConfiguration(config.token, config.apiBaseUrl);
 
       if (initData.ok) {
         if (initData.val.disabled) {
