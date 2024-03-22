@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.0.5
+
+### Patch Changes
+
+- Add base api url to base config
+
 ## 3.0.4
 
 ### Patch Changes
