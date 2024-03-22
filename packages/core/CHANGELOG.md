@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.0.1
+
+### Patch Changes
+
+- Refactor fetching remote from vue component to core.
+
 ## 2.0.0
 
 ### Major Changes

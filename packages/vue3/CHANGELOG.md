@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.0.3
+
+### Patch Changes
+
+- Refactor fetching remote from vue component to core.
+- Updated dependencies
+  - @zaptime/core@2.0.1
+
 ## 3.0.2
 
 ### Patch Changes
