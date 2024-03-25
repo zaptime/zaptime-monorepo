@@ -105,7 +105,7 @@ defineProps({
   },
   classes: {
     type: String,
-    default: null,
+    default: '',
   },
   value: {
     type: Date,

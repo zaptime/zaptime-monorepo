@@ -1,7 +1,8 @@
 import type { ZaptimeConfig } from '@zaptime/core';
-import { useConfig, useCalendar, mergeObjects, fetchRemoteConfiguration } from '@zaptime/core';
+import { useConfig, useCalendar, fetchRemoteConfiguration } from '@zaptime/core';
 import { ref } from 'vue';
 import { getAnalytics, buildConfig } from '../analytics';
+import { mergeConfigs } from '../utils/mergeConfigs';
 
 export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
   const isEnabled = ref(false);
@@ -34,7 +35,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
 
         isEnabled.value = true;
 
-        const mergedConfig = mergeObjects(initData.val.configuration, { ...config });
+        const mergedConfig = mergeConfigs(initData.val.configuration, config);
 
         // perepared entry for backend
         const analytics = getAnalytics(buildConfig([]));

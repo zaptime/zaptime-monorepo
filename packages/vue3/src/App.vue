@@ -9,7 +9,7 @@
     >
       <Calendar
         v-if="isEnabled"
-        :classes="String($attrs['class'])"
+        :classes="$attrs['class'] ? String($attrs['class']) : ''"
         @booking-confirmed="emit('booking-confirmed')"
       ></Calendar>
       <div v-if="!isEnabled && initLoaded">
@@ -23,11 +23,12 @@
 import { provide, watch, computed, onMounted } from 'vue';
 
 import Calendar from './components/Calendar.vue';
-import { useConfig, ZaptimeConfig, useSelectedTimeSlot, mergeObjects } from '@zaptime/core';
+import { useConfig, ZaptimeConfig, useSelectedTimeSlot } from '@zaptime/core';
 import useCompactSwticher from './composables/useCompactSwitcher';
 import useAlphaColors from './composables/useAlphaColors';
 import { useInitialization } from './composables/useInitialization';
 import CalendarDisabled from './components/CalendarDisabled.vue';
+import { mergeConfigs } from './utils/mergeConfigs';
 
 const props = withDefaults(
   defineProps<{
@@ -65,7 +66,7 @@ watch(selectedTimeSlot, (newV) => {
 watch(
   () => props.config,
   (newValue) => {
-    setConfig(mergeObjects({ ...config.value }, { ...newValue }));
+    setConfig(mergeConfigs(config.value, newValue));
   },
 );
 
