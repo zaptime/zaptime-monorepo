@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.0.7
+
+### Patch Changes
+
+- Fix: compact switch in init when on mobile
+
 ## 3.0.6
 
 ### Patch Changes
