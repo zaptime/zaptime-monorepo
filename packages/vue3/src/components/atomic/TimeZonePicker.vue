@@ -1,6 +1,10 @@
 <template>
   <div class="cal-w-full">
-    <Combobox v-model="selectedTimezone">
+    <Combobox
+      :model-value="timezone"
+      @update:model-value="setNewTimezone"
+      @mouseover="getTimezones"
+    >
       <div class="cal-relative cal-mt-1">
         <div
           class="cal-relative cal-w-full cal-cursor-default cal-overflow-hidden cal-rounded-md cal-bg-white cal-text-left focus:cal-outline-none focus:cal-ring-accent-base focus-visible:cal-ring-2 focus-visible:cal-ring-accent-base focus-visible:cal-ring-opacity-75 focus-visible:cal-ring-offset-2 focus-visible:cal-ring-offset-teal-300 dark:cal-bg-theme-700 sm:cal-text-sm"
@@ -9,8 +13,8 @@
             id="zaptime-timezone-picker"
             ref="selectText"
             class="cal-w-full cal-border-none cal-bg-theme-100 cal-py-2 cal-pl-3 cal-pr-10 cal-text-xs cal-leading-5 cal-text-theme-900 focus:cal-outline-none focus:cal-ring-0 dark:cal-bg-theme-800 dark:cal-text-theme-100"
-            :displayValue="(t: any) => getSpeficicRegion(t)"
-            @change="query = $event.target.value"
+            :displayValue="() => timezone"
+            @change="setQuery($event.target.value)"
             @focus="selectAllText"
           />
           <ComboboxButton class="cal-absolute cal-inset-y-0 cal-right-0 cal-flex cal-items-center cal-pr-2">
@@ -59,18 +63,8 @@
                     class="cal-block cal-truncate"
                     :class="{ 'cal-font-medium': selected, 'cal-font-normal': !selected }"
                   >
-                    {{ tz.value }}
+                    {{ tz }}
                   </span>
-                  <!-- <span
-                    v-if="selected"
-                    class="cal-absolute cal-inset-y-0 cal-left-0 cal-flex cal-items-center cal-pl-3"
-                    :class="{ 'cal-text-white': active, 'cal-text-accent-base': !active }"
-                  >
-                    <CheckIcon
-                      class="cal-h-5 cal-w-5"
-                      aria-hidden="true"
-                    />
-                  </span> -->
                 </li>
               </ComboboxOption>
             </div>
@@ -82,47 +76,59 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, inject } from 'vue';
+import { ref, computed, inject, watch } from 'vue';
 import { Combobox, ComboboxInput, ComboboxButton, ComboboxOptions, ComboboxOption, TransitionRoot } from '@headlessui/vue';
 import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
-import timzonesJson from '../../timezones.json';
-import { useCurrentTimezone, useCalendar } from '@zaptime/core';
+import { useCurrentTimezone, useCalendar, useConfig } from '@zaptime/core';
+import { useDebounceFn } from '@vueuse/core';
 
-const { timezone, setTimezone, clientOriginalTimezone } = useCurrentTimezone();
+const { timezone, setTimezone } = useCurrentTimezone();
 const { getDays } = useCalendar(inject('calendarId'));
+const { config } = useConfig(inject('calendarId'));
 
-type TimeZone = typeof timzonesJson;
-const timezones: TimeZone = timzonesJson;
+const timezones = ref<string[]>([]);
 
 const query = ref('');
 const selectText = ref();
 
-const selectedTimezone = computed({
-  get() {
-    for (let i = 0; i < timezones.length; i++) {
-      if (timezones[i].utc.find((utc) => utc === timezone.value)) {
-        return timezones[i];
-      }
-    }
-
-    return timezones[0];
-  },
-  async set(val: TimeZone[0]) {
-    setTimezone(val.utc[0]);
-
-    // Refetch days to update the calendar
-    // for cases where the timezone is changed
-    // and some days are suddenly empty
-    await getDays();
-  },
+// Refetch days to update the calendar
+// for cases where the timezone is changed
+// and some days are suddenly empty
+watch(timezone, () => {
+  getDays();
 });
 
-function getSpeficicRegion(tz: TimeZone[0]) {
-  if (tz.utc.includes(clientOriginalTimezone)) {
-    return clientOriginalTimezone;
-  }
+const setQuery = useDebounceFn(
+  (newQuery: string) => {
+    console.log('test');
 
-  return tz.utc[0];
+    query.value = newQuery;
+  },
+  500,
+  { maxWait: 5000 },
+);
+
+function setNewTimezone(newTz: string) {
+  setTimezone(newTz);
+}
+
+async function fetchTimezone() {
+  try {
+    const baseUrl = config.value.apiBaseUrl || 'https://api.zaptime.app/';
+    const res = await fetch(baseUrl + 'timezones');
+
+    const json = await res.json();
+
+    timezones.value = json.data;
+  } catch (err) {
+    console.error('Error fetching timezones', err);
+  }
+}
+
+async function getTimezones() {
+  if (timezones.value.length === 0) {
+    await fetchTimezone();
+  }
 }
 
 function selectAllText() {
@@ -134,11 +140,11 @@ function selectAllText() {
 
 const filteredTimezones = computed(() => {
   if (query.value === '') {
-    return timezones;
+    return timezones.value;
   }
 
-  return timezones.filter((timezone) => {
-    return timezone.text.toLowerCase().includes(query.value.toLowerCase());
+  return timezones.value.filter((timezone) => {
+    return timezone.toLowerCase().includes(query.value.toLowerCase());
   });
 });
 </script>
