@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.0.3
+
+### Patch Changes
+
+- Parse analytics
+
 ## 2.0.2
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.0.9
+
+### Patch Changes
+
+- Parse analytics
+- Updated dependencies
+  - @zaptime/core@2.0.3
+
 ## 3.0.8
 
 ### Patch Changes
