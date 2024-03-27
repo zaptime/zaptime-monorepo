@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.0.8
+
+### Patch Changes
+
+- Optimize timezones fetching
+
 ## 3.0.7
 
 ### Patch Changes
