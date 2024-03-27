@@ -48,53 +48,53 @@ function reserveDemocall() {
 // };
 
 const config = ref<ZaptimeConfig>({
-  token: 'mlRgAVeQGqSoMjLzh5LGyyAF6xtSKKRi',
+  token: 'AsnMxrapnCnVWzzJsKKRDkFiwwQ42he5',
 
-  compact: false,
+  // compact: false,
 
-  // apiBaseUrl: 'https://api.zaptime.test/',
+  apiBaseUrl: 'https://api.zaptime.test/',
 
   // redirectAfterBookingUrl: 'https://google.com',
 
-  externalBooking: false,
+  // externalBooking: false,
 
   // min: 0,
   // max: 1,
   // externalBooking: false,
   // compact: true,
 
-  profileImage: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+  // profileImage: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
 
-  locale: {
-    preset: 'en',
+  // locale: {
+  //   preset: 'en',
 
-    hideTimePreferences: false,
-    startDayOfWeek: 'sun',
+  //   hideTimePreferences: false,
+  //   startDayOfWeek: 'sun',
 
-    texts: {
-      introduction: '<p>Book a <b>meeting</b> with me</p><p>new line</p>',
-    },
-    confirmationForm: {
-      confirmBooking: 'Confirm booking',
-      name: {
-        label: 'Your name',
-        placeholder: 'Enter your name',
-      },
+  //   texts: {
+  //     introduction: '<p>Book a <b>meeting</b> with me</p><p>new line</p>',
+  //   },
+  //   confirmationForm: {
+  //     confirmBooking: 'Confirm booking',
+  //     name: {
+  //       label: 'Your name',
+  //       placeholder: 'Enter your name',
+  //     },
 
-      email: {
-        label: 'Your email',
-        placeholder: 'Enter your email',
-      },
-      seats: {
-        label: 'Number of seats',
-        placeholder: 'Enter number of seats',
-      },
-      buttons: {
-        confirmBooking: 'Confirm booking',
-        goBack: 'Go back',
-      },
-    },
-  },
+  //     email: {
+  //       label: 'Your email',
+  //       placeholder: 'Enter your email',
+  //     },
+  //     seats: {
+  //       label: 'Number of seats',
+  //       placeholder: 'Enter number of seats',
+  //     },
+  //     buttons: {
+  //       confirmBooking: 'Confirm booking',
+  //       goBack: 'Go back',
+  //     },
+  //   },
+  // },
   // theme: calypsoTheme,
 });
 </script>

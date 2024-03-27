@@ -38,7 +38,14 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
         const mergedConfig = mergeConfigs(initData.val.configuration, config);
 
         // perepared entry for backend
-        const analytics = getAnalytics(buildConfig([]));
+
+        let analyticsConfig = undefined;
+
+        if (initData.val.analytics) {
+          analyticsConfig = buildConfig(initData.val.analytics);
+        }
+
+        const analytics = getAnalytics(analyticsConfig);
 
         analytics?.track('calendar-opened');
         setConfig(mergedConfig);

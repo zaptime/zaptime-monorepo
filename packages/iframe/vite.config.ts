@@ -6,6 +6,9 @@ import { resolve } from 'path';
 export default defineConfig(({ mode }) => {
   if (mode !== 'production') {
     return {
+      server: {
+        port: 8887,
+      },
       plugins: [vue()],
       root: resolve(__dirname, './example'),
     };

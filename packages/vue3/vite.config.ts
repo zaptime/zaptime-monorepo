@@ -8,6 +8,9 @@ export default defineConfig(({ mode }) => {
   if (mode !== 'production') {
     return {
       plugins: [vue()],
+      server: {
+        port: 8888,
+      },
       root: resolve(__dirname, './example'),
     };
   } else {
