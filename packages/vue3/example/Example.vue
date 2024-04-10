@@ -48,7 +48,7 @@ function reserveDemocall() {
 // };
 
 const config = ref<ZaptimeConfig>({
-  token: 'AsnMxrapnCnVWzzJsKKRDkFiwwQ42he5',
+  token: 'bINIbfBAOI8YOe5wYfJcwbx58l1Clapt',
 
   // compact: false,
 

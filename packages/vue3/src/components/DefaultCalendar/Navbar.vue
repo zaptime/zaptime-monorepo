@@ -13,10 +13,12 @@
     </div>
     <div
       v-if="config.locale?.texts?.introduction"
-      class="cal-w-full cal-text-center cal-font-medium cal-text-theme-600 dark:cal-text-theme-200"
+      class="cal-w-full cal-text-center cal-text-theme-600 dark:cal-text-theme-200"
       :class="[config.profileImage ? '' : 'cal-py-12']"
       v-html="config.locale?.texts?.introduction"
     ></div>
+
+    <MeetingLocation></MeetingLocation>
   </div>
   <div class="cal-flex cal-justify-between cal-py-4">
     <p class="cal-ml-3 cal-text-base cal-font-medium cal-text-theme-900 dark:cal-text-theme-200">{{ monthName }} {{ currentYear }}</p>
@@ -76,6 +78,7 @@
 <script setup lang="ts">
 import { inject } from 'vue';
 import { useCalendar, useConfig } from '@zaptime/core';
+import MeetingLocation from './MeetingLocation.vue';
 
 const { monthName, currentYear, prev, prevDisabled, next, nextDisabled } = useCalendar(inject('calendarId') as string);
 
