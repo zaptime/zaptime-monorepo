@@ -112,7 +112,7 @@ const emits = defineEmits(['booking-confirmed', 'go-back']);
 const { selectedTimeSlot } = useSelectedTimeSlot(inject('calendarId'));
 const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
 const { config } = useConfig(inject('calendarId'));
-const { isPhoneCall } = useLocations(inject('calendarId'));
+const { isPhoneCall, locations } = useLocations(inject('calendarId'));
 
 const color2 = inject<string>('color2');
 const calendarId = inject<string>('calendarId');
@@ -163,8 +163,10 @@ const onSubmit = async () => {
     email: email.value,
     firstName,
     lastName,
+    phone: phone.value,
     seats: seats.value,
     calendarId,
+    location: locations.value[0],
   });
 
   analytics?.track('booking_confirmed', {

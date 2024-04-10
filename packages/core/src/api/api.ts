@@ -2,7 +2,7 @@ import type TimeSlot from '../types/TimeSlot';
 import type Status from '../types/Status';
 import type { TimeSlotResponse, AvailableTimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
 import { Ok, Err, Result } from 'ts-results';
-import { InitData, Success, Errors } from '../types/InitData';
+import { InitData, Success, Errors, Location } from '../types/InitData';
 const defaultBaseUrl = 'https://api.zaptime.app/';
 
 export interface IOptions {
@@ -42,10 +42,21 @@ export interface IOptions {
    * Base URL override
    */
   baseUrl?: string;
+
+  /**
+   * Phone number of the attendee
+   */
+  phone?: string;
+
+  /**
+   * Location of the Event Type
+   */
+
+  location?: Location;
 }
 
 export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
-  const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl } = options;
+  const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location } = options;
 
   try {
     const data = await fetch(getBookUrl(baseUrl), {
@@ -57,6 +68,8 @@ export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
         seats: seats,
         firstname: firstName,
         lastname: lastName,
+        phone: phone,
+        location: location,
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +85,7 @@ export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
 };
 
 export const reserve = async (options: IOptions): Promise<PrepareReservationResponse> => {
-  const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl } = options;
+  const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location } = options;
 
   try {
     const data = await fetch(getReserveUrl(baseUrl), {
@@ -84,6 +97,8 @@ export const reserve = async (options: IOptions): Promise<PrepareReservationResp
         seats: seats,
         firstname: firstName,
         lastname: lastName,
+        phone: phone,
+        location: location,
       }),
       headers: {
         'Content-Type': 'application/json',

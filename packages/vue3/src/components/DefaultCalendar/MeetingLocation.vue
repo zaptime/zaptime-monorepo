@@ -1,18 +1,31 @@
 <template>
-  <div class="cal-mt-3 cal-flex cal-gap-2 cal-px-2.5">
+  <div
+    v-if="selectedLocation && selectedLocation.id !== 'no-location'"
+    class="cal-mt-3 cal-flex cal-items-center cal-gap-2 cal-px-2.5"
+  >
     <div
       class="cal-h-5 cal-w-5 dark:cal-text-theme-200"
       v-html="selectedLocation?.icon"
     ></div>
-    <p class="cal-text-sm dark:cal-text-theme-200">{{ selectedLocation?.name }}</p>
+    <p class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200">{{ locationLabel }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue';
+import { ref, inject, computed } from 'vue';
 import { useLocations } from '@zaptime/core';
 
 const { locations } = useLocations(inject('calendarId'));
+
+const selectedLocation = ref();
+
+const locationLabel = computed(() => {
+  if (selectedLocation.value?.id === 'in-person' || selectedLocation.value?.id === 'phone') {
+    return locations.value[0].value;
+  }
+
+  return selectedLocation.value.name;
+});
 
 const locationOptions = ref([
   {
@@ -39,12 +52,9 @@ const locationOptions = ref([
   },
   {
     id: 'in-person',
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
+    icon: '<svg class="cal-text-theme-600 dark:cal-text-theme-200" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
     name: 'In-Person Meeting',
   },
 ]);
-
-const selectedLocation = locationOptions.value.find((location) => location.id === locations.value[0].label);
-
-console.log(selectedLocation);
+selectedLocation.value = locationOptions.value.find((location) => location.id === locations.value[0].type);
 </script>

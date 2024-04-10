@@ -1,7 +1,7 @@
 import useReservationStatus from './useReservationStatus';
 import useSelectedTimeSlot from './useSelectedTimeSlot';
 import useConfig from './useConfig';
-import { Success, Errors } from '../types/InitData';
+import { Success, Errors, Location } from '../types/InitData';
 import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi, fetchRemoteConfig } from '../api/api';
 import { TimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
 import { Result } from 'ts-results';
@@ -33,6 +33,17 @@ export interface IBookingOptions {
    * Calendar Id
    */
   calendarId?: string;
+
+  /**
+   * Phone number of the attendee
+   */
+
+  phone?: string;
+
+  /**
+   * Location of the Event Type
+   */
+  location?: Location;
 }
 
 /**
@@ -42,7 +53,7 @@ export interface IBookingOptions {
  * @param options
  */
 export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> => {
-  const { email, firstName, lastName, seats = 1, calendarId } = options;
+  const { email, firstName, lastName, seats = 1, calendarId, phone, location } = options;
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
   const { config } = useConfig(calendarId);
 
@@ -56,6 +67,8 @@ export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> 
         lastName,
         seats,
         baseUrl: config.value.apiBaseUrl,
+        phone: phone,
+        location: location,
       });
 
       if (config.value.redirectAfterBookingUrl !== undefined) {
@@ -78,7 +91,7 @@ export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> 
  * @param options
  */
 export const reserve = async (options: IBookingOptions): Promise<PrepareReservationResponse> => {
-  const { email, firstName, lastName, seats = 1, calendarId } = options;
+  const { email, firstName, lastName, seats = 1, calendarId, location, phone } = options;
 
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
 
@@ -94,6 +107,8 @@ export const reserve = async (options: IBookingOptions): Promise<PrepareReservat
       lastName: lastName,
       seats: seats,
       baseUrl: config.value.apiBaseUrl,
+      phone: phone,
+      location: location,
     });
 
     setReservationStatus(data.data);

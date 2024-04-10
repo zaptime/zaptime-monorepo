@@ -8,9 +8,9 @@ export type Analytics = {
 };
 
 export type Location = {
-  label: string;
+  type: string;
   value: string;
-  default: boolean;
+  default?: boolean;
 };
 
 export type InitData = {
