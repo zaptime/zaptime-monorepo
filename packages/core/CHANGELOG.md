@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.1.0
+
+### Minor Changes
+
+- Add locations
+
 ## 2.0.3
 
 ### Patch Changes
