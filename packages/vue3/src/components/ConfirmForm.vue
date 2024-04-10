@@ -84,6 +84,10 @@
         </div>
       </div>
 
+      <div>
+        <Payment></Payment>
+      </div>
+
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
         <SecondaryButton @click="$emit('go-back')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
@@ -106,6 +110,7 @@ import PrimaryButton from './atomic/PrimaryButton.vue';
 import SecondaryButton from './atomic/SecondaryButton.vue';
 import CalInput from './DefaultCalendar/CalInput.vue';
 import { getAnalytics } from '../analytics';
+import Payment from './Payment.vue';
 
 const emits = defineEmits(['booking-confirmed', 'go-back']);
 
