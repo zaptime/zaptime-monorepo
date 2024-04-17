@@ -29,7 +29,7 @@
           type="text"
           name="name"
           autocomplete="name"
-          @blur="() => analytics?.track('name_entered')"
+          @blur="() => analytics?.track('zaptime:name_entered')"
         ></CalInput>
       </div>
 
@@ -41,7 +41,7 @@
           type="email"
           name="email"
           autocomplete="email"
-          @blur="() => analytics?.track('email_entered')"
+          @blur="() => analytics?.track('zaptime:email_entered')"
         ></CalInput>
       </div>
 
@@ -56,7 +56,7 @@
           type="text"
           name="phone"
           autocomplete="phone"
-          @blur="() => analytics?.track('phone_entered')"
+          @blur="() => analytics?.track('zaptime:phone_entered')"
         ></CalInput>
       </div>
 

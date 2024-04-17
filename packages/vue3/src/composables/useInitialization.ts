@@ -52,7 +52,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
 
         const analytics = getAnalytics(analyticsConfig);
 
-        analytics?.track('calendar-opened');
+        analytics?.track('zaptime:calendar_opened');
         setConfig(mergedConfig);
 
         await initCalendar();

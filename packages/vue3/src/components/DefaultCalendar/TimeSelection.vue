@@ -163,7 +163,7 @@ const select = (timeSlot: TimeSlot) => {
   selectTimeSlot(timeSlot);
 
   if (config.value.externalBooking !== true) {
-    getAnalytics()?.track('time_slot_selected', {
+    getAnalytics()?.track('zaptime:time_slot_selected', {
       timeSlot: timeSlot.start,
     });
 
