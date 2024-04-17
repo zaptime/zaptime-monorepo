@@ -37,6 +37,7 @@
   "devDependencies": {
     "@babel/types": "^7.23.9",
     "@types/node": "^20.11.19",
+    "@types/stripe-v3": "^3.1.33",
     "@types/web-bluetooth": "^0.0.20",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.17",
