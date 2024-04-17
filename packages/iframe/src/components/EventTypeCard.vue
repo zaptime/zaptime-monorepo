@@ -4,7 +4,7 @@
     @click="cardClicked"
   >
     <div class="inline-flex justify-between w-full items-center">
-      <span class="text-gray-700 dark:text-gray-200 font-medium">
+      <span class="text-gray-700 dark:text-gray-200 text-left font-medium">
         {{ config.name }}
       </span>
 
@@ -30,8 +30,8 @@
       <span
         v-if="config.description"
         class="text-gray-600 dark:text-gray-300 line-clamp-3"
+        v-html="config.description"
       >
-        {{ config.description }}
       </span>
       <div
         v-if="config.duration"

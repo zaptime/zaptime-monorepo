@@ -6,16 +6,17 @@
     >
       <div class="flex justify-center flex-col items-center">
         <img
-          class="w-16 h-16 rounded-full"
+          class="w-24 h-24 rounded-full object-cover"
           :src="config.avatar"
           alt="avatar"
         />
-        <p class="mt-4 text-gray-900 dark:text-gray-100 font-semibold">
+        <p class="mt-4 text-xl text-gray-900 dark:text-gray-100 font-semibold">
           {{ config.title }}
         </p>
-        <p class="text-center max-w-lg text-gray-700 dark:text-gray-200 mt-2">
-          {{ config.description }}
-        </p>
+        <p
+          class="text-center max-w-xl text-gray-700 dark:text-gray-200 mt-2"
+          v-html="config.description"
+        ></p>
       </div>
 
       <div class="mt-8 grid sm:grid-cols-2 gap-4">
@@ -36,7 +37,8 @@
         @click="goBack"
       >
         <svg
-          class="w-5 h-5 text-white stroke-2"
+          class="w-5 h-5 stroke-2"
+          :style="{ color: config.theme?.colors?.[400] }"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"

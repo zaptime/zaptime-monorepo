@@ -7,8 +7,9 @@ import App from '../src/App.vue';
 
 // @ts-expect-error Faking xprops for the example
 window.xprops = {
+  type: 'group',
   config: {
-    token: 'j7TGKJbtwCJ6whtf7x6pG4nFWuilagWE',
+    token: 'mVlRIHzRWmI0ZYHDETlfDQsnRV9X4hZF',
   },
 };
 </script>
