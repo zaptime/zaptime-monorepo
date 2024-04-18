@@ -19,10 +19,6 @@
       </svg>
     </div>
 
-    <h1 class="cal-mt-4 cal-text-center cal-text-2xl cal-font-semibold cal-text-theme-700 dark:cal-text-theme-300"></h1>
-
-    <h2 class="cal-mt-2 cal-text-center cal-text-2xl cal-font-medium cal-text-theme-500 dark:cal-text-theme-200"></h2>
-
     <h2 class="cal-mt-[24px] cal-text-center cal-font-semibold cal-text-theme-500 dark:cal-text-theme-100">
       {{ getFormattedDayInMonth(selectedTimeSlot.start) }}
     </h2>
