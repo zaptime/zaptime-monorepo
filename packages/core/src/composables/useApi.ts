@@ -5,6 +5,7 @@ import { Success, Errors, Location } from '../types/InitData';
 import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi, fetchRemoteConfig } from '../api/api';
 import { TimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
 import { Result } from 'ts-results';
+import useCurrentTimezone from './useCurrentTimezone';
 
 export interface IBookingOptions {
   /**
@@ -56,6 +57,7 @@ export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> 
   const { email, firstName, lastName, seats = 1, calendarId, phone, location } = options;
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
   const { config } = useConfig(calendarId);
+  const { timezone } = useCurrentTimezone();
 
   if (selectedTimeSlot.value !== undefined && config.value !== undefined) {
     try {
@@ -69,6 +71,7 @@ export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> 
         baseUrl: config.value.apiBaseUrl,
         phone: phone,
         location: location,
+        timezone: timezone.value,
       });
 
       if (config.value.redirectAfterBookingUrl !== undefined) {
@@ -97,6 +100,7 @@ export const reserve = async (options: IBookingOptions): Promise<PrepareReservat
 
   const { config } = useConfig(calendarId);
   const { setReservationStatus } = useReservationStatus(calendarId);
+  const { timezone } = useCurrentTimezone();
 
   if (selectedTimeSlot.value !== undefined && config.value !== undefined) {
     const data = await reserveApi({
@@ -109,6 +113,7 @@ export const reserve = async (options: IBookingOptions): Promise<PrepareReservat
       baseUrl: config.value.apiBaseUrl,
       phone: phone,
       location: location,
+      timezone: timezone.value,
     });
 
     setReservationStatus(data.data);

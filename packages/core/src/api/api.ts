@@ -22,6 +22,11 @@ export interface IOptions {
   timeSlot: TimeSlot;
 
   /**
+   * Timezone of the user
+   */
+  timezone: string;
+
+  /**
    * First name of the attendee
    */
   firstName?: string;
@@ -56,7 +61,7 @@ export interface IOptions {
 }
 
 export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
-  const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location } = options;
+  const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location, timezone } = options;
 
   try {
     const data = await fetch(getBookUrl(baseUrl), {
@@ -70,6 +75,7 @@ export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
         lastname: lastName,
         phone: phone,
         location: location,
+        timezone: timezone,
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -85,7 +91,7 @@ export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
 };
 
 export const reserve = async (options: IOptions): Promise<PrepareReservationResponse> => {
-  const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location } = options;
+  const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location, timezone } = options;
 
   try {
     const data = await fetch(getReserveUrl(baseUrl), {
@@ -99,6 +105,7 @@ export const reserve = async (options: IOptions): Promise<PrepareReservationResp
         lastname: lastName,
         phone: phone,
         location: location,
+        timezone: timezone,
       }),
       headers: {
         'Content-Type': 'application/json',
