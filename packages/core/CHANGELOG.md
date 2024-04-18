@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.2.0
+
+### Minor Changes
+
+- Success message neutral language, timezone added to request
+
 ## 2.1.0
 
 ### Minor Changes

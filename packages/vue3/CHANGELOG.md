@@ -1,5 +1,16 @@
 # @zaptime/vue3
 
+## 3.2.0
+
+### Minor Changes
+
+- Success message neutral language, timezone added to request
+
+### Patch Changes
+
+- Updated dependencies
+  - @zaptime/core@2.2.0
+
 ## 3.1.0
 
 ### Minor Changes
