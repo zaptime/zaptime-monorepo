@@ -79,6 +79,10 @@ export type EventTypeConfig = {
   name: string;
   description?: string;
   duration?: number;
+  stripeConfig?: {
+    currency: string;
+    price: number;
+  };
 };
 
 defineProps<{
