@@ -84,7 +84,7 @@
         </div>
       </div>
 
-      <div>
+      <div v-if="stripeConfig">
         <Payment></Payment>
       </div>
 
@@ -104,13 +104,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue';
-import { useSelectedTimeSlot, book, useConfig, useDateFormatters, useLocations } from '@zaptime/core';
+import { computed, inject, ref, onMounted } from 'vue';
+import { useSelectedTimeSlot, book, reserve, confirm, useConfig, useDateFormatters, useLocations, useStripeConfig } from '@zaptime/core';
 import PrimaryButton from './atomic/PrimaryButton.vue';
 import SecondaryButton from './atomic/SecondaryButton.vue';
 import CalInput from './DefaultCalendar/CalInput.vue';
 import { getAnalytics } from '../analytics';
 import Payment from './Payment.vue';
+import { useStripe } from '../composables/useStripe';
 
 const emits = defineEmits(['booking-confirmed', 'go-back']);
 
@@ -118,6 +119,9 @@ const { selectedTimeSlot } = useSelectedTimeSlot(inject('calendarId'));
 const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
 const { config } = useConfig(inject('calendarId'));
 const { isPhoneCall, locations } = useLocations(inject('calendarId'));
+const { stripeConfig } = useStripeConfig(inject('calendarId'));
+
+const { initGateway, handleSubmit: handleStripePayment, result, errors } = useStripe();
 
 const color2 = inject<string>('color2');
 const calendarId = inject<string>('calendarId');
@@ -159,20 +163,44 @@ const splitName = (name: string) => {
   };
 };
 
+async function handleSubmittionWithPayment({ firstName, lastName }: { firstName: string; lastName: string }) {
+  try {
+    await reserve({
+      email: email.value,
+      firstName,
+      lastName,
+      phone: phone.value,
+      seats: seats.value,
+      calendarId,
+      location: locations.value[0],
+    });
+
+    await handleStripePayment({ name: name.value });
+
+    await confirm(calendarId);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 const onSubmit = async () => {
   disabled.value = true;
 
   const { firstName, lastName } = splitName(name.value);
 
-  await book({
-    email: email.value,
-    firstName,
-    lastName,
-    phone: phone.value,
-    seats: seats.value,
-    calendarId,
-    location: locations.value[0],
-  });
+  if (stripeConfig.value) {
+    await handleSubmittionWithPayment({ firstName, lastName });
+  } else {
+    await book({
+      email: email.value,
+      firstName,
+      lastName,
+      phone: phone.value,
+      seats: seats.value,
+      calendarId,
+      location: locations.value[0],
+    });
+  }
 
   analytics?.track('booking_confirmed', {
     timeSlot: selectedTimeSlot.value ? selectedTimeSlot.value.start : undefined,
@@ -182,4 +210,10 @@ const onSubmit = async () => {
 
   disabled.value = false;
 };
+
+onMounted(async () => {
+  if (stripeConfig.value) {
+    await initGateway();
+  }
+});
 </script>

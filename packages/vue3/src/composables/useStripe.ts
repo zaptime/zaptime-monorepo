@@ -93,7 +93,7 @@ export function useStripe() {
     stripeCardCvc.value.mount('#card-cvc');
   }
 
-  async function handleSubmit() {
+  async function handleSubmit({ name }: { name: string }) {
     if (stripe.value === undefined || stripeCardNumber.value === undefined || clientSecret.value === undefined) {
       return;
     }
@@ -103,11 +103,11 @@ export function useStripe() {
     //   redirect: 'if_required',
     // });
 
-    const { paymentIntent, error } = await stripe.value.confirmCardPayment(clientSecret.value, {
+    const { error } = await stripe.value.confirmCardPayment(clientSecret.value, {
       payment_method: {
         card: stripeCardNumber.value,
         billing_details: {
-          name: 'Jenny Rosen',
+          name: name,
           address: {
             postal_code: '94103',
           },
@@ -128,12 +128,7 @@ export function useStripe() {
         }),
       });
 
-      console.log(response);
-
       const jsonRes = await response.json();
-
-      console.log(jsonRes);
-
       result.value = jsonRes.success;
     } else {
       errors.value = error.message;
