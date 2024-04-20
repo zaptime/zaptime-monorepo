@@ -34,6 +34,38 @@
       >
       </span>
       <div
+        v-if="config.stripeConfig"
+        class="mt-2 flex gap-1.5 text-gray-600 dark:text-gray-200"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-credit-card"
+        >
+          <rect
+            width="20"
+            height="14"
+            x="2"
+            y="5"
+            rx="2"
+          />
+          <line
+            x1="2"
+            x2="22"
+            y1="10"
+            y2="10"
+          />
+        </svg>
+        {{ config.stripeConfig.price / 100 }} {{ config.stripeConfig.currency }}
+      </div>
+      <div
         v-if="config.duration"
         class="bg-gray-100 dark:bg-gray-700 w-fit text-xs px-1.5 py-1 rounded-md mt-3 ring-1 ring-gray-200 dark:ring-gray-500 dark:text-gray-100"
       >
