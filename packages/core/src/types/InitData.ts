@@ -16,8 +16,15 @@ export type Location = {
 export type InitData = {
   configuration: ConfigWithoutToken;
   disabled: boolean;
-  analytics: Analytics[];
-  locations: Location[];
+  analytics?: Analytics[];
+  locations?: Location[];
+  stripeConfig?: StripeConfig;
+};
+
+export type StripeConfig = {
+  price: number;
+  currency: string;
+  stripeAccountId: string;
 };
 
 export type Success = InitData;

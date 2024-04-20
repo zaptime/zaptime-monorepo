@@ -9,6 +9,7 @@ export { default as useSelectedTimeSlot } from './composables/useSelectedTimeSlo
 export { default as useCurrentTimezone } from './composables/useCurrentTimezone';
 export { default as useHourCycle } from './composables/useHourCycle';
 export { default as useLocations } from './composables/useLocations';
+export { default as useStripeConfig } from './composables/useStripeConfig';
 export { useDateFormatters } from './composables/useDateFormatters';
 
 export { default as mergeObjects } from './utils/mergeObjects';
