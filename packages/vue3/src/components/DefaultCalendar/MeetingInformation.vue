@@ -22,10 +22,10 @@
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="2"
+        stroke-width="1.75"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-credit-card cal-text-theme-600"
+        class="lucide lucide-credit-card cal-text-theme-600 dark:cal-text-theme-200"
       >
         <rect
           width="20"

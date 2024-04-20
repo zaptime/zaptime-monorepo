@@ -7,13 +7,10 @@
     />
   </Teleport>
 
-  <div
-    v-if="!result && !errors"
-    class="cal-mt-6"
-  >
+  <div class="cal-mt-6">
     <div class="cal-mt-3">
-      <p class="cal-text-xl cal-font-semibold cal-leading-[36px] cal-text-theme-800 dark:cal-text-theme-300">Price</p>
-      <p class="cal-text-lg cal-font-medium cal-leading-[24px] cal-text-theme-700 dark:cal-text-theme-300">{{ stripeConfig.price / 100 }} {{ stripeConfig.currency }}</p>
+      <p class="cal-text-xl cal-font-semibold cal-leading-[36px] cal-text-theme-800 dark:cal-text-theme-300">{{ config.locale.confirmationForm.payments.price }}</p>
+      <p class="cal-text-lg cal-font-medium cal-leading-[24px] cal-text-theme-700 dark:cal-text-theme-100">{{ stripeConfig.price / 100 }} {{ stripeConfig.currency }}</p>
     </div>
 
     <div class="cal-mt-4">
@@ -21,7 +18,7 @@
         for="card-number"
         class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200"
       >
-        Card Number
+        {{ config.locale.confirmationForm.payments.cardNumber }}
       </label>
       <div
         id="card-number"
@@ -51,17 +48,15 @@
       </div>
     </div>
   </div>
-
-  <div v-else>
-    <p v-if="errors">{{ errors }}</p>
-  </div>
 </template>
 
 <script setup>
 import { inject } from 'vue';
 import { useStripeConfig } from '@zaptime/core';
+import { useConfig } from '@zaptime/core';
 
 const { stripeConfig } = useStripeConfig(inject('calendarId'));
+const { config } = useConfig(inject('calendarId'));
 </script>
 
 <style scoped>
