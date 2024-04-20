@@ -32,6 +32,10 @@ const config: ZaptimeConfig = {
         label: 'Your phone',
         placeholder: 'Enter your phone',
       },
+      payments: {
+        price: 'Price',
+        cardNumber: 'Card number',
+      },
     },
   },
   theme: {

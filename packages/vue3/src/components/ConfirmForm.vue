@@ -121,7 +121,7 @@ const { config } = useConfig(inject('calendarId'));
 const { isPhoneCall, locations } = useLocations(inject('calendarId'));
 const { stripeConfig } = useStripeConfig(inject('calendarId'));
 
-const { initGateway, handleSubmit: handleStripePayment, result, errors } = useStripe();
+const { initGateway, handleSubmit: handleStripePayment } = useStripe();
 
 const color2 = inject<string>('color2');
 const calendarId = inject<string>('calendarId');
