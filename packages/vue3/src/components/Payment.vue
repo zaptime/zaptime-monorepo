@@ -9,12 +9,18 @@
 
   <div class="cal-mt-6">
     <div class="cal-mt-3">
-      <p class="cal-text-xl cal-font-semibold cal-leading-[36px] cal-text-theme-800 dark:cal-text-theme-300">{{ config.locale.confirmationForm.payments.price }}</p>
+      <p
+        v-if="config.locale?.confirmationForm?.payments"
+        class="cal-text-xl cal-font-semibold cal-leading-[36px] cal-text-theme-800 dark:cal-text-theme-300"
+      >
+        {{ config.locale.confirmationForm.payments.price }}
+      </p>
       <p class="cal-text-lg cal-font-medium cal-leading-[24px] cal-text-theme-700 dark:cal-text-theme-100">{{ stripeConfig.price / 100 }} {{ stripeConfig.currency }}</p>
     </div>
 
     <div class="cal-mt-4">
       <label
+        v-if="config.locale?.confirmationForm?.payments"
         for="card-number"
         class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200"
       >
@@ -50,7 +56,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { inject } from 'vue';
 import { useStripeConfig } from '@zaptime/core';
 import { useConfig } from '@zaptime/core';
