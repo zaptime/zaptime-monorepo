@@ -27,5 +27,14 @@ export type StripeConfig = {
   stripeAccountId: string;
 };
 
+export type BookingForm = {
+  label: string;
+  name: string;
+  uuid: string; // For BE validation
+  type: 'text' | 'email' | 'phone' | 'number' | 'textarea' | 'switch' | 'checkbox';
+  required: boolean;
+  placeholder?: string;
+};
+
 export type Success = InitData;
 export type Errors = 'invalidToken';

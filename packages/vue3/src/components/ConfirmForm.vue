@@ -21,67 +21,73 @@
         {{ getFormattedTime(selectedTimeSlot.end) }}
       </h3>
 
-      <div class="cal-mt-6 cal-max-w-[370px]">
-        <CalInput
-          v-model="name"
-          :label="locale?.confirmationForm?.name?.label"
-          :placeholder="locale?.confirmationForm?.name?.placeholder"
-          type="text"
-          name="name"
-          autocomplete="name"
-          @blur="() => analytics?.track('zaptime:name_entered')"
-        ></CalInput>
-      </div>
-
-      <div class="cal-mt-6 cal-max-w-[370px]">
-        <CalInput
-          v-model="email"
-          :label="locale?.confirmationForm?.email?.label"
-          :placeholder="locale?.confirmationForm?.email?.placeholder"
-          type="email"
-          name="email"
-          autocomplete="email"
-          @blur="() => analytics?.track('zaptime:email_entered')"
-        ></CalInput>
-      </div>
-
-      <div
-        v-if="isPhoneCall"
-        class="cal-mt-6 cal-max-w-[370px]"
-      >
-        <CalInput
-          v-model="phone"
-          :label="locale?.confirmationForm?.phone?.label"
-          :placeholder="locale?.confirmationForm?.phone?.placeholder"
-          type="text"
-          name="phone"
-          autocomplete="phone"
-          @blur="() => analytics?.track('zaptime:phone_entered')"
-        ></CalInput>
-      </div>
-
-      <div
-        v-if="selectedTimeSlot.seats > 1"
-        class="cal-mt-6 cal-max-w-[370px]"
-      >
-        <label
-          for="email"
-          class="cal-block cal-text-sm cal-font-medium cal-text-theme-700 dark:cal-text-theme-200"
-        >
-          {{ locale?.confirmationForm?.seats?.label }}</label
-        >
-        <div class="cal-mt-2">
-          <input
-            v-model="seats"
-            type="number"
-            :min="1"
-            :max="selectedTimeSlot.seats"
-            name="seats"
-            autocomplete="off"
-            class="dark:cal-bg-theme-150 cal-block cal-w-full cal-rounded-md cal-border-2 cal-border-theme-800 cal-bg-theme-50 cal-px-5 cal-py-3.5 cal-text-base cal-font-medium cal-text-theme-100 cal-placeholder-theme-800 focus:cal-border-theme-500 focus:cal-outline-none focus:cal-ring-theme-500 sm:cal-text-sm"
-            :placeholder="locale?.confirmationForm?.seats?.placeholder"
-          />
+      <div v-if="!bookingForm">
+        <div class="cal-mt-6 cal-max-w-[370px]">
+          <CalInput
+            v-model="name"
+            :label="locale?.confirmationForm?.name?.label"
+            :placeholder="locale?.confirmationForm?.name?.placeholder"
+            type="text"
+            name="name"
+            autocomplete="name"
+            @blur="() => analytics?.track('zaptime:name_entered')"
+          ></CalInput>
         </div>
+
+        <div class="cal-mt-6 cal-max-w-[370px]">
+          <CalInput
+            v-model="email"
+            :label="locale?.confirmationForm?.email?.label"
+            :placeholder="locale?.confirmationForm?.email?.placeholder"
+            type="email"
+            name="email"
+            autocomplete="email"
+            @blur="() => analytics?.track('zaptime:email_entered')"
+          ></CalInput>
+        </div>
+
+        <div
+          v-if="isPhoneCall"
+          class="cal-mt-6 cal-max-w-[370px]"
+        >
+          <CalInput
+            v-model="phone"
+            :label="locale?.confirmationForm?.phone?.label"
+            :placeholder="locale?.confirmationForm?.phone?.placeholder"
+            type="text"
+            name="phone"
+            autocomplete="phone"
+            @blur="() => analytics?.track('zaptime:phone_entered')"
+          ></CalInput>
+        </div>
+
+        <div
+          v-if="selectedTimeSlot.seats > 1"
+          class="cal-mt-6 cal-max-w-[370px]"
+        >
+          <label
+            for="email"
+            class="cal-block cal-text-sm cal-font-medium cal-text-theme-700 dark:cal-text-theme-200"
+          >
+            {{ locale?.confirmationForm?.seats?.label }}</label
+          >
+          <div class="cal-mt-2">
+            <input
+              v-model="seats"
+              type="number"
+              :min="1"
+              :max="selectedTimeSlot.seats"
+              name="seats"
+              autocomplete="off"
+              class="dark:cal-bg-theme-150 cal-block cal-w-full cal-rounded-md cal-border-2 cal-border-theme-800 cal-bg-theme-50 cal-px-5 cal-py-3.5 cal-text-base cal-font-medium cal-text-theme-100 cal-placeholder-theme-800 focus:cal-border-theme-500 focus:cal-outline-none focus:cal-ring-theme-500 sm:cal-text-sm"
+              :placeholder="locale?.confirmationForm?.seats?.placeholder"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div v-if="bookingForm">
+        <FormBuilder />
       </div>
 
       <div v-if="stripeConfig">
@@ -105,13 +111,15 @@
 
 <script setup lang="ts">
 import { computed, inject, ref, onMounted } from 'vue';
-import { useSelectedTimeSlot, book, reserve, confirm, useConfig, useDateFormatters, useLocations, useStripeConfig } from '@zaptime/core';
+import { useSelectedTimeSlot, book, reserve, confirm, useConfig, useDateFormatters, useLocations, useStripeConfig, useBookingForm } from '@zaptime/core';
 import PrimaryButton from './atomic/PrimaryButton.vue';
 import SecondaryButton from './atomic/SecondaryButton.vue';
 import CalInput from './DefaultCalendar/CalInput.vue';
 import { getAnalytics } from '../analytics';
 import Payment from './Payment.vue';
+import FormBuilder from './BookingForm/FormBuilder.vue';
 import { useStripe } from '../composables/useStripe';
+import { log } from 'console';
 
 const emits = defineEmits(['booking-confirmed', 'go-back']);
 
@@ -120,6 +128,7 @@ const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters(inject('c
 const { config } = useConfig(inject('calendarId'));
 const { isPhoneCall, locations } = useLocations(inject('calendarId'));
 const { stripeConfig } = useStripeConfig(inject('calendarId'));
+const { bookingForm } = useBookingForm(inject('calendarId'));
 
 const { initGateway, handleSubmit: handleStripePayment } = useStripe();
 
@@ -183,7 +192,16 @@ async function handleSubmittionWithPayment({ firstName, lastName }: { firstName:
   }
 }
 
-const onSubmit = async () => {
+const onSubmit = async (e: SubmitEvent) => {
+  if (e) {
+    // @ts-expect-error
+    const data = new FormData(e.target);
+
+    // @ts-expect-error
+    console.log([...data.entries()]);
+
+    console.log(data);
+  }
   disabled.value = true;
 
   const { firstName, lastName } = splitName(name.value);
@@ -191,15 +209,15 @@ const onSubmit = async () => {
   if (stripeConfig.value) {
     await handleSubmittionWithPayment({ firstName, lastName });
   } else {
-    await book({
-      email: email.value,
-      firstName,
-      lastName,
-      phone: phone.value,
-      seats: seats.value,
-      calendarId,
-      location: locations.value[0],
-    });
+    // await book({
+    //   email: email.value,
+    //   firstName,
+    //   lastName,
+    //   phone: phone.value,
+    //   seats: seats.value,
+    //   calendarId,
+    //   location: locations.value[0],
+    // });
   }
 
   analytics?.track('booking_confirmed', {

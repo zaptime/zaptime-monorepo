@@ -1,5 +1,5 @@
 import type { ZaptimeConfig } from '@zaptime/core';
-import { useConfig, useCalendar, fetchRemoteConfiguration, useLocations, useStripeConfig } from '@zaptime/core';
+import { useConfig, useCalendar, fetchRemoteConfiguration, useLocations, useStripeConfig, useBookingForm } from '@zaptime/core';
 import { ref } from 'vue';
 import { getAnalytics, buildConfig } from '../analytics';
 import { mergeConfigs } from '../utils/mergeConfigs';
@@ -12,6 +12,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
   const { setConfig } = useConfig(calendarId);
   const { setLocations } = useLocations(calendarId);
   const { setStripeConfig } = useStripeConfig(calendarId);
+  const { setBookingForm } = useBookingForm(calendarId);
 
   /**
    * Setups the calendar and configuration based on the provided token and configuration.
@@ -43,6 +44,50 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
           setStripeConfig(initData.val.stripeConfig);
         }
 
+        // set testing booking form data
+        setBookingForm([
+          {
+            label: 'Name',
+            name: 'Name of Attenddee',
+            uuid: '13r5j6346asd',
+            type: 'text',
+            required: true,
+            placeholder: 'Enter your name',
+          },
+          {
+            label: 'Email',
+            name: 'Email Address',
+            uuid: '00hf31fas',
+            type: 'email',
+            required: true,
+            placeholder: 'Enter your email',
+          },
+          {
+            label: 'Phone',
+            name: 'Phone Number',
+            uuid: '35f9as1fq',
+            type: 'phone',
+            required: true,
+            placeholder: 'Enter your phone',
+          },
+
+          {
+            label: 'Additional Questions',
+            name: 'Additional Questions',
+            uuid: '35f9as1fqhh',
+            type: 'textarea',
+            required: true,
+            placeholder: 'Enter additional questions',
+          },
+
+          {
+            label: 'I agree to the <a target="_blank" href="https://zaptime.cz/">terms and conditions</a>.',
+            name: 'GDPR',
+            uuid: '35f9as1fh',
+            type: 'checkbox',
+            required: true,
+          },
+        ]);
         isEnabled.value = true;
 
         const mergedConfig = mergeConfigs(initData.val.configuration, config);
