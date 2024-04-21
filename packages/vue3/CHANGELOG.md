@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.2.1
+
+### Patch Changes
+
+- Casing issue fix
+
 ## 3.2.0
 
 ### Minor Changes
