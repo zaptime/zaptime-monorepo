@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ZapTimeCalendar } from '@zaptime/vue3';
+import { ZaptimeCalendar } from '@zaptime/vue3';
 import type { ZaptimeConfig } from '@zaptime/vue3';
 import type { TimeSlot } from '@zaptime/core';
 defineProps<{
@@ -17,9 +17,9 @@ const onTimeSlotChanged = (timeSlot: TimeSlot) => {
 
 <template>
   <div>
-    <ZapTimeCalendar
+    <ZaptimeCalendar
       :config="config"
       @time-slot-changed="onTimeSlotChanged"
-    ></ZapTimeCalendar>
+    ></ZaptimeCalendar>
   </div>
 </template>
