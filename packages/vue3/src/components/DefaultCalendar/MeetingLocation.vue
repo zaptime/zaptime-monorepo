@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed } from 'vue';
+import { ref, inject, computed, onMounted } from 'vue';
 import { useLocations } from '@zaptime/core';
 
 const { locations } = useLocations(inject('calendarId'));
@@ -56,5 +56,8 @@ const locationOptions = ref([
     name: 'In-Person Meeting',
   },
 ]);
-selectedLocation.value = locationOptions.value.find((location) => location.id === locations.value[0].type);
+
+onMounted(() => {
+  selectedLocation.value = locationOptions.value.find((location) => location.id === locations.value[0].type);
+});
 </script>
