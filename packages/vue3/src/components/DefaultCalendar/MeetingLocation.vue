@@ -33,7 +33,7 @@ const locationLabel = computed(() => {
 });
 
 const selectedLocation = computed(() => {
-  if (locations.value.length > 0) {
+  if (locations.value && locations.value.length > 0) {
     return locationOptions.value.find((location) => location.id === locations.value[0].type);
   }
 });
