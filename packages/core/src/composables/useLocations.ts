@@ -1,39 +1,48 @@
 import { Location } from '../types/InitData';
-import { ref, Ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 
-type LocationsState = Ref<Location[]> | Record<string, Ref<Location[]>>;
-let locationState: LocationsState;
+const state = ref<Record<string, Location[]>>({
+  __DEFAULT__: [],
+});
 
 export default function useLocations(calendarId?: string) {
-  const setLocations = (locations: Location[]) => {
-    if (calendarId === undefined) {
-      locationState.value = locations;
-    } else {
-      locationState = {
-        calendarId: ref(locations),
-      };
+  const setLocations = (newLocations: Location[]) => {
+    if (newLocations) {
+      if (calendarId === undefined) {
+        state.value.__DEFAULT__ = newLocations;
+      } else {
+        state.value[calendarId] = newLocations;
+      }
     }
   };
 
-  const locations = computed(() => {
-    if (calendarId === undefined) {
-      return locationState.value as Location[];
-    }
+  const isPhoneCall = computed(() => {
+    if (calendarId) {
+      if (state.value[calendarId] === undefined || state.value[calendarId].length === 0) {
+        return false;
+      }
 
-    return locationState[calendarId as keyof LocationsState] as Location[];
+      return state.value[calendarId].some((location) => location.value === 'phone');
+    } else {
+      if (state.value.__DEFAULT__ === undefined || state.value.__DEFAULT__.length === 0) {
+        return false;
+      }
+
+      return state.value.__DEFAULT__.some((location) => location.value === 'phone');
+    }
   });
 
-  const isPhoneCall = computed(() => {
-    if (locations.value === undefined || locations.value.length === 0) {
-      return false;
+  const locations = computed(() => {
+    if (calendarId === undefined) {
+      return state.value.__DEFAULT__;
     }
 
-    return locations.value.some((location) => location.value === 'phone');
+    return state.value[calendarId];
   });
 
   return {
-    setLocations,
     locations,
+    setLocations,
     isPhoneCall,
   };
 }
