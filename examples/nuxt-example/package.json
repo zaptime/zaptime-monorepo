@@ -15,5 +15,6 @@
     "vue-router": "^4.3.0",
     "@zaptime/core": "workspace:*",
     "@zaptime/vue3": "workspace:*"
-  }
+  },
+  "version": null
 }

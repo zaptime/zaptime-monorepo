@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.2.2
+
+### Patch Changes
+
+- Fix locations SSR
+
 ## 2.2.1
 
 ### Patch Changes
