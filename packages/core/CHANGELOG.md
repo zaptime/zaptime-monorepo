@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.2.1
+
+### Patch Changes
+
+- SSR fix
+
 ## 2.2.0
 
 ### Minor Changes
