@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.2.2
+
+### Patch Changes
+
+- 243a7c2: SSR fix
+
 ## 3.2.1
 
 ### Patch Changes

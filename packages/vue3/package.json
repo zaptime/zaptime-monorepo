@@ -1,6 +1,6 @@
 {
   "name": "@zaptime/vue3",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "author": "Zaptime s.r.o.",
   "types": "./dist/types/entry.d.ts",
   "files": [
