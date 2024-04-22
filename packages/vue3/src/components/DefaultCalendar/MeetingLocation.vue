@@ -7,24 +7,35 @@
       class="cal-h-5 cal-w-5 dark:cal-text-theme-200"
       v-html="selectedLocation?.icon"
     ></div>
-    <p class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200">{{ locationLabel }}</p>
+    <p
+      v-if="locationLabel"
+      class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200"
+    >
+      {{ locationLabel }}
+    </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, onMounted } from 'vue';
+import { ref, inject, computed } from 'vue';
 import { useLocations } from '@zaptime/core';
 
 const { locations } = useLocations(inject('calendarId'));
-
-const selectedLocation = ref();
 
 const locationLabel = computed(() => {
   if (selectedLocation.value?.id === 'in-person' || selectedLocation.value?.id === 'phone') {
     return locations.value[0].value;
   }
 
-  return selectedLocation.value.name;
+  if (selectedLocation.value) {
+    return selectedLocation.value.name;
+  }
+});
+
+const selectedLocation = computed(() => {
+  if (locations.value.length > 0) {
+    return locationOptions.value.find((location) => location.id === locations.value[0].type);
+  }
 });
 
 const locationOptions = ref([
@@ -56,8 +67,4 @@ const locationOptions = ref([
     name: 'In-Person Meeting',
   },
 ]);
-
-onMounted(() => {
-  selectedLocation.value = locationOptions.value.find((location) => location.id === locations.value[0].type);
-});
 </script>

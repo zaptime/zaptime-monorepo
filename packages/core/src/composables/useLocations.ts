@@ -2,7 +2,7 @@ import { Location } from '../types/InitData';
 import { ref, Ref, computed } from 'vue';
 
 type LocationsState = Ref<Location[]> | Record<string, Ref<Location[]>>;
-let locationState: LocationsState = {};
+let locationState: LocationsState;
 
 export default function useLocations(calendarId?: string) {
   const setLocations = (locations: Location[]) => {
@@ -24,6 +24,10 @@ export default function useLocations(calendarId?: string) {
   });
 
   const isPhoneCall = computed(() => {
+    if (locations.value === undefined || locations.value.length === 0) {
+      return false;
+    }
+
     return locations.value.some((location) => location.value === 'phone');
   });
 
