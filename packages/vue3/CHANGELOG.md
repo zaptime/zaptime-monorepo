@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.2.4
+
+### Patch Changes
+
+- Locations ssr fix
+
 ## 3.2.3
 
 ### Patch Changes
