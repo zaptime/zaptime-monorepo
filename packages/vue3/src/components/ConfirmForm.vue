@@ -119,7 +119,6 @@ import { getAnalytics } from '../analytics';
 import Payment from './Payment.vue';
 import FormBuilder from './BookingForm/FormBuilder.vue';
 import { useStripe } from '../composables/useStripe';
-import { log } from 'console';
 
 const emits = defineEmits(['booking-confirmed', 'go-back']);
 
@@ -193,11 +192,9 @@ async function handleSubmittionWithPayment({ firstName, lastName }: { firstName:
 }
 
 const onSubmit = async (e: SubmitEvent) => {
-  if (e) {
-    // @ts-expect-error
+  if (e && e.target !== null) {
+    // @ts-expect-error TS submit event failing
     const data = new FormData(e.target);
-
-    // @ts-expect-error
     console.log([...data.entries()]);
 
     console.log(data);
@@ -209,15 +206,15 @@ const onSubmit = async (e: SubmitEvent) => {
   if (stripeConfig.value) {
     await handleSubmittionWithPayment({ firstName, lastName });
   } else {
-    // await book({
-    //   email: email.value,
-    //   firstName,
-    //   lastName,
-    //   phone: phone.value,
-    //   seats: seats.value,
-    //   calendarId,
-    //   location: locations.value[0],
-    // });
+    await book({
+      email: email.value,
+      firstName,
+      lastName,
+      phone: phone.value,
+      seats: seats.value,
+      calendarId,
+      location: locations.value[0],
+    });
   }
 
   analytics?.track('booking_confirmed', {

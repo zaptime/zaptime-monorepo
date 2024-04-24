@@ -16,8 +16,8 @@
 </template>
 
 <script setup lang="ts">
-import type { BookingForm } from '@zaptime/core';
-interface Props extends BookingForm {}
+import type { CustomField } from '@zaptime/core';
+type Props = CustomField;
 
 defineProps<Props>();
 </script>

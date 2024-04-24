@@ -31,8 +31,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
-import type { BookingForm } from '@zaptime/core';
-interface Props extends BookingForm {}
+import type { CustomField } from '@zaptime/core';
+type Props = CustomField;
 
 defineProps<Props>();
 const enabled = ref(false);

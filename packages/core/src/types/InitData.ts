@@ -19,6 +19,7 @@ export type InitData = {
   analytics?: Analytics[];
   locations?: Location[];
   stripeConfig?: StripeConfig;
+  customFields?: CustomField[];
 };
 
 export type StripeConfig = {
@@ -27,7 +28,7 @@ export type StripeConfig = {
   stripeAccountId: string;
 };
 
-export type BookingForm = {
+export type CustomField = {
   label: string;
   name: string;
   uuid: string; // For BE validation

@@ -21,8 +21,8 @@
 
 <script setup lang="ts">
 const emit = defineEmits(['update:modelValue', 'blur']);
-import type { BookingForm } from '@zaptime/core';
-interface Props extends BookingForm {}
+import type { CustomField } from '@zaptime/core';
+type Props = CustomField;
 
 defineProps<Props>();
 

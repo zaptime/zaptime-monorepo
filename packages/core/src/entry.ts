@@ -1,6 +1,6 @@
 import type Day from './types/Day';
 import type TimeSlot from './types/TimeSlot';
-import type { BookingForm } from './types/InitData';
+import type { CustomField } from './types/InitData';
 import type ZaptimeConfig from './types/ZaptimeConfig';
 export { book, reserve, confirm, cancel, fetchRemoteConfiguration } from './composables/useApi';
 export { default as useCalendar } from './composables/useCalendar';
@@ -15,4 +15,4 @@ export { useDateFormatters } from './composables/useDateFormatters';
 
 export { default as mergeObjects } from './utils/mergeObjects';
 
-export type { Day, TimeSlot, ZaptimeConfig, BookingForm };
+export type { Day, TimeSlot, ZaptimeConfig, CustomField };
