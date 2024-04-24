@@ -53,8 +53,6 @@ import { useLocations, useStripeConfig } from '@zaptime/core';
 const { locations } = useLocations(inject('calendarId'));
 const { stripeConfig } = useStripeConfig(inject('calendarId'));
 
-const selectedLocation = ref();
-
 const locationLabel = computed(() => {
   if (selectedLocation.value?.id === 'in-person' || selectedLocation.value?.id === 'phone') {
     return locations.value[0].value;
