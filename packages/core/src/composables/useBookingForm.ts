@@ -41,7 +41,7 @@ export default function useBookingForm(calendarId?: string) {
     const phone = bookingForm.value.find((field) => field.mergeTag === 'PHONE');
 
     return {
-      email: String(email?.value), //required
+      email: email?.value ? String(email.value) : '',
       firstName: firstName?.value ? String(firstName.value) : undefined,
       lastName: lastName?.value ? String(lastName.value) : undefined,
       phone: phone?.value ? String(phone.value) : undefined,

@@ -198,7 +198,7 @@ watch(showAllBillingDetails, () => {
     billingAddress.value.name = values.firstName + ' ' + values.lastName;
   }
 
-  if (billingAddress.value.email === '' && values.email !== undefined) {
+  if (billingAddress.value.email === '' && values.email == '') {
     billingAddress.value.email = values.email;
   }
 });
