@@ -45,7 +45,6 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
         }
 
         if (initData.val.customFields) {
-          // set testing booking form data
           setBookingForm(initData.val.customFields);
         }
 

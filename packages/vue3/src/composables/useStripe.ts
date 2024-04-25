@@ -1,6 +1,18 @@
 import { ref, inject, computed } from 'vue';
 import { useConfig } from '@zaptime/core';
 
+export type BillingAddress = {
+  name: string;
+  email: string;
+  company: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  crn: string;
+  vatId: string;
+};
+
 export function useStripe() {
   const result = ref();
   const errors = ref();
@@ -69,7 +81,9 @@ export function useStripe() {
     paymentIntentId.value = data.paymentIntentId;
     clientSecret.value = data.clientSecret;
 
-    stripe.value = Stripe(import.meta.env.VITE_STRIPE_CLIENT_KEY);
+    stripe.value = Stripe(import.meta.env.VITE_STRIPE_CLIENT_KEY, {
+      stripeAccount: data.stripeAccountId,
+    });
 
     elements.value = stripe.value.elements();
 
@@ -93,7 +107,7 @@ export function useStripe() {
     stripeCardCvc.value.mount('#card-cvc');
   }
 
-  async function handleSubmit({ name }: { name: string }) {
+  async function handleSubmit({ billingAddress }: { billingAddress: BillingAddress }) {
     if (stripe.value === undefined || stripeCardNumber.value === undefined || clientSecret.value === undefined) {
       return;
     }
@@ -107,13 +121,21 @@ export function useStripe() {
       payment_method: {
         card: stripeCardNumber.value,
         billing_details: {
-          name: name,
+          name: billingAddress.name,
+          email: billingAddress.email,
           address: {
-            postal_code: '94103',
+            postal_code: billingAddress.postalCode,
+            city: billingAddress.city,
+            country: billingAddress.country,
+            line1: billingAddress.address,
           },
         },
       },
     });
+
+    if (error !== undefined) {
+      throw new Error(error.code);
+    }
 
     if (error === undefined) {
       const response = await fetch(apiBaseUrl.value + 'api/payments/status', {
@@ -130,8 +152,6 @@ export function useStripe() {
 
       const jsonRes = await response.json();
       result.value = jsonRes.success;
-    } else {
-      errors.value = error.message;
     }
   }
 

@@ -1,26 +1,25 @@
 import { StripeConfig } from '../types/InitData';
-import { ref, Ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 
-type StripeConfigState = Ref<StripeConfig> | Record<string, Ref<StripeConfig>>;
-let stripeConfigState: StripeConfigState = {};
+const state = ref<Record<string, StripeConfig | undefined>>({
+  __DEFAULT__: undefined,
+});
 
 export default function useStripeConfig(calendarId?: string) {
   const setStripeConfig = (stripeConfig: StripeConfig) => {
     if (calendarId === undefined) {
-      stripeConfigState.value = stripeConfig;
+      state.value.__DEFAULT__ = stripeConfig;
     } else {
-      stripeConfigState = {
-        calendarId: ref(stripeConfig),
-      };
+      state.value[calendarId] = stripeConfig;
     }
   };
 
   const stripeConfig = computed(() => {
     if (calendarId === undefined) {
-      return stripeConfigState.value as StripeConfig;
+      return state.value.__DEFAULT__;
     }
 
-    return stripeConfigState[calendarId as keyof StripeConfigState] as StripeConfig;
+    return state.value[calendarId];
   });
 
   return {

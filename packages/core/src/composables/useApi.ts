@@ -6,6 +6,7 @@ import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel a
 import { TimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
 import { Result } from 'ts-results';
 import useCurrentTimezone from './useCurrentTimezone';
+import { CustomFieldCollected } from '../types/InitData';
 
 export interface IBookingOptions {
   /**
@@ -45,6 +46,11 @@ export interface IBookingOptions {
    * Location of the Event Type
    */
   location?: Location;
+
+  /**
+   * Custom fields
+   */
+  customFields?: CustomFieldCollected[];
 }
 
 /**
@@ -54,7 +60,7 @@ export interface IBookingOptions {
  * @param options
  */
 export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> => {
-  const { email, firstName, lastName, seats = 1, calendarId, phone, location } = options;
+  const { email, firstName, lastName, seats = 1, calendarId, phone, location, customFields } = options;
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
   const { config } = useConfig(calendarId);
   const { timezone } = useCurrentTimezone();
@@ -72,6 +78,7 @@ export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> 
         phone: phone,
         location: location,
         timezone: timezone.value,
+        customFields: customFields,
       });
 
       if (config.value.redirectAfterBookingUrl !== undefined) {
@@ -94,7 +101,7 @@ export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> 
  * @param options
  */
 export const reserve = async (options: IBookingOptions): Promise<PrepareReservationResponse> => {
-  const { email, firstName, lastName, seats = 1, calendarId, location, phone } = options;
+  const { email, firstName, lastName, seats = 1, calendarId, location, phone, customFields } = options;
 
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
 
@@ -114,6 +121,7 @@ export const reserve = async (options: IBookingOptions): Promise<PrepareReservat
       phone: phone,
       location: location,
       timezone: timezone.value,
+      customFields: customFields,
     });
 
     setReservationStatus(data.data);

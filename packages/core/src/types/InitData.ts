@@ -28,13 +28,22 @@ export type StripeConfig = {
   stripeAccountId: string;
 };
 
+export type CustomFieldCollected = {
+  uuid: string;
+  value?: CustomFieldValue;
+};
+
+export type CustomFieldValue = string | number | boolean | string[];
+
 export type CustomField = {
   label: string;
   name: string;
   uuid: string; // For BE validation
   type: 'text' | 'email' | 'phone' | 'number' | 'textarea' | 'switch' | 'checkbox';
   required: boolean;
+  mergeTag?: 'FIRST_NAME' | 'LAST_NAME' | 'EMAIL' | 'PHONE' | string;
   placeholder?: string;
+  value?: CustomFieldValue;
 };
 
 export type Success = InitData;
