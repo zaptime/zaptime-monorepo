@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="[config.profileImage ? '' : 'cal-pt-6']">
     <div
       v-if="config.profileImage"
       class="cal-mb-3 cal-flex cal-w-full cal-justify-center cal-pt-3"
