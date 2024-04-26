@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.3.0
+
+### Minor Changes
+
+- Add Custom Fields, Location Fixes
+
 ## 2.2.2
 
 ### Patch Changes

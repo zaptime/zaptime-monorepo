@@ -1,5 +1,16 @@
 # @zaptime/vue3
 
+## 3.3.0
+
+### Minor Changes
+
+- Add Custom Fields, Location Fixes
+
+### Patch Changes
+
+- Updated dependencies
+  - @zaptime/core@2.3.0
+
 ## 3.2.5
 
 ### Patch Changes

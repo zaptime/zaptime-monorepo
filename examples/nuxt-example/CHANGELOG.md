@@ -5,5 +5,13 @@
 ### Patch Changes
 
 - Updated dependencies
+  - @zaptime/core@2.3.0
+  - @zaptime/vue3@3.3.0
+
+## null
+
+### Patch Changes
+
+- Updated dependencies
   - @zaptime/core@2.2.2
   - @zaptime/vue3@3.2.5
