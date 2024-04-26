@@ -41,5 +41,9 @@ export default interface ZaptimeLocale {
       label?: string;
       placeholder?: string;
     };
+    payments?: {
+      price?: string;
+      cardNumber?: string;
+    };
   };
 }

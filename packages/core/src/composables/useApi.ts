@@ -1,11 +1,13 @@
 import useReservationStatus from './useReservationStatus';
 import useSelectedTimeSlot from './useSelectedTimeSlot';
+import useLocations from './useLocations';
 import useConfig from './useConfig';
 import { Success, Errors, Location } from '../types/InitData';
 import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi, fetchRemoteConfig } from '../api/api';
 import { TimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
 import { Result } from 'ts-results';
 import useCurrentTimezone from './useCurrentTimezone';
+import { CustomFieldCollected } from '../types/InitData';
 
 export interface IBookingOptions {
   /**
@@ -45,6 +47,11 @@ export interface IBookingOptions {
    * Location of the Event Type
    */
   location?: Location;
+
+  /**
+   * Custom fields
+   */
+  customFields?: CustomFieldCollected[];
 }
 
 /**
@@ -54,10 +61,11 @@ export interface IBookingOptions {
  * @param options
  */
 export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> => {
-  const { email, firstName, lastName, seats = 1, calendarId, phone, location } = options;
+  const { email, firstName, lastName, seats = 1, calendarId, phone, location, customFields } = options;
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
   const { config } = useConfig(calendarId);
   const { timezone } = useCurrentTimezone();
+  const { locations: internalLocations } = useLocations(calendarId);
 
   if (selectedTimeSlot.value !== undefined && config.value !== undefined) {
     try {
@@ -70,8 +78,9 @@ export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> 
         seats,
         baseUrl: config.value.apiBaseUrl,
         phone: phone,
-        location: location,
+        location: location ?? internalLocations.value[0],
         timezone: timezone.value,
+        customFields: customFields,
       });
 
       if (config.value.redirectAfterBookingUrl !== undefined) {
@@ -94,13 +103,14 @@ export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> 
  * @param options
  */
 export const reserve = async (options: IBookingOptions): Promise<PrepareReservationResponse> => {
-  const { email, firstName, lastName, seats = 1, calendarId, location, phone } = options;
+  const { email, firstName, lastName, seats = 1, calendarId, location, phone, customFields } = options;
 
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
 
   const { config } = useConfig(calendarId);
   const { setReservationStatus } = useReservationStatus(calendarId);
   const { timezone } = useCurrentTimezone();
+  const { locations: internalLocations } = useLocations(calendarId);
 
   if (selectedTimeSlot.value !== undefined && config.value !== undefined) {
     const data = await reserveApi({
@@ -112,8 +122,9 @@ export const reserve = async (options: IBookingOptions): Promise<PrepareReservat
       seats: seats,
       baseUrl: config.value.apiBaseUrl,
       phone: phone,
-      location: location,
+      location: location ?? internalLocations.value[0],
       timezone: timezone.value,
+      customFields: customFields,
     });
 
     setReservationStatus(data.data);

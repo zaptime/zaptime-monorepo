@@ -1,26 +1,58 @@
 <template>
   <div
-    v-if="selectedLocation && selectedLocation.id !== 'no-location'"
-    class="cal-mt-3 cal-flex cal-items-center cal-gap-2 cal-px-2.5"
+    v-if="selectedLocation && selectedLocation.id !== 'no-location' && !config.hideLocation"
+    class="cal-mt-6 cal-flex cal-items-center cal-justify-between cal-gap-2 cal-px-2.5"
   >
+    <div class="cal-flex cal-w-full cal-gap-2">
+      <div
+        class="cal-h-5 cal-w-5 dark:cal-text-theme-200"
+        v-html="selectedLocation?.icon"
+      ></div>
+      <p class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200">{{ locationLabel }}</p>
+    </div>
+
     <div
-      class="cal-h-5 cal-w-5 dark:cal-text-theme-200"
-      v-html="selectedLocation?.icon"
-    ></div>
-    <p
-      v-if="locationLabel"
-      class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200"
+      v-if="stripeConfig"
+      class="cal-flex cal-shrink-0 cal-items-center cal-gap-1.5"
     >
-      {{ locationLabel }}
-    </p>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-credit-card cal-text-theme-600 dark:cal-text-theme-200"
+      >
+        <rect
+          width="20"
+          height="14"
+          x="2"
+          y="5"
+          rx="2"
+        />
+        <line
+          x1="2"
+          x2="22"
+          y1="10"
+          y2="10"
+        />
+      </svg>
+      <p class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200">{{ stripeConfig.price }} {{ stripeConfig.currency }}</p>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, inject, computed } from 'vue';
-import { useLocations } from '@zaptime/core';
+import { useLocations, useStripeConfig, useConfig } from '@zaptime/core';
 
 const { locations } = useLocations(inject('calendarId'));
+const { stripeConfig } = useStripeConfig(inject('calendarId'));
+const { config } = useConfig(inject('calendarId'));
 
 const locationLabel = computed(() => {
   if (selectedLocation.value?.id === 'in-person' || selectedLocation.value?.id === 'phone') {

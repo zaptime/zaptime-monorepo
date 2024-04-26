@@ -2,7 +2,7 @@ import type TimeSlot from '../types/TimeSlot';
 import type Status from '../types/Status';
 import type { TimeSlotResponse, AvailableTimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
 import { Ok, Err, Result } from 'ts-results';
-import { InitData, Success, Errors, Location } from '../types/InitData';
+import { InitData, Success, Errors, Location, CustomFieldCollected } from '../types/InitData';
 const defaultBaseUrl = 'https://api.zaptime.app/';
 
 export interface IOptions {
@@ -58,6 +58,11 @@ export interface IOptions {
    */
 
   location?: Location;
+
+  /**
+   * Custom fields
+   */
+  customFields?: CustomFieldCollected[];
 }
 
 export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
@@ -76,6 +81,7 @@ export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
         phone: phone,
         location: location,
         timezone: timezone,
+        customFields: options.customFields,
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -106,6 +112,7 @@ export const reserve = async (options: IOptions): Promise<PrepareReservationResp
         phone: phone,
         location: location,
         timezone: timezone,
+        customFields: options.customFields,
       }),
       headers: {
         'Content-Type': 'application/json',

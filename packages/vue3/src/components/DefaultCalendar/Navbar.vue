@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="[config.profileImage ? '' : 'cal-pt-6']">
     <div
       v-if="config.profileImage"
       class="cal-mb-3 cal-flex cal-w-full cal-justify-center cal-pt-3"
@@ -18,7 +18,7 @@
       v-html="config.locale?.texts?.introduction"
     ></div>
 
-    <MeetingLocation></MeetingLocation>
+    <MeetingInformation></MeetingInformation>
   </div>
   <div class="cal-flex cal-justify-between cal-py-4">
     <p class="cal-ml-3 cal-text-base cal-font-medium cal-text-theme-900 dark:cal-text-theme-200">{{ monthName }} {{ currentYear }}</p>
@@ -78,7 +78,7 @@
 <script setup lang="ts">
 import { inject } from 'vue';
 import { useCalendar, useConfig } from '@zaptime/core';
-import MeetingLocation from './MeetingLocation.vue';
+import MeetingInformation from './MeetingInformation.vue';
 
 const { monthName, currentYear, prev, prevDisabled, next, nextDisabled } = useCalendar(inject('calendarId') as string);
 

@@ -1,0 +1,48 @@
+<template>
+  <div>
+    <div
+      v-for="element of bookingForm"
+      :key="element.uuid"
+    >
+      <div
+        v-if="element.type === 'phone' || element.type === 'text' || element.type === 'email'"
+        class="cal-mt-4"
+      >
+        <TextInput v-bind="element" />
+      </div>
+
+      <div
+        v-if="element.type === 'checkbox'"
+        class="cal-mt-4"
+      >
+        <Checkbox v-bind="element" />
+      </div>
+
+      <div
+        v-if="element.type === 'textarea'"
+        class="cal-mt-4"
+      >
+        <Textarea v-bind="element" />
+      </div>
+
+      <div
+        v-if="element.type === 'select'"
+        class="cal-mt-4"
+      >
+        <Select v-bind="element" />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import TextInput from './components/TextInput.vue';
+import Checkbox from './components/Checkbox.vue';
+import Textarea from './components/Textarea.vue';
+import Select from './components/Select.vue';
+
+import { inject } from 'vue';
+import { useBookingForm } from '@zaptime/core';
+
+const { bookingForm } = useBookingForm(inject('calendarId'));
+</script>

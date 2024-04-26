@@ -54,6 +54,15 @@ const config = ref<ZaptimeConfig>({
 
   apiBaseUrl: 'https://api.zaptime.test/',
 
+  // hideLocation: true,
+  profileImage: '',
+
+  locale: {
+    texts: {
+      introduction: '',
+    },
+  },
+
   // redirectAfterBookingUrl: 'https://google.com',
 
   // externalBooking: false,
