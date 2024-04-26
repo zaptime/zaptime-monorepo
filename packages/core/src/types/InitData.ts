@@ -39,10 +39,11 @@ export type CustomField = {
   label: string;
   name: string;
   uuid: string; // For BE validation
-  type: 'text' | 'email' | 'phone' | 'number' | 'textarea' | 'switch' | 'checkbox';
+  type: 'text' | 'email' | 'phone' | 'number' | 'textarea' | 'switch' | 'checkbox' | 'select';
   required: boolean;
   mergeTag?: 'FIRST_NAME' | 'LAST_NAME' | 'EMAIL' | 'PHONE' | string;
   placeholder?: string;
+  options?: string[];
   value?: CustomFieldValue;
 };
 

@@ -15,14 +15,12 @@
         class="cal-block cal-w-full cal-rounded-md cal-border cal-border-theme-300 cal-bg-theme-50 cal-px-5 cal-py-3.5 cal-text-base cal-font-medium cal-text-theme-900 cal-placeholder-theme-400 focus:cal-border-theme-400 focus:cal-outline-none focus:cal-ring-theme-500 dark:cal-border-theme-600 dark:cal-bg-theme-800 dark:cal-text-theme-100 dark:cal-placeholder-theme-500 dark:focus:cal-border-theme-400 sm:cal-text-sm"
         :placeholder="placeholder"
         @input="onChange"
-        @blur="emit('blur')"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(['update:modelValue', 'blur']);
 import { useBookingForm } from '@zaptime/core';
 import type { CustomField } from '@zaptime/core';
 type Props = CustomField;

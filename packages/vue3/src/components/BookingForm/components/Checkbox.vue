@@ -7,6 +7,7 @@
         type="checkbox"
         :required="required"
         class="cal-h-5 cal-w-5 cal-rounded-md cal-border cal-border-theme-300 cal-ring-opacity-25 checked:cal-border-none checked:cal-bg-accent-base focus:cal-ring-1 focus:cal-ring-accent-light"
+        @change="onChange"
       />
     </div>
     <div class="cal-ml-3 cal-text-sm cal-leading-6">
@@ -21,9 +22,18 @@
 
 <script lang="ts" setup>
 import type { CustomField } from '@zaptime/core';
-type Props = CustomField;
+import { useBookingForm } from '@zaptime/core';
 
-defineProps<Props>();
+type Props = CustomField;
+const props = defineProps<Props>();
+
+const { setCustomFieldValue } = useBookingForm();
+
+function onChange(e: Event) {
+  if (e.target instanceof HTMLInputElement) {
+    setCustomFieldValue(props.uuid, e.target.checked);
+  }
+}
 </script>
 
 <style>
