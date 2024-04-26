@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.3.1
+
+### Patch Changes
+
+- Fix: scope tailwindcss forms
+
 ## 3.3.0
 
 ### Minor Changes
