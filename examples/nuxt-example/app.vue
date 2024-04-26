@@ -37,12 +37,21 @@
 
 <script lang="ts" setup>
 import { reactive } from 'vue';
-import { ZaptimeCalendar, confirm, reserve } from '@zaptime/vue3';
+import { ZaptimeCalendar, book } from '@zaptime/vue3';
 import type { ZaptimeConfig } from '@zaptime/vue3';
 
 const config: ZaptimeConfig = {
   token: 'bINIbfBAOI8YOe5wYfJcwbx58l1Clapt',
   apiBaseUrl: 'https://api.zaptime.test/',
+  externalBooking: true,
+  profileImage: '',
+  locale: {
+    texts: {
+      introduction: '',
+    },
+  },
+
+  hideLocation: true,
 };
 
 const form = reactive({
@@ -53,11 +62,15 @@ const form = reactive({
 });
 
 async function onSubmit() {
-  const res = await reserve({
+  const res = await book({
     email: form.email,
     firstName: form.name.split(' ')[0],
     lastName: form.name.split(' ')[1],
     phone: form.phone,
+    location: {
+      type: 'in-person',
+      value: '123 Main St, San Francisco, CA 94111, USA',
+    },
     customFields: [
       {
         uuid: '104cf3ad-b1e9-494f-ac51-62eb3a4b4e61',
@@ -65,8 +78,6 @@ async function onSubmit() {
       },
     ],
   });
-
-  confirm();
 }
 </script>
 
