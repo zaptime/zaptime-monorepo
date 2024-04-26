@@ -1,11 +1,11 @@
 <template>
   <div
-    class="cal-mx-auto cal-h-full cal-min-h-[524px] cal-bg-white cal-px-[20px] cal-pt-4 dark:cal-bg-theme-900 sm:cal-mx-0"
-    :class="[config.compact ? 'cal-w-[330px] cal-rounded-xl sm:cal-w-[400px]' : 'cal-w-[330px] cal-rounded-r-xl sm:cal-w-[440px]']"
+    class="cal-mx-auto cal-h-full cal-min-h-[524px] cal-bg-white cal-px-[20px]  dark:cal-bg-theme-900 sm:cal-mx-0"
+    :class="[config.compact ? 'cal-w-[330px] cal-rounded-xl sm:cal-w-[400px]' : 'cal-w-[330px] cal-rounded-r-xl sm:cal-w-[440px]', config.profileImage ? 'cal-pt-4' : 'cal-pt-10']"
   >
     <PrimaryButton
       v-if="config.compact === true"
-      class="cal-mt-5"
+      class="cal-mb-8 cal-mt-5"
       @click="goPickingDates"
     >
       {{ config.locale?.confirmationForm?.buttons?.goBack }}
