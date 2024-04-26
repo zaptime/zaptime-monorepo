@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="selectedLocation && selectedLocation.id !== 'no-location'"
+    v-if="selectedLocation && selectedLocation.id !== 'no-location' && !config.hideLocation"
     class="cal-mt-6 cal-flex cal-items-center cal-justify-between cal-gap-2 cal-px-2.5"
   >
     <div class="cal-flex cal-w-full cal-gap-2">
@@ -48,10 +48,11 @@
 
 <script setup lang="ts">
 import { ref, inject, computed } from 'vue';
-import { useLocations, useStripeConfig } from '@zaptime/core';
+import { useLocations, useStripeConfig, useConfig } from '@zaptime/core';
 
 const { locations } = useLocations(inject('calendarId'));
 const { stripeConfig } = useStripeConfig(inject('calendarId'));
+const { config } = useConfig(inject('calendarId'));
 
 const locationLabel = computed(() => {
   if (selectedLocation.value?.id === 'in-person' || selectedLocation.value?.id === 'phone') {
