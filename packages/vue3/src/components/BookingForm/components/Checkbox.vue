@@ -6,14 +6,14 @@
         :name="uuid"
         type="checkbox"
         :required="required"
-        class="cal-h-5 cal-w-5 cal-rounded-md cal-border cal-border-theme-300 cal-ring-opacity-25 checked:cal-border-none checked:cal-bg-accent-base focus:cal-ring-1 focus:cal-ring-accent-light"
+        class="cal-form-checkbox cal-h-5 cal-w-5 cal-rounded-md cal-border cal-border-theme-400 cal-ring-opacity-25 checked:cal-border-none checked:cal-bg-accent-base focus:cal-ring-1 focus:cal-ring-accent-light dark:cal-border-theme-300"
         @change="onChange"
       />
     </div>
     <div class="cal-ml-3 cal-text-sm cal-leading-6">
       <label
         :for="uuid"
-        class="zaptime-checkbox-label cal-text-theme-400"
+        class="zaptime-checkbox-label cal-text-theme-700 dark:cal-text-theme-400"
         v-html="label"
       ></label>
     </div>
