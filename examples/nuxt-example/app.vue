@@ -33,11 +33,15 @@
 
     <button type="submit">Submit</button>
   </form>
+
+  <form @submit.prevent="onConfirm">
+    <button type="submit">confirm</button>
+  </form>
 </template>
 
 <script lang="ts" setup>
 import { reactive } from 'vue';
-import { ZaptimeCalendar, book } from '@zaptime/vue3';
+import { ZaptimeCalendar, reserve, confirm, book } from '@zaptime/vue3';
 import type { ZaptimeConfig } from '@zaptime/vue3';
 
 const config: ZaptimeConfig = {
@@ -62,7 +66,7 @@ const form = reactive({
 });
 
 async function onSubmit() {
-  const res = await book({
+  const res = await reserve({
     email: form.email,
     firstName: form.name.split(' ')[0],
     lastName: form.name.split(' ')[1],
@@ -77,6 +81,14 @@ async function onSubmit() {
         value: form.company,
       },
     ],
+  });
+}
+
+function onConfirm() {
+  confirm({
+    firstName: undefined,
+    lastName: undefined,
+    phone: undefined,
   });
 }
 </script>

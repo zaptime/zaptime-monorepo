@@ -65,6 +65,10 @@ export interface IOptions {
   customFields?: CustomFieldCollected[];
 }
 
+export interface IConfirmationOptions extends Omit<IOptions, 'email' | 'location' | 'seats' | 'timezone' | 'timeSlot'> {
+  status: Status;
+}
+
 export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
   const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location, timezone } = options;
 
@@ -127,7 +131,8 @@ export const reserve = async (options: IOptions): Promise<PrepareReservationResp
   }
 };
 
-export const confirm = async (token: string, status: Status, baseUrl = defaultBaseUrl): Promise<boolean> => {
+export const confirm = async (options: IConfirmationOptions): Promise<boolean> => {
+  const { baseUrl = defaultBaseUrl, status, token, firstName, lastName, customFields, phone } = options;
   try {
     const data = await fetch(getConfirmUrl(baseUrl, status.uuid), {
       method: 'POST',
@@ -136,6 +141,12 @@ export const confirm = async (token: string, status: Status, baseUrl = defaultBa
         Accept: 'application/json',
         Authorization: 'Bearer ' + token,
       },
+      body: JSON.stringify({
+        firstname: firstName,
+        lastname: lastName,
+        customFields: customFields,
+        phone: phone,
+      }),
     }).then((response) => response.json());
 
     return data.success;

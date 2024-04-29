@@ -91,7 +91,7 @@ async function handleSubmittionWithPayment() {
 
   await handleStripePayment({ billingAddress: billingAddress.value });
 
-  await confirm(calendarId);
+  await confirm({ calendarId: calendarId });
 }
 
 async function onSubmit() {

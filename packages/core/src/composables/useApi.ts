@@ -54,6 +54,8 @@ export interface IBookingOptions {
   customFields?: CustomFieldCollected[];
 }
 
+export type IConfirmationOptions = Omit<IBookingOptions, 'email' | 'location' | 'seats'>;
+
 /**
  * Book Attandee to specific time slot.
  *
@@ -139,14 +141,22 @@ export const reserve = async (options: IBookingOptions): Promise<PrepareReservat
  * Confirm previously reserved time slot
  *
  * @see https://docs.zaptime.app/guide/vue-working-with-time-slots.html#confirm
- * @param calendarId
+ * @param options
  */
-export const confirm = async (calendarId?: string): Promise<boolean> => {
-  const { reservationStatus } = useReservationStatus(calendarId);
-  const { config } = useConfig(calendarId);
+export const confirm = async (options?: IConfirmationOptions): Promise<boolean> => {
+  const { reservationStatus } = useReservationStatus(options?.calendarId);
+  const { config } = useConfig(options?.calendarId);
 
   if (reservationStatus.value !== undefined) {
-    return await confirmApi(config.value.token, reservationStatus.value, config.value.apiBaseUrl);
+    return await confirmApi({
+      token: config.value.token,
+      status: reservationStatus.value,
+      baseUrl: config.value.apiBaseUrl,
+      firstName: options?.firstName,
+      lastName: options?.lastName,
+      phone: options?.phone,
+      customFields: options?.customFields,
+    });
   }
 
   return false;

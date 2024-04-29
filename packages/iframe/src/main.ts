@@ -37,7 +37,7 @@ window.ZaptimeProxy = {
     reserveZaptime({ email: payload.email });
   },
   confirm(calendarId) {
-    confirmZaptime(calendarId);
+    confirmZaptime({ calendarId: calendarId });
   },
   cancel(calendarId) {
     cancelZaptime(calendarId);
