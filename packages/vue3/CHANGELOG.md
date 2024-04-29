@@ -1,5 +1,16 @@
 # @zaptime/vue3
 
+## 3.4.0
+
+### Minor Changes
+
+- Feat: ability to override reservation data with confirm
+
+### Patch Changes
+
+- Updated dependencies
+  - @zaptime/core@2.4.0
+
 ## 3.3.1
 
 ### Patch Changes

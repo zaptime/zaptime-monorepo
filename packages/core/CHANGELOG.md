@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.4.0
+
+### Minor Changes
+
+- Feat: ability to override reservation data with confirm
+
 ## 2.3.0
 
 ### Minor Changes
