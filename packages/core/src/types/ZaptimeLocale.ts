@@ -21,25 +21,9 @@ export default interface ZaptimeLocale {
 
   confirmationForm?: {
     confirmBooking?: string;
-    name?: {
-      label?: string;
-      placeholder?: string;
-    };
-    email?: {
-      label?: string;
-      placeholder?: string;
-    };
-    seats?: {
-      label?: string;
-      placeholder?: string;
-    };
     buttons?: {
       confirmBooking?: string;
       goBack?: string;
-    };
-    phone?: {
-      label?: string;
-      placeholder?: string;
     };
     payments?: {
       price?: string;

@@ -12,25 +12,9 @@ const config: ZaptimeConfig = {
     },
     confirmationForm: {
       confirmBooking: 'Confirm booking',
-      name: {
-        label: 'Your name',
-        placeholder: 'Enter your name',
-      },
-      email: {
-        label: 'Your email',
-        placeholder: 'Enter your email',
-      },
-      seats: {
-        label: 'Number of seats',
-        placeholder: 'Enter number of seats',
-      },
       buttons: {
         confirmBooking: 'Confirm booking',
         goBack: 'Go back',
-      },
-      phone: {
-        label: 'Your phone',
-        placeholder: 'Enter your phone',
       },
       payments: {
         price: 'Price',
