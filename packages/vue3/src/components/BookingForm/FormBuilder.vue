@@ -31,6 +31,20 @@
       >
         <Select v-bind="element" />
       </div>
+
+      <div
+        v-if="element.type === 'multiselect'"
+        class="cal-mt-4"
+      >
+        <Multiselect v-bind="element" />
+      </div>
+
+      <div
+        v-if="element.type === 'radio'"
+        class="cal-mt-4"
+      >
+        <Radio v-bind="element" />
+      </div>
     </div>
   </div>
 </template>
@@ -40,6 +54,8 @@ import TextInput from './components/TextInput.vue';
 import Checkbox from './components/Checkbox.vue';
 import Textarea from './components/Textarea.vue';
 import Select from './components/Select.vue';
+import Multiselect from './components/Multiselect.vue';
+import Radio from './components/Radio.vue';
 
 import { inject } from 'vue';
 import { useBookingForm } from '@zaptime/core';
