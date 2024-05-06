@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.5.0
+
+### Minor Changes
+
+- Feat: add multiselect and radio to booking form
+
 ## 2.4.0
 
 ### Minor Changes

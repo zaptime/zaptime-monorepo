@@ -1,5 +1,16 @@
 # @zaptime/vue3
 
+## 3.5.0
+
+### Minor Changes
+
+- Feat: add multiselect and radio to booking form
+
+### Patch Changes
+
+- Updated dependencies
+  - @zaptime/core@2.5.0
+
 ## 3.4.0
 
 ### Minor Changes
