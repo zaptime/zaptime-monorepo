@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.6.0
+
+### Minor Changes
+
+- Rescheduling
+
 ## 2.5.0
 
 ### Minor Changes

@@ -1,5 +1,16 @@
 # @zaptime/vue3
 
+## 3.6.0
+
+### Minor Changes
+
+- Rescheduling
+
+### Patch Changes
+
+- Updated dependencies
+  - @zaptime/core@2.6.0
+
 ## 3.5.0
 
 ### Minor Changes
