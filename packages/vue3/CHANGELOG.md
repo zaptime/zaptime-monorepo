@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.6.1
+
+### Patch Changes
+
+- Fix(payments): country, crn
+
 ## 3.6.0
 
 ### Minor Changes
