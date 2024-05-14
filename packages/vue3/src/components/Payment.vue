@@ -76,6 +76,7 @@
           />
 
           <CountrySelectInput
+            v-model="billingAddress.country"
             :label="config.locale.confirmationForm.payments.country"
             class="cal-w-1/2"
             default-country="CZ"
@@ -116,7 +117,7 @@
           />
 
           <TextInput
-            v-model="billingAddress.vatId"
+            v-model="billingAddress.crn"
             class="cal-mt-4"
             :label="config.locale.confirmationForm.payments.crn"
             name="crn"
