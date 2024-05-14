@@ -6,7 +6,7 @@
     >
       <div
         v-for="(day, i) in state.days"
-        :key="i"
+        :key="i + JSON.stringify(state.selectedDay?.date)"
         class="cal-mt-2 cal-flex cal-justify-center"
       >
         <div class="cal-flex cal-items-center cal-justify-center">
@@ -46,7 +46,7 @@ import DaysGridLoadingSkeleton from './DaysGridLoadingSkeleton.vue';
 
 const { setCalendarView } = useCalendarViewState(inject('calendarId'));
 
-const { dayHasTimeSlot, isSelectedDay, dayClicked, state } = useCalendar(inject('calendarId') as string);
+const { dayHasTimeSlot, isSelectedDay, dayClicked, state } = useCalendar(inject('calendarId'));
 
 const dayClickedLocalProxy = (day: Day) => {
   dayClicked(day);

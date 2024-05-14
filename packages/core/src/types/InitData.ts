@@ -13,6 +13,17 @@ export type Location = {
   default?: boolean;
 };
 
+export type Reservation = {
+  email: string;
+  end: string;
+  start: string;
+  firstName?: string;
+  lastName?: string;
+  location?: Location;
+  status: string;
+  uuid: string;
+};
+
 export type InitData = {
   configuration: ConfigWithoutToken;
   disabled: boolean;
@@ -20,6 +31,7 @@ export type InitData = {
   locations?: Location[];
   stripeConfig?: StripeConfig;
   customFields?: CustomField[];
+  reservation?: Reservation;
 };
 
 export type StripeConfig = {

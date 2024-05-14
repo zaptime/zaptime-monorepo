@@ -32,6 +32,6 @@ const props = defineProps<{
   type: string;
   name: string;
   autocomplete: string;
-  placeholder: string;
+  placeholder?: string;
 }>();
 </script>

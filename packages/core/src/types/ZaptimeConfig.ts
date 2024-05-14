@@ -14,4 +14,5 @@ export default interface ZaptimeConfig {
   apiBaseUrl?: string;
   redirectAfterBookingUrl?: string;
   hideLocation?: boolean;
+  reservationUuid?: string;
 }

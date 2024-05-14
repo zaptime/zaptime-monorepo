@@ -71,7 +71,6 @@ export interface IConfirmationOptions extends Omit<IOptions, 'email' | 'location
 
 export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
   const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location, timezone } = options;
-
   try {
     const data = await fetch(getBookUrl(baseUrl), {
       method: 'POST',
@@ -86,6 +85,28 @@ export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
         location: location,
         timezone: timezone,
         customFields: options.customFields,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+    }).then((response) => response.json());
+
+    return data;
+  } catch (err) {
+    throw new Error('Booking time slot failed!');
+  }
+};
+
+export const reschedule = async ({ start, end, uuid, timezone, token, baseUrl = defaultBaseUrl }: { start: string; end: string; uuid: string; token: string; timezone: string; baseUrl?: string }): Promise<boolean> => {
+  try {
+    const data = await fetch(getRescheduleUrl(baseUrl, uuid), {
+      method: 'PUT',
+      body: JSON.stringify({
+        start: start,
+        end: end,
+        timezone: timezone,
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -206,7 +227,7 @@ export const getAvailableTimeSlots = async (token: string, from: string, until: 
   }
 };
 
-export async function fetchRemoteConfig(token: string, baseUrl = defaultBaseUrl): Promise<Result<Success, Errors>> {
+export async function fetchRemoteConfig(token: string, baseUrl = defaultBaseUrl, reservationUuid?: string): Promise<Result<Success, Errors>> {
   if (token) {
     type Response = {
       success: boolean;
@@ -221,6 +242,9 @@ export async function fetchRemoteConfig(token: string, baseUrl = defaultBaseUrl)
           Accept: 'application/json',
           Authorization: 'Bearer ' + token,
         },
+        body: JSON.stringify({
+          reservationUuid: reservationUuid,
+        }),
       });
 
       const data: Response = await res.json();
@@ -237,6 +261,10 @@ export async function fetchRemoteConfig(token: string, baseUrl = defaultBaseUrl)
 
 function getBookUrl(baseUrl: string) {
   return baseUrl + 'reservations';
+}
+
+function getRescheduleUrl(baseUrl: string, uuid: string) {
+  return baseUrl + 'reservations/' + uuid;
 }
 
 function getReserveUrl(baseUrl: string) {

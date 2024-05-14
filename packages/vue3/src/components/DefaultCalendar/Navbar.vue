@@ -1,24 +1,41 @@
 <template>
-  <div :class="[config.profileImage ? '' : 'cal-pt-6']">
-    <div
-      v-if="config.profileImage"
-      class="cal-mb-3 cal-flex cal-w-full cal-justify-center cal-pt-3"
-    >
-      <img
-        class="cal-h-[96px] cal-w-[96px] cal-rounded-full cal-object-cover cal-object-top"
-        :src="config.profileImage"
-        loading="lazy"
-        alt="Profile image"
-      />
-    </div>
-    <div
-      v-if="config.locale?.texts?.introduction"
-      class="cal-w-full cal-text-center cal-text-theme-600 dark:cal-text-theme-200"
-      :class="[config.profileImage ? '' : 'cal-py-12']"
-      v-html="config.locale?.texts?.introduction"
-    ></div>
+  <div :class="[config.profileImage && !reservation ? '' : 'cal-pt-6']">
+    <div v-if="!reservation">
+      <div
+        v-if="config.profileImage"
+        class="cal-mb-3 cal-flex cal-w-full cal-justify-center cal-pt-3"
+      >
+        <img
+          class="cal-h-[96px] cal-w-[96px] cal-rounded-full cal-object-cover cal-object-top"
+          :src="config.profileImage"
+          loading="lazy"
+          alt="Profile image"
+        />
+      </div>
+      <div
+        v-if="config.locale?.texts?.introduction"
+        class="cal-w-full cal-text-center cal-text-theme-600 dark:cal-text-theme-200"
+        :class="[config.profileImage ? '' : 'cal-py-12']"
+        v-html="config.locale?.texts?.introduction"
+      ></div>
 
-    <MeetingInformation></MeetingInformation>
+      <MeetingInformation></MeetingInformation>
+    </div>
+
+    <div
+      v-else
+      class="cal-px-3"
+    >
+      <p class="cal-text-base cal-font-medium cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-200">{{ config.locale?.confirmationForm?.reschedulingEvent }}</p>
+
+      <div
+        v-if="reservation"
+        class="cal-text-lg cal-font-semibold cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-200"
+      >
+        {{ getFormattedDayInMonth(reservation.start) }}
+        {{ getFormattedTime(reservation.start) }} - {{ getFormattedTime(reservation.end) }}
+      </div>
+    </div>
   </div>
   <div class="cal-flex cal-justify-between cal-py-4">
     <p class="cal-ml-3 cal-text-base cal-font-medium cal-text-theme-900 dark:cal-text-theme-200">{{ monthName }} {{ currentYear }}</p>
@@ -77,10 +94,12 @@
 
 <script setup lang="ts">
 import { inject } from 'vue';
-import { useCalendar, useConfig } from '@zaptime/core';
+import { useCalendar, useConfig, useReservationReschedule, useDateFormatters } from '@zaptime/core';
 import MeetingInformation from './MeetingInformation.vue';
 
 const { monthName, currentYear, prev, prevDisabled, next, nextDisabled } = useCalendar(inject('calendarId') as string);
 
 const { config } = useConfig(inject('calendarId'));
+const { reservation } = useReservationReschedule(inject('calendarId'));
+const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
 </script>

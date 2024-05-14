@@ -3,11 +3,12 @@ import useSelectedTimeSlot from './useSelectedTimeSlot';
 import useLocations from './useLocations';
 import useConfig from './useConfig';
 import { Success, Errors, Location } from '../types/InitData';
-import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi, fetchRemoteConfig } from '../api/api';
+import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi, fetchRemoteConfig, reschedule as rescheduleApi } from '../api/api';
 import { TimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
 import { Result } from 'ts-results';
 import useCurrentTimezone from './useCurrentTimezone';
 import { CustomFieldCollected } from '../types/InitData';
+import useReservationReschedule from './useReservationReschedule';
 
 export interface IBookingOptions {
   /**
@@ -180,12 +181,38 @@ export const cancel = async (calendarId?: string): Promise<boolean> => {
 };
 
 /**
+ * Cancel previously reserved time slot
+ *
+ * @see https://docs.zaptime.app/guide/vue-working-with-time-slots.html#cancel
+ * @param calendarId
+ */
+export const reschedule = async (calendarId?: string): Promise<boolean> => {
+  const { reservation } = useReservationReschedule(calendarId);
+  const { config } = useConfig(calendarId);
+  const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
+  const { timezone } = useCurrentTimezone();
+
+  if (reservation.value !== undefined && selectedTimeSlot.value !== undefined) {
+    return await rescheduleApi({
+      start: selectedTimeSlot.value.start,
+      end: selectedTimeSlot.value.end,
+      token: config.value.token,
+      uuid: reservation.value?.uuid,
+      baseUrl: config.value.apiBaseUrl,
+      timezone: timezone.value,
+    });
+  }
+
+  return false;
+};
+
+/**
  * Fetches remote Zaptime configuration. Contains additional data about the Event Type configuration.
  *
  * @see https://zaptime.docs.apiary.io/#reference/0/event-types-collection/initialize-event-type
  * @param calendarId
  */
 
-export const fetchRemoteConfiguration = async (token: string, apiBaseUrl?: string): Promise<Result<Success, Errors>> => {
-  return await fetchRemoteConfig(token, apiBaseUrl);
+export const fetchRemoteConfiguration = async (token: string, apiBaseUrl?: string, reservationUuid?: string): Promise<Result<Success, Errors>> => {
+  return await fetchRemoteConfig(token, apiBaseUrl, reservationUuid);
 };

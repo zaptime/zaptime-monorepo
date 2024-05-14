@@ -1,7 +1,7 @@
 <template>
   <SelectInput
     v-model="model"
-    :label="'Country'"
+    :label="label"
     :options="countries"
     name="country"
   >
@@ -16,6 +16,7 @@ const model = defineModel();
 
 const props = defineProps<{
   defaultCountry: string;
+  label: string;
 }>();
 
 const countries = ref<{ value: string; label: string }[]>([]);
@@ -38,8 +39,6 @@ async function getAllCountries() {
   });
 
   model.value = props.defaultCountry;
-
-  console.log(model);
 }
 
 onMounted(async () => {

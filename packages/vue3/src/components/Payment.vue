@@ -27,17 +27,16 @@
       type="button"
       @click="showAllBillingDetails = true"
     >
-      Vyplnit fakturační údaje
+      {{ config.locale?.confirmationForm?.payments?.showBillingDetails }}
     </button>
 
     <Transition>
-      <div v-if="showAllBillingDetails">
+      <div v-if="showAllBillingDetails && config.locale?.confirmationForm?.payments">
         <div class="">
           <TextInput
             v-model="billingAddress.name"
             class="cal-mt-4"
-            placeholder="Name"
-            label="Name"
+            :label="config.locale.confirmationForm.payments.name"
             name="name"
             type="text"
             autocomplete="name"
@@ -47,8 +46,7 @@
           <TextInput
             v-model="billingAddress.email"
             class="cal-mt-4"
-            placeholder="Email"
-            label="Email"
+            :label="config.locale.confirmationForm.payments.email"
             name="email"
             type="text"
             autocomplete="email"
@@ -59,8 +57,7 @@
         <TextInput
           v-model="billingAddress.company"
           class="cal-mt-4"
-          placeholder="Company"
-          label="Company"
+          :label="config.locale.confirmationForm.payments.company"
           name="company"
           type="text"
           autocomplete="organization"
@@ -71,8 +68,7 @@
           <TextInput
             v-model="billingAddress.address"
             class="cal-w-1/2"
-            placeholder="Adress"
-            label="Adress"
+            :label="config.locale.confirmationForm.payments.address"
             name="address"
             type="text"
             autocomplete="address-line1"
@@ -80,6 +76,7 @@
           />
 
           <CountrySelectInput
+            :label="config.locale.confirmationForm.payments.country"
             class="cal-w-1/2"
             default-country="CZ"
           />
@@ -89,8 +86,7 @@
           <TextInput
             v-model="billingAddress.city"
             class="cal-mt-4"
-            placeholder="City"
-            label="City"
+            :label="config.locale.confirmationForm.payments.city"
             name="city"
             type="text"
             autocomplete="address-level2"
@@ -100,8 +96,7 @@
           <TextInput
             v-model="billingAddress.postalCode"
             class="cal-mt-4"
-            placeholder="Postal code"
-            label="Postal code"
+            :label="config.locale.confirmationForm.payments.zip"
             name="postalCode"
             type="text"
             autocomplete="postal-code"
@@ -113,8 +108,7 @@
           <TextInput
             v-model="billingAddress.vatId"
             class="cal-mt-4"
-            placeholder="Vat ID"
-            label="Vat Id"
+            :label="config.locale.confirmationForm.payments.vatId"
             name="vatID"
             type="text"
             autocomplete="vat-id"
@@ -124,8 +118,7 @@
           <TextInput
             v-model="billingAddress.vatId"
             class="cal-mt-4"
-            placeholder="Crn"
-            label="CRN"
+            :label="config.locale.confirmationForm.payments.crn"
             name="crn"
             type="text"
             autocomplete="crn"
@@ -145,7 +138,7 @@
       </label>
       <div
         id="card-number"
-        class="cal-mt-2 cal-h-[50px] cal-w-full cal-rounded-md cal-border cal-border-theme-300 cal-bg-theme-50 cal-px-5 cal-py-4 cal-text-base cal-font-medium cal-text-theme-900 cal-placeholder-theme-400 focus:cal-border-theme-400 focus:cal-outline-none focus:cal-ring-theme-500 dark:cal-border-theme-600 dark:cal-bg-theme-800 dark:cal-text-theme-100 dark:cal-placeholder-theme-500 sm:cal-text-sm"
+        class="cal- cal-mt-2 cal-h-[50px] cal-w-full cal-rounded-md cal-border cal-border-theme-300 cal-bg-theme-50 cal-px-5 cal-py-4 cal-text-base cal-font-medium cal-text-theme-900 focus:cal-outline-none focus:cal-ring-theme-500 dark:cal-border-theme-600 dark:cal-bg-theme-800 dark:cal-text-theme-100 dark:cal-placeholder-theme-500 sm:cal-text-sm"
       >
         <!-- A Stripe Element will be inserted here. -->
       </div>

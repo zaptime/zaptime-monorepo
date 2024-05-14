@@ -21,13 +21,25 @@ export default interface ZaptimeLocale {
 
   confirmationForm?: {
     confirmBooking?: string;
+    reschedulingEvent?: string;
     buttons?: {
       confirmBooking?: string;
+      reschedule?: string;
       goBack?: string;
     };
     payments?: {
-      price?: string;
-      cardNumber?: string;
+      showBillingDetails: string;
+      price: string;
+      cardNumber: string;
+      name: string;
+      email: string;
+      company: string;
+      address: string;
+      city: string;
+      zip: string;
+      country: string;
+      vatId: string;
+      crn: string;
     };
   };
 }

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="cal-mx-auto cal-h-full cal-min-h-[524px] cal-bg-white cal-px-[20px]  dark:cal-bg-theme-900 sm:cal-mx-0"
+    class="cal-mx-auto cal-h-full cal-min-h-[524px] cal-bg-white cal-px-[20px] dark:cal-bg-theme-900 sm:cal-mx-0"
     :class="[config.compact ? 'cal-w-[330px] cal-rounded-xl sm:cal-w-[400px]' : 'cal-w-[330px] cal-rounded-r-xl sm:cal-w-[440px]', config.profileImage ? 'cal-pt-4' : 'cal-pt-10']"
   >
     <PrimaryButton
@@ -28,7 +28,7 @@
           class="cal-flex cal-h-full cal-flex-col cal-justify-between"
         >
           <div>
-            <div :class="[config.locale?.texts?.introduction || config.profileImage ? 'cal-pt-[54px]' : '']">
+            <div :class="[(config.locale?.texts?.introduction || config.profileImage) && !reservation ? 'cal-pt-[54px]' : 'cal-pt-4']">
               <p class="cal-text-2xl cal-font-semibold cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-300">
                 {{ getFormattedDayInMonth(state.timeSlots[0].start) }}
               </p>
@@ -126,7 +126,7 @@
 </template>
 
 <script setup lang="ts">
-import { useCalendar, useConfig, useHourCycle, useDateFormatters } from '@zaptime/core';
+import { useCalendar, useConfig, useHourCycle, useDateFormatters, useReservationReschedule } from '@zaptime/core';
 import useCalendarViewState from '../../composables/useCalendarViewState';
 import PrimaryButton from '../atomic/PrimaryButton.vue';
 import { inject, computed } from 'vue';
@@ -145,6 +145,8 @@ const { selectTimeSlot, state } = useCalendar(inject('calendarId'));
 const { config } = useConfig(inject('calendarId'));
 
 const { getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
+
+const { reservation } = useReservationReschedule(inject('calendarId'));
 
 const hourCycleSwitchValue = computed({
   get() {
