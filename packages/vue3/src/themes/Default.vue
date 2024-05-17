@@ -266,7 +266,7 @@ const { monthName, currentYear, dayClicked, dayHasTimeSlot, prev, prevDisabled, 
 
 const config = inject('config') as ZaptimeConfig;
 
-const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
+const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useDateFormatters();
 
 const select = (timeSlot: TimeSlot) => {
   selectTimeSlot(timeSlot);

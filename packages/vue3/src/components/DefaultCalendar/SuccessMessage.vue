@@ -36,5 +36,5 @@ import { useConfig, useSelectedTimeSlot, useDateFormatters } from '@zaptime/core
 
 const { config } = useConfig(inject('calendarId'));
 const { selectedTimeSlot } = useSelectedTimeSlot(inject('calendarId'));
-const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
+const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters();
 </script>

@@ -101,5 +101,5 @@ const { monthName, currentYear, prev, prevDisabled, next, nextDisabled } = useCa
 
 const { config } = useConfig(inject('calendarId'));
 const { reservation } = useReservationReschedule(inject('calendarId'));
-const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
+const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters();
 </script>

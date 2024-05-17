@@ -78,7 +78,7 @@ import { ref, inject } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import PrimaryButton from '../atomic/PrimaryButton.vue';
 
-const { getFormattedTime } = useDateFormatters(inject('calendarId'));
+const { getFormattedTime } = useDateFormatters();
 const { isSelected } = useCalendar(inject('calendarId'));
 const { config } = useConfig(inject('calendarId'));
 

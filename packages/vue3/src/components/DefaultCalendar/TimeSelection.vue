@@ -144,7 +144,7 @@ const { selectTimeSlot, state } = useCalendar(inject('calendarId'));
 
 const { config } = useConfig(inject('calendarId'));
 
-const { getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
+const { getFormattedDayInMonth } = useDateFormatters();
 
 const { reservation } = useReservationReschedule(inject('calendarId'));
 

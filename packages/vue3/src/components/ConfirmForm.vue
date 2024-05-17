@@ -110,7 +110,7 @@ import { useStripe } from '../composables/useStripe';
 const emits = defineEmits(['booking-confirmed', 'go-back']);
 
 const { selectedTimeSlot } = useSelectedTimeSlot(inject('calendarId'));
-const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
+const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters();
 const { config } = useConfig(inject('calendarId'));
 const { locations } = useLocations(inject('calendarId'));
 const { stripeConfig } = useStripeConfig(inject('calendarId'));

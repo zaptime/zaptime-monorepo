@@ -127,7 +127,7 @@ const { selectTimeSlot, isSelected, state } = useCalendar(inject('calendarId'));
 
 const { config } = useConfig(inject('calendarId'));
 
-const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useDateFormatters(inject('calendarId'));
+const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useDateFormatters();
 
 const select = (timeSlot: TimeSlot) => {
   selectTimeSlot(timeSlot);
