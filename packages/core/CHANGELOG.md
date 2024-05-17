@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.6.1
+
+### Patch Changes
+
+- Fix: release sync
+
 ## 2.6.0
 
 ### Minor Changes

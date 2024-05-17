@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.6.5
+
+### Patch Changes
+
+- Fix: release sync
+- Updated dependencies
+  - @zaptime/core@2.6.1
+
 ## 3.6.4
 
 ### Patch Changes
