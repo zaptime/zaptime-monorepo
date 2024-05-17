@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.6.2
+
+### Patch Changes
+
+- Fix: textarea, handle BE validation errors
+
 ## 3.6.1
 
 ### Patch Changes
