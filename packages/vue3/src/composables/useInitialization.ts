@@ -1,5 +1,5 @@
 import type { ZaptimeConfig } from '@zaptime/core';
-import { useConfig, useCalendar, fetchRemoteConfiguration, useLocations, useStripeConfig, useBookingForm, useReservationReschedule } from '@zaptime/core';
+import { useConfig, useCalendar, fetchRemoteConfiguration, useLocations, useStripeConfig, useBookingForm, useReservationReschedule, useDateFormatters } from '@zaptime/core';
 import { ref, nextTick } from 'vue';
 import { getAnalytics, buildConfig } from '../analytics';
 import { mergeConfigs } from '../utils/mergeConfigs';
@@ -9,12 +9,13 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
   const isEnabled = ref(false);
   const initLoaded = ref(false);
 
-  const { init: initCalendar, dayClicked, state } = useCalendar(calendarId);
   const { setConfig } = useConfig(calendarId);
   const { setLocations } = useLocations(calendarId);
+  const { loadDateFnsConfig } = useDateFormatters();
   const { setStripeConfig } = useStripeConfig(calendarId);
   const { setBookingForm } = useBookingForm(calendarId);
   const { setSelectedReservation } = useReservationReschedule(calendarId);
+  const { init: initCalendar, dayClicked, state } = useCalendar(calendarId);
   /**
    * Setups the calendar and configuration based on the provided token and configuration.
    * If the token is not provided, an error will be logged.
@@ -36,6 +37,8 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
           initLoaded.value = true;
           return;
         }
+
+        await loadDateFnsConfig(initData.val.configuration.locale?.preset || 'en');
 
         if (initData.val.reservation !== undefined) {
           setSelectedReservation(initData.val.reservation);

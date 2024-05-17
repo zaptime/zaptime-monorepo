@@ -197,7 +197,7 @@ export default (calendarId?: string) => {
 
   const setLocales = async () => {
     if (config.value && config.value.locale) {
-      state.value.dfnsConfig = await getDfnsConfig(config.value.locale);
+      state.value.dfnsConfig = await getDfnsConfig(config.value.locale.preset || 'en');
       setState('headers', getHeaders(config.value.locale, state.value.dfnsConfig));
     }
   };

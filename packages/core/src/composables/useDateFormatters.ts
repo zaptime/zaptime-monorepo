@@ -1,24 +1,16 @@
 import { parseISO } from 'date-fns';
-import useCalendar from './useCalendar';
 import useCurrentTimezone from './useCurrentTimezone';
 import useHourCycle from './useHourCycle';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import { getDfnsConfig } from '../utils/dfnsConfig';
 let dateFnsConfig: any = undefined;
 
-export const useDateFormatters = (calendarId?: string) => {
-  const { config } = useCalendar(calendarId);
+export const useDateFormatters = () => {
   const { timezone } = useCurrentTimezone();
   const { hourCycle } = useHourCycle();
 
-  if (dateFnsConfig === undefined) {
-    loadDateFnsConfig();
-  }
-
-  function loadDateFnsConfig() {
-    getDfnsConfig(config.value.locale).then((dateFnsConf) => {
-      dateFnsConfig = dateFnsConf;
-    });
+  async function loadDateFnsConfig(locale: string) {
+    dateFnsConfig = await getDfnsConfig(locale);
   }
 
   const getFormattedTime = (date: string) => {
@@ -43,5 +35,6 @@ export const useDateFormatters = (calendarId?: string) => {
     getFormattedTime,
     getFormattedDay,
     getFormattedDayInMonth,
+    loadDateFnsConfig,
   };
 };
