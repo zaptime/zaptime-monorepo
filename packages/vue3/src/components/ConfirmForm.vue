@@ -128,6 +128,13 @@ const analytics = getAnalytics();
 
 const paymentError = ref(false);
 
+class ValidationError extends Error {
+  constructor() {
+    super();
+    this.name = 'ValidationError';
+  }
+}
+
 const locale = computed(() => {
   if (config === undefined) {
     return;
@@ -155,12 +162,16 @@ async function onSubmit() {
     if (stripeConfig.value) {
       await handleSubmittionWithPayment();
     } else {
-      await book({
+      const res = await book({
         seats: seats.value,
         calendarId,
         location: locations.value[0],
         ...collectFormValues(),
       });
+
+      if (!res.success) {
+        throw new ValidationError();
+      }
     }
 
     analytics?.track('booking_confirmed', {
@@ -171,8 +182,12 @@ async function onSubmit() {
 
     disabled.value = false;
   } catch (err) {
+    if (err instanceof ValidationError) {
+      console.error('Booking failed! Please try again or contact support.');
+      return;
+    }
     paymentError.value = true;
-    console.log(err);
+    console.error(err);
   } finally {
     disabled.value = false;
   }
