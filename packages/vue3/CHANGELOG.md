@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.6.3
+
+### Patch Changes
+
+- Fix: duplication calendar keys
+
 ## 3.6.2
 
 ### Patch Changes
