@@ -6,7 +6,7 @@
     >
       <div
         v-for="(day, i) in state.days"
-        :key="i + JSON.stringify(state.selectedDay?.date)"
+        :key="i"
         class="cal-mt-2 cal-flex cal-justify-center"
       >
         <div class="cal-flex cal-items-center cal-justify-center">
