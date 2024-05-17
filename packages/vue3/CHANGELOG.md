@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.6.4
+
+### Patch Changes
+
+- Fix: formatters confing language not being set soon enough
+
 ## 3.6.3
 
 ### Patch Changes
