@@ -215,6 +215,7 @@ async function submitReschedule() {
 onMounted(async () => {
   if (stripeConfig.value) {
     setTimeout(async () => {
+      //@ts-expect-error TS is not aware of chec?
       initGateway(stripeConfig.value.stripeAccountId);
     }, 500);
   }
