@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.6.6
+
+### Patch Changes
+
+- Fix: stripe payments
+- Updated dependencies
+  - @zaptime/core@2.6.2
+
 ## 3.6.5
 
 ### Patch Changes

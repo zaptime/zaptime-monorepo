@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.6.2
+
+### Patch Changes
+
+- Fix: stripe payments
+
 ## 2.6.1
 
 ### Patch Changes
