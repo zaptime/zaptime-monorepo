@@ -143,14 +143,24 @@ const locale = computed(() => {
 });
 
 async function handleSubmittionWithPayment() {
-  await reserve({
-    ...collectFormValues(),
-    seats: seats.value,
-    calendarId,
-    location: locations.value[0],
-  });
+  try {
+    await reserve({
+      ...collectFormValues(),
+      seats: seats.value,
+      calendarId,
+      location: locations.value[0],
+    });
+  } catch (err) {
+    console.error(err);
+    throw new Error('Failed to reserve');
+  }
 
-  await handleStripePayment({ billingAddress: billingAddress.value });
+  try {
+    await handleStripePayment({ billingAddress: billingAddress.value });
+  } catch (err) {
+    console.error(err);
+    throw new Error('Failed to handle payment');
+  }
 
   await confirm({ calendarId: calendarId });
 }
@@ -204,7 +214,9 @@ async function submitReschedule() {
 
 onMounted(async () => {
   if (stripeConfig.value) {
-    await initGateway();
+    setTimeout(async () => {
+      initGateway(stripeConfig.value.stripeAccountId);
+    }, 500);
   }
 });
 </script>

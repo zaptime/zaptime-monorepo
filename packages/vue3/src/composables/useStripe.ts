@@ -16,13 +16,11 @@ export type BillingAddress = {
 export function useStripe() {
   const result = ref();
   const errors = ref();
-  const paymentIntentId = ref<string>();
   const elements = ref<stripe.elements.Elements>();
   const stripe = ref<stripe.Stripe>();
   const stripeCardNumber = ref<stripe.elements.Element>();
   const stripeCardExpiry = ref<stripe.elements.Element>();
   const stripeCardCvc = ref<stripe.elements.Element>();
-  const clientSecret = ref<string>();
   const { config } = useConfig(inject('calendarId'));
 
   const isDark = config.value.theme?.mode === 'dark';
@@ -68,21 +66,9 @@ export function useStripe() {
     };
   });
 
-  async function initGateway() {
-    const res = await fetch(apiBaseUrl.value + 'api/payments', {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + config.value.token,
-      },
-    });
-
-    const { data } = await res.json();
-
-    paymentIntentId.value = data.paymentIntentId;
-    clientSecret.value = data.clientSecret;
-
+  async function initGateway(stripeAccountId: string) {
     stripe.value = Stripe(import.meta.env.VITE_STRIPE_CLIENT_KEY, {
-      stripeAccount: data.stripeAccountId,
+      stripeAccount: stripeAccountId,
     });
 
     elements.value = stripe.value.elements();
@@ -108,7 +94,7 @@ export function useStripe() {
   }
 
   async function handleSubmit({ billingAddress }: { billingAddress: BillingAddress }) {
-    if (stripe.value === undefined || stripeCardNumber.value === undefined || clientSecret.value === undefined) {
+    if (stripe.value === undefined || stripeCardNumber.value === undefined) {
       return;
     }
 
@@ -117,7 +103,33 @@ export function useStripe() {
     //   redirect: 'if_required',
     // });
 
-    const { error } = await stripe.value.confirmCardPayment(clientSecret.value, {
+    const res = await fetch(apiBaseUrl.value + 'api/payments', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + config.value.token,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        email: billingAddress.email,
+        name: billingAddress.name,
+        company: billingAddress.company || undefined,
+        street: billingAddress.address || undefined,
+        city: billingAddress.city || undefined,
+        postalCode: billingAddress.postalCode || undefined,
+        country: billingAddress.country,
+        taxId: billingAddress.vatId || undefined,
+        crn: billingAddress.crn || undefined,
+      }),
+    });
+
+    const { data } = await res.json();
+
+    if (data.clientSecret === undefined) {
+      return;
+    }
+
+    const { error } = await stripe.value.confirmCardPayment(data.clientSecret, {
       payment_method: {
         card: stripeCardNumber.value,
         billing_details: {
@@ -135,23 +147,6 @@ export function useStripe() {
 
     if (error !== undefined) {
       throw new Error(error.code);
-    }
-
-    if (error === undefined) {
-      const response = await fetch(apiBaseUrl.value + 'api/payments/status', {
-        method: 'POST',
-        headers: {
-          Authorization: 'Bearer ' + config.value.token,
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          paymentIntentId: paymentIntentId.value,
-        }),
-      });
-
-      const jsonRes = await response.json();
-      result.value = jsonRes.success;
     }
   }
 
