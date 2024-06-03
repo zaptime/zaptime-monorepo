@@ -93,7 +93,7 @@ export function useStripe() {
     stripeCardCvc.value.mount('#card-cvc');
   }
 
-  async function handleSubmit({ billingAddress }: { billingAddress: BillingAddress }) {
+  async function handleSubmit({ billingAddress, reservationUuid }: { billingAddress: BillingAddress; reservationUuid: string }) {
     if (stripe.value === undefined || stripeCardNumber.value === undefined) {
       return;
     }
@@ -103,7 +103,7 @@ export function useStripe() {
     //   redirect: 'if_required',
     // });
 
-    const res = await fetch(apiBaseUrl.value + 'api/payments', {
+    const res = await fetch(apiBaseUrl.value + `api/reservations/${reservationUuid}/payments`, {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + config.value.token,

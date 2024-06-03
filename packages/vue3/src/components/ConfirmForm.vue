@@ -144,25 +144,19 @@ const locale = computed(() => {
 
 async function handleSubmittionWithPayment() {
   try {
-    await reserve({
+    const res = await reserve({
       ...collectFormValues(),
       seats: seats.value,
       calendarId,
       location: locations.value[0],
     });
+
+    await handleStripePayment({ billingAddress: billingAddress.value, reservationUuid: res.data.uuid });
+    await confirm({ calendarId: calendarId });
   } catch (err) {
     console.error(err);
     throw new Error('Failed to reserve');
   }
-
-  try {
-    await handleStripePayment({ billingAddress: billingAddress.value });
-  } catch (err) {
-    console.error(err);
-    throw new Error('Failed to handle payment');
-  }
-
-  await confirm({ calendarId: calendarId });
 }
 
 async function onSubmit() {
