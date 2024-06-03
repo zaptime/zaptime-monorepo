@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.6.7
+
+### Patch Changes
+
+- Endpoint change
+
 ## 3.6.6
 
 ### Patch Changes
