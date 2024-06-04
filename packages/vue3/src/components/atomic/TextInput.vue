@@ -26,12 +26,15 @@ const emit = defineEmits(['update:modelValue', 'blur']);
 
 const model = defineModel();
 
-const props = defineProps<{
+interface Props {
   label: string;
-  required: boolean;
+  required?: boolean;
   type: string;
   name: string;
   autocomplete: string;
   placeholder?: string;
-}>();
+}
+withDefaults(defineProps<Props>(), {
+  required: false,
+});
 </script>

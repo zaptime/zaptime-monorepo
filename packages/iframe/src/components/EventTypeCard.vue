@@ -63,7 +63,7 @@
             y2="10"
           />
         </svg>
-        {{ config.stripeConfig.price }} {{ config.stripeConfig.currency }}
+        {{ config.stripeConfig.price / 100 }} {{ config.stripeConfig.currency }}
       </div>
       <div
         v-if="config.duration"

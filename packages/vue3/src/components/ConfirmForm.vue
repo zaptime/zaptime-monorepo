@@ -27,7 +27,12 @@
         <Payment></Payment>
       </div>
 
-      <div v-if="paymentError">Payment has failed</div>
+      <div
+        v-if="paymentError"
+        class="cal-my-5 cal-text-lg cal-text-red-500"
+      >
+        Payment has failed
+      </div>
 
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
         <SecondaryButton @click="$emit('go-back')">
@@ -99,13 +104,13 @@
 
 <script setup lang="ts">
 import { computed, inject, ref, onMounted } from 'vue';
-import { useSelectedTimeSlot, book, reserve, confirm, useConfig, reschedule, useDateFormatters, useLocations, useStripeConfig, useBookingForm, useBillingAddress, useReservationReschedule } from '@zaptime/core';
+import { useSelectedTimeSlot, book, reserve, confirm, useConfig, reschedule, useDateFormatters, useLocations, useStripeConfig, useBookingForm, useBillingAddress, useReservationReschedule, cancel } from '@zaptime/core';
 import PrimaryButton from './atomic/PrimaryButton.vue';
 import SecondaryButton from './atomic/SecondaryButton.vue';
 import { getAnalytics } from '../analytics';
 import Payment from './Payment.vue';
 import FormBuilder from './BookingForm/FormBuilder.vue';
-import { useStripe } from '../composables/useStripe';
+import { useStripe, PaymentError } from '../composables/useStripe';
 
 const emits = defineEmits(['booking-confirmed', 'go-back']);
 
@@ -144,17 +149,39 @@ const locale = computed(() => {
 
 async function handleSubmittionWithPayment() {
   try {
+    const collectedValues = collectFormValues();
+
     const res = await reserve({
-      ...collectFormValues(),
+      ...collectedValues,
       seats: seats.value,
       calendarId,
       location: locations.value[0],
     });
 
+    if (billingAddress.value.email === '') {
+      billingAddress.value.email = collectedValues.email;
+    }
+
+    if (billingAddress.value.name === '') {
+      billingAddress.value.name = collectedValues.firstName + ' ' + collectedValues.lastName;
+    }
+
+    if (billingAddress.value.country === '') {
+      billingAddress.value.country = 'CZ';
+    }
+
+    if (!res.success) {
+      throw new ValidationError();
+    }
+
     await handleStripePayment({ billingAddress: billingAddress.value, reservationUuid: res.data.uuid });
+
     await confirm({ calendarId: calendarId });
   } catch (err) {
-    console.error(err);
+    if (err instanceof PaymentError) {
+      console.error(err.message);
+      await cancel(calendarId);
+    }
     throw new Error('Failed to reserve');
   }
 }

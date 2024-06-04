@@ -13,6 +13,14 @@ export type BillingAddress = {
   vatId: string;
 };
 
+export class PaymentError extends Error {
+  constructor(error?: string) {
+    super();
+    this.name = 'error';
+    this.message = error || 'Payment failed';
+  }
+}
+
 export function useStripe() {
   const result = ref();
   const errors = ref();
@@ -103,33 +111,40 @@ export function useStripe() {
     //   redirect: 'if_required',
     // });
 
-    const res = await fetch(apiBaseUrl.value + `api/reservations/${reservationUuid}/payments`, {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + config.value.token,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({
-        email: billingAddress.email,
-        name: billingAddress.name,
-        company: billingAddress.company || undefined,
-        street: billingAddress.address || undefined,
-        city: billingAddress.city || undefined,
-        postalCode: billingAddress.postalCode || undefined,
-        country: billingAddress.country,
-        taxId: billingAddress.vatId || undefined,
-        crn: billingAddress.crn || undefined,
-      }),
-    });
+    let clientSecret: string;
 
-    const { data } = await res.json();
+    try {
+      const res = await fetch(apiBaseUrl.value + `api/reservations/${reservationUuid}/payments`, {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + config.value.token,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          email: billingAddress.email,
+          name: billingAddress.name,
+          company: billingAddress.company || undefined,
+          street: billingAddress.address || undefined,
+          city: billingAddress.city || undefined,
+          postalCode: billingAddress.postalCode || undefined,
+          country: billingAddress.country,
+          taxId: billingAddress.vatId || undefined,
+          crn: billingAddress.crn || undefined,
+        }),
+      });
 
-    if (data.clientSecret === undefined) {
-      return;
+      const { data } = await res.json();
+      clientSecret = data.clientSecret;
+    } catch (e) {
+      throw new PaymentError('Zaptime Payment Confirmation API Failed.');
     }
 
-    const { error } = await stripe.value.confirmCardPayment(data.clientSecret, {
+    if (clientSecret === undefined) {
+      throw new PaymentError('Client secret is undefined.');
+    }
+
+    const { error } = await stripe.value.confirmCardPayment(clientSecret, {
       payment_method: {
         card: stripeCardNumber.value,
         billing_details: {
@@ -146,7 +161,7 @@ export function useStripe() {
     });
 
     if (error !== undefined) {
-      throw new Error(error.code);
+      throw new PaymentError(error?.message);
     }
   }
 

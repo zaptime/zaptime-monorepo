@@ -15,7 +15,7 @@ import SelectInput from './SelectInput.vue';
 const model = defineModel();
 
 const props = defineProps<{
-  defaultCountry: string;
+  defaultCountry?: string;
   label: string;
 }>();
 

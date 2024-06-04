@@ -41,7 +41,7 @@
           y2="10"
         />
       </svg>
-      <p class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200">{{ stripeConfig.price }} {{ stripeConfig.currency }}</p>
+      <p class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200">{{ stripeConfig.price / 100 }} {{ stripeConfig.currency }}</p>
     </div>
   </div>
 </template>

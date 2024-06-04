@@ -18,7 +18,7 @@
       >
         {{ config.locale.confirmationForm.payments.price }}
       </p>
-      <p class="cal-text-lg cal-font-medium cal-leading-[24px] cal-text-theme-700 dark:cal-text-theme-100">{{ stripeConfig.price }} {{ stripeConfig.currency }}</p>
+      <p class="cal-text-lg cal-font-medium cal-leading-[24px] cal-text-theme-700 dark:cal-text-theme-100">{{ stripeConfig.price / 100 }} {{ stripeConfig.currency }}</p>
     </div>
 
     <button
@@ -40,7 +40,6 @@
             name="name"
             type="text"
             autocomplete="name"
-            required
           />
 
           <TextInput
@@ -50,7 +49,6 @@
             name="email"
             type="text"
             autocomplete="email"
-            required
           />
         </div>
 
@@ -61,7 +59,6 @@
           name="company"
           type="text"
           autocomplete="organization"
-          required
         />
 
         <div class="cal-mt-4 cal-flex cal-w-full cal-gap-3">
@@ -72,14 +69,12 @@
             name="address"
             type="text"
             autocomplete="address-line1"
-            required
           />
 
           <CountrySelectInput
             v-model="billingAddress.country"
             :label="config.locale.confirmationForm.payments.country"
             class="cal-w-1/2"
-            default-country="CZ"
           />
         </div>
 
@@ -91,7 +86,6 @@
             name="city"
             type="text"
             autocomplete="address-level2"
-            required
           />
 
           <TextInput
@@ -101,7 +95,6 @@
             name="postalCode"
             type="text"
             autocomplete="postal-code"
-            required
           />
         </div>
 
@@ -113,7 +106,6 @@
             name="vatID"
             type="text"
             autocomplete="vat-id"
-            :required="false"
           />
 
           <TextInput
@@ -123,7 +115,6 @@
             name="crn"
             type="text"
             autocomplete="crn"
-            :required="false"
           />
         </div>
       </div>
@@ -186,13 +177,17 @@ const { collectFormValues } = useBookingForm(inject('calendarId'));
 watch(showAllBillingDetails, () => {
   const values = collectFormValues();
 
+  console.log(values);
+
   if (billingAddress.value.name === '' && values.firstName !== undefined && values.lastName !== undefined) {
     console.log(values.firstName);
 
     billingAddress.value.name = values.firstName + ' ' + values.lastName;
   }
 
-  if (billingAddress.value.email === '' && values.email == '') {
+  console.log(billingAddress.value.email);
+
+  if (billingAddress.value.email === '') {
     billingAddress.value.email = values.email;
   }
 });
