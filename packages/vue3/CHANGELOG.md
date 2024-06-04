@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.6.8
+
+### Patch Changes
+
+- Payments fixes
+
 ## 3.6.7
 
 ### Patch Changes
