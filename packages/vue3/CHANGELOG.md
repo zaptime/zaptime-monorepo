@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.6.9
+
+### Patch Changes
+
+- Fix: currency locale
+
 ## 3.6.8
 
 ### Patch Changes
