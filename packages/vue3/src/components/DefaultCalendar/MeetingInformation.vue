@@ -41,7 +41,9 @@
           y2="10"
         />
       </svg>
-      <p class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200">{{ stripeConfig.price / 100 }} {{ stripeConfig.currency }}</p>
+      <p class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200">
+        {{ priceCurrency }}
+      </p>
     </div>
   </div>
 </template>
@@ -49,10 +51,13 @@
 <script setup lang="ts">
 import { ref, inject, computed } from 'vue';
 import { useLocations, useStripeConfig, useConfig } from '@zaptime/core';
+import { useLocalisedPriceCurrency } from '../../composables/useLocalisedPriceCurrency';
 
 const { locations } = useLocations(inject('calendarId'));
 const { stripeConfig } = useStripeConfig(inject('calendarId'));
 const { config } = useConfig(inject('calendarId'));
+
+const { priceCurrency } = useLocalisedPriceCurrency({ price: stripeConfig.value?.price || 0, currency: stripeConfig.value?.currency || '', calendarId: inject('calendarId') });
 
 const locationLabel = computed(() => {
   if (selectedLocation.value?.id === 'in-person' || selectedLocation.value?.id === 'phone') {

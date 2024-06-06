@@ -18,7 +18,9 @@
       >
         {{ config.locale.confirmationForm.payments.price }}
       </p>
-      <p class="cal-text-lg cal-font-medium cal-leading-[24px] cal-text-theme-700 dark:cal-text-theme-100">{{ stripeConfig.price / 100 }} {{ stripeConfig.currency }}</p>
+      <p class="cal-text-lg cal-font-medium cal-leading-[24px] cal-text-theme-700 dark:cal-text-theme-100">
+        {{ priceCurrency }}
+      </p>
     </div>
 
     <button
@@ -165,6 +167,7 @@ import { useConfig } from '@zaptime/core';
 import { useBillingAddress, useBookingForm } from '@zaptime/core';
 import TextInput from '../components/atomic/TextInput.vue';
 import CountrySelectInput from '../components/atomic/CountrySelectInput.vue';
+import { useLocalisedPriceCurrency } from '../composables/useLocalisedPriceCurrency';
 
 const showAllBillingDetails = ref(false);
 
@@ -172,6 +175,8 @@ const { stripeConfig } = useStripeConfig(inject('calendarId'));
 const { config } = useConfig(inject('calendarId'));
 const { billingAddress } = useBillingAddress(inject('calendarId'));
 const { collectFormValues } = useBookingForm(inject('calendarId'));
+
+const { priceCurrency } = useLocalisedPriceCurrency({ price: stripeConfig.value?.price || 0, currency: stripeConfig.value?.currency || '', calendarId: inject('calendarId') });
 
 // prefill billing address with user data provided in booking form
 watch(showAllBillingDetails, () => {
