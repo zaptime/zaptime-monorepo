@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.6.10
+
+### Patch Changes
+
+- Fix: change keys
+
 ## 3.6.9
 
 ### Patch Changes
