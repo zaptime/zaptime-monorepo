@@ -25,14 +25,14 @@
 <script setup lang="ts">
 import type { CustomField } from '@zaptime/core';
 import { useBookingForm } from '@zaptime/core';
-import { ref, watch } from 'vue';
+import { ref, watch, inject } from 'vue';
 
 type Props = CustomField;
 const props = defineProps<Props>();
 
 const value = ref<string>(String(props.value));
 
-const { setCustomFieldValue } = useBookingForm();
+const { setCustomFieldValue } = useBookingForm(inject('calendarId'));
 
 watch(value, (newValue) => {
   if (newValue === undefined) return;

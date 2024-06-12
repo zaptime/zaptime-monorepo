@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.6.11
+
+### Patch Changes
+
+- Fix: calendarId injection to booking form fields
+
 ## 3.6.10
 
 ### Patch Changes
