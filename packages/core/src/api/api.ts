@@ -1,6 +1,6 @@
 import type TimeSlot from '../types/TimeSlot';
 import type Status from '../types/Status';
-import type { TimeSlotResponse, AvailableTimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
+import type { AvailableTimeSlotResponse, ReservationResponse } from '../types/ApiResponses';
 import { Ok, Err, Result } from 'ts-results';
 import { InitData, Success, Errors, Location, CustomFieldCollected } from '../types/InitData';
 const defaultBaseUrl = 'https://api.zaptime.app/';
@@ -69,7 +69,7 @@ export interface IConfirmationOptions extends Omit<IOptions, 'email' | 'location
   status: Status;
 }
 
-export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
+export const book = async (options: IOptions): Promise<ReservationResponse> => {
   const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location, timezone } = options;
   try {
     const data = await fetch(getBookUrl(baseUrl), {
@@ -99,7 +99,21 @@ export const book = async (options: IOptions): Promise<TimeSlotResponse> => {
   }
 };
 
-export const reschedule = async ({ start, end, uuid, timezone, token, baseUrl = defaultBaseUrl }: { start: string; end: string; uuid: string; token: string; timezone: string; baseUrl?: string }): Promise<boolean> => {
+export const reschedule = async ({
+  start,
+  end,
+  uuid,
+  timezone,
+  token,
+  baseUrl = defaultBaseUrl,
+}: {
+  start: string;
+  end: string;
+  uuid: string;
+  token: string;
+  timezone: string;
+  baseUrl?: string;
+}): Promise<ReservationResponse> => {
   try {
     const data = await fetch(getRescheduleUrl(baseUrl, uuid), {
       method: 'PUT',
@@ -121,7 +135,7 @@ export const reschedule = async ({ start, end, uuid, timezone, token, baseUrl = 
   }
 };
 
-export const reserve = async (options: IOptions): Promise<PrepareReservationResponse> => {
+export const reserve = async (options: IOptions): Promise<ReservationResponse> => {
   const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location, timezone } = options;
 
   try {
@@ -152,7 +166,7 @@ export const reserve = async (options: IOptions): Promise<PrepareReservationResp
   }
 };
 
-export const confirm = async (options: IConfirmationOptions): Promise<boolean> => {
+export const confirm = async (options: IConfirmationOptions): Promise<ReservationResponse> => {
   const { baseUrl = defaultBaseUrl, status, token, firstName, lastName, customFields, phone } = options;
   try {
     const data = await fetch(getConfirmUrl(baseUrl, status.uuid), {

@@ -4,7 +4,7 @@ import useLocations from './useLocations';
 import useConfig from './useConfig';
 import { Success, Errors, Location } from '../types/InitData';
 import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi, fetchRemoteConfig, reschedule as rescheduleApi } from '../api/api';
-import { TimeSlotResponse, PrepareReservationResponse } from '../types/ApiResponses';
+import { ReservationResponse } from '../types/ApiResponses';
 import { Result } from 'ts-results';
 import useCurrentTimezone from './useCurrentTimezone';
 import { CustomFieldCollected } from '../types/InitData';
@@ -63,7 +63,7 @@ export type IConfirmationOptions = Omit<IBookingOptions, 'email' | 'location' | 
  * @see https://docs.zaptime.app/guide/vue-working-with-time-slots.html#book
  * @param options
  */
-export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> => {
+export const book = async (options: IBookingOptions): Promise<ReservationResponse> => {
   const { email, firstName, lastName, seats = 1, calendarId, phone, location, customFields } = options;
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
   const { config } = useConfig(calendarId);
@@ -105,7 +105,7 @@ export const book = async (options: IBookingOptions): Promise<TimeSlotResponse> 
  * @see https://docs.zaptime.app/guide/vue-working-with-time-slots.html#reserve
  * @param options
  */
-export const reserve = async (options: IBookingOptions): Promise<PrepareReservationResponse> => {
+export const reserve = async (options: IBookingOptions): Promise<ReservationResponse> => {
   const { email, firstName, lastName, seats = 1, calendarId, location, phone, customFields } = options;
 
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
@@ -144,7 +144,7 @@ export const reserve = async (options: IBookingOptions): Promise<PrepareReservat
  * @see https://docs.zaptime.app/guide/vue-working-with-time-slots.html#confirm
  * @param options
  */
-export const confirm = async (options?: IConfirmationOptions): Promise<boolean> => {
+export const confirm = async (options?: IConfirmationOptions): Promise<ReservationResponse> => {
   const { reservationStatus } = useReservationStatus(options?.calendarId);
   const { config } = useConfig(options?.calendarId);
 
@@ -160,7 +160,7 @@ export const confirm = async (options?: IConfirmationOptions): Promise<boolean> 
     });
   }
 
-  return false;
+  throw new Error('Confirming a time slot failed because time slot was not reserved!');
 };
 
 /**
@@ -186,7 +186,7 @@ export const cancel = async (calendarId?: string): Promise<boolean> => {
  * @see https://docs.zaptime.app/guide/vue-working-with-time-slots.html#cancel
  * @param calendarId
  */
-export const reschedule = async (calendarId?: string): Promise<boolean> => {
+export const reschedule = async (calendarId?: string): Promise<ReservationResponse> => {
   const { reservation } = useReservationReschedule(calendarId);
   const { config } = useConfig(calendarId);
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
@@ -203,7 +203,7 @@ export const reschedule = async (calendarId?: string): Promise<boolean> => {
     });
   }
 
-  return false;
+  throw new Error('Rescheduling a time slot failed because time slot was not selected!');
 };
 
 /**

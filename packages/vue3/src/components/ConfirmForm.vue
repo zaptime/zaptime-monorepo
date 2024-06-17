@@ -35,7 +35,7 @@
       </div>
 
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
-        <SecondaryButton @click="$emit('go-back')">
+        <SecondaryButton @click="emit('go-back')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>
         <PrimaryButton
@@ -88,7 +88,7 @@
       </h3>
 
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
-        <SecondaryButton @click="$emit('go-back')">
+        <SecondaryButton @click="emit('go-back')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>
         <PrimaryButton
@@ -111,8 +111,12 @@ import { getAnalytics } from '../analytics';
 import Payment from './Payment.vue';
 import FormBuilder from './BookingForm/FormBuilder.vue';
 import { useStripe, PaymentError } from '../composables/useStripe';
+import type { ReservationResponse } from '@zaptime/core';
 
-const emits = defineEmits(['booking-confirmed', 'go-back']);
+const emit = defineEmits<{
+  (e: 'booking-confirmed', reservation: ReservationResponse): void;
+  (e: 'go-back'): void;
+}>();
 
 const { selectedTimeSlot } = useSelectedTimeSlot(inject('calendarId'));
 const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters();
@@ -176,7 +180,13 @@ async function handleSubmittionWithPayment() {
 
     await handleStripePayment({ billingAddress: billingAddress.value, reservationUuid: res.data.uuid });
 
-    await confirm({ calendarId: calendarId });
+    const confirmRes = await confirm({ calendarId: calendarId });
+
+    if (!confirmRes.success) {
+      throw new Error('Failed to confirm');
+    }
+
+    return confirmRes;
   } catch (err) {
     if (err instanceof PaymentError) {
       console.error(err.message);
@@ -190,10 +200,12 @@ async function onSubmit() {
   disabled.value = true;
 
   try {
+    let res;
+
     if (stripeConfig.value) {
-      await handleSubmittionWithPayment();
+      res = await handleSubmittionWithPayment();
     } else {
-      const res = await book({
+      res = await book({
         seats: seats.value,
         calendarId,
         location: locations.value[0],
@@ -209,7 +221,7 @@ async function onSubmit() {
       timeSlot: selectedTimeSlot.value ? selectedTimeSlot.value.start : undefined,
     });
 
-    emits('booking-confirmed');
+    emit('booking-confirmed', res);
 
     disabled.value = false;
   } catch (err) {
@@ -227,8 +239,8 @@ async function onSubmit() {
 async function submitReschedule() {
   disabled.value = true;
 
-  await reschedule(calendarId);
-  emits('booking-confirmed');
+  const res = await reschedule(calendarId);
+  emit('booking-confirmed', res);
 
   disabled.value = false;
 }

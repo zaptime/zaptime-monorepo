@@ -1,5 +1,12 @@
 # @zaptime/core
 
+## 2.7.0
+
+### Minor Changes
+
+- Feat: On loaded emit
+  Feat: Return oragnizer data when event is submitted
+
 ## 2.6.2
 
 ### Patch Changes

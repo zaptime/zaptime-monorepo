@@ -94,6 +94,8 @@ import TimeSelection from './DefaultCalendar/TimeSelection.vue';
 import DaysGrid from './DefaultCalendar/DaysGrid.vue';
 import SuccessMessage from './DefaultCalendar/SuccessMessage.vue';
 
+import type { ReservationResponse } from '@zaptime/core';
+
 import useCalendarViewState from '../composables/useCalendarViewState';
 
 import { useConfig } from '@zaptime/core';
@@ -112,7 +114,9 @@ defineProps({
   },
 });
 
-const emit = defineEmits(['booking-confirmed']);
+const emit = defineEmits<{
+  (e: 'booking-confirmed', reservation: ReservationResponse): void;
+}>();
 
 const { view, calendarView, setView } = useCalendarViewState(inject('calendarId'));
 
@@ -121,9 +125,9 @@ const { config } = useConfig(inject('calendarId'));
 const color = inject<string>('color');
 const color2 = inject<string>('color2');
 
-function onBookingConfirmed() {
+function onBookingConfirmed(reservationData: ReservationResponse) {
   setView('success');
-  emit('booking-confirmed');
+  emit('booking-confirmed', reservationData);
 }
 </script>
 

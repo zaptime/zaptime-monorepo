@@ -10,7 +10,7 @@
       <Calendar
         v-if="isEnabled"
         :classes="$attrs['class'] ? String($attrs['class']) : ''"
-        @booking-confirmed="emit('booking-confirmed')"
+        @booking-confirmed="(reservationConfirmedData) => emit('booking-confirmed', reservationConfirmedData)"
       ></Calendar>
       <div v-if="!isEnabled && initLoaded">
         <CalendarDisabled />
@@ -29,6 +29,7 @@ import useAlphaColors from './composables/useAlphaColors';
 import { useInitialization } from './composables/useInitialization';
 import CalendarDisabled from './components/CalendarDisabled.vue';
 import { mergeConfigs } from './utils/mergeConfigs';
+import type { TimeSlot, ReservationResponse } from '@zaptime/core';
 
 const props = withDefaults(
   defineProps<{
@@ -41,7 +42,11 @@ const props = withDefaults(
   },
 );
 
-const emit = defineEmits(['time-slot-changed', 'booking-confirmed']);
+const emit = defineEmits<{
+  (e: 'booking-confirmed', reservation: ReservationResponse): void;
+  (e: 'time-slot-changed', timeSlot?: TimeSlot): void;
+  (e: 'calendar-loaded'): void;
+}>();
 
 provide('calendarId', props.calendarId);
 
@@ -80,6 +85,7 @@ const borderRadius = computed(() => {
 
 onMounted(async () => {
   await init();
+  emit('calendar-loaded');
 });
 </script>
 

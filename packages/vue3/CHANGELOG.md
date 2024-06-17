@@ -1,5 +1,17 @@
 # @zaptime/vue3
 
+## 3.7.0
+
+### Minor Changes
+
+- Feat: On loaded emit
+  Feat: Return oragnizer data when event is submitted
+
+### Patch Changes
+
+- Updated dependencies
+  - @zaptime/core@2.7.0
+
 ## 3.6.11
 
 ### Patch Changes
