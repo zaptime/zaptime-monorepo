@@ -18,6 +18,7 @@ declare global {
       type?: 'single' | 'group';
       config: ZaptimeConfig | EventTypeGroup;
       onTimeSlotChanged(timeSlot: TimeSlot): void;
+      position: 'left' | 'center' | 'right';
     };
 
     ZaptimeProxy: {

@@ -10,7 +10,11 @@ const emit = defineEmits<{
   (event: 'time-slot-changed', timeSlot: TimeSlot): void;
 }>();
 
-const onTimeSlotChanged = (timeSlot: TimeSlot) => {
+const onTimeSlotChanged = (timeSlot: TimeSlot | undefined) => {
+  if (timeSlot === undefined) {
+    return;
+  }
+
   emit('time-slot-changed', timeSlot);
 };
 </script>

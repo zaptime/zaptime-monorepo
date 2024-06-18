@@ -5,11 +5,9 @@
 <script setup lang="ts">
 import App from '../src/App.vue';
 
-// @ts-expect-error Faking xprops for the example
 window.xprops = {
-  type: 'group',
   config: {
-    token: 'mVlRIHzRWmI0ZYHDETlfDQsnRV9X4hZF',
+    token: 'O5p2WmXgHC8kFgpEEayDSOvOABrS7iCw',
   },
 };
 </script>

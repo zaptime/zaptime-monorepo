@@ -25,6 +25,13 @@ var Zaptime = zoid.create({
       type: "function",
       required: false,
     },
+    position: {
+      type: "string",
+      required: false,
+      default: function() {
+        return "center";
+      }
+    }
   },
 });
 

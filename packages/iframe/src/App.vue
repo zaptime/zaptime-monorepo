@@ -4,12 +4,16 @@ import EventType from './components/EventType.vue';
 import EventTypeGroup from './components/EventTypesGroup.vue';
 import type { EventTypeGroup as IEventTypeGroup } from './components/EventTypesGroup.vue';
 import { fetchRemoteGroupConfig } from './buildConfigFromRequest';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 const type = window.xprops.type ? window.xprops.type : 'single';
+const position = window.xprops.position ? window.xprops.position : 'center';
 const config = ref(window.xprops.config);
 const loaded = ref(false);
 
-function onTimeSlotChanged(timeSlot: TimeSlot) {
+function onTimeSlotChanged(timeSlot: TimeSlot | undefined) {
+  if (timeSlot === undefined) {
+    return;
+  }
   if (window.xprops.onTimeSlotChanged) {
     window.xprops.onTimeSlotChanged(timeSlot);
   }
@@ -26,6 +30,16 @@ async function loadConfig() {
   loaded.value = true;
 }
 
+const positionCssClass = computed(() => {
+  if (position === 'left') {
+    return 'justify-start';
+  }
+  if (position === 'right') {
+    return 'justify-end';
+  }
+  return 'justify-center';
+});
+
 onMounted(async () => {
   await loadConfig();
 });
@@ -34,7 +48,8 @@ onMounted(async () => {
 <template>
   <div
     id="iframe-app"
-    :class="[config.theme?.mode === 'dark' ? 'dark' : '']"
+    :class="[config.theme?.mode === 'dark' ? 'dark' : '', positionCssClass]"
+    class="flex w-full"
   >
     <div v-if="config && loaded">
       <div v-if="isSingleConfig(config, type)">

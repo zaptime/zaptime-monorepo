@@ -10,6 +10,7 @@ declare global {
     xprops: {
       type?: 'single' | 'group';
       config: ZaptimeConfig | EventTypeGroup;
+      position: 'left' | 'center' | 'right';
     };
   }
 }
