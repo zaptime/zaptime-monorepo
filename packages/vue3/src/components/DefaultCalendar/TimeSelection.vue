@@ -42,7 +42,10 @@
               </p>
             </div>
 
-            <div class="cal-mt-2 cal-h-[320px] cal-overflow-y-auto cal-px-1">
+            <div
+              class="cal-mt-2 cal-overflow-y-auto cal-px-1"
+              :class="[config.locale?.hideTimePreferences ? 'cal-h-[375px]' : 'cal-h-[345px]']"
+            >
               <div
                 v-for="(timeSlot, i) in state.timeSlots"
                 :key="i"
