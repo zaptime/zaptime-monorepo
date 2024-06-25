@@ -35,7 +35,11 @@
       </div>
 
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
-        <SecondaryButton @click="emit('go-back')">
+        <SecondaryButton
+          type="button"
+          :disabled="disabled"
+          @click="emit('go-back')"
+        >
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>
         <PrimaryButton
@@ -88,7 +92,11 @@
       </h3>
 
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
-        <SecondaryButton @click="emit('go-back')">
+        <SecondaryButton
+          :disabled="disabled"
+          type="button"
+          @click="emit('go-back')"
+        >
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>
         <PrimaryButton
