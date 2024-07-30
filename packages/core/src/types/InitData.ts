@@ -32,6 +32,7 @@ export type InitData = {
   stripeConfig?: StripeConfig;
   customFields?: CustomField[];
   reservation?: Reservation;
+  isSubscribed: boolean;
 };
 
 export type StripeConfig = {

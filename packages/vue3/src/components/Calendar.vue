@@ -22,7 +22,7 @@
             <Header />
           </div>
 
-          <div class="cal-mb-14">
+          <div class="cal-mb-5">
             <DaysGrid />
           </div>
         </div>
@@ -34,6 +34,8 @@
         >
           <TimeSelection />
         </div>
+
+        <PoweredByZaptime />
       </div>
 
       <div
@@ -52,10 +54,12 @@
             <Header />
           </div>
 
-          <div class="cal-mb-14 cal-w-full">
+          <div class="cal-mb-8 cal-w-full">
             <DaysGrid />
           </div>
+          <PoweredByZaptime />
         </div>
+
         <div
           class="cal-rounded-r-xl cal-border-l cal-border-theme-200 dark:cal-border-theme-700"
           :style="{ backgroundColor: color2 }"
@@ -99,6 +103,7 @@ import type { ReservationResponse } from '@zaptime/core';
 import useCalendarViewState from '../composables/useCalendarViewState';
 
 import { useConfig } from '@zaptime/core';
+import PoweredByZaptime from './atomic/PoweredByZaptime.vue';
 
 defineProps({
   bgClass: {
