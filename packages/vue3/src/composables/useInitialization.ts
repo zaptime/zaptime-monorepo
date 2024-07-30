@@ -73,7 +73,8 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
         analytics?.track('zaptime:calendar_opened');
         setConfig(mergedConfig);
 
-        await initCalendar();
+        // Because calendar is watching for config changes we do not need to initCalendar, days are fetched when config is set
+        // await initCalendar();
 
         // Select day if rescheduling
         if (initData.val.reservation !== undefined) {
