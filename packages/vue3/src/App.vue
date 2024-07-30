@@ -7,11 +7,39 @@
       class=""
       :class="[config.theme?.mode === 'light' ? '' : 'cal-dark']"
     >
-      <Calendar
-        v-if="isEnabled"
-        :classes="$attrs['class'] ? String($attrs['class']) : ''"
-        @booking-confirmed="(reservationConfirmedData) => emit('booking-confirmed', reservationConfirmedData)"
-      ></Calendar>
+      <template v-if="isEnabled">
+        <Calendar
+          v-show="loaded"
+          :classes="$attrs['class'] ? String($attrs['class']) : ''"
+          @booking-confirmed="(reservationConfirmedData) => emit('booking-confirmed', reservationConfirmedData)"
+        ></Calendar>
+      </template>
+      <div
+        v-if="!loaded"
+        class="cal-flex cal-min-h-[360px] cal-w-[820px] cal-items-center cal-justify-center"
+      >
+        <svg
+          class="-cal-ml-1 cal-mr-3 cal-h-10 cal-w-10 cal-animate-spin cal-text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="cal-opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="cal-opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+      </div>
+
       <div v-if="!isEnabled && initLoaded">
         <CalendarDisabled />
       </div>
@@ -20,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { provide, watch, computed, onMounted } from 'vue';
+import { provide, watch, computed, onMounted, ref } from 'vue';
 
 import Calendar from './components/Calendar.vue';
 import { useConfig, ZaptimeConfig, useSelectedTimeSlot } from '@zaptime/core';
@@ -30,6 +58,8 @@ import { useInitialization } from './composables/useInitialization';
 import CalendarDisabled from './components/CalendarDisabled.vue';
 import { mergeConfigs } from './utils/mergeConfigs';
 import type { TimeSlot, ReservationResponse } from '@zaptime/core';
+
+const loaded = ref(false);
 
 const props = withDefaults(
   defineProps<{
@@ -85,6 +115,7 @@ const borderRadius = computed(() => {
 
 onMounted(async () => {
   await init();
+  loaded.value = true;
   emit('calendar-loaded');
 });
 </script>
