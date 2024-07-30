@@ -13,7 +13,7 @@
   >
     <div v-if="!state.loading">
       <div v-if="state.timeSlots && state.timeSlots.length > 0 && !state.loading">
-        <div class="cal-pt-[54px]">
+        <div :class="[config.compact ? '' : 'cal-pt-[54px]']">
           <p class="cal-text-[32px] cal-font-semibold cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-300">
             {{ getFormattedDay(state.timeSlots[0].start) }},
             {{ getFormattedDayInMonth(state.timeSlots[0].start) }}

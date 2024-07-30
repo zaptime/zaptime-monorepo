@@ -28,7 +28,7 @@
           class="cal-flex cal-h-full cal-flex-col cal-justify-between"
         >
           <div>
-            <div :class="[(config.locale?.texts?.introduction || config.profileImage) && !reservation ? 'cal-pt-[54px]' : 'cal-pt-4']">
+            <div :class="[(config.locale?.texts?.introduction || config.profileImage) && !reservation && !config.compact ? 'cal-pt-[54px]' : 'cal-pt-0']">
               <p class="cal-text-2xl cal-font-semibold cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-300">
                 {{ getFormattedDayInMonth(state.timeSlots[0].start) }}
               </p>
