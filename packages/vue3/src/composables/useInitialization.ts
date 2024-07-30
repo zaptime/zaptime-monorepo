@@ -4,6 +4,7 @@ import { ref, nextTick } from 'vue';
 import { getAnalytics, buildConfig } from '../analytics';
 import { mergeConfigs } from '../utils/mergeConfigs';
 import { isSameDay } from 'date-fns';
+import { useIsSubscribed } from './useIsSubscribed';
 
 export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
   const isEnabled = ref(false);
@@ -16,6 +17,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
   const { setBookingForm } = useBookingForm(calendarId);
   const { setSelectedReservation } = useReservationReschedule(calendarId);
   const { init: initCalendar, dayClicked, state } = useCalendar(calendarId);
+  const { setIsSubscribed } = useIsSubscribed();
   /**
    * Setups the calendar and configuration based on the provided token and configuration.
    * If the token is not provided, an error will be logged.
@@ -54,6 +56,10 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
 
         if (initData.val.customFields) {
           setBookingForm(initData.val.customFields);
+        }
+
+        if (initData.val.isSubscribed === false) {
+          setIsSubscribed(false);
         }
 
         isEnabled.value = true;
