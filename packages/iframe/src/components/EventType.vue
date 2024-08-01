@@ -5,7 +5,7 @@ import type { TimeSlot } from '@zaptime/core';
 
 defineProps<{
   config: ZaptimeConfig;
-  calendarId: string;
+  calendarId?: string;
 }>();
 
 const emit = defineEmits<{
