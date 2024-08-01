@@ -21,10 +21,10 @@
 
       <div class="mt-8 grid sm:grid-cols-2 gap-4">
         <EventTypeCard
-          v-for="eventType in config.event_types"
+          v-for="(eventType, i) in config.event_types"
           :key="eventType.token"
           :config="eventType"
-          @card-clicked="selectEventTypeToken"
+          @card-clicked="(token) => selectEventTypeToken(token, i)"
         />
       </div>
     </div>
@@ -54,7 +54,10 @@
           ></path>
         </svg>
       </button>
-      <EventType :config="{ token: selectedEventTypeToken }" />
+      <EventType
+        :calendar-id="index.toString()"
+        :config="{ token: selectedEventTypeToken }"
+      />
     </div>
   </div>
 </template>
@@ -90,8 +93,10 @@ defineProps<{
 }>();
 
 const selectedEventTypeToken = ref();
+const index = ref(0);
 
-function selectEventTypeToken(token: string) {
+function selectEventTypeToken(token: string, idx: number) {
+  index.value = idx;
   selectedEventTypeToken.value = token;
 }
 
