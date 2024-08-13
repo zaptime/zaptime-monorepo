@@ -78,6 +78,10 @@ export default (calendarId?: string) => {
   const getDays = async (): Promise<void> => {
     setState('loading', true);
 
+    // Clear timeSlots and selected day
+    setState('timeSlots', []);
+    setState('selectedDay', null);
+
     if (state.value.dfnsConfig !== undefined && state.value.dfnsConfig !== null) {
       const { days, hasAnyTimeSlot } = await getDaysExternal(date.value, state.value.dfnsConfig, config.value, timezone.value);
 

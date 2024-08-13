@@ -8,6 +8,8 @@
 
       <button @click="confirmDemocall">Confirm reservation</button>
 
+      <button @click="refresh">refresh</button>
+
       <ZaptimeCalendar
         :config="config"
         @booking-confirmed="(data) => bookingConfirmed(data)"
@@ -27,8 +29,11 @@
 
 <script setup lang="ts">
 import { default as ZaptimeCalendar } from '../src/App.vue';
-import { ZaptimeConfig, reserve, confirm, ReservationResponse } from '@zaptime/core';
+import { ZaptimeConfig, reserve, confirm, ReservationResponse, useCalendar } from '@zaptime/core';
 import { ref } from 'vue';
+
+const { getDays } = useCalendar();
+
 function confirmDemocall() {
   confirm();
 }
@@ -49,6 +54,10 @@ function reserveDemocall() {
 //     accentDark: '#ffcc31',
 //   },
 // };
+
+function refresh() {
+  getDays();
+}
 
 function bookingConfirmed(reservation: ReservationResponse) {
   console.log('Booking confirmed', reservation.data.userEmail);
