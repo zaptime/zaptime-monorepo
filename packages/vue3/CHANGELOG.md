@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.7.1
+
+### Patch Changes
+
+- Performance optimizations, proper refresh when getting days
+- Updated dependencies
+  - @zaptime/core@2.7.1
+
 ## 3.7.0
 
 ### Minor Changes

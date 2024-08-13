@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.7.1
+
+### Patch Changes
+
+- Performance optimizations, proper refresh when getting days
+
 ## 2.7.0
 
 ### Minor Changes

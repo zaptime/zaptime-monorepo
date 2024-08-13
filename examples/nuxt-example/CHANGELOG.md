@@ -5,6 +5,14 @@
 ### Patch Changes
 
 - Updated dependencies
+  - @zaptime/core@2.7.1
+  - @zaptime/vue3@3.7.1
+
+## null
+
+### Patch Changes
+
+- Updated dependencies
   - @zaptime/core@2.7.0
   - @zaptime/vue3@3.7.0
 
