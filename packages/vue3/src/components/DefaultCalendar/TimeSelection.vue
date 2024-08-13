@@ -181,4 +181,3 @@ const goPickingDates = () => {
   setCalendarView('pickingDate');
 };
 </script>
-../../analytics/analytics
