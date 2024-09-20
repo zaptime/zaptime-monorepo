@@ -4,7 +4,7 @@
     class="cal-flex cal-px-4"
   >
     <div style="padding-top: 20px; padding-left: 20px">
-      <button @click="reserveDemocall">Create reservation</button>
+      <button @click="reserveDemocall">Reserve reservation</button>
 
       <button @click="confirmDemocall">Confirm reservation</button>
 

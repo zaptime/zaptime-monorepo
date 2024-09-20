@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.8.0
+
+### Minor Changes
+
+- Refresh reservation automatically in a 15 minutes interval.
+
 ## 2.7.1
 
 ### Patch Changes

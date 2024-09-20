@@ -207,6 +207,27 @@ export const cancel = async (token: string, status: Status, baseUrl = defaultBas
   }
 };
 
+export const refreshReserve = async (token: string, status: Status, baseUrl = defaultBaseUrl): Promise<void> => {
+  try {
+    const data = await fetch(getRefreshReserveUrl(baseUrl, status.uuid), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+    }).then((response) => response.json());
+
+    if (data.status !== 200) {
+      throw new Error('Refreshing reservation slot failed!');
+    }
+
+    return data.success;
+  } catch (err) {
+    throw new Error('Refreshing reservation slot failed!');
+  }
+};
+
 //token=token&from=from&until=until&group_by_day=group_by_day
 export const getAvailableTimeSlots = async (token: string, from: string, until: string, baseUrl = defaultBaseUrl): Promise<TimeSlot[]> => {
   try {
@@ -295,4 +316,8 @@ function getCancelUrl(baseUrl: string, uuid: string) {
 
 function getAvailableTimeSlotsUrl(baseUrl: string) {
   return baseUrl + 'time-slots';
+}
+
+function getRefreshReserveUrl(baseUrl: string, uuid: string) {
+  return baseUrl + 'reservations/' + uuid + '/refresh';
 }

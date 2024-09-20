@@ -1,5 +1,16 @@
 # @zaptime/vue3
 
+## 3.8.0
+
+### Minor Changes
+
+- Refresh reservation automatically in a 15 minutes interval.
+
+### Patch Changes
+
+- Updated dependencies
+  - @zaptime/core@2.8.0
+
 ## 3.7.1
 
 ### Patch Changes

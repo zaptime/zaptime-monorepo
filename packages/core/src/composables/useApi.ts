@@ -3,12 +3,14 @@ import useSelectedTimeSlot from './useSelectedTimeSlot';
 import useLocations from './useLocations';
 import useConfig from './useConfig';
 import { Success, Errors, Location } from '../types/InitData';
-import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi, fetchRemoteConfig, reschedule as rescheduleApi } from '../api/api';
+import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi, fetchRemoteConfig, reschedule as rescheduleApi, refreshReserve as refreshReserveApi } from '../api/api';
 import { ReservationResponse } from '../types/ApiResponses';
 import { Result } from 'ts-results';
 import useCurrentTimezone from './useCurrentTimezone';
 import { CustomFieldCollected } from '../types/InitData';
 import useReservationReschedule from './useReservationReschedule';
+
+let reservationIntervalId: NodeJS.Timeout | null = null;
 
 export interface IBookingOptions {
   /**
@@ -100,42 +102,13 @@ export const book = async (options: IBookingOptions): Promise<ReservationRespons
 };
 
 /**
- * Reserve an timeslot for the attendee
+ * Reserve an timeslot for the attendee, automatically refreshes the reservation every 15 minutes until active session ends
  *
  * @see https://docs.zaptime.app/guide/vue-working-with-time-slots.html#reserve
  * @param options
  */
 export const reserve = async (options: IBookingOptions): Promise<ReservationResponse> => {
-  const { email, firstName, lastName, seats = 1, calendarId, location, phone, customFields } = options;
-
-  const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
-
-  const { config } = useConfig(calendarId);
-  const { setReservationStatus } = useReservationStatus(calendarId);
-  const { timezone } = useCurrentTimezone();
-  const { locations: internalLocations } = useLocations(calendarId);
-
-  if (selectedTimeSlot.value !== undefined && config.value !== undefined) {
-    const data = await reserveApi({
-      email: email,
-      token: config.value.token,
-      timeSlot: selectedTimeSlot.value,
-      firstName: firstName,
-      lastName: lastName,
-      seats: seats,
-      baseUrl: config.value.apiBaseUrl,
-      phone: phone,
-      location: location ?? internalLocations.value[0],
-      timezone: timezone.value,
-      customFields: customFields,
-    });
-
-    setReservationStatus(data.data);
-
-    return data;
-  }
-
-  throw new Error('Booking a time slot failed because time slot was not selected!');
+  return await startReservationInterval(options);
 };
 
 /**
@@ -159,6 +132,8 @@ export const confirm = async (options?: IConfirmationOptions): Promise<Reservati
       customFields: options?.customFields,
     });
   }
+
+  stopReservationInterval();
 
   throw new Error('Confirming a time slot failed because time slot was not reserved!');
 };
@@ -215,4 +190,93 @@ export const reschedule = async (calendarId?: string): Promise<ReservationRespon
 
 export const fetchRemoteConfiguration = async (token: string, apiBaseUrl?: string, reservationUuid?: string): Promise<Result<Success, Errors>> => {
   return await fetchRemoteConfig(token, apiBaseUrl, reservationUuid);
+};
+
+/**
+ * Reserve an timeslot for the attendee
+ *
+ * @see https://docs.zaptime.app/guide/vue-working-with-time-slots.html#reserve
+ * @param options
+ */
+async function initReservation(options: IBookingOptions) {
+  const { email, firstName, lastName, seats = 1, calendarId, location, phone, customFields } = options;
+
+  const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
+
+  const { config } = useConfig(calendarId);
+  const { setReservationStatus } = useReservationStatus(calendarId);
+  const { timezone } = useCurrentTimezone();
+  const { locations: internalLocations } = useLocations(calendarId);
+
+  if (selectedTimeSlot.value !== undefined && config.value !== undefined) {
+    const data = await reserveApi({
+      email: email,
+      token: config.value.token,
+      timeSlot: selectedTimeSlot.value,
+      firstName: firstName,
+      lastName: lastName,
+      seats: seats,
+      baseUrl: config.value.apiBaseUrl,
+      phone: phone,
+      location: location ?? internalLocations.value[0],
+      timezone: timezone.value,
+      customFields: customFields,
+    });
+
+    setReservationStatus(data.data);
+
+    return data;
+  }
+
+  throw new Error('Booking a time slot failed because time slot was not selected!');
+}
+
+/**
+ * Refresh previously reserved time slot
+ *
+ * @see https://zaptime.docs.apiary.io/#reference/0/reservations-collection/refresh-reservation
+ * @param options
+ */
+async function refreshReservation(options: IBookingOptions) {
+  const { reservationStatus } = useReservationStatus(options.calendarId);
+  const { config } = useConfig(options.calendarId);
+
+  await refreshReserveApi(config.value.token, reservationStatus.value, config.value.apiBaseUrl);
+}
+
+// Function to start reserving every 15 minutes
+const startReservationInterval = (options: IBookingOptions) => {
+  // Clear any existing interval to avoid multiple intervals
+  if (reservationIntervalId) {
+    clearInterval(reservationIntervalId);
+  }
+
+  let res;
+
+  try {
+    res = initReservation(options);
+  } catch (err) {
+    throw new Error('Initial reservation failed');
+  }
+
+  // Immediately reserve once, then continue every 15 minutes
+
+  // Start the interval to keep reserving every 15 minutes
+  reservationIntervalId = setInterval(() => {
+    try {
+      res = refreshReservation(options);
+    } catch (err) {
+      throw new Error('Repeated reservation failed');
+    }
+  }, 15 * 60 * 1000);
+
+  return res;
+};
+
+// Function to stop the interval when needed
+const stopReservationInterval = () => {
+  if (reservationIntervalId) {
+    clearInterval(reservationIntervalId);
+    reservationIntervalId = null;
+  }
 };
