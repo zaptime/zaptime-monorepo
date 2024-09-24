@@ -10,7 +10,7 @@ export default function useReservationStatus(calendarId?: string) {
       _reservationStatusState.value = status;
     } else {
       _reservationStatusState = {
-        calendarId: ref(status),
+        [calendarId]: ref(status),
       };
     }
   };
@@ -20,7 +20,7 @@ export default function useReservationStatus(calendarId?: string) {
       return _reservationStatusState.value as Status;
     }
 
-    return _reservationStatusState[calendarId as keyof ReservationStatus] as Status;
+    return (_reservationStatusState[calendarId as keyof ReservationStatus] as Ref<Status>).value;
   });
 
   return {

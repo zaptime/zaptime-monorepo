@@ -12,6 +12,7 @@
 
       <ZaptimeCalendar
         :config="config"
+        :calendar-id="calendarId"
         @booking-confirmed="(data) => bookingConfirmed(data)"
       ></ZaptimeCalendar>
     </div>
@@ -33,9 +34,11 @@ import { ZaptimeConfig, reserve, confirm, ReservationResponse, useCalendar } fro
 import { ref } from 'vue';
 
 const { getDays } = useCalendar();
-
+const calendarId = 'this-is-my-calendar-id';
 function confirmDemocall() {
-  confirm();
+  confirm({
+    calendarId,
+  });
 }
 
 function reserveDemocall() {
@@ -43,6 +46,7 @@ function reserveDemocall() {
     firstName: 'John',
     lastName: 'Doe',
     email: 'john@doe.test',
+    calendarId: calendarId,
   });
 }
 
@@ -71,7 +75,7 @@ const config = ref<ZaptimeConfig>({
 
   // compact: false,
 
-  // apiBaseUrl: 'https://api.zaptime.test/',
+  apiBaseUrl: 'https://api.zaptime.test/',
 
   // hideLocation: true,
   // profileImage: '',

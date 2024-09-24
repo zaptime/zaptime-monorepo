@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.8.1
+
+### Patch Changes
+
+- Fix: handle reservation and confirmation when calendarId is used properly.
+- Updated dependencies
+  - @zaptime/core@2.8.1
+
 ## 3.8.0
 
 ### Minor Changes

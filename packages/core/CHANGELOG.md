@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.8.1
+
+### Patch Changes
+
+- Fix: handle reservation and confirmation when calendarId is used properly.
+
 ## 2.8.0
 
 ### Minor Changes
