@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.8.2
+
+### Patch Changes
+
+- fix: billing address when calendarId is set and fix confirm response shape
+
 ## 2.8.1
 
 ### Patch Changes

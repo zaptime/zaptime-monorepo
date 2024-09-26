@@ -12,18 +12,20 @@ export type BillingAddress = {
   vatId: string;
 };
 
+const defaultBillingAddress: BillingAddress = {
+  name: '',
+  email: '',
+  company: '',
+  address: '',
+  city: '',
+  postalCode: '',
+  country: '',
+  crn: '',
+  vatId: '',
+};
+
 const state = ref<Record<string, BillingAddress>>({
-  __DEFAULT__: {
-    name: '',
-    email: '',
-    company: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: '',
-    crn: '',
-    vatId: '',
-  },
+  __DEFAULT__: defaultBillingAddress,
 });
 
 export default function useBillingAddress(calendarId?: string) {
@@ -32,6 +34,7 @@ export default function useBillingAddress(calendarId?: string) {
       state.value.__DEFAULT__ = billingAddress;
     } else {
       state.value[calendarId] = billingAddress;
+      console.log(state.value[calendarId]);
     }
   };
 
@@ -40,6 +43,9 @@ export default function useBillingAddress(calendarId?: string) {
       return state.value.__DEFAULT__;
     }
 
+    if (state.value[calendarId] === undefined) {
+      state.value[calendarId] = defaultBillingAddress;
+    }
     return state.value[calendarId];
   });
 

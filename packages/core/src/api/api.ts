@@ -184,7 +184,7 @@ export const confirm = async (options: IConfirmationOptions): Promise<Reservatio
       }),
     }).then((response) => response.json());
 
-    return data.success;
+    return data;
   } catch (err) {
     throw new Error('Time slot confirmation failed!');
   }
