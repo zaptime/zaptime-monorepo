@@ -14,8 +14,6 @@ import useSelectedTimeSlot from './useSelectedTimeSlot';
 import useConfig from '../composables/useConfig';
 import useCurrentTimezone from './useCurrentTimezone';
 
-const date = ref(new Date());
-
 type CalendarStates = Record<string, CalendarState>;
 
 const initCalendarState: CalendarState = {
@@ -28,6 +26,7 @@ const initCalendarState: CalendarState = {
   headers: [],
   dfnsConfig: undefined,
   attendeeState: undefined,
+  initLoaded: false,
 };
 
 const _state = reactive<CalendarStates>({
@@ -67,6 +66,14 @@ export default (calendarId?: string) => {
     }
   };
 
+  const clearState = () => {
+    if (calendarId === undefined) {
+      _state['__DEFAULT__'] = { ...initCalendarState };
+    } else {
+      _state[calendarId] = { ...initCalendarState };
+    }
+  };
+
   function getFirstAvailableDayWithTimeSlot(days: Day[]): Day | undefined {
     for (const day of days) {
       if (day.timeSlots !== undefined && day.timeSlots.length > 0 && !day.isPast) {
@@ -83,7 +90,7 @@ export default (calendarId?: string) => {
     setState('selectedDay', null);
 
     if (state.value.dfnsConfig !== undefined && state.value.dfnsConfig !== null) {
-      const { days, hasAnyTimeSlot } = await getDaysExternal(date.value, state.value.dfnsConfig, config.value, timezone.value);
+      const { days, hasAnyTimeSlot } = await getDaysExternal(state.value.date, state.value.dfnsConfig, config.value, timezone.value);
 
       if (hasAnyTimeSlot) {
         const firstAvailableDayWithTimeSlot = getFirstAvailableDayWithTimeSlot(days);
@@ -135,7 +142,7 @@ export default (calendarId?: string) => {
 
     setState('timeSlots', []);
     setState('loading', true);
-    date.value = addMonths(date.value, 1);
+    setState('date', addMonths(state.value.date, 1));
 
     await getDays();
     setState('loading', false);
@@ -148,7 +155,7 @@ export default (calendarId?: string) => {
 
     setState('timeSlots', []);
     setState('loading', true);
-    date.value = addMonths(date.value, -1);
+    setState('date', addMonths(state.value.date, -1));
     await getDays();
     setState('loading', false);
   };
@@ -156,7 +163,7 @@ export default (calendarId?: string) => {
   const prevDisabled = computed(() => {
     const now = new Date();
 
-    const newDate = addMonths(date.value, -1);
+    const newDate = addMonths(state.value.date, -1);
     const distance = differenceInCalendarMonths(now, newDate);
 
     if (isPast(newDate) && config.value.min !== undefined) {
@@ -171,7 +178,7 @@ export default (calendarId?: string) => {
   const nextDisabled = computed(() => {
     const now = new Date();
 
-    const newDate = addMonths(date.value, 1);
+    const newDate = addMonths(state.value.date, 1);
     const distance = differenceInCalendarMonths(newDate, now);
 
     if (isFuture(newDate) && config.value.max !== undefined) {
@@ -184,19 +191,21 @@ export default (calendarId?: string) => {
   });
 
   const currentYear = computed(() => {
-    return format(date.value, 'y');
+    return format(state.value.date, 'y');
   });
 
   const monthName = computed(() => {
-    return format(date.value, 'LLLL', {
+    return format(state.value.date, 'LLLL', {
       locale: state.value.dfnsConfig?.locale,
     });
   });
 
   watch([() => config.value.locale?.preset, () => config.value.closestBookableDay, () => config.value.locale?.startDayOfWeek], async () => {
-    await setLocales();
-    //refetch days with new given locales
-    await getDays();
+    if (state.value.initLoaded) {
+      await setLocales();
+      //refetch days with new given locales
+      await getDays();
+    }
   });
 
   const setLocales = async () => {
@@ -207,9 +216,11 @@ export default (calendarId?: string) => {
   };
 
   const init = async () => {
+    clearState();
     if (state.value.days.length === 0) {
       await setLocales();
       await getDays();
+      setState('initLoaded', true);
     }
   };
 

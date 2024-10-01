@@ -13,4 +13,5 @@ export default interface CalendarState {
   headers: string[];
   dfnsConfig?: DfnsConfig;
   attendeeState?: Status;
+  initLoaded: boolean;
 }

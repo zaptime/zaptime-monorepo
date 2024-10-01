@@ -1,48 +1,14 @@
 <template>
-  <ZaptimeCalendar :config="config"></ZaptimeCalendar>
-
-  <form @submit.prevent="onSubmit">
-    <input
-      v-model="form.company"
-      type="text"
-      name="name"
-      placeholder="Company"
-      required
-    />
-    <input
-      v-model="form.email"
-      type="email"
-      name="email"
-      placeholder="Email"
-      required
-    />
-    <input
-      v-model="form.name"
-      type="text"
-      name="name"
-      placeholder="Name"
-      required
-    />
-    <input
-      v-model="form.phone"
-      type="tel"
-      name="phone"
-      placeholder="Phone"
-      required
-    />
-
-    <button type="submit">Submit</button>
-  </form>
-
-  <form @submit.prevent="onConfirm">
-    <button type="submit">confirm</button>
-  </form>
+  <NuxtPage />
 </template>
 
 <script lang="ts" setup>
 import { reactive } from 'vue';
 import { ZaptimeCalendar, reserve, confirm, book } from '@zaptime/vue3';
 import type { ZaptimeConfig } from '@zaptime/vue3';
+
+const calendarId1 = 'this-is-my-calendar-id';
+const calendarId2 = 'this-is-my-calendar-id-2';
 
 const config: ZaptimeConfig = {
   token: 'bINIbfBAOI8YOe5wYfJcwbx58l1Clapt',
@@ -56,6 +22,11 @@ const config: ZaptimeConfig = {
   },
 
   hideLocation: true,
+};
+
+const config2: ZaptimeConfig = {
+  token: 'mjkzfnQrQzkFSNICYUkbhi9F8trZGKVe',
+  apiBaseUrl: 'https://api.zaptime.test/',
 };
 
 const form = reactive({

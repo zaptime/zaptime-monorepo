@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.8.3
+
+### Patch Changes
+
+- Fix: multiple calendar date overlap and inability to get days in multiple calendarId scenario
+
 ## 2.8.2
 
 ### Patch Changes
