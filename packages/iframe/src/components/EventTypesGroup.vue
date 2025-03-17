@@ -1,5 +1,7 @@
 <template>
-  <div class="relative max-w-[840px] bg-white dark:bg-gray-900 mx-auto flex flex-col items-center justify-center">
+  <div
+    class="relative max-w-[840px] bg-white dark:bg-gray-900 mx-auto flex flex-col items-center justify-center"
+  >
     <div
       v-show="!selectedEventTypeToken"
       class="p-10"
@@ -37,8 +39,13 @@
         @click="goBack"
       >
         <svg
-          class="w-5 h-5 stroke-2"
-          :style="{ color: config.theme?.colors?.[400] }"
+          class="w-6 h-6 stroke-2"
+          :style="{
+            color:
+              config.theme?.mode === 'dark'
+                ? config.theme?.colors?.[100]
+                : config.theme?.colors?.[900],
+          }"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"

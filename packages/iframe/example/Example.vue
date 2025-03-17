@@ -6,8 +6,9 @@
 import App from '../src/App.vue';
 
 window.xprops = {
+  type: 'group',
   config: {
-    token: 'O5p2WmXgHC8kFgpEEayDSOvOABrS7iCw',
+    token: 'mVlRIHzRWmI0ZYHDETlfDQsnRV9X4hZF',
   },
 };
 </script>
