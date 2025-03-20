@@ -75,7 +75,7 @@ const config = ref<ZaptimeConfig>({
 
   // compact: false,
 
-  apiBaseUrl: 'https://api.zaptime.test/',
+  // apiBaseUrl: 'https://api.zaptime.test/',
 
   // hideLocation: true,
   // profileImage: '',
