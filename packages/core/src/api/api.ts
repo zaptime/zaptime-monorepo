@@ -1,7 +1,7 @@
 import type TimeSlot from '../types/TimeSlot';
 import type Status from '../types/Status';
 import type { AvailableTimeSlotResponse, ReservationResponse } from '../types/ApiResponses';
-import { Ok, Err, Result } from 'ts-results';
+import { Ok, Err, Result } from 'ts-results-es';
 import { InitData, Success, Errors, Location, CustomFieldCollected } from '../types/InitData';
 const defaultBaseUrl = 'https://api.zaptime.app/';
 

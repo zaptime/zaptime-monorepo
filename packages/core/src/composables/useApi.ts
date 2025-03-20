@@ -5,7 +5,7 @@ import useConfig from './useConfig';
 import { Success, Errors, Location } from '../types/InitData';
 import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi, fetchRemoteConfig, reschedule as rescheduleApi, refreshReserve as refreshReserveApi } from '../api/api';
 import { ReservationResponse } from '../types/ApiResponses';
-import { Result } from 'ts-results';
+import { Result, Err, Ok } from 'ts-results-es';
 import useCurrentTimezone from './useCurrentTimezone';
 import { CustomFieldCollected } from '../types/InitData';
 import useReservationReschedule from './useReservationReschedule';
