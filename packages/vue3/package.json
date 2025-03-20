@@ -24,13 +24,13 @@
   },
   "dependencies": {
     "@analytics/google-analytics": "^1.0.7",
+    "@date-fns/tz": "^1.2.0",
     "@headlessui/vue": "^1.7.19",
     "@heroicons/vue": "^2.1.1",
     "@vueuse/core": "^10.7.2",
     "@zaptime/core": "workspace:*",
     "analytics": "^0.8.11",
-    "date-fns": "^2.30.0",
-    "date-fns-tz": "^2.0.0",
+    "date-fns": "^3.6.0",
     "load-script": "^2.0.0",
     "react-facebook-pixel": "^1.0.4"
   },
