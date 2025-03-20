@@ -33,45 +33,45 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
     } else {
       const initData = await fetchRemoteConfiguration(config.token, config.apiBaseUrl, config.reservationUuid);
 
-      if (initData.ok) {
-        if (initData.val.disabled) {
+      if (initData.isOk()) {
+        if (initData.value.disabled) {
           isEnabled.value = false;
           initLoaded.value = true;
           return;
         }
 
-        await loadDateFnsConfig(initData.val.configuration.locale?.preset || 'en');
+        await loadDateFnsConfig(initData.value.configuration.locale?.preset || 'en');
 
-        if (initData.val.reservation !== undefined) {
-          setSelectedReservation(initData.val.reservation);
+        if (initData.value.reservation !== undefined) {
+          setSelectedReservation(initData.value.reservation);
         }
 
-        if (initData.val.locations) {
-          setLocations(initData.val.locations);
+        if (initData.value.locations) {
+          setLocations(initData.value.locations);
         }
 
-        if (initData.val.stripeConfig) {
-          setStripeConfig(initData.val.stripeConfig);
+        if (initData.value.stripeConfig) {
+          setStripeConfig(initData.value.stripeConfig);
         }
 
-        if (initData.val.customFields) {
-          setBookingForm(initData.val.customFields);
+        if (initData.value.customFields) {
+          setBookingForm(initData.value.customFields);
         }
 
-        if (initData.val.isSubscribed === false) {
+        if (initData.value.isSubscribed === false) {
           setIsSubscribed(false);
         }
 
         isEnabled.value = true;
 
-        const mergedConfig = mergeConfigs(initData.val.configuration, config);
+        const mergedConfig = mergeConfigs(initData.value.configuration, config);
 
         // perepared entry for backend
 
         let analyticsConfig = undefined;
 
-        if (initData.val.analytics) {
-          analyticsConfig = buildConfig(initData.val.analytics);
+        if (initData.value.analytics) {
+          analyticsConfig = buildConfig(initData.value.analytics);
         }
 
         const analytics = getAnalytics(analyticsConfig);
@@ -82,11 +82,11 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
         await initCalendar();
 
         // Select day if rescheduling
-        if (initData.val.reservation !== undefined) {
+        if (initData.value.reservation !== undefined) {
           const selectedDay = state.days.find((day) => {
             if (day.date !== undefined) {
               //@ts-expect-error dunno wtf
-              return isSameDay(day.date, new Date(initData.val.reservation.start));
+              return isSameDay(day.date, new Date(initData.value.reservation.start));
             }
           });
 
@@ -99,7 +99,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
           }
         }
       } else {
-        console.error(initData.err);
+        console.error(initData.error);
         console.error(initData.stack);
       }
     }
