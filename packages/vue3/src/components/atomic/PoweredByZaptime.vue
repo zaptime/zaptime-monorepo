@@ -1,12 +1,12 @@
 <template>
   <div
     v-if="!isSubscribed"
-    class="cal-flex cal-w-full cal-items-center cal-justify-center cal-gap-1 cal-pb-6 cal-text-xs cal-font-medium cal-tracking-tight cal-text-theme-800 dark:cal-text-theme-100"
+    class="cal:flex cal:w-full cal:items-center cal:justify-center cal:gap-1 cal:pb-6 cal:text-xs cal:font-medium cal:tracking-tight cal:text-theme-800 cal:dark:text-theme-100"
   >
     <a
       :href="linkUrl"
       target="_blank"
-      class="cal-flex cal-items-center cal-gap-1"
+      class="cal:flex cal:items-center cal:gap-1"
     >
       {{ text }}
       <ZapLogo />

@@ -2,10 +2,10 @@
   <div>
     <div
       v-if="config.profileImage"
-      class="cal-mb-3 cal-flex cal-w-full cal-justify-center cal-pt-3"
+      class="cal:mb-3 cal:flex cal:w-full cal:justify-center cal:pt-3"
     >
       <img
-        class="cal-h-[108px] cal-w-[108px] cal-rounded-full cal-object-cover cal-object-top"
+        class="cal:h-[108px] cal:w-[108px] cal:rounded-full cal:object-cover cal:object-top"
         :src="config.profileImage"
         loading="lazy"
         alt="Profile image"
@@ -13,28 +13,28 @@
     </div>
     <p
       v-if="config.locale?.texts?.introduction"
-      class="cal-w-full cal-text-center cal-text-2xl cal-font-medium cal-text-theme-700 dark:cal-text-theme-200"
-      :class="[config.profileImage ? '' : 'cal-py-12']"
+      class="cal:w-full cal:text-center cal:text-2xl cal:font-medium cal:text-theme-700 cal:dark:text-theme-200"
+      :class="[config.profileImage ? '' : 'cal:py-12']"
       v-html="config.locale?.texts?.introduction"
     ></p>
   </div>
   <div
     :class="{
-      'cal-mt-24': !config.profileImage && config.locale?.texts?.introduction === undefined,
+      'cal:mt-24': !config.profileImage && config.locale?.texts?.introduction === undefined,
     }"
-    class="cal-flex cal-justify-between cal-py-4"
+    class="cal:flex cal:justify-between cal:py-4"
   >
-    <p class="cal-ml-3 cal-text-xl cal-font-semibold cal-text-theme-700 dark:cal-text-theme-200">{{ monthName }} {{ currentYear }}</p>
-    <div class="cal-mr-1 cal-flex">
+    <p class="cal:ml-3 cal:text-xl cal:font-semibold cal:text-theme-700 cal:dark:text-theme-200">{{ monthName }} {{ currentYear }}</p>
+    <div class="cal:mr-1 cal:flex">
       <button
         v-if="!prevDisabled"
         :disabled="prevDisabled"
-        :class="{ 'cal-cursor-not-allowed': prevDisabled }"
-        class="cal-flex cal-items-center cal-justify-center"
+        :class="{ 'cal:cursor-not-allowed': prevDisabled }"
+        class="cal:flex cal:items-center cal:justify-center"
         @click.prevent="prev"
       >
         <svg
-          class="cal-rotate-180 cal-text-theme-500 dark:cal-text-theme-500"
+          class="cal:rotate-180 cal:text-theme-500 cal:dark:text-theme-500"
           width="32"
           height="32"
           viewBox="0 0 32 32"
@@ -52,12 +52,12 @@
       <button
         v-if="!nextDisabled"
         :disabled="nextDisabled"
-        :class="{ 'cal-cursor-not-allowed': nextDisabled }"
-        class="cal-flex cal-items-center cal-justify-center"
+        :class="{ 'cal:cursor-not-allowed': nextDisabled }"
+        class="cal:flex cal:items-center cal:justify-center"
         @click.prevent="next"
       >
         <svg
-          class="cal-text-theme-500 dark:cal-text-theme-500"
+          class="cal:text-theme-500 cal:dark:text-theme-500"
           width="32"
           height="32"
           viewBox="0 0 32 32"

@@ -2,7 +2,7 @@
   <div
     v-for="header in state.headers"
     :key="header"
-    class="cal-flex cal-justify-center cal-text-[11px] cal-font-medium cal-text-theme-700 dark:cal-text-theme-300"
+    class="cal:flex cal:justify-center cal:text-[11px] cal:font-medium cal:text-theme-700 cal:dark:text-theme-300"
   >
     {{ header }}
   </div>

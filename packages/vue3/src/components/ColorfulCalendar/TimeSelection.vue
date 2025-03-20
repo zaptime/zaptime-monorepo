@@ -1,45 +1,45 @@
 <template>
   <PrimaryButton
     v-if="config.compact === true"
-    class="cal-ml-4 cal-mt-5"
+    class="cal:ml-4 cal:mt-5"
     @click="goPickingDates"
   >
     {{ config.locale?.confirmationForm?.buttons?.goBack }}
   </PrimaryButton>
 
   <div
-    class="cal-mx-auto cal-px-[50px] sm:cal-mx-0"
-    :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[440px]']"
+    class="cal:mx-auto cal:px-[50px] cal:sm:mx-0"
+    :class="[config.compact ? 'cal:w-[330px] cal:sm:w-[400px]' : 'cal:w-[330px] cal:sm:w-[440px]']"
   >
     <div v-if="!state.loading">
       <div v-if="state.timeSlots && state.timeSlots.length > 0 && !state.loading">
-        <div :class="[config.compact ? '' : 'cal-pt-[54px]']">
-          <p class="cal-text-[32px] cal-font-semibold cal-tracking-tighter cal-text-theme-600 dark:cal-text-theme-300">
+        <div :class="[config.compact ? '' : 'cal:pt-[54px]']">
+          <p class="cal:text-[32px] cal:font-semibold cal:tracking-tighter cal:text-theme-600 cal:dark:text-theme-300">
             {{ getFormattedDay(state.timeSlots[0].start) }},
             {{ getFormattedDayInMonth(state.timeSlots[0].start) }}
           </p>
         </div>
-        <div class="cal-pb-0.5 cal-pt-6">
+        <div class="cal:pb-0.5 cal:pt-6">
           <p
             v-if="config.locale && config.locale.texts?.choosePreferredTime"
-            class="cal-text-xl cal-font-medium cal-tracking-tighter cal-text-theme-700 dark:cal-text-theme-200"
+            class="cal:text-xl cal:font-medium cal:tracking-tighter cal:text-theme-700 cal:dark:text-theme-200"
           >
             {{ config.locale.texts?.choosePreferredTime }}
           </p>
         </div>
 
-        <div class="cal-mt-2 cal-h-64 cal-overflow-y-auto cal-px-1">
+        <div class="cal:mt-2 cal:h-64 cal:overflow-y-auto cal:px-1">
           <button
             v-for="(timeSlot, i) in state.timeSlots"
             :key="i"
-            class="cal-group cal-relative cal-my-2 cal-flex cal-w-full cal-cursor-pointer cal-items-center cal-justify-center cal-rounded-md cal-border cal-border-theme-100 cal-bg-theme-100 cal-pb-[14px] cal-pt-[16px] cal-outline-none cal-transition-all cal-duration-150 focus:cal-outline-none focus:cal-ring-2 focus:cal-ring-theme-800 focus:cal-ring-opacity-50 dark:cal-border-theme-600 dark:cal-bg-theme-800 hover:dark:cal-bg-theme-600"
+            class="cal:group cal:relative cal:my-2 cal:flex cal:w-full cal:cursor-pointer cal:items-center cal:justify-center cal:rounded-md cal:border cal:border-theme-100 cal:bg-theme-100 cal:pb-[14px] cal:pt-[16px] cal:outline-hidden cal:transition-all cal:duration-150 cal:focus:outline-hidden cal:focus:ring-2 cal:focus:ring-theme-800 cal:focus:ring-opacity-50 cal:dark:border-theme-600 cal:dark:bg-theme-800 cal:dark:hover:bg-theme-600"
             @click.prevent="select(timeSlot)"
           >
             <span
-              class="cal-leading-4"
+              class="cal:leading-4"
               :class="{
-                'py-4 cal-text-theme-700 dark:cal-text-white': isSelected(timeSlot),
-                'cal-text-theme-800 dark:cal-text-theme-100': !isSelected(timeSlot),
+                'py-4 cal:text-theme-700 cal:dark:text-white': isSelected(timeSlot),
+                'cal:text-theme-800 cal:dark:text-theme-100': !isSelected(timeSlot),
               }"
             >
               {{ getFormattedTime(timeSlot.start) }} -
@@ -47,7 +47,7 @@
             </span>
             <svg
               v-if="isSelected(timeSlot)"
-              class="cal-absolute cal-right-2 cal-top-[13px] cal-h-5 cal-w-5 cal-text-theme-700 dark:cal-text-white"
+              class="cal:absolute cal:right-2 cal:top-[13px] cal:h-5 cal:w-5 cal:text-theme-700 cal:dark:text-white"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -63,17 +63,17 @@
       </div>
       <div
         v-else
-        class="cal-w-full"
+        class="cal:w-full"
       >
         <div
           v-if="!state.monthHasTimeSlots"
-          class="cal-flex cal-h-full cal-flex-col cal-items-center cal-justify-center"
+          class="cal:flex cal:h-full cal:flex-col cal:items-center cal:justify-center"
         >
-          <div class="cal-mt-24 cal-flex cal-h-full cal-items-center cal-justify-center">
-            <div class="cal-flex cal-h-40 cal-w-40 cal-items-center cal-justify-center cal-rounded-2xl cal-px-5 dark:cal-text-theme-50">
+          <div class="cal:mt-24 cal:flex cal:h-full cal:items-center cal:justify-center">
+            <div class="cal:flex cal:h-40 cal:w-40 cal:items-center cal:justify-center cal:rounded-2xl cal:px-5 cal:dark:text-theme-50">
               <p
                 v-if="config.locale && config.locale.texts?.noTimeSlotAvailable"
-                class="dark:cal-text-theme-theme cal-text-center"
+                class="cal:dark:text-theme-theme cal:text-center"
                 v-html="config.locale.texts?.noTimeSlotAvailable"
               ></p>
             </div>
@@ -81,10 +81,10 @@
         </div>
         <div
           v-else
-          class="cal-flex cal-flex-col cal-items-center cal-justify-center"
+          class="cal:flex cal:flex-col cal:items-center cal:justify-center"
         >
-          <div class="cal-mt-48 cal-flex cal-h-full cal-items-center cal-justify-center">
-            <div class="cal-flex cal-w-40 cal-flex-col cal-items-center cal-justify-center cal-rounded-2xl cal-px-7 cal-py-5 dark:cal-text-theme-200">
+          <div class="cal:mt-48 cal:flex cal:h-full cal:items-center cal:justify-center">
+            <div class="cal:flex cal:w-40 cal:flex-col cal:items-center cal:justify-center cal:rounded-2xl cal:px-7 cal:py-5 cal:dark:text-theme-200">
               <svg
                 width="18"
                 height="20"
@@ -103,7 +103,7 @@
 
               <p
                 v-if="config.locale && config.locale.texts?.chooseDate"
-                class="cal-mt-2 cal-w-40 cal-text-center dark:cal-text-theme-200"
+                class="cal:mt-2 cal:w-40 cal:text-center cal:dark:text-theme-200"
                 v-html="config.locale.texts?.chooseDate"
               ></p>
             </div>

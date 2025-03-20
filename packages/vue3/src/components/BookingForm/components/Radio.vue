@@ -1,25 +1,25 @@
 <template>
-  <div class="cal-relative">
-    <label class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200">
+  <div class="cal:relative">
+    <label class="cal:block cal:text-sm cal:font-medium cal:text-theme-500 cal:dark:text-theme-200">
       {{ label }}
     </label>
     <div
       v-for="(option, i) of options"
       :key="uuid + '_' + i"
-      class="cal-my-2 cal-flex cal-h-6 cal-items-center"
+      class="cal:my-2 cal:flex cal:h-6 cal:items-center"
     >
       <input
         :id="uuid + '_' + i"
         :name="uuid"
         type="radio"
         :required="required"
-        class="cal-form-radio cal-h-5 cal-w-5 cal-rounded-full cal-border cal-border-theme-400 cal-ring-opacity-25 checked:cal-border-none checked:cal-bg-accent-base focus:cal-ring-1 focus:cal-ring-accent-light dark:cal-border-theme-300"
+        class="cal:form-radio cal:h-5 cal:w-5 cal:rounded-full cal:border cal:border-theme-400 cal:ring-opacity-25 cal:checked:border-none cal:checked:bg-accent-base cal:focus:ring-1 cal:focus:ring-accent-light cal:dark:border-theme-300"
         @change="onChange(i)"
       />
-      <div class="cal-ml-3 cal-text-sm cal-leading-6">
+      <div class="cal:ml-3 cal:text-sm cal:leading-6">
         <label
           :for="uuid + '_' + i"
-          class="cal-block cal-text-sm cal-text-theme-500 dark:cal-text-theme-200"
+          class="cal:block cal:text-sm cal:text-theme-500 cal:dark:text-theme-200"
           v-html="option"
         ></label>
       </div>
