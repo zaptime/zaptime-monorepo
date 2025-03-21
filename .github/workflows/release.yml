@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write # for creating releases & tags
+  pull-requests: write # for creating release pull requests
   packages: write # for publishing to package registries
 
 jobs:
