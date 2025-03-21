@@ -31,6 +31,10 @@ export default defineConfig(({ mode }) => {
           output: {
             // Provide global variables to use in the UMD build
             // for externalized deps
+             assetFileNames: (assetInfo) => {
+              if (assetInfo.names[0] === 'vue3.css') return 'style.css';
+              return assetInfo.names[0];
+            },
             globals: {
               vue: 'Vue',
               '@zaptime/core': 'ZaptimeCore',
