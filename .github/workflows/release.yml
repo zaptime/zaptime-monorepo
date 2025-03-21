@@ -25,21 +25,21 @@ jobs:
         with:
           node-version: 20.x
           registry-url: https://registry.npmjs.org
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build Core 
-        run:  pnpm --filter @zaptime/core build
+      - name: Build Core
+        run: pnpm --filter @zaptime/core build
 
       - name: Build Vue3
-        run:  pnpm --filter @zaptime/vue3 build
+        run: pnpm --filter @zaptime/vue3 build
 
       - name: Create Release Pull Request or Publish Packages
         uses: changesets/action@v1
         with:
-          publish: pnpm publish -r
+          publish: pnpm publish -r --access public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
