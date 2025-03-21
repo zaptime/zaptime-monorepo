@@ -9,9 +9,9 @@
   "module": "./dist/zaptime-vue3.es.js",
   "exports": {
     ".": {
+      "types": "./dist/types/entry.d.ts",
       "import": "./dist/zaptime-vue3.es.js",
-      "require": "./dist/zaptime-vue3.umd.js",
-      "types": "./dist/types/entry.d.ts"
+      "require": "./dist/zaptime-vue3.umd.js"
     }
   },
   "scripts": {
@@ -23,32 +23,32 @@
     "vue": "^3.0.0"
   },
   "dependencies": {
-    "@analytics/google-analytics": "^1.0.7",
+    "@analytics/google-analytics": "^1.1.0",
     "@date-fns/tz": "^1.2.0",
-    "@headlessui/vue": "^1.7.19",
-    "@heroicons/vue": "^2.1.1",
-    "@vueuse/core": "^10.7.2",
+    "@headlessui/vue": "^1.7.23",
+    "@heroicons/vue": "^2.2.0",
+    "@vueuse/core": "^13.0.0",
     "@zaptime/core": "workspace:*",
-    "analytics": "^0.8.11",
-    "date-fns": "^3.6.0",
+    "analytics": "^0.8.16",
+    "date-fns": "^4.1.0",
     "load-script": "^2.0.0",
     "react-facebook-pixel": "^1.0.4"
   },
   "devDependencies": {
-    "@babel/types": "^7.23.9",
-    "@tailwindcss/forms": "^0.5.7",
-    "@types/node": "^20.11.19",
+    "@babel/types": "^7.26.10",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/postcss": "^4.0.15",
+    "@types/node": "^22.13.10",
     "@types/stripe-v3": "^3.1.33",
-    "@types/web-bluetooth": "^0.0.20",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "autoprefixer": "^10.4.17",
-    "postcss": "^8.4.35",
-    "rollup-plugin-visualizer": "^5.12.0",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.1.3",
-    "vue": "^3.4.19",
-    "vue-tsc": "^1.8.27"
+    "@types/web-bluetooth": "^0.0.21",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "postcss": "^8.5.3",
+    "rollup-plugin-visualizer": "^5.14.0",
+    "tailwindcss": "^4.0.15",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2",
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.2.8"
   },
   "publishConfig": {
     "access": "public"

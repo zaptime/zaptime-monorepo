@@ -6,42 +6,42 @@
     >
       <div
         v-if="element.type === 'phone' || element.type === 'text' || element.type === 'email'"
-        class="cal-mt-4"
+        class="cal:mt-4"
       >
         <TextInput v-bind="element" />
       </div>
 
       <div
         v-if="element.type === 'checkbox'"
-        class="cal-mt-4"
+        class="cal:mt-4"
       >
         <Checkbox v-bind="element" />
       </div>
 
       <div
         v-if="element.type === 'textarea'"
-        class="cal-mt-4"
+        class="cal:mt-4"
       >
         <Textarea v-bind="element" />
       </div>
 
       <div
         v-if="element.type === 'select'"
-        class="cal-mt-4"
+        class="cal:mt-4"
       >
         <Select v-bind="element" />
       </div>
 
       <div
         v-if="element.type === 'multiselect'"
-        class="cal-mt-4"
+        class="cal:mt-4"
       >
         <Multiselect v-bind="element" />
       </div>
 
       <div
         v-if="element.type === 'radio'"
-        class="cal-mt-4"
+        class="cal:mt-4"
       >
         <Radio v-bind="element" />
       </div>

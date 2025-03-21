@@ -1,22 +1,22 @@
 <template>
   <div
-    class="cal-flex cal-h-full cal-min-h-[524px] cal-justify-center cal-rounded-xl cal-bg-white cal-px-[20px] cal-pb-10 dark:cal-bg-theme-900 sm:cal-px-6"
-    :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[840px]']"
+    class="cal:flex cal:h-full cal:min-h-[524px] cal:justify-center cal:rounded-xl cal:bg-white cal:px-[20px] cal:pb-10 cal:dark:bg-theme-900 cal:sm:px-6"
+    :class="[config.compact ? 'cal:w-[330px] cal:sm:w-[400px]' : 'cal:w-[330px] cal:sm:w-[840px]']"
     :style="{ backgroundColor: color2 }"
   >
     <form
       v-if="!reservation && selectedTimeSlot !== undefined"
-      class="cal-mt-12 cal-flex-col sm:cal-w-[370px]"
-      :class="[selectedTimeSlot.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']"
+      class="cal:mt-12 cal:flex-col cal:sm:w-[370px]"
+      :class="[selectedTimeSlot.seats > 1 ? 'cal:mt-8' : 'cal:mt-20']"
       @submit.prevent="onSubmit"
     >
-      <h1 class="cal-text-2xl cal-font-medium cal-text-theme-500 dark:cal-text-theme-500">
+      <h1 class="cal:text-2xl cal:font-medium cal:text-theme-500 cal:dark:text-theme-500">
         {{ locale?.confirmationForm?.confirmBooking }}
       </h1>
-      <h2 class="cal-mt-[24px] cal-text-2xl cal-font-semibold cal-text-theme-700 dark:cal-text-theme-100">
+      <h2 class="cal:mt-[24px] cal:text-2xl cal:font-semibold cal:text-theme-700 cal:dark:text-theme-100">
         {{ getFormattedDayInMonth(selectedTimeSlot.start) }}
       </h2>
-      <h3 class="cal-text-[24px] cal-font-semibold cal-leading-[36px] cal-text-theme-500 dark:cal-text-theme-300">
+      <h3 class="cal:text-[24px] cal:font-semibold cal:leading-[36px] cal:text-theme-500 cal:dark:text-theme-300">
         {{ getFormattedTime(selectedTimeSlot.start) }} -
         {{ getFormattedTime(selectedTimeSlot.end) }}
       </h3>
@@ -29,12 +29,12 @@
 
       <div
         v-if="paymentError"
-        class="cal-my-5 cal-text-lg cal-text-red-500"
+        class="cal:my-5 cal:text-lg cal:text-red-500"
       >
         Payment has failed
       </div>
 
-      <div class="cal-mt-[32px] cal-flex cal-justify-between">
+      <div class="cal:mt-[32px] cal:flex cal:justify-between">
         <SecondaryButton
           type="button"
           :disabled="disabled"
@@ -53,19 +53,19 @@
 
     <form
       v-if="reservation && selectedTimeSlot !== undefined"
-      class="cal-mt-20 sm:cal-w-[280px]"
+      class="cal:mt-20 cal:sm:w-[280px]"
       @submit.prevent="submitReschedule"
     >
-      <h1 class="cal-text-2xl cal-font-medium cal-text-theme-500 dark:cal-text-theme-500">{{ locale?.confirmationForm?.reschedulingEvent }}</h1>
-      <p class="cal-mt-5 cal-text-2xl cal-font-medium cal-text-theme-700 dark:cal-text-theme-100">
+      <h1 class="cal:text-2xl cal:font-medium cal:text-theme-500 cal:dark:text-theme-500">{{ locale?.confirmationForm?.reschedulingEvent }}</h1>
+      <p class="cal:mt-5 cal:text-2xl cal:font-medium cal:text-theme-700 cal:dark:text-theme-100">
         {{ getFormattedDayInMonth(reservation.start) }}
       </p>
-      <p class="cal-text-[24px] cal-font-medium cal-leading-[36px] cal-text-theme-500 dark:cal-text-theme-300">
+      <p class="cal:text-[24px] cal:font-medium cal:leading-[36px] cal:text-theme-500 cal:dark:text-theme-300">
         {{ getFormattedTime(reservation.start) }} -
         {{ getFormattedTime(reservation.end) }}
       </p>
 
-      <div class="cal-my-2 cal-flex">
+      <div class="cal:my-2 cal:flex">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="32"
@@ -76,22 +76,22 @@
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-arrow-up cal-rotate-180 cal-text-theme-500 dark:cal-text-theme-100"
+          class="lucide lucide-arrow-up cal:rotate-180 cal:text-theme-500 cal:dark:text-theme-100"
         >
           <path d="m5 12 7-7 7 7" />
           <path d="M12 19V5" />
         </svg>
       </div>
 
-      <h2 class="cal-text-2xl cal-font-medium cal-text-theme-700 dark:cal-text-theme-100">
+      <h2 class="cal:text-2xl cal:font-medium cal:text-theme-700 cal:dark:text-theme-100">
         {{ getFormattedDayInMonth(selectedTimeSlot.start) }}
       </h2>
-      <h3 class="cal-text-[24px] cal-font-medium cal-leading-[36px] cal-text-theme-500 dark:cal-text-theme-300">
+      <h3 class="cal:text-[24px] cal:font-medium cal:leading-[36px] cal:text-theme-500 cal:dark:text-theme-300">
         {{ getFormattedTime(selectedTimeSlot.start) }} -
         {{ getFormattedTime(selectedTimeSlot.end) }}
       </h3>
 
-      <div class="cal-mt-[32px] cal-flex cal-justify-between">
+      <div class="cal:mt-[32px] cal:flex cal:justify-between">
         <SecondaryButton
           :disabled="disabled"
           type="button"
