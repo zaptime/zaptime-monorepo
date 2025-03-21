@@ -10,11 +10,11 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "nuxt": "^3.11.2",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0",
     "@zaptime/core": "workspace:*",
-    "@zaptime/vue3": "workspace:*"
+    "@zaptime/vue3": "workspace:*",
+    "nuxt": "^3.16.1",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   },
   "version": null
 }
