@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.8.4
+
+### Patch Changes
+
+- chore: dependencies update
+
 ## 2.8.3
 
 ### Patch Changes

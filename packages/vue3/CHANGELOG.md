@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.8.4
+
+### Patch Changes
+
+- chore: dependencies update
+- Updated dependencies
+  - @zaptime/core@2.8.4
+
 ## 3.8.3
 
 ### Patch Changes

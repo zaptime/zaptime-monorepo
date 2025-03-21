@@ -3,6 +3,7 @@
   "private": true,
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "pnpm --recursive --parallel --stream run dev",
     "lint": "eslint --cache packages --ext .ts,.vue",
