@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.8.5
+
+### Patch Changes
+
+- f4980e3: Fix: Tailwindcss issue with layer
+
 ## 3.8.4
 
 ### Patch Changes
