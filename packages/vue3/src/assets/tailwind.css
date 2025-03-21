@@ -1,8 +1,6 @@
-@import url('./custom-preflight.css') layer(base);
-
-@import 'tailwindcss' prefix(cal);
-
+@import "tailwindcss" prefix(cal);
 @config '../../tailwind.config.js';
+@import url("./custom-preflight.css");
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -23,29 +21,29 @@
 }
 
 @font-face {
-  font-family: 'Basier Circle';
+  font-family: "Basier Circle";
   font-weight: 400;
-  src: url('./basier-circle/regular.woff2') format('opentype');
+  src: url("./basier-circle/regular.woff2") format("opentype");
 }
 
 @font-face {
-  font-family: 'Basier Circle';
+  font-family: "Basier Circle";
   font-weight: 500;
-  src: url('./basier-circle/medium.woff2') format('opentype');
+  src: url("./basier-circle/medium.woff2") format("opentype");
 }
 
 @font-face {
-  font-family: 'Basier Circle';
+  font-family: "Basier Circle";
   font-weight: 600;
-  src: url('./basier-circle/semibold.woff2') format('opentype');
+  src: url("./basier-circle/semibold.woff2") format("opentype");
 }
 
 @font-face {
-  font-family: 'Basier Circle';
+  font-family: "Basier Circle";
   font-weight: 700;
-  src: url('./basier-circle/bold.woff2') format('opentype');
+  src: url("./basier-circle/bold.woff2") format("opentype");
 }
 
 #zaptime-calendar {
-  font-family: 'Basier Circle', serif;
+  font-family: "Basier Circle", serif;
 }
