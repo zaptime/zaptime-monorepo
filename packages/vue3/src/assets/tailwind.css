@@ -1,6 +1,9 @@
-@import "tailwindcss" prefix(cal);
+/* @import "./scoped-preflight-v4"; */
+/* @import "./preflight-v4"; */
+@import "tailwindcss/preflight";
+@import "tailwindcss/theme";
+@import "tailwindcss/utilities";
 @config '../../tailwind.config.js';
-@import url("./custom-preflight.css");
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -10,14 +13,12 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
-  }
+*,
+::after,
+::before,
+::backdrop,
+::file-selector-button {
+  border-color: var(--color-gray-200, currentColor);
 }
 
 @font-face {
