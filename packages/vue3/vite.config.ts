@@ -1,17 +1,17 @@
-import vue from '@vitejs/plugin-vue';
-import { defineConfig } from 'vite';
-import { resolve } from 'path';
-import { peerDependencies, dependencies } from './package.json';
+import vue from "@vitejs/plugin-vue";
+import { defineConfig } from "vite";
+import { resolve } from "path";
+import { peerDependencies, dependencies } from "./package.json";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  if (mode !== 'production') {
+  if (mode !== "production") {
     return {
       plugins: [vue()],
       server: {
         port: 8888,
       },
-      root: resolve(__dirname, './example'),
+      root: resolve(__dirname, "./example"),
     };
   } else {
     return {
@@ -20,8 +20,8 @@ export default defineConfig(({ mode }) => {
         cssCodeSplit: false,
         sourcemap: false,
         lib: {
-          entry: resolve(__dirname, 'src/entry.ts'),
-          name: 'zaptime-vue3',
+          entry: resolve(__dirname, "src/entry.ts"),
+          name: "zaptime-vue3",
           fileName: (format) => `zaptime-vue3.${format}.js`,
         },
         rollupOptions: {
@@ -31,15 +31,15 @@ export default defineConfig(({ mode }) => {
           output: {
             // Provide global variables to use in the UMD build
             // for externalized deps
-             assetFileNames: (assetInfo) => {
-              if (assetInfo.names[0] === 'vue3.css') return 'style.css';
-              return assetInfo.names[0];
+            assetFileNames: (assetInfo) => {
+              if (assetInfo.name === "style.css") return "style.css";
+              return assetInfo.name || "assets/[name].[ext]";
             },
             globals: {
-              vue: 'Vue',
-              '@zaptime/core': 'ZaptimeCore',
-              'date-fns': 'dateFns',
-              '@vueuse/core': 'VueUseCore',
+              vue: "Vue",
+              "@zaptime/core": "ZaptimeCore",
+              "date-fns": "dateFns",
+              "@vueuse/core": "VueUseCore",
             },
           },
         },

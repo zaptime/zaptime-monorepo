@@ -1,14 +1,7 @@
 <template>
   <div class="cal:h-full cal:min-h-[360px]">
-    <div
-      v-if="view === 'calendar'"
-      class="cal:h-full"
-    >
-      <div
-        v-if="config.compact === true"
-        class="cal:h-full cal:w-[330px] cal:bg-white cal:dark:bg-theme-900 cal:sm:w-[400px]"
-        :class="[config.compact ? 'cal:rounded-xl' : '']"
-      >
+    <div v-if="view === 'calendar'" class="cal:h-full">
+      <div v-if="config.compact === true" class="cal:h-full cal:w-[330px] cal:bg-white cal:dark:bg-theme-900 cal:sm:w-[400px]" :class="[config.compact ? 'cal:rounded-xl' : '']">
         <div
           v-if="config.compact === undefined || calendarView === 'pickingDate'"
           :key="calendarView"
@@ -38,16 +31,8 @@
         <PoweredByZaptime />
       </div>
 
-      <div
-        v-else
-        class="cal:flex cal:h-full cal:w-[841px] cal:rounded-l-xl cal:bg-white cal:dark:bg-theme-900"
-        :class="['cal:rounded-xl', classes]"
-      >
-        <div
-          :key="calendarView"
-          class="cal:w-[330px] cal:rounded-l-xl cal:px-[48px] cal:sm:w-[400px]"
-          :style="{ backgroundColor: color }"
-        >
+      <div v-else class="cal:flex cal:h-full cal:w-[841px] cal:rounded-l-xl cal:bg-white cal:dark:bg-theme-900" :class="['cal:rounded-xl', classes]">
+        <div :key="calendarView" class="cal:w-[330px] cal:rounded-l-xl cal:px-[48px] cal:sm:w-[400px]" :style="{ backgroundColor: color }">
           <Navbar />
 
           <div class="cal:mb-3 cal:mt-1 cal:grid cal:grid-cols-7">
@@ -60,79 +45,59 @@
           <PoweredByZaptime />
         </div>
 
-        <div
-          class="cal:rounded-r-xl cal:border-l cal:border-theme-200 cal:dark:border-theme-700"
-          :style="{ backgroundColor: color2 }"
-        >
+        <div class="cal:rounded-r-xl cal:border-l cal:border-theme-200 cal:dark:border-theme-700" :style="{ backgroundColor: color2 }">
           <TimeSelection />
         </div>
       </div>
     </div>
 
-    <Transition
-      name="slide-fade"
-      mode="out-in"
-    >
-      <ConfirmForm
-        v-if="view === 'form'"
-        :class="[classes]"
-        @go-back="() => setView('calendar')"
-        @booking-confirmed="onBookingConfirmed"
-      />
+    <Transition name="slide-fade" mode="out-in">
+      <ConfirmForm v-if="view === 'form'" :class="[classes]" @go-back="() => setView('calendar')" @booking-confirmed="onBookingConfirmed" />
     </Transition>
 
-    <SuccessMessage
-      v-if="view === 'success'"
-      :class="[classes]"
-    ></SuccessMessage>
+    <SuccessMessage v-if="view === 'success'" :class="[classes]"></SuccessMessage>
   </div>
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
+import { inject } from "vue";
 
-import ConfirmForm from './ConfirmForm.vue';
-import Navbar from './DefaultCalendar/Navbar.vue';
-import Header from './DefaultCalendar/Header.vue';
-import TimeSelection from './DefaultCalendar/TimeSelection.vue';
-import DaysGrid from './DefaultCalendar/DaysGrid.vue';
-import SuccessMessage from './DefaultCalendar/SuccessMessage.vue';
+import ConfirmForm from "./ConfirmForm.vue";
+import Navbar from "./DefaultCalendar/Navbar.vue";
+import Header from "./DefaultCalendar/Header.vue";
+import TimeSelection from "./DefaultCalendar/TimeSelection.vue";
+import DaysGrid from "./DefaultCalendar/DaysGrid.vue";
+import SuccessMessage from "./DefaultCalendar/SuccessMessage.vue";
 
-import type { ReservationResponse } from '@zaptime/core';
+import type { ReservationResponse } from "@zaptime/core";
 
-import useCalendarViewState from '../composables/useCalendarViewState';
+import useCalendarViewState from "../composables/useCalendarViewState";
 
-import { useConfig } from '@zaptime/core';
-import PoweredByZaptime from './atomic/PoweredByZaptime.vue';
+import { useConfig } from "@zaptime/core";
+import PoweredByZaptime from "./atomic/PoweredByZaptime.vue";
 
-defineProps({
-  bgClass: {
-    type: String,
-    default: null,
-  },
-  classes: {
-    type: String,
-    default: '',
-  },
-  value: {
-    type: Date,
-  },
-});
+interface CalendarProps {
+  bgClass?: string;
+  classes?: string;
+  value?: Date;
+}
+
+defineProps<CalendarProps>();
 
 const emit = defineEmits<{
-  (e: 'booking-confirmed', reservation: ReservationResponse): void;
+  (e: "booking-confirmed", reservation: ReservationResponse): void;
 }>();
 
-const { view, calendarView, setView } = useCalendarViewState(inject('calendarId'));
+const { view, calendarView, setView } = useCalendarViewState(inject("calendarId"));
 
-const { config } = useConfig(inject('calendarId'));
+const { config } = useConfig(inject("calendarId"));
 
-const color = inject<string>('color');
-const color2 = inject<string>('color2');
+const color = inject<string>("color");
+const color2 = inject<string>("color2");
 
 function onBookingConfirmed(reservationData: ReservationResponse) {
-  setView('success');
-  emit('booking-confirmed', reservationData);
+  setView("success");
+  emit("booking-confirmed", reservationData);
 }
 </script>
 
