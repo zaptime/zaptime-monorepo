@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.8.6
+
+### Patch Changes
+
+- deb9fb7: Fix tailwind incompatibility
+
 ## 3.8.5
 
 ### Patch Changes
