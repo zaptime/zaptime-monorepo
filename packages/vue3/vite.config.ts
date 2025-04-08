@@ -37,6 +37,10 @@ export default defineConfig(({ mode }) => {
               "date-fns": "dateFns",
               "@vueuse/core": "VueUseCore",
             },
+            assetFileNames: (assetInfo) => {
+              if (assetInfo.name === "vue3.css") return "style.css";
+              return assetInfo.name || "asset";
+            },
           },
         },
       },
