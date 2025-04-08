@@ -1,19 +1,19 @@
 <template>
   <div
     v-if="selectedLocation && selectedLocation.id !== 'no-location' && !config.hideLocation"
-    class="cal:mt-6 cal:flex cal:items-center cal:justify-between cal:gap-2 cal:px-2.5"
+    class="cal-mt-6 cal-flex cal-items-center cal-justify-between cal-gap-2 cal-px-2.5"
   >
-    <div class="cal:flex cal:w-full cal:gap-2">
+    <div class="cal-flex cal-w-full cal-gap-2">
       <div
-        class="cal:h-5 cal:w-5 cal:dark:text-theme-200"
+        class="cal-h-5 cal-w-5 dark:cal-text-theme-200"
         v-html="selectedLocation?.icon"
       ></div>
-      <p class="cal:text-sm cal:text-theme-600 cal:dark:text-theme-200">{{ locationLabel }}</p>
+      <p class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200">{{ locationLabel }}</p>
     </div>
 
     <div
       v-if="stripeConfig"
-      class="cal:flex cal:shrink-0 cal:items-center cal:gap-1.5"
+      class="cal-flex cal-shrink-0 cal-items-center cal-gap-1.5"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@
         stroke-width="1.75"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-credit-card cal:text-theme-600 cal:dark:text-theme-200"
+        class="lucide lucide-credit-card cal-text-theme-600 dark:cal-text-theme-200"
       >
         <rect
           width="20"
@@ -41,7 +41,7 @@
           y2="10"
         />
       </svg>
-      <p class="cal:text-sm cal:text-theme-600 cal:dark:text-theme-200">
+      <p class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200">
         {{ priceCurrency }}
       </p>
     </div>
@@ -100,7 +100,7 @@ const locationOptions = ref([
   },
   {
     id: 'in-person',
-    icon: '<svg class="cal:text-theme-600 cal:dark:text-theme-200" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
+    icon: '<svg class="cal-text-theme-600 dark:cal-text-theme-200" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
     name: 'In-Person Meeting',
   },
 ]);

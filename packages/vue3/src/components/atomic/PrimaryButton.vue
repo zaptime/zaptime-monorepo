@@ -1,18 +1,18 @@
 <template>
   <button
     :disabled="disabled || loading"
-    class="cal:inline-flex cal:items-center cal:rounded-md cal:bg-accent-base cal:px-4 cal:py-3 cal:font-medium cal:text-white cal:transition-all cal:duration-75 cal:ease-out cal:hover:bg-accent-dark cal:disabled:cursor-not-allowed cal:disabled:opacity-80 cal:disabled:hover:bg-accent-base cal:dark:bg-accent-base cal:dark:text-theme-900 cal:dark:hover:bg-accent-dark cal:dark:hover:text-theme-900 cal:sm:px-6 cal:sm:py-3.5"
+    class="cal-inline-flex cal-items-center cal-rounded-md cal-bg-accent-base cal-px-4 cal-py-3 cal-font-medium cal-text-white cal-transition-all cal-duration-75 cal-ease-out hover:cal-bg-accent-dark disabled:cal-cursor-not-allowed disabled:cal-opacity-80 disabled:hover:cal-bg-accent-base dark:cal-bg-accent-base dark:cal-text-theme-900 hover:dark:cal-bg-accent-dark hover:dark:cal-text-theme-900 sm:cal-px-6 sm:cal-py-3.5"
     @click="$emit('click')"
   >
     <svg
-      class="cal:mr-3 cal:h-5 cal:w-5 cal:animate-spin cal:text-white cal:ease-in"
-      :class="[loading ? 'cal:inline-block' : 'cal:hidden']"
+      class="cal-mr-3 cal-h-5 cal-w-5 cal-animate-spin cal-text-white cal-ease-in"
+      :class="[loading ? 'cal-inline-block' : 'cal-hidden']"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
     >
       <circle
-        class="cal:opacity-25"
+        class="cal-opacity-25"
         cx="12"
         cy="12"
         r="10"

@@ -19,8 +19,8 @@
   /* 3 */
   tab-size: 4;
   /* 3 */
-  font-family: var(
-    --font-sans,
+  font-family: theme(
+    "fontFamily.sans",
     ui-sans-serif,
     system-ui,
     -apple-system,
@@ -131,8 +131,8 @@ Add the correct font weight in Edge and Safari.
 #zaptime-calendar kbd,
 #zaptime-calendar samp,
 #zaptime-calendar pre {
-  font-family: var(
-    --font-mono,
+  font-family: theme(
+    "fontFamily.mono",
     ui-monospace,
     SFMono-Regular,
     Menlo,
