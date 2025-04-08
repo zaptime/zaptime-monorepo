@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.8.5
+
+### Patch Changes
+
+- 6a68440: Fix: revert to TailwindCSS V3
+
 ## 2.8.4
 
 ### Patch Changes
