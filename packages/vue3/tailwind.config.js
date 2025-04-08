@@ -3,7 +3,7 @@
 module.exports = {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   important: "#zaptime-calendar",
-  prefix: "cal",
+  prefix: "cal-",
   darkMode: "class",
   theme: {
     extend: {
@@ -55,8 +55,5 @@ module.exports = {
   ],
   corePlugins: {
     preflight: false,
-  },
-  future: {
-    hoverOnlyWhenSupported: true,
   },
 };
