@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.8.7
+
+### Patch Changes
+
+- e2f92eb: Fix: revert to TailwindCSS V3
+- Updated dependencies [6a68440]
+  - @zaptime/core@2.8.5
+
 ## 3.8.6
 
 ### Patch Changes
