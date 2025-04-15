@@ -1,7 +1,9 @@
 import Analytics, { AnalyticsInstance } from 'analytics';
-// @ts-expect-error module is
+// @ts-expect-error module is not typed
 import googleAnalyticsPlugin from '@analytics/google-analytics';
 import facebokPixelAnalyticsPlugin from './plugins/facebookPixelPlugin';
+// @ts-expect-error module is not typed
+import gtmPlugin from '@analytics/google-tag-manager';
 import umamiAnalyticsPlugin from './plugins/umamiPlugin';
 
 let analytics: AnalyticsInstance;
@@ -58,8 +60,18 @@ export function buildConfig(initData: InitAnalyticsData[]) {
           }),
         );
         break;
+
+      case 'google-tag-manager':
+        plugins.push(
+          gtmPlugin({
+            containerId: data.data.containerId,
+            enabled: true,
+          }),
+        );
+        break;
+
       default:
-        throw new Error(`Unknown Analytics Plugin Option: ${name}`);
+        throw new Error(`Unknown Analytics Plugin Option: ${data.name}`);
     }
   }
 
