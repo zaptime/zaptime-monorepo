@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.8.8
+
+### Patch Changes
+
+- 0ea0591: Support ES modules
+- Updated dependencies [0ea0591]
+  - @zaptime/core@2.8.6
+
 ## 3.8.7
 
 ### Patch Changes
