@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.8.7
+
+### Patch Changes
+
+- f0a4bb7: fix: esm
+
 ## 2.8.6
 
 ### Patch Changes
