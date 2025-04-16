@@ -1,7 +1,7 @@
 {
   "name": "@zaptime/core",
   "description": "Core library for Zaptime",
-  "version": "2.8.6",
+  "version": "2.8.7",
   "type": "module",
   "main": "dist/entry.js",
   "types": "dist/entry.d.ts",
