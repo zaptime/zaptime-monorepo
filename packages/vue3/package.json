@@ -6,6 +6,7 @@
   "files": [
     "dist"
   ],
+  "type": "module",
   "module": "./dist/zaptime-vue3.es.js",
   "exports": {
     ".": {
