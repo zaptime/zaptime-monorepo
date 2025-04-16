@@ -5,15 +5,19 @@
   "type": "module",
   "main": "dist/entry.js",
   "types": "dist/entry.d.ts",
-  "module": "dist/entry.mjs",
   "author": "Zaptime s.r.o.",
+  "exports": {
+    ".": {
+      "import": "./dist/entry.js"
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
     "dev-legacy": "vite build --watch",
     "devasd": "pnpm run build --watch",
-    "build": "tsup ./src/entry.ts --dts --format esm,cjs --external vue "
+    "build": "tsup ./src/entry.ts  --format esm  --dts --external vue "
   },
   "dependencies": {
     "@date-fns/tz": "^1.2.0",
