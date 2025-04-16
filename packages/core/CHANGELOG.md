@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.8.6
+
+### Patch Changes
+
+- 0ea0591: Support ES modules
+
 ## 2.8.5
 
 ### Patch Changes
