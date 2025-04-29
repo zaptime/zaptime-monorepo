@@ -1,9 +1,6 @@
 <template>
   <div>
-    <label
-      :for="uuid"
-      class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200"
-    >
+    <label :for="uuid" class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200">
       {{ label }}
     </label>
     <div class="cal-mt-2">
@@ -19,15 +16,15 @@
 </template>
 
 <script setup lang="ts">
-import { useBookingForm } from '@zaptime/core';
-import type { CustomField } from '@zaptime/core';
-import { inject } from 'vue';
+import { useBookingForm } from "@zaptime/core";
+import type { CustomField } from "@zaptime/core";
+import { inject } from "vue";
 
 type Props = CustomField;
 
 const props = defineProps<Props>();
 
-const { setCustomFieldValue } = useBookingForm(inject('calendarId'));
+const { setCustomFieldValue } = useBookingForm(inject("calendarId"));
 
 function onInput(e: Event) {
   if (e.target instanceof HTMLTextAreaElement) {

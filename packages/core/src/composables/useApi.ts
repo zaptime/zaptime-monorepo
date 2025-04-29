@@ -1,14 +1,14 @@
-import useReservationStatus from './useReservationStatus';
-import useSelectedTimeSlot from './useSelectedTimeSlot';
-import useLocations from './useLocations';
-import useConfig from './useConfig';
-import { Success, Errors, Location } from '../types/InitData';
-import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi, fetchRemoteConfig, reschedule as rescheduleApi, refreshReserve as refreshReserveApi } from '../api/api';
-import { ReservationResponse } from '../types/ApiResponses';
-import { Result, Err, Ok } from 'ts-results-es';
-import useCurrentTimezone from './useCurrentTimezone';
-import { CustomFieldCollected } from '../types/InitData';
-import useReservationReschedule from './useReservationReschedule';
+import useReservationStatus from "./useReservationStatus";
+import useSelectedTimeSlot from "./useSelectedTimeSlot";
+import useLocations from "./useLocations";
+import useConfig from "./useConfig";
+import { Success, Errors, Location } from "../types/InitData";
+import { book as bookApi, reserve as reserveApi, confirm as confirmApi, cancel as cancelApi, fetchRemoteConfig, reschedule as rescheduleApi, refreshReserve as refreshReserveApi } from "../api/api";
+import { ReservationResponse } from "../types/ApiResponses";
+import { Result, Err, Ok } from "ts-results-es";
+import useCurrentTimezone from "./useCurrentTimezone";
+import { CustomFieldCollected } from "../types/InitData";
+import useReservationReschedule from "./useReservationReschedule";
 
 let reservationIntervalId: NodeJS.Timeout | null = null;
 
@@ -57,7 +57,7 @@ export interface IBookingOptions {
   customFields?: CustomFieldCollected[];
 }
 
-export type IConfirmationOptions = Omit<IBookingOptions, 'email' | 'location' | 'seats'>;
+export type IConfirmationOptions = Omit<IBookingOptions, "email" | "location" | "seats">;
 
 /**
  * Book Attandee to specific time slot.
@@ -94,11 +94,11 @@ export const book = async (options: IBookingOptions): Promise<ReservationRespons
 
       return res;
     } catch (e) {
-      throw new Error('Booking a time slot failed because time slot was not selected!');
+      throw new Error("Booking a time slot failed because time slot was not selected!");
     }
   }
 
-  throw new Error('Booking a time slot failed because time slot was not selected!');
+  throw new Error("Booking a time slot failed because time slot was not selected!");
 };
 
 /**
@@ -135,7 +135,7 @@ export const confirm = async (options?: IConfirmationOptions): Promise<Reservati
 
   stopReservationInterval();
 
-  throw new Error('Confirming a time slot failed because time slot was not reserved!');
+  throw new Error("Confirming a time slot failed because time slot was not reserved!");
 };
 
 /**
@@ -178,7 +178,7 @@ export const reschedule = async (calendarId?: string): Promise<ReservationRespon
     });
   }
 
-  throw new Error('Rescheduling a time slot failed because time slot was not selected!');
+  throw new Error("Rescheduling a time slot failed because time slot was not selected!");
 };
 
 /**
@@ -228,7 +228,7 @@ async function initReservation(options: IBookingOptions) {
     return data;
   }
 
-  throw new Error('Booking a time slot failed because time slot was not selected!');
+  throw new Error("Booking a time slot failed because time slot was not selected!");
 }
 
 /**
@@ -256,7 +256,7 @@ const startReservationInterval = (options: IBookingOptions) => {
   try {
     res = initReservation(options);
   } catch (err) {
-    throw new Error('Initial reservation failed');
+    throw new Error("Initial reservation failed");
   }
 
   // Immediately reserve once, then continue every 15 minutes
@@ -266,7 +266,7 @@ const startReservationInterval = (options: IBookingOptions) => {
     try {
       res = refreshReservation(options);
     } catch (err) {
-      throw new Error('Repeated reservation failed');
+      throw new Error("Repeated reservation failed");
     }
   }, 15 * 60 * 1000);
 

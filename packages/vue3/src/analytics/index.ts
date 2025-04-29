@@ -1,15 +1,15 @@
-import Analytics, { AnalyticsInstance } from 'analytics';
+import Analytics, { AnalyticsInstance } from "analytics";
 // @ts-expect-error module is not typed
-import googleAnalyticsPlugin from '@analytics/google-analytics';
-import facebokPixelAnalyticsPlugin from './plugins/facebookPixelPlugin';
+import googleAnalyticsPlugin from "@analytics/google-analytics";
+import facebokPixelAnalyticsPlugin from "./plugins/facebookPixelPlugin";
 // @ts-expect-error module is not typed
-import gtmPlugin from '@analytics/google-tag-manager';
-import umamiAnalyticsPlugin from './plugins/umamiPlugin';
+import gtmPlugin from "@analytics/google-tag-manager";
+import umamiAnalyticsPlugin from "./plugins/umamiPlugin";
 
 let analytics: AnalyticsInstance;
 
 export function getAnalytics(init?: any) {
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return undefined;
   }
 
@@ -34,39 +34,39 @@ export function buildConfig(initData: InitAnalyticsData[]) {
 
   for (const data of initData) {
     switch (data.name) {
-      case 'google-analytics':
+      case "google-analytics":
         plugins.push(
           googleAnalyticsPlugin({
             measurementIds: [data.data.measurementId],
             enabled: true,
-          }),
+          })
         );
         break;
 
-      case 'facebook-pixel':
+      case "facebook-pixel":
         plugins.push(
           facebokPixelAnalyticsPlugin({
             pixelId: data.data.pixelId,
             enabled: true,
-          }),
+          })
         );
         break;
-      case 'umami':
+      case "umami":
         plugins.push(
           umamiAnalyticsPlugin({
             dataWebsiteId: data.data.dataWebsiteId,
             src: data.data.src,
             enabled: true,
-          }),
+          })
         );
         break;
 
-      case 'google-tag-manager':
+      case "google-tag-manager":
         plugins.push(
           gtmPlugin({
             containerId: data.data.containerId,
             enabled: true,
-          }),
+          })
         );
         break;
 
@@ -76,7 +76,7 @@ export function buildConfig(initData: InitAnalyticsData[]) {
   }
 
   const config = {
-    app: 'Zaptime',
+    app: "Zaptime",
     debug: true,
     plugins: plugins,
   };

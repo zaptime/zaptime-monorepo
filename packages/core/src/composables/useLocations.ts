@@ -1,5 +1,5 @@
-import { Location } from '../types/InitData';
-import { ref, computed } from 'vue';
+import { Location } from "../types/InitData";
+import { ref, computed } from "vue";
 
 const state = ref<Record<string, Location[]>>({
   __DEFAULT__: [],
@@ -22,13 +22,13 @@ export default function useLocations(calendarId?: string) {
         return false;
       }
 
-      return state.value[calendarId].some((location) => location.value === 'phone');
+      return state.value[calendarId].some((location) => location.value === "phone");
     } else {
       if (state.value.__DEFAULT__ === undefined || state.value.__DEFAULT__.length === 0) {
         return false;
       }
 
-      return state.value.__DEFAULT__.some((location) => location.value === 'phone');
+      return state.value.__DEFAULT__.some((location) => location.value === "phone");
     }
   });
 

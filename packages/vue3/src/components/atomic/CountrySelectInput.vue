@@ -1,16 +1,10 @@
 <template>
-  <SelectInput
-    v-model="model"
-    :label="label"
-    :options="countries"
-    name="country"
-  >
-  </SelectInput>
+  <SelectInput v-model="model" :label="label" :options="countries" name="country"> </SelectInput>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import SelectInput from './SelectInput.vue';
+import { onMounted, ref } from "vue";
+import SelectInput from "./SelectInput.vue";
 
 const model = defineModel();
 
@@ -22,10 +16,10 @@ const props = defineProps<{
 const countries = ref<{ value: string; label: string }[]>([]);
 
 async function getAllCountries() {
-  const res = await fetch('https://api.zaptime.app/countries', {
-    method: 'GET',
+  const res = await fetch("https://api.zaptime.app/countries", {
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
 

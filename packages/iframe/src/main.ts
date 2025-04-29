@@ -1,9 +1,9 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import { ZaptimeConfig, book as bookZaptime, reserve as reserveZaptime, confirm as confirmZaptime, cancel as cancelZaptime } from '@zaptime/vue3';
-import type { EventTypeGroup } from './components/EventTypesGroup.vue';
-import type { TimeSlot } from '@zaptime/core';
-import './assets/style.css';
+import { createApp } from "vue";
+import App from "./App.vue";
+import { ZaptimeConfig, book as bookZaptime, reserve as reserveZaptime, confirm as confirmZaptime, cancel as cancelZaptime } from "@zaptime/vue3";
+import type { EventTypeGroup } from "./components/EventTypesGroup.vue";
+import type { TimeSlot } from "@zaptime/core";
+import "./assets/style.css";
 
 type BookAndReservePayload = {
   email: string;
@@ -15,10 +15,10 @@ type BookAndReservePayload = {
 declare global {
   interface Window {
     xprops: {
-      type?: 'single' | 'group';
+      type?: "single" | "group";
       config: ZaptimeConfig | EventTypeGroup;
       onTimeSlotChanged(timeSlot: TimeSlot): void;
-      position: 'left' | 'center' | 'right';
+      position: "left" | "center" | "right";
     };
 
     ZaptimeProxy: {
@@ -45,4 +45,4 @@ window.ZaptimeProxy = {
   },
 };
 
-createApp(App).mount('#app');
+createApp(App).mount("#app");

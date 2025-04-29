@@ -1,5 +1,5 @@
-import Status from '../types/Status';
-import { ref, Ref, computed } from 'vue';
+import Status from "../types/Status";
+import { ref, Ref, computed } from "vue";
 
 type ReservationStatus = Ref<Status> | Record<string, Ref<Status>>;
 let _reservationStatusState: ReservationStatus = {};

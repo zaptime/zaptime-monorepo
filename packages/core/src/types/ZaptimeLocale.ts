@@ -1,6 +1,6 @@
 export default interface ZaptimeLocale {
   preset?: string;
-  startDayOfWeek?: 'sun' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat';
+  startDayOfWeek?: "sun" | "mon" | "tue" | "wed" | "thu" | "fri" | "sat";
   headers?: {
     mon?: string;
     tue?: string;

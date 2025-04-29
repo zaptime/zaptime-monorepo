@@ -1,4 +1,4 @@
-import TimeSlot from './TimeSlot';
+import TimeSlot from "./TimeSlot";
 
 export interface AvailableTimeSlotResponse {
   success: boolean;

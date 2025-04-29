@@ -1,62 +1,62 @@
-import ZaptimeLocale from '../types/ZaptimeLocale';
-import DfnsConfig from '../types/DfnsConfig';
+import ZaptimeLocale from "../types/ZaptimeLocale";
+import DfnsConfig from "../types/DfnsConfig";
 
-import { format } from 'date-fns';
+import { format } from "date-fns";
 export const getHeaders = (locale: ZaptimeLocale, dfnsConfig: DfnsConfig): string[] => {
-  let sun = '';
+  let sun = "";
 
   if (locale && locale.headers && locale.headers.sun) {
     sun = locale.headers.sun;
   } else {
-    sun = format(new Date(2020, 11, 6), 'cccccc', dfnsConfig);
+    sun = format(new Date(2020, 11, 6), "cccccc", dfnsConfig);
   }
 
-  let mon = '';
+  let mon = "";
 
   if (locale && locale.headers && locale.headers.mon) {
     mon = locale.headers.mon;
   } else {
-    mon = format(new Date(2020, 11, 7), 'cccccc', dfnsConfig);
+    mon = format(new Date(2020, 11, 7), "cccccc", dfnsConfig);
   }
 
-  let tue = '';
+  let tue = "";
 
   if (locale && locale.headers && locale.headers.tue) {
     tue = locale.headers.tue;
   } else {
-    tue = format(new Date(2020, 11, 8), 'cccccc', dfnsConfig);
+    tue = format(new Date(2020, 11, 8), "cccccc", dfnsConfig);
   }
 
-  let wed = '';
+  let wed = "";
 
   if (locale && locale.headers && locale.headers.wed) {
     wed = locale.headers.wed;
   } else {
-    wed = format(new Date(2020, 11, 9), 'cccccc', dfnsConfig);
+    wed = format(new Date(2020, 11, 9), "cccccc", dfnsConfig);
   }
 
-  let thu = '';
+  let thu = "";
 
   if (locale && locale.headers && locale.headers.thu) {
     thu = locale.headers.thu;
   } else {
-    thu = format(new Date(2020, 11, 10), 'cccccc', dfnsConfig);
+    thu = format(new Date(2020, 11, 10), "cccccc", dfnsConfig);
   }
 
-  let fri = '';
+  let fri = "";
 
   if (locale && locale.headers && locale.headers.fri) {
     fri = locale.headers.fri;
   } else {
-    fri = format(new Date(2020, 11, 11), 'cccccc', dfnsConfig);
+    fri = format(new Date(2020, 11, 11), "cccccc", dfnsConfig);
   }
 
-  let sat = '';
+  let sat = "";
 
   if (locale && locale.headers && locale.headers.sat) {
     sat = locale.headers.sat;
   } else {
-    sat = format(new Date(2020, 11, 12), 'cccccc', dfnsConfig);
+    sat = format(new Date(2020, 11, 12), "cccccc", dfnsConfig);
   }
 
   const autoHeaders = [sun, mon, tue, wed, thu, fri, sat];

@@ -1,18 +1,18 @@
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, reactive, ref, watch } from "vue";
 
-import { addMonths, format, isPast, isFuture, differenceInCalendarMonths } from 'date-fns';
+import { addMonths, format, isPast, isFuture, differenceInCalendarMonths } from "date-fns";
 
-import { getDays as getDaysExternal } from '../utils/calendar';
-import { getHeaders } from '../utils/localeLogic';
-import { getDfnsConfig } from '../utils/dfnsConfig';
+import { getDays as getDaysExternal } from "../utils/calendar";
+import { getHeaders } from "../utils/localeLogic";
+import { getDfnsConfig } from "../utils/dfnsConfig";
 
-import TimeSlot from '../types/TimeSlot';
-import CalendarState from '../types/CalendarState';
-import Day from '../types/Day';
-import useSelectedTimeSlot from './useSelectedTimeSlot';
+import TimeSlot from "../types/TimeSlot";
+import CalendarState from "../types/CalendarState";
+import Day from "../types/Day";
+import useSelectedTimeSlot from "./useSelectedTimeSlot";
 
-import useConfig from '../composables/useConfig';
-import useCurrentTimezone from './useCurrentTimezone';
+import useConfig from "../composables/useConfig";
+import useCurrentTimezone from "./useCurrentTimezone";
 
 type CalendarStates = Record<string, CalendarState>;
 
@@ -50,7 +50,7 @@ export default (calendarId?: string) => {
 
   const state = computed(() => {
     if (calendarId === undefined) {
-      return _state['__DEFAULT__'] as CalendarState;
+      return _state["__DEFAULT__"] as CalendarState;
     } else {
       return _state[calendarId] as CalendarState;
     }
@@ -59,7 +59,7 @@ export default (calendarId?: string) => {
   const setState = (key: string, value: unknown) => {
     if (calendarId === undefined) {
       //@ts-expect-error TODO: fix type
-      _state['__DEFAULT__'][key] = value;
+      _state["__DEFAULT__"][key] = value;
     } else {
       //@ts-expect-error TODO: fix type
       _state[calendarId][key] = value;
@@ -68,7 +68,7 @@ export default (calendarId?: string) => {
 
   const clearState = () => {
     if (calendarId === undefined) {
-      _state['__DEFAULT__'] = { ...initCalendarState };
+      _state["__DEFAULT__"] = { ...initCalendarState };
     } else {
       _state[calendarId] = { ...initCalendarState };
     }
@@ -83,11 +83,11 @@ export default (calendarId?: string) => {
   }
 
   const getDays = async (): Promise<void> => {
-    setState('loading', true);
+    setState("loading", true);
 
     // Clear timeSlots and selected day
-    setState('timeSlots', []);
-    setState('selectedDay', null);
+    setState("timeSlots", []);
+    setState("selectedDay", null);
 
     if (state.value.dfnsConfig !== undefined && state.value.dfnsConfig !== null) {
       const { days, hasAnyTimeSlot } = await getDaysExternal(state.value.date, state.value.dfnsConfig, config.value, timezone.value);
@@ -96,17 +96,17 @@ export default (calendarId?: string) => {
         const firstAvailableDayWithTimeSlot = getFirstAvailableDayWithTimeSlot(days);
 
         if (firstAvailableDayWithTimeSlot !== undefined) {
-          setState('selectedDay', firstAvailableDayWithTimeSlot);
+          setState("selectedDay", firstAvailableDayWithTimeSlot);
 
           if (firstAvailableDayWithTimeSlot.timeSlots !== undefined) {
-            setState('timeSlots', firstAvailableDayWithTimeSlot.timeSlots);
+            setState("timeSlots", firstAvailableDayWithTimeSlot.timeSlots);
           }
         }
       }
 
-      setState('monthHasTimeSlots', hasAnyTimeSlot);
-      setState('days', days);
-      setState('loading', false);
+      setState("monthHasTimeSlots", hasAnyTimeSlot);
+      setState("days", days);
+      setState("loading", false);
     }
   };
 
@@ -116,10 +116,10 @@ export default (calendarId?: string) => {
 
   const dayClicked = (day: Day) => {
     //clear selected time slot when clicking to another day
-    setState('selectedDay', day);
+    setState("selectedDay", day);
 
     if (day.timeSlots !== undefined) {
-      setState('timeSlots', day.timeSlots);
+      setState("timeSlots", day.timeSlots);
     }
   };
 
@@ -140,12 +140,12 @@ export default (calendarId?: string) => {
       return;
     }
 
-    setState('timeSlots', []);
-    setState('loading', true);
-    setState('date', addMonths(state.value.date, 1));
+    setState("timeSlots", []);
+    setState("loading", true);
+    setState("date", addMonths(state.value.date, 1));
 
     await getDays();
-    setState('loading', false);
+    setState("loading", false);
   };
 
   const prev = async (): Promise<void> => {
@@ -153,11 +153,11 @@ export default (calendarId?: string) => {
       return;
     }
 
-    setState('timeSlots', []);
-    setState('loading', true);
-    setState('date', addMonths(state.value.date, -1));
+    setState("timeSlots", []);
+    setState("loading", true);
+    setState("date", addMonths(state.value.date, -1));
     await getDays();
-    setState('loading', false);
+    setState("loading", false);
   };
 
   const prevDisabled = computed(() => {
@@ -191,11 +191,11 @@ export default (calendarId?: string) => {
   });
 
   const currentYear = computed(() => {
-    return format(state.value.date, 'y');
+    return format(state.value.date, "y");
   });
 
   const monthName = computed(() => {
-    return format(state.value.date, 'LLLL', {
+    return format(state.value.date, "LLLL", {
       locale: state.value.dfnsConfig?.locale,
     });
   });
@@ -210,8 +210,8 @@ export default (calendarId?: string) => {
 
   const setLocales = async () => {
     if (config.value && config.value.locale) {
-      state.value.dfnsConfig = await getDfnsConfig(config.value.locale.preset || 'en');
-      setState('headers', getHeaders(config.value.locale, state.value.dfnsConfig));
+      state.value.dfnsConfig = await getDfnsConfig(config.value.locale.preset || "en");
+      setState("headers", getHeaders(config.value.locale, state.value.dfnsConfig));
     }
   };
 
@@ -220,7 +220,7 @@ export default (calendarId?: string) => {
     if (state.value.days.length === 0) {
       await setLocales();
       await getDays();
-      setState('initLoaded', true);
+      setState("initLoaded", true);
     }
   };
 

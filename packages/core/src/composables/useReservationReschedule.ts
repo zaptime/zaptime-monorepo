@@ -1,5 +1,5 @@
-import { ref, computed } from 'vue';
-import type { Reservation } from '../types/InitData';
+import { ref, computed } from "vue";
+import type { Reservation } from "../types/InitData";
 
 type ReservationState = {
   reservation: Reservation | undefined;

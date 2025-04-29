@@ -3,11 +3,7 @@
     <label class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200">
       {{ label }}
     </label>
-    <div
-      v-for="(option, i) in options"
-      :key="uuid + '_' + i"
-      class="cal-relative cal-my-2 cal-flex cal-items-center"
-    >
+    <div v-for="(option, i) in options" :key="uuid + '_' + i" class="cal-relative cal-my-2 cal-flex cal-items-center">
       <div class="cal-flex cal-h-6 cal-items-center">
         <input
           :id="uuid + '_' + i"
@@ -18,25 +14,21 @@
         />
       </div>
       <div class="cal-ml-3 cal-text-sm cal-leading-6">
-        <label
-          :for="uuid + '_' + i"
-          class="cal-block cal-text-sm cal-text-theme-500 dark:cal-text-theme-200"
-          v-html="option"
-        ></label>
+        <label :for="uuid + '_' + i" class="cal-block cal-text-sm cal-text-theme-500 dark:cal-text-theme-200" v-html="option"></label>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { CustomField } from '@zaptime/core';
-import { useBookingForm } from '@zaptime/core';
-import { ref, inject } from 'vue';
+import type { CustomField } from "@zaptime/core";
+import { useBookingForm } from "@zaptime/core";
+import { ref, inject } from "vue";
 
 type Props = CustomField;
 const props = defineProps<Props>();
 
-const { setCustomFieldValue } = useBookingForm(inject('calendarId'));
+const { setCustomFieldValue } = useBookingForm(inject("calendarId"));
 
 const selectedValue = ref<string[]>([]);
 

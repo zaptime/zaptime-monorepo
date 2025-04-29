@@ -1,13 +1,6 @@
 <template>
-  <div
-    v-if="!state.loading"
-    class="cal-grid cal-grid-cols-7 cal-gap-y-1"
-  >
-    <div
-      v-for="(day, i) in state.days"
-      :key="i"
-      class="mt-2 cal-flex cal-justify-center"
-    >
+  <div v-if="!state.loading" class="cal-grid cal-grid-cols-7 cal-gap-y-1">
+    <div v-for="(day, i) in state.days" :key="i" class="mt-2 cal-flex cal-justify-center">
       <div class="cal-flex cal-items-center cal-justify-center">
         <button
           :disabled="!dayHasTimeSlot(day) || (day.isPast && !day.isCurrentMonth)"
@@ -30,18 +23,18 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
-import { useCalendar } from '@zaptime/core';
-import { Day } from '@zaptime/core';
+import { inject } from "vue";
+import { useCalendar } from "@zaptime/core";
+import { Day } from "@zaptime/core";
 
-import useCalendarViewState from '../../composables/useCalendarViewState';
+import useCalendarViewState from "../../composables/useCalendarViewState";
 
-const { setCalendarView } = useCalendarViewState(inject('calendarId'));
+const { setCalendarView } = useCalendarViewState(inject("calendarId"));
 
-const { dayHasTimeSlot, isSelectedDay, dayClicked, state } = useCalendar(inject('calendarId') as string);
+const { dayHasTimeSlot, isSelectedDay, dayClicked, state } = useCalendar(inject("calendarId") as string);
 
 const dayClickedLocalProxy = (day: Day) => {
   dayClicked(day);
-  setCalendarView('pickingTime');
+  setCalendarView("pickingTime");
 };
 </script>

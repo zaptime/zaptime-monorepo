@@ -1,11 +1,11 @@
-import { ref, computed } from 'vue';
-import { CustomField, CustomFieldValue, CustomFieldCollected } from '../types/InitData';
+import { ref, computed } from "vue";
+import { CustomField, CustomFieldValue, CustomFieldCollected } from "../types/InitData";
 
 const state = ref<Record<string, CustomField[]>>({
   __DEFAULT__: [],
 });
 
-const knownFieldsByMergeTag = ['FIRST_NAME', 'LAST_NAME', 'EMAIL', 'PHONE'] as const;
+const knownFieldsByMergeTag = ["FIRST_NAME", "LAST_NAME", "EMAIL", "PHONE"] as const;
 
 export default function useBookingForm(calendarId?: string) {
   const setBookingForm = (customFields: CustomField[]) => {
@@ -35,13 +35,13 @@ export default function useBookingForm(calendarId?: string) {
   }
 
   function collectKnownFields() {
-    const firstName = bookingForm.value.find((field) => field.mergeTag === 'FIRST_NAME');
-    const lastName = bookingForm.value.find((field) => field.mergeTag === 'LAST_NAME');
-    const email = bookingForm.value.find((field) => field.mergeTag === 'EMAIL');
-    const phone = bookingForm.value.find((field) => field.mergeTag === 'PHONE');
+    const firstName = bookingForm.value.find((field) => field.mergeTag === "FIRST_NAME");
+    const lastName = bookingForm.value.find((field) => field.mergeTag === "LAST_NAME");
+    const email = bookingForm.value.find((field) => field.mergeTag === "EMAIL");
+    const phone = bookingForm.value.find((field) => field.mergeTag === "PHONE");
 
     return {
-      email: email?.value ? String(email.value) : '',
+      email: email?.value ? String(email.value) : "",
       firstName: firstName?.value ? String(firstName.value) : undefined,
       lastName: lastName?.value ? String(lastName.value) : undefined,
       phone: phone?.value ? String(phone.value) : undefined,

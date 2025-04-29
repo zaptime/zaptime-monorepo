@@ -1,9 +1,9 @@
-import type TimeSlot from '../types/TimeSlot';
-import type Status from '../types/Status';
-import type { AvailableTimeSlotResponse, ReservationResponse } from '../types/ApiResponses';
-import { Ok, Err, Result } from 'ts-results-es';
-import { InitData, Success, Errors, Location, CustomFieldCollected } from '../types/InitData';
-const defaultBaseUrl = 'https://api.zaptime.app/';
+import type TimeSlot from "../types/TimeSlot";
+import type Status from "../types/Status";
+import type { AvailableTimeSlotResponse, ReservationResponse } from "../types/ApiResponses";
+import { Ok, Err, Result } from "ts-results-es";
+import { InitData, Success, Errors, Location, CustomFieldCollected } from "../types/InitData";
+const defaultBaseUrl = "https://api.zaptime.app/";
 
 export interface IOptions {
   /**
@@ -65,7 +65,7 @@ export interface IOptions {
   customFields?: CustomFieldCollected[];
 }
 
-export interface IConfirmationOptions extends Omit<IOptions, 'email' | 'location' | 'seats' | 'timezone' | 'timeSlot'> {
+export interface IConfirmationOptions extends Omit<IOptions, "email" | "location" | "seats" | "timezone" | "timeSlot"> {
   status: Status;
 }
 
@@ -73,7 +73,7 @@ export const book = async (options: IOptions): Promise<ReservationResponse> => {
   const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location, timezone } = options;
   try {
     const data = await fetch(getBookUrl(baseUrl), {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({
         start: timeSlot.start,
         end: timeSlot.end,
@@ -87,15 +87,15 @@ export const book = async (options: IOptions): Promise<ReservationResponse> => {
         customFields: options.customFields,
       }),
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + token,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer " + token,
       },
     }).then((response) => response.json());
 
     return data;
   } catch (err) {
-    throw new Error('Booking time slot failed!');
+    throw new Error("Booking time slot failed!");
   }
 };
 
@@ -116,22 +116,22 @@ export const reschedule = async ({
 }): Promise<ReservationResponse> => {
   try {
     const data = await fetch(getRescheduleUrl(baseUrl, uuid), {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify({
         start: start,
         end: end,
         timezone: timezone,
       }),
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + token,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer " + token,
       },
     }).then((response) => response.json());
 
     return data;
   } catch (err) {
-    throw new Error('Booking time slot failed!');
+    throw new Error("Booking time slot failed!");
   }
 };
 
@@ -140,7 +140,7 @@ export const reserve = async (options: IOptions): Promise<ReservationResponse> =
 
   try {
     const data = await fetch(getReserveUrl(baseUrl), {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({
         start: timeSlot.start,
         end: timeSlot.end,
@@ -154,15 +154,15 @@ export const reserve = async (options: IOptions): Promise<ReservationResponse> =
         customFields: options.customFields,
       }),
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + token,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer " + token,
       },
     }).then((response) => response.json());
 
     return data;
   } catch (err) {
-    throw new Error('Reserving time slot failed!');
+    throw new Error("Reserving time slot failed!");
   }
 };
 
@@ -170,11 +170,11 @@ export const confirm = async (options: IConfirmationOptions): Promise<Reservatio
   const { baseUrl = defaultBaseUrl, status, token, firstName, lastName, customFields, phone } = options;
   try {
     const data = await fetch(getConfirmUrl(baseUrl, status.uuid), {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + token,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer " + token,
       },
       body: JSON.stringify({
         firstname: firstName,
@@ -186,45 +186,45 @@ export const confirm = async (options: IConfirmationOptions): Promise<Reservatio
 
     return data;
   } catch (err) {
-    throw new Error('Time slot confirmation failed!');
+    throw new Error("Time slot confirmation failed!");
   }
 };
 
 export const cancel = async (token: string, status: Status, baseUrl = defaultBaseUrl): Promise<boolean> => {
   try {
     const data = await fetch(getCancelUrl(baseUrl, status.uuid), {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + token,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer " + token,
       },
     }).then((resposne) => resposne.json());
 
     return data.success;
   } catch (err) {
-    throw new Error('Reserving time slot failed!');
+    throw new Error("Reserving time slot failed!");
   }
 };
 
 export const refreshReserve = async (token: string, status: Status, baseUrl = defaultBaseUrl): Promise<void> => {
   try {
     const data = await fetch(getRefreshReserveUrl(baseUrl, status.uuid), {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + token,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer " + token,
       },
     }).then((response) => response.json());
 
     if (data.status !== 200) {
-      throw new Error('Refreshing reservation slot failed!');
+      throw new Error("Refreshing reservation slot failed!");
     }
 
     return data.success;
   } catch (err) {
-    throw new Error('Refreshing reservation slot failed!');
+    throw new Error("Refreshing reservation slot failed!");
   }
 };
 
@@ -233,32 +233,32 @@ export const getAvailableTimeSlots = async (token: string, from: string, until: 
   try {
     const res = await fetch(
       getAvailableTimeSlotsUrl(baseUrl) +
-        '?' +
+        "?" +
         new URLSearchParams({
           from: from,
           until: until,
         }),
       {
         headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + token,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
         },
-      },
+      }
     );
 
     if (res.status === 403) {
-      throw new Error('Disabled');
+      throw new Error("Disabled");
     }
 
     const data: AvailableTimeSlotResponse = await res.json();
 
     return data.data;
   } catch (err) {
-    if ((err as Error).message === 'Disabled') {
-      throw new Error('Disabled');
+    if ((err as Error).message === "Disabled") {
+      throw new Error("Disabled");
     }
-    throw new Error('Getting available time slots failed!');
+    throw new Error("Getting available time slots failed!");
   }
 };
 
@@ -270,12 +270,12 @@ export async function fetchRemoteConfig(token: string, baseUrl = defaultBaseUrl,
     };
 
     try {
-      const res = await fetch(baseUrl + 'event-types/init', {
-        method: 'POST',
+      const res = await fetch(baseUrl + "event-types/init", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + token,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
         },
         body: JSON.stringify({
           reservationUuid: reservationUuid,
@@ -288,36 +288,36 @@ export async function fetchRemoteConfig(token: string, baseUrl = defaultBaseUrl,
         return new Ok(data.data);
       }
     } catch (e) {
-      return new Err('invalidToken');
+      return new Err("invalidToken");
     }
   }
-  return new Err('invalidToken');
+  return new Err("invalidToken");
 }
 
 function getBookUrl(baseUrl: string) {
-  return baseUrl + 'reservations';
+  return baseUrl + "reservations";
 }
 
 function getRescheduleUrl(baseUrl: string, uuid: string) {
-  return baseUrl + 'reservations/' + uuid;
+  return baseUrl + "reservations/" + uuid;
 }
 
 function getReserveUrl(baseUrl: string) {
-  return baseUrl + 'reservations/prepare';
+  return baseUrl + "reservations/prepare";
 }
 
 function getConfirmUrl(baseUrl: string, uuid: string) {
-  return baseUrl + 'reservations/' + uuid + '/confirm';
+  return baseUrl + "reservations/" + uuid + "/confirm";
 }
 
 function getCancelUrl(baseUrl: string, uuid: string) {
-  return baseUrl + 'reservations/' + uuid;
+  return baseUrl + "reservations/" + uuid;
 }
 
 function getAvailableTimeSlotsUrl(baseUrl: string) {
-  return baseUrl + 'time-slots';
+  return baseUrl + "time-slots";
 }
 
 function getRefreshReserveUrl(baseUrl: string, uuid: string) {
-  return baseUrl + 'reservations/' + uuid + '/refresh';
+  return baseUrl + "reservations/" + uuid + "/refresh";
 }

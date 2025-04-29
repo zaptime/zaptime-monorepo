@@ -11,23 +11,19 @@
       />
     </div>
     <div class="cal-ml-3 cal-text-sm cal-leading-6">
-      <label
-        :for="uuid"
-        class="zaptime-checkbox-label cal-text-theme-700 dark:cal-text-theme-400"
-        v-html="label"
-      ></label>
+      <label :for="uuid" class="zaptime-checkbox-label cal-text-theme-700 dark:cal-text-theme-400" v-html="label"></label>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { CustomField } from '@zaptime/core';
-import { useBookingForm } from '@zaptime/core';
-import { inject } from 'vue';
+import type { CustomField } from "@zaptime/core";
+import { useBookingForm } from "@zaptime/core";
+import { inject } from "vue";
 type Props = CustomField;
 const props = defineProps<Props>();
 
-const { setCustomFieldValue } = useBookingForm(inject('calendarId'));
+const { setCustomFieldValue } = useBookingForm(inject("calendarId"));
 
 function onChange(e: Event) {
   if (e.target instanceof HTMLInputElement) {

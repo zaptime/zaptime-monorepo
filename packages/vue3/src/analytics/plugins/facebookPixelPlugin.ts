@@ -1,4 +1,4 @@
-import { AnalyticsPlugin } from 'analytics';
+import { AnalyticsPlugin } from "analytics";
 
 type Config = {
   pixelId: string;
@@ -9,11 +9,11 @@ let fb: any;
 let fbLoaded = false;
 export default function facebookPixel(config: Config): AnalyticsPlugin {
   return {
-    name: 'facebook-pixel',
+    name: "facebook-pixel",
     initialize: async () => {
       const { pixelId } = config;
-      if (typeof window !== 'undefined') {
-        await import('react-facebook-pixel')
+      if (typeof window !== "undefined") {
+        await import("react-facebook-pixel")
           .then((module) => (fb = module.default))
           .then(() => {
             if (!fbLoaded) {

@@ -1,6 +1,6 @@
-import { useBreakpoints } from '@vueuse/core';
-import { watch } from 'vue';
-import { useConfig } from '@zaptime/core';
+import { useBreakpoints } from "@vueuse/core";
+import { watch } from "vue";
+import { useConfig } from "@zaptime/core";
 
 export default function useCompactSwitcher(calendarId?: string) {
   const { config } = useConfig(calendarId);
@@ -11,7 +11,7 @@ export default function useCompactSwitcher(calendarId?: string) {
     large: 860,
   });
 
-  const isSmaller = breakpoints.smaller('large');
+  const isSmaller = breakpoints.smaller("large");
 
   if (isSmaller.value === true) {
     config.value.compact = true;

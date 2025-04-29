@@ -1,10 +1,10 @@
-import type { ZaptimeConfig } from '@zaptime/core';
-import { useConfig, useCalendar, fetchRemoteConfiguration, useLocations, useStripeConfig, useBookingForm, useReservationReschedule, useDateFormatters } from '@zaptime/core';
-import { ref, nextTick } from 'vue';
-import { getAnalytics, buildConfig } from '../analytics';
-import { mergeConfigs } from '../utils/mergeConfigs';
-import { isSameDay } from 'date-fns';
-import { useIsSubscribed } from './useIsSubscribed';
+import type { ZaptimeConfig } from "@zaptime/core";
+import { useConfig, useCalendar, fetchRemoteConfiguration, useLocations, useStripeConfig, useBookingForm, useReservationReschedule, useDateFormatters } from "@zaptime/core";
+import { ref, nextTick } from "vue";
+import { getAnalytics, buildConfig } from "../analytics";
+import { mergeConfigs } from "../utils/mergeConfigs";
+import { isSameDay } from "date-fns";
+import { useIsSubscribed } from "./useIsSubscribed";
 
 export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
   const isEnabled = ref(false);
@@ -28,7 +28,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
   async function init() {
     if (config === undefined || config.token === undefined) {
       console.error(
-        "Zaptime error: Token is required, please enter your acquired token into the configuration. See more in the documentation: https://docs.zaptime.app/guide/vue-installation.html. If you don't have a token, you can acquire one at https://zaptime.app.",
+        "Zaptime error: Token is required, please enter your acquired token into the configuration. See more in the documentation: https://docs.zaptime.app/guide/vue-installation.html. If you don't have a token, you can acquire one at https://zaptime.app."
       );
     } else {
       const initData = await fetchRemoteConfiguration(config.token, config.apiBaseUrl, config.reservationUuid);
@@ -40,7 +40,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
           return;
         }
 
-        await loadDateFnsConfig(initData.value.configuration.locale?.preset || 'en');
+        await loadDateFnsConfig(initData.value.configuration.locale?.preset || "en");
 
         if (initData.value.reservation !== undefined) {
           setSelectedReservation(initData.value.reservation);
@@ -76,7 +76,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
 
         const analytics = getAnalytics(analyticsConfig);
 
-        analytics?.track('zaptime:calendar_opened');
+        analytics?.track("zaptime:calendar_opened");
         setConfig(mergedConfig);
 
         await initCalendar();

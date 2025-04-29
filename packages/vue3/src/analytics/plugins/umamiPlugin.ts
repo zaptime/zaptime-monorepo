@@ -1,5 +1,5 @@
-import loadScript from 'load-script';
-import { AnalyticsPlugin } from 'analytics';
+import loadScript from "load-script";
+import { AnalyticsPlugin } from "analytics";
 
 type Config = {
   src: string;
@@ -11,17 +11,17 @@ let umamiLoaded = false;
 
 export default function umami(config: Config): AnalyticsPlugin {
   return {
-    name: 'umami',
+    name: "umami",
 
     initialize: async () => {
       const { src, dataWebsiteId } = config;
 
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         loadScript(
           src,
           {
             attrs: {
-              'data-website-id': dataWebsiteId,
+              "data-website-id": dataWebsiteId,
             },
           },
           (err) => {
@@ -30,20 +30,20 @@ export default function umami(config: Config): AnalyticsPlugin {
             } else {
               umamiLoaded = true;
             }
-          },
+          }
         );
       }
     },
 
     page: (): void => {
-      if ('umami' in window) {
+      if ("umami" in window) {
         // @ts-expect-error umami in window is not defined
         window.umami.track();
       }
     },
 
     track: ({ payload }: any) => {
-      if ('umami' in window) {
+      if ("umami" in window) {
         // @ts-expect-error umami in window is not defined
         window.umami.track(payload.event, payload.properties);
       }

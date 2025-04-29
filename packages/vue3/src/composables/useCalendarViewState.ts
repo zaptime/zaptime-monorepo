@@ -1,7 +1,7 @@
-import { ref, computed } from 'vue';
+import { ref, computed } from "vue";
 
-type View = 'form' | 'calendar' | 'success';
-type CalendarView = 'pickingDate' | 'pickingTime';
+type View = "form" | "calendar" | "success";
+type CalendarView = "pickingDate" | "pickingTime";
 
 type CalendarViewState = {
   view: View;
@@ -10,16 +10,16 @@ type CalendarViewState = {
 
 const _calendarView = ref<Record<string, CalendarViewState>>({
   __DEFAULT__: {
-    view: 'calendar' as View,
-    calendarView: 'pickingDate' as CalendarView,
+    view: "calendar" as View,
+    calendarView: "pickingDate" as CalendarView,
   },
 });
 
 export default function (calendarId?: string) {
   if (calendarId !== undefined && _calendarView.value[calendarId] === undefined) {
     _calendarView.value[calendarId] = {
-      view: 'calendar' as View,
-      calendarView: 'pickingDate' as CalendarView,
+      view: "calendar" as View,
+      calendarView: "pickingDate" as CalendarView,
     };
   }
 

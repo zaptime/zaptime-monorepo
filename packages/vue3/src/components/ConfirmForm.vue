@@ -4,12 +4,7 @@
     :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[840px]']"
     :style="{ backgroundColor: color2 }"
   >
-    <form
-      v-if="!reservation && selectedTimeSlot !== undefined"
-      class="cal-mt-12 cal-flex-col sm:cal-w-[370px]"
-      :class="[selectedTimeSlot.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']"
-      @submit.prevent="onSubmit"
-    >
+    <form v-if="!reservation && selectedTimeSlot !== undefined" class="cal-mt-12 cal-flex-col sm:cal-w-[370px]" :class="[selectedTimeSlot.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']" @submit.prevent="onSubmit">
       <h1 class="cal-text-2xl cal-font-medium cal-text-theme-500 dark:cal-text-theme-500">
         {{ locale?.confirmationForm?.confirmBooking }}
       </h1>
@@ -27,35 +22,19 @@
         <Payment></Payment>
       </div>
 
-      <div
-        v-if="paymentError"
-        class="cal-my-5 cal-text-lg cal-text-red-500"
-      >
-        Payment has failed
-      </div>
+      <div v-if="paymentError" class="cal-my-5 cal-text-lg cal-text-red-500">Payment has failed</div>
 
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
-        <SecondaryButton
-          type="button"
-          :disabled="disabled"
-          @click="emit('go-back')"
-        >
+        <SecondaryButton type="button" :disabled="disabled" @click="emit('go-back')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>
-        <PrimaryButton
-          :loading="disabled"
-          type="submit"
-        >
+        <PrimaryButton :loading="disabled" type="submit">
           {{ locale?.confirmationForm?.buttons?.confirmBooking }}
         </PrimaryButton>
       </div>
     </form>
 
-    <form
-      v-if="reservation && selectedTimeSlot !== undefined"
-      class="cal-mt-20 sm:cal-w-[280px]"
-      @submit.prevent="submitReschedule"
-    >
+    <form v-if="reservation && selectedTimeSlot !== undefined" class="cal-mt-20 sm:cal-w-[280px]" @submit.prevent="submitReschedule">
       <h1 class="cal-text-2xl cal-font-medium cal-text-theme-500 dark:cal-text-theme-500">{{ locale?.confirmationForm?.reschedulingEvent }}</h1>
       <p class="cal-mt-5 cal-text-2xl cal-font-medium cal-text-theme-700 dark:cal-text-theme-100">
         {{ getFormattedDayInMonth(reservation.start) }}
@@ -92,17 +71,10 @@
       </h3>
 
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
-        <SecondaryButton
-          :disabled="disabled"
-          type="button"
-          @click="emit('go-back')"
-        >
+        <SecondaryButton :disabled="disabled" type="button" @click="emit('go-back')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>
-        <PrimaryButton
-          :loading="disabled"
-          type="submit"
-        >
+        <PrimaryButton :loading="disabled" type="submit">
           {{ locale?.confirmationForm?.buttons?.reschedule }}
         </PrimaryButton>
       </div>
@@ -111,34 +83,34 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref, onMounted } from 'vue';
-import { useSelectedTimeSlot, book, reserve, confirm, useConfig, reschedule, useDateFormatters, useLocations, useStripeConfig, useBookingForm, useBillingAddress, useReservationReschedule, cancel } from '@zaptime/core';
-import PrimaryButton from './atomic/PrimaryButton.vue';
-import SecondaryButton from './atomic/SecondaryButton.vue';
-import { getAnalytics } from '../analytics';
-import Payment from './Payment.vue';
-import FormBuilder from './BookingForm/FormBuilder.vue';
-import { useStripe, PaymentError } from '../composables/useStripe';
-import type { ReservationResponse } from '@zaptime/core';
+import { computed, inject, ref, onMounted } from "vue";
+import { useSelectedTimeSlot, book, reserve, confirm, useConfig, reschedule, useDateFormatters, useLocations, useStripeConfig, useBookingForm, useBillingAddress, useReservationReschedule, cancel } from "@zaptime/core";
+import PrimaryButton from "./atomic/PrimaryButton.vue";
+import SecondaryButton from "./atomic/SecondaryButton.vue";
+import { getAnalytics } from "../analytics";
+import Payment from "./Payment.vue";
+import FormBuilder from "./BookingForm/FormBuilder.vue";
+import { useStripe, PaymentError } from "../composables/useStripe";
+import type { ReservationResponse } from "@zaptime/core";
 
 const emit = defineEmits<{
-  (e: 'booking-confirmed', reservation: ReservationResponse): void;
-  (e: 'go-back'): void;
+  (e: "booking-confirmed", reservation: ReservationResponse): void;
+  (e: "go-back"): void;
 }>();
 
-const { selectedTimeSlot } = useSelectedTimeSlot(inject('calendarId'));
+const { selectedTimeSlot } = useSelectedTimeSlot(inject("calendarId"));
 const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters();
-const { config } = useConfig(inject('calendarId'));
-const { locations } = useLocations(inject('calendarId'));
-const { stripeConfig } = useStripeConfig(inject('calendarId'));
-const { collectFormValues } = useBookingForm(inject('calendarId'));
-const { billingAddress } = useBillingAddress(inject('calendarId'));
-const { reservation } = useReservationReschedule(inject('calendarId'));
+const { config } = useConfig(inject("calendarId"));
+const { locations } = useLocations(inject("calendarId"));
+const { stripeConfig } = useStripeConfig(inject("calendarId"));
+const { collectFormValues } = useBookingForm(inject("calendarId"));
+const { billingAddress } = useBillingAddress(inject("calendarId"));
+const { reservation } = useReservationReschedule(inject("calendarId"));
 
 const { initGateway, handleSubmit: handleStripePayment } = useStripe();
 
-const color2 = inject<string>('color2');
-const calendarId = inject<string>('calendarId');
+const color2 = inject<string>("color2");
+const calendarId = inject<string>("calendarId");
 const seats = ref(1);
 const disabled = ref(false);
 const analytics = getAnalytics();
@@ -148,7 +120,7 @@ const paymentError = ref(false);
 class ValidationError extends Error {
   constructor() {
     super();
-    this.name = 'ValidationError';
+    this.name = "ValidationError";
   }
 }
 
@@ -170,16 +142,16 @@ async function handleSubmittionWithPayment() {
       location: locations.value[0],
     });
 
-    if (billingAddress.value.email === '') {
+    if (billingAddress.value.email === "") {
       billingAddress.value.email = collectedValues.email;
     }
 
-    if (billingAddress.value.name === '') {
-      billingAddress.value.name = collectedValues.firstName + ' ' + collectedValues.lastName;
+    if (billingAddress.value.name === "") {
+      billingAddress.value.name = collectedValues.firstName + " " + collectedValues.lastName;
     }
 
-    if (billingAddress.value.country === '') {
-      billingAddress.value.country = 'CZ';
+    if (billingAddress.value.country === "") {
+      billingAddress.value.country = "CZ";
     }
 
     if (!res.success) {
@@ -191,7 +163,7 @@ async function handleSubmittionWithPayment() {
     const confirmRes = await confirm({ calendarId: calendarId });
 
     if (!confirmRes.success) {
-      throw new Error('Failed to confirm');
+      throw new Error("Failed to confirm");
     }
 
     return confirmRes;
@@ -200,7 +172,7 @@ async function handleSubmittionWithPayment() {
       console.error(err.message);
       await cancel(calendarId);
     }
-    throw new Error('Failed to reserve');
+    throw new Error("Failed to reserve");
   }
 }
 
@@ -225,16 +197,16 @@ async function onSubmit() {
       }
     }
 
-    analytics?.track('booking_confirmed', {
+    analytics?.track("booking_confirmed", {
       timeSlot: selectedTimeSlot.value ? selectedTimeSlot.value.start : undefined,
     });
 
-    emit('booking-confirmed', res);
+    emit("booking-confirmed", res);
 
     disabled.value = false;
   } catch (err) {
     if (err instanceof ValidationError) {
-      console.error('Booking failed! Please try again or contact support.');
+      console.error("Booking failed! Please try again or contact support.");
       return;
     }
     paymentError.value = true;
@@ -248,7 +220,7 @@ async function submitReschedule() {
   disabled.value = true;
 
   const res = await reschedule(calendarId);
-  emit('booking-confirmed', res);
+  emit("booking-confirmed", res);
 
   disabled.value = false;
 }

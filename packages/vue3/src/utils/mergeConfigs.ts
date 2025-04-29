@@ -1,6 +1,6 @@
-import { mergeObjects } from '@zaptime/core';
-import type { ZaptimeConfig } from '@zaptime/core';
-import { useBreakpoints } from '@vueuse/core';
+import { mergeObjects } from "@zaptime/core";
+import type { ZaptimeConfig } from "@zaptime/core";
+import { useBreakpoints } from "@vueuse/core";
 
 /**
  *
@@ -18,7 +18,7 @@ export function mergeConfigs(baseConfig: Partial<ZaptimeConfig>, config: Partial
     large: 860,
   });
 
-  const isSmaller = breakpoints.smaller('large');
+  const isSmaller = breakpoints.smaller("large");
 
   const merged = mergeObjects({ ...baseConfig }, { ...config }) as ZaptimeConfig;
 

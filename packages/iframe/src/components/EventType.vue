@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ZaptimeCalendar } from '@zaptime/vue3';
-import type { ZaptimeConfig } from '@zaptime/vue3';
-import type { TimeSlot } from '@zaptime/core';
+import { ZaptimeCalendar } from "@zaptime/vue3";
+import type { ZaptimeConfig } from "@zaptime/vue3";
+import type { TimeSlot } from "@zaptime/core";
 
 defineProps<{
   config: ZaptimeConfig;
@@ -9,7 +9,7 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (event: 'time-slot-changed', timeSlot: TimeSlot): void;
+  (event: "time-slot-changed", timeSlot: TimeSlot): void;
 }>();
 
 const onTimeSlotChanged = (timeSlot: TimeSlot | undefined) => {
@@ -17,16 +17,12 @@ const onTimeSlotChanged = (timeSlot: TimeSlot | undefined) => {
     return;
   }
 
-  emit('time-slot-changed', timeSlot);
+  emit("time-slot-changed", timeSlot);
 };
 </script>
 
 <template>
   <div>
-    <ZaptimeCalendar
-      :calendar-id="calendarId"
-      :config="config"
-      @time-slot-changed="onTimeSlotChanged"
-    ></ZaptimeCalendar>
+    <ZaptimeCalendar :calendar-id="calendarId" :config="config" @time-slot-changed="onTimeSlotChanged"></ZaptimeCalendar>
   </div>
 </template>

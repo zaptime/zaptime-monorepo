@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed } from "vue";
 
 export type BillingAddress = {
   name: string;
@@ -13,15 +13,15 @@ export type BillingAddress = {
 };
 
 const defaultBillingAddress: BillingAddress = {
-  name: '',
-  email: '',
-  company: '',
-  address: '',
-  city: '',
-  postalCode: '',
-  country: '',
-  crn: '',
-  vatId: '',
+  name: "",
+  email: "",
+  company: "",
+  address: "",
+  city: "",
+  postalCode: "",
+  country: "",
+  crn: "",
+  vatId: "",
 };
 
 const state = ref<Record<string, BillingAddress>>({

@@ -1,7 +1,7 @@
-import { ZaptimeConfig } from '@zaptime/core';
-import type { EventTypeGroup } from './components/EventTypesGroup.vue';
+import { ZaptimeConfig } from "@zaptime/core";
+import type { EventTypeGroup } from "./components/EventTypesGroup.vue";
 
-type ConfigWithoutToken = Omit<ZaptimeConfig, 'token'>;
+type ConfigWithoutToken = Omit<ZaptimeConfig, "token">;
 
 export async function fetchRemoteConfig(token: string): Promise<ZaptimeConfig> {
   if (token) {
@@ -12,11 +12,11 @@ export async function fetchRemoteConfig(token: string): Promise<ZaptimeConfig> {
       };
     };
 
-    const res = await fetch('https://api.zaptime.app/configuration', {
+    const res = await fetch("https://api.zaptime.app/configuration", {
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + token,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer " + token,
       },
     });
 
@@ -27,7 +27,7 @@ export async function fetchRemoteConfig(token: string): Promise<ZaptimeConfig> {
     }
   }
 
-  throw new Error('Invalid token');
+  throw new Error("Invalid token");
 }
 
 export async function fetchRemoteGroupConfig(eventGroupToken: string): Promise<EventTypeGroup> {
@@ -37,7 +37,7 @@ export async function fetchRemoteGroupConfig(eventGroupToken: string): Promise<E
       data: EventTypeGroup;
     };
 
-    const res = await fetch('https://api.zaptime.app/event-type-groups/' + eventGroupToken);
+    const res = await fetch("https://api.zaptime.app/event-type-groups/" + eventGroupToken);
 
     const data: Response = await res.json();
 
@@ -46,5 +46,5 @@ export async function fetchRemoteGroupConfig(eventGroupToken: string): Promise<E
     }
   }
 
-  throw new Error('Invalid token');
+  throw new Error("Invalid token");
 }

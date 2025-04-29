@@ -1,5 +1,5 @@
-import ZaptimeTheme from './ZaptimeTheme';
-import ZaptimeLocale from './ZaptimeLocale';
+import ZaptimeTheme from "./ZaptimeTheme";
+import ZaptimeLocale from "./ZaptimeLocale";
 
 export default interface ZaptimeConfig {
   token: string;

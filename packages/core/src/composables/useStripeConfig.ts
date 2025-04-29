@@ -1,5 +1,5 @@
-import { StripeConfig } from '../types/InitData';
-import { ref, computed } from 'vue';
+import { StripeConfig } from "../types/InitData";
+import { ref, computed } from "vue";
 
 const state = ref<Record<string, StripeConfig | undefined>>({
   __DEFAULT__: undefined,

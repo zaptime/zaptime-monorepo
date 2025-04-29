@@ -1,4 +1,4 @@
-import DfnsConfig from '../types/DfnsConfig';
+import DfnsConfig from "../types/DfnsConfig";
 
 // const languages = [
 // 'af',
@@ -83,7 +83,7 @@ export const getDfnsConfig = async (locale: string): Promise<DfnsConfig> => {
   let dateFnsLocale = undefined;
 
   if (locale === undefined) {
-    dateFnsLocale = await import('date-fns/locale/en-US');
+    dateFnsLocale = await import("date-fns/locale/en-US");
     const dfnsConf: DfnsConfig = {
       locale: dateFnsLocale.default,
     };
@@ -91,40 +91,40 @@ export const getDfnsConfig = async (locale: string): Promise<DfnsConfig> => {
     return dfnsConf;
   }
 
-  if (locale === 'cs') {
-    dateFnsLocale = await import('date-fns/locale/cs');
-  } else if (locale === 'sk') {
-    dateFnsLocale = await import('date-fns/locale/sk');
-  } else if (locale === 'pl') {
-    dateFnsLocale = await import('date-fns/locale/pl');
-  } else if (locale === 'de') {
-    dateFnsLocale = await import('date-fns/locale/de');
-  } else if (locale === 'pt') {
-    dateFnsLocale = await import('date-fns/locale/pt');
-  } else if (locale === 'es') {
-    dateFnsLocale = await import('date-fns/locale/es');
-  } else if (locale === 'ja') {
-    dateFnsLocale = await import('date-fns/locale/ja');
-  } else if (locale === 'zh') {
-    dateFnsLocale = await import('date-fns/locale/zh-CN');
-  } else if (locale === 'tr') {
-    dateFnsLocale = await import('date-fns/locale/tr');
-  } else if (locale === 'sv') {
-    dateFnsLocale = await import('date-fns/locale/sv');
-  } else if (locale === 'nl') {
-    dateFnsLocale = await import('date-fns/locale/nl');
-  } else if (locale === 'it') {
-    dateFnsLocale = await import('date-fns/locale/it');
-  } else if (locale === 'fi') {
-    dateFnsLocale = await import('date-fns/locale/fi');
-  } else if (locale === 'ro') {
-    dateFnsLocale = await import('date-fns/locale/ro');
-  } else if (locale === 'ko') {
-    dateFnsLocale = await import('date-fns/locale/ko');
-  } else if (locale === 'vi') {
-    dateFnsLocale = await import('date-fns/locale/vi');
+  if (locale === "cs") {
+    dateFnsLocale = await import("date-fns/locale/cs");
+  } else if (locale === "sk") {
+    dateFnsLocale = await import("date-fns/locale/sk");
+  } else if (locale === "pl") {
+    dateFnsLocale = await import("date-fns/locale/pl");
+  } else if (locale === "de") {
+    dateFnsLocale = await import("date-fns/locale/de");
+  } else if (locale === "pt") {
+    dateFnsLocale = await import("date-fns/locale/pt");
+  } else if (locale === "es") {
+    dateFnsLocale = await import("date-fns/locale/es");
+  } else if (locale === "ja") {
+    dateFnsLocale = await import("date-fns/locale/ja");
+  } else if (locale === "zh") {
+    dateFnsLocale = await import("date-fns/locale/zh-CN");
+  } else if (locale === "tr") {
+    dateFnsLocale = await import("date-fns/locale/tr");
+  } else if (locale === "sv") {
+    dateFnsLocale = await import("date-fns/locale/sv");
+  } else if (locale === "nl") {
+    dateFnsLocale = await import("date-fns/locale/nl");
+  } else if (locale === "it") {
+    dateFnsLocale = await import("date-fns/locale/it");
+  } else if (locale === "fi") {
+    dateFnsLocale = await import("date-fns/locale/fi");
+  } else if (locale === "ro") {
+    dateFnsLocale = await import("date-fns/locale/ro");
+  } else if (locale === "ko") {
+    dateFnsLocale = await import("date-fns/locale/ko");
+  } else if (locale === "vi") {
+    dateFnsLocale = await import("date-fns/locale/vi");
   } else {
-    dateFnsLocale = await import('date-fns/locale/en-US');
+    dateFnsLocale = await import("date-fns/locale/en-US");
   }
 
   const dfnsConf: DfnsConfig = {

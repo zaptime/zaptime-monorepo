@@ -1,6 +1,6 @@
-import { useConfig } from '@zaptime/core';
-import { computed } from 'vue';
-import mix from '../utils/mixColors';
+import { useConfig } from "@zaptime/core";
+import { computed } from "vue";
+import mix from "../utils/mixColors";
 
 export default function useAlphaColors(calendarId?: string) {
   const { config } = useConfig(calendarId);
@@ -14,11 +14,11 @@ export default function useAlphaColors(calendarId?: string) {
   });
 
   const getColorForAlpha = (alpha: number) => {
-    if (config.value && config.value.theme && config.value.theme.mode === 'dark' && config.value.theme.colors && config.value.theme.colors[900]) {
-      return mix(config.value.theme.colors[900].replace('#', ''), '000000', alpha * 100);
+    if (config.value && config.value.theme && config.value.theme.mode === "dark" && config.value.theme.colors && config.value.theme.colors[900]) {
+      return mix(config.value.theme.colors[900].replace("#", ""), "000000", alpha * 100);
     }
 
-    return '';
+    return "";
   };
 
   return {

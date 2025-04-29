@@ -4,12 +4,7 @@
     :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[840px]']"
     :style="{ backgroundColor: color2 }"
   >
-    <form
-      v-if="selectedTimeSlot !== undefined"
-      class="cal-mt-8 sm:cal-w-[370px]"
-      :class="[selectedTimeSlot.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']"
-      @submit.prevent="onSubmit"
-    >
+    <form v-if="selectedTimeSlot !== undefined" class="cal-mt-8 sm:cal-w-[370px]" :class="[selectedTimeSlot.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']" @submit.prevent="onSubmit">
       <h1 class="cal-text-2xl cal-text-theme-700 dark:cal-text-theme-200">
         {{ locale?.confirmationForm?.confirmBooking }}
       </h1>
@@ -26,10 +21,7 @@
         <SecondaryButton @click="$emit('goBack')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>
-        <PrimaryButton
-          type="submit"
-          @click="$emit('confirmBooking')"
-        >
+        <PrimaryButton type="submit" @click="$emit('confirmBooking')">
           {{ locale?.confirmationForm?.buttons?.confirmBooking }}
         </PrimaryButton>
       </div>
@@ -38,20 +30,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue';
-import { useSelectedTimeSlot, book, useConfig, useDateFormatters } from '@zaptime/core';
-import PrimaryButton from './atomic/PrimaryButton.vue';
-import SecondaryButton from './atomic/SecondaryButton.vue';
+import { computed, inject, ref } from "vue";
+import { useSelectedTimeSlot, book, useConfig, useDateFormatters } from "@zaptime/core";
+import PrimaryButton from "./atomic/PrimaryButton.vue";
+import SecondaryButton from "./atomic/SecondaryButton.vue";
 
-const { selectedTimeSlot } = useSelectedTimeSlot(inject('calendarId'));
+const { selectedTimeSlot } = useSelectedTimeSlot(inject("calendarId"));
 const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useDateFormatters();
-const { config } = useConfig(inject('calendarId'));
-const color2 = inject<string>('color2');
+const { config } = useConfig(inject("calendarId"));
+const color2 = inject<string>("color2");
 
-defineEmits(['confirmBooking', 'goBack']);
+defineEmits(["confirmBooking", "goBack"]);
 
-const email = ref('');
-const name = ref('');
+const email = ref("");
+const name = ref("");
 const seats = ref(1);
 
 const locale = computed(() => {
@@ -62,11 +54,11 @@ const locale = computed(() => {
 });
 
 const splitName = (name: string) => {
-  let firstName = '';
-  let lastName = '';
+  let firstName = "";
+  let lastName = "";
 
-  if (name !== '') {
-    const splitName = name.split(' ');
+  if (name !== "") {
+    const splitName = name.split(" ");
 
     if (splitName.length > 1) {
       firstName = splitName[0];

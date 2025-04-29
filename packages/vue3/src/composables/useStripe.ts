@@ -1,5 +1,5 @@
-import { ref, inject, computed } from 'vue';
-import { useConfig } from '@zaptime/core';
+import { ref, inject, computed } from "vue";
+import { useConfig } from "@zaptime/core";
 
 export type BillingAddress = {
   name: string;
@@ -16,8 +16,8 @@ export type BillingAddress = {
 export class PaymentError extends Error {
   constructor(error?: string) {
     super();
-    this.name = 'error';
-    this.message = error || 'Payment failed';
+    this.name = "error";
+    this.message = error || "Payment failed";
   }
 }
 
@@ -29,17 +29,17 @@ export function useStripe() {
   const stripeCardNumber = ref<stripe.elements.Element>();
   const stripeCardExpiry = ref<stripe.elements.Element>();
   const stripeCardCvc = ref<stripe.elements.Element>();
-  const { config } = useConfig(inject('calendarId'));
+  const { config } = useConfig(inject("calendarId"));
 
-  const isDark = config.value.theme?.mode === 'dark';
+  const isDark = config.value.theme?.mode === "dark";
 
   const elementClasses = {
-    focus: 'focused',
-    empty: 'empty',
-    invalid: 'invalid',
+    focus: "focused",
+    empty: "empty",
+    invalid: "invalid",
   };
 
-  const API_BASE_URL = 'https://api.zaptime.app/';
+  const API_BASE_URL = "https://api.zaptime.app/";
 
   const apiBaseUrl = computed(() => {
     return config.value.apiBaseUrl || API_BASE_URL;
@@ -53,22 +53,22 @@ export function useStripe() {
         fontWeight: 600,
         fontFamily:
           '"Basier Circle", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-        fontSize: '14px',
-        fontSmoothing: 'antialiased',
-        '::placeholder': {
+        fontSize: "14px",
+        fontSmoothing: "antialiased",
+        "::placeholder": {
           // @ts-expect-error values are actually required
           color: isDark ? config.value.theme.colors[500] : config.value.theme.colors[400],
         },
-        ':-webkit-autofill': {
+        ":-webkit-autofill": {
           // @ts-expect-error values are actually required
           color: isDark ? config.value.theme.colors[500] : config.value.theme.colors[900],
         },
-        ':focus': {},
+        ":focus": {},
       },
       invalid: {
-        color: '#E25950',
-        '::placeholder': {
-          color: '#FFCCA5',
+        color: "#E25950",
+        "::placeholder": {
+          color: "#FFCCA5",
         },
       },
     };
@@ -81,24 +81,24 @@ export function useStripe() {
 
     elements.value = stripe.value.elements();
 
-    stripeCardNumber.value = elements.value.create('cardNumber', {
+    stripeCardNumber.value = elements.value.create("cardNumber", {
       style: elementStyles.value,
       classes: elementClasses,
     });
 
-    stripeCardExpiry.value = elements.value.create('cardExpiry', {
+    stripeCardExpiry.value = elements.value.create("cardExpiry", {
       style: elementStyles.value,
       classes: elementClasses,
     });
 
-    stripeCardCvc.value = elements.value.create('cardCvc', {
+    stripeCardCvc.value = elements.value.create("cardCvc", {
       style: elementStyles.value,
       classes: elementClasses,
     });
 
-    stripeCardNumber.value.mount('#card-number');
-    stripeCardExpiry.value.mount('#card-expiry');
-    stripeCardCvc.value.mount('#card-cvc');
+    stripeCardNumber.value.mount("#card-number");
+    stripeCardExpiry.value.mount("#card-expiry");
+    stripeCardCvc.value.mount("#card-cvc");
   }
 
   async function handleSubmit({ billingAddress, reservationUuid }: { billingAddress: BillingAddress; reservationUuid: string }) {
@@ -115,11 +115,11 @@ export function useStripe() {
 
     try {
       const res = await fetch(apiBaseUrl.value + `api/reservations/${reservationUuid}/payments`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Authorization: 'Bearer ' + config.value.token,
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
+          Authorization: "Bearer " + config.value.token,
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({
           email: billingAddress.email,
@@ -137,11 +137,11 @@ export function useStripe() {
       const { data } = await res.json();
       clientSecret = data.clientSecret;
     } catch (e) {
-      throw new PaymentError('Zaptime Payment Confirmation API Failed.');
+      throw new PaymentError("Zaptime Payment Confirmation API Failed.");
     }
 
     if (clientSecret === undefined) {
-      throw new PaymentError('Client secret is undefined.');
+      throw new PaymentError("Client secret is undefined.");
     }
 
     const { error } = await stripe.value.confirmCardPayment(clientSecret, {

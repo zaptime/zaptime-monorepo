@@ -1,8 +1,5 @@
 <template>
-  <div
-    style="background-color: black; height: 100vh"
-    class="cal-flex cal-px-4"
-  >
+  <div style="background-color: black; height: 100vh" class="cal-flex cal-px-4">
     <div style="padding-top: 20px; padding-left: 20px">
       <button @click="reserveDemocall">Reserve reservation</button>
 
@@ -10,11 +7,7 @@
 
       <button @click="refresh">refresh</button>
 
-      <ZaptimeCalendar
-        :config="config"
-        :calendar-id="calendarId"
-        @booking-confirmed="(data) => bookingConfirmed(data)"
-      ></ZaptimeCalendar>
+      <ZaptimeCalendar :config="config" :calendar-id="calendarId" @booking-confirmed="(data) => bookingConfirmed(data)"></ZaptimeCalendar>
     </div>
 
     <!-- <ZaptimeCalendar
@@ -29,12 +22,12 @@
 </template>
 
 <script setup lang="ts">
-import { default as ZaptimeCalendar } from '../src/App.vue';
-import { ZaptimeConfig, reserve, confirm, ReservationResponse, useCalendar } from '@zaptime/core';
-import { ref } from 'vue';
+import { default as ZaptimeCalendar } from "../src/App.vue";
+import { ZaptimeConfig, reserve, confirm, ReservationResponse, useCalendar } from "@zaptime/core";
+import { ref } from "vue";
 
 const { getDays } = useCalendar();
-const calendarId = 'this-is-my-calendar-id';
+const calendarId = "this-is-my-calendar-id";
 function confirmDemocall() {
   confirm({
     calendarId,
@@ -43,9 +36,9 @@ function confirmDemocall() {
 
 function reserveDemocall() {
   reserve({
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john@doe.test',
+    firstName: "John",
+    lastName: "Doe",
+    email: "john@doe.test",
     calendarId: calendarId,
   });
 }
@@ -64,7 +57,7 @@ function refresh() {
 }
 
 function bookingConfirmed(reservation: ReservationResponse) {
-  console.log('Booking confirmed', reservation.data.userEmail);
+  console.log("Booking confirmed", reservation.data.userEmail);
 }
 
 const config = ref<ZaptimeConfig>({

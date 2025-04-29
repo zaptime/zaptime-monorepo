@@ -5,17 +5,8 @@
     :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[840px]']"
   >
     <div class="cal-flex cal-justify-center">
-      <svg
-        class="cal-h-16 cal-w-16 cal-text-accent-base"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-          clip-rule="evenodd"
-        ></path>
+      <svg class="cal-h-16 cal-w-16 cal-text-accent-base" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
       </svg>
     </div>
 
@@ -31,10 +22,10 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from 'vue';
-import { useConfig, useSelectedTimeSlot, useDateFormatters } from '@zaptime/core';
+import { inject } from "vue";
+import { useConfig, useSelectedTimeSlot, useDateFormatters } from "@zaptime/core";
 
-const { config } = useConfig(inject('calendarId'));
-const { selectedTimeSlot } = useSelectedTimeSlot(inject('calendarId'));
+const { config } = useConfig(inject("calendarId"));
+const { selectedTimeSlot } = useSelectedTimeSlot(inject("calendarId"));
 const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters();
 </script>

@@ -1,8 +1,5 @@
 <template>
-  <SwitchGroup
-    as="div"
-    class="cal-flex cal-items-center"
-  >
+  <SwitchGroup as="div" class="cal-flex cal-items-center">
     <SwitchLabel class="cal-mr-1 cal-text-xs cal-text-theme-700 dark:cal-text-theme-200">
       <slot name="before"></slot>
     </SwitchLabel>
@@ -26,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { Switch, SwitchLabel, SwitchGroup } from '@headlessui/vue';
+import { Switch, SwitchLabel, SwitchGroup } from "@headlessui/vue";
 
 defineProps({
   modelValue: {
@@ -35,5 +32,5 @@ defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(["update:modelValue"]);
 </script>

@@ -40,7 +40,7 @@ const props = withDefaults(
   {
     config: undefined,
     calendarId: undefined,
-  },
+  }
 );
 
 const emit = defineEmits<{
@@ -73,7 +73,7 @@ watch(
   () => props.config,
   (newValue) => {
     setConfig(mergeConfigs(config.value, newValue));
-  },
+  }
 );
 
 const borderRadius = computed(() => {

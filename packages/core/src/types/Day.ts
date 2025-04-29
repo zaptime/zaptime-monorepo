@@ -1,4 +1,4 @@
-import TimeSlot from './TimeSlot';
+import TimeSlot from "./TimeSlot";
 
 export default interface Day {
   label: string;

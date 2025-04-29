@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref } from "vue";
 
 const clientOriginalTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const timezone = ref<string>(clientOriginalTimezone);

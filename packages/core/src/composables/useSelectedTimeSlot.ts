@@ -1,5 +1,5 @@
-import TimeSlot from '../types/TimeSlot';
-import { ref, computed } from 'vue';
+import TimeSlot from "../types/TimeSlot";
+import { ref, computed } from "vue";
 
 type SelectedTimeSlot = {
   selectedTimeSlot: TimeSlot | undefined;

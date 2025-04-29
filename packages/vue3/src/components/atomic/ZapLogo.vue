@@ -1,11 +1,5 @@
 <template>
-  <svg
-    width="69"
-    height="16"
-    viewBox="0 0 138 32"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="69" height="16" viewBox="0 0 138 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clip-path="url(#clip0_804_3990)">
       <path
         fill-rule="evenodd"
@@ -25,52 +19,23 @@
       ></path>
     </g>
     <defs>
-      <linearGradient
-        id="paint0_linear_804_3990"
-        x1="3.47509"
-        y1="3.20074"
-        x2="27.8922"
-        y2="29.5382"
-        gradientUnits="userSpaceOnUse"
-      >
+      <linearGradient id="paint0_linear_804_3990" x1="3.47509" y1="3.20074" x2="27.8922" y2="29.5382" gradientUnits="userSpaceOnUse">
         <stop stop-color="#FF8D47"></stop>
-        <stop
-          offset="0.147634"
-          stop-color="#FF7447"
-        ></stop>
-        <stop
-          offset="0.454086"
-          stop-color="#FF4247"
-        ></stop>
-        <stop
-          offset="0.636926"
-          stop-color="#E92A5B"
-        ></stop>
-        <stop
-          offset="0.740367"
-          stop-color="#DD1C67"
-        ></stop>
-        <stop
-          offset="0.842991"
-          stop-color="#D31071"
-        ></stop>
-        <stop
-          offset="1"
-          stop-color="#CF0283"
-        ></stop>
+        <stop offset="0.147634" stop-color="#FF7447"></stop>
+        <stop offset="0.454086" stop-color="#FF4247"></stop>
+        <stop offset="0.636926" stop-color="#E92A5B"></stop>
+        <stop offset="0.740367" stop-color="#DD1C67"></stop>
+        <stop offset="0.842991" stop-color="#D31071"></stop>
+        <stop offset="1" stop-color="#CF0283"></stop>
       </linearGradient>
       <clipPath id="clip0_804_3990">
-        <rect
-          width="137.143"
-          height="32"
-          fill="white"
-        ></rect>
+        <rect width="137.143" height="32" fill="white"></rect>
       </clipPath>
     </defs>
   </svg>
 </template>
 
 <script setup lang="ts">
-import { useConfig } from '@zaptime/core';
+import { useConfig } from "@zaptime/core";
 const { config } = useConfig();
 </script>

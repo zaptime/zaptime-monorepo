@@ -1,8 +1,5 @@
 <template>
-  <SwitchGroup
-    as="div"
-    class="cal-flex cal-items-center"
-  >
+  <SwitchGroup as="div" class="cal-flex cal-items-center">
     <Switch
       v-model="enabled"
       :required="required"
@@ -19,19 +16,16 @@
         ]"
       />
     </Switch>
-    <SwitchLabel
-      as="span"
-      class="cal-ml-3 cal-text-sm"
-    >
+    <SwitchLabel as="span" class="cal-ml-3 cal-text-sm">
       <span class="cal-text-theme-400">{{ label }}</span>
     </SwitchLabel>
   </SwitchGroup>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
-import type { CustomField } from '@zaptime/core';
+import { ref } from "vue";
+import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
+import type { CustomField } from "@zaptime/core";
 type Props = CustomField;
 
 defineProps<Props>();

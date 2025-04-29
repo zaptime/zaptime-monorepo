@@ -3,11 +3,7 @@
     <label class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200">
       {{ label }}
     </label>
-    <div
-      v-for="(option, i) of options"
-      :key="uuid + '_' + i"
-      class="cal-my-2 cal-flex cal-h-6 cal-items-center"
-    >
+    <div v-for="(option, i) of options" :key="uuid + '_' + i" class="cal-my-2 cal-flex cal-h-6 cal-items-center">
       <input
         :id="uuid + '_' + i"
         :name="uuid"
@@ -17,25 +13,21 @@
         @change="onChange(i)"
       />
       <div class="cal-ml-3 cal-text-sm cal-leading-6">
-        <label
-          :for="uuid + '_' + i"
-          class="cal-block cal-text-sm cal-text-theme-500 dark:cal-text-theme-200"
-          v-html="option"
-        ></label>
+        <label :for="uuid + '_' + i" class="cal-block cal-text-sm cal-text-theme-500 dark:cal-text-theme-200" v-html="option"></label>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { CustomField } from '@zaptime/core';
-import { useBookingForm } from '@zaptime/core';
-import { inject } from 'vue';
+import type { CustomField } from "@zaptime/core";
+import { useBookingForm } from "@zaptime/core";
+import { inject } from "vue";
 
 type Props = CustomField;
 const props = defineProps<Props>();
 
-const { setCustomFieldValue } = useBookingForm(inject('calendarId'));
+const { setCustomFieldValue } = useBookingForm(inject("calendarId"));
 
 function onChange(i: number) {
   if (props.options === undefined) {

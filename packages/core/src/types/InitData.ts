@@ -1,6 +1,6 @@
-import type ZaptimeConfig from './ZaptimeConfig';
+import type ZaptimeConfig from "./ZaptimeConfig";
 
-export type ConfigWithoutToken = Omit<ZaptimeConfig, 'token'>;
+export type ConfigWithoutToken = Omit<ZaptimeConfig, "token">;
 
 export type Analytics = {
   name: string;
@@ -52,13 +52,13 @@ export type CustomField = {
   label: string;
   name: string;
   uuid: string; // For BE validation
-  type: 'text' | 'email' | 'phone' | 'number' | 'textarea' | 'switch' | 'checkbox' | 'select' | 'multiselect' | 'radio';
+  type: "text" | "email" | "phone" | "number" | "textarea" | "switch" | "checkbox" | "select" | "multiselect" | "radio";
   required: boolean;
-  mergeTag?: 'FIRST_NAME' | 'LAST_NAME' | 'EMAIL' | 'PHONE' | string;
+  mergeTag?: "FIRST_NAME" | "LAST_NAME" | "EMAIL" | "PHONE" | string;
   placeholder?: string;
   options?: string[];
   value?: CustomFieldValue;
 };
 
 export type Success = InitData;
-export type Errors = 'invalidToken';
+export type Errors = "invalidToken";
