@@ -220,6 +220,12 @@ export default (calendarId?: string) => {
     if (state.value.days.length === 0) {
       await setLocales();
       await getDays();
+
+      // If no time slots are available, move to the next month
+      if (state.value.timeSlots.length <= 0) {
+        await next();
+      }
+
       setState("initLoaded", true);
     }
   };
