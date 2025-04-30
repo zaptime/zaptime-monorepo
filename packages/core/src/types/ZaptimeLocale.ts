@@ -17,6 +17,7 @@ export default interface ZaptimeLocale {
     noTimeSlotAvailable?: string;
     choosePreferredTime?: string;
     pickTime?: string;
+    showNextMonth?: string;
   };
 
   confirmationForm?: {

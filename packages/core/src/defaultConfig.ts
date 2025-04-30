@@ -9,6 +9,7 @@ const config: ZaptimeConfig = {
       noTimeSlotAvailable: "There is no time slot available for chosen month.",
       choosePreferredTime: "Choose preferred time",
       pickTime: "Pick a time",
+      showNextMonth: "Show next month",
     },
     confirmationForm: {
       confirmBooking: "Confirm booking",

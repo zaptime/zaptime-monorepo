@@ -9,22 +9,24 @@
         class="md:cal-hidden cal-absolute cal-inset-0"
       >
         <div
-          class="dark:cal-text-theme cal-mt-1.5 cal-flex cal-flex-col cal-h-full cal-items-center cal-justify-center cal-rounded-2xl cal-px-5 cal-backdrop-blur-[2px] cal-bg-[#ffffff8c] cal-border cal-border-white/30 dark:cal-bg-gray-800/20 dark:cal-border-white/10"
+          class="dark:cal-text-theme cal-mt-1.5 cal-flex cal-flex-col cal-h-full cal-items-center cal-justify-center cal-rounded-2xl cal-px-5 cal-backdrop-blur-[6px] dark:cal-bg-gray-800/10"
         >
           <p
             v-if="config.locale && config.locale.texts?.noTimeSlotAvailable"
-            class="dark:cal-text-theme-theme cal-text-sm cal-text-theme-700 cal-text-center"
+            class="dark:cal-text-theme-200 cal-text-sm cal-text-theme-700 cal-text-center"
             v-html="config.locale.texts?.noTimeSlotAvailable"
           ></p>
 
           <button
-            class="cal-mt-4 cal-rounded-lg cal-bg-accent-base cal-pl-4 cal-pr-2 cal-py-2 cal-text-sm cal-font-medium cal-text-white cal-shadow-sm hover:cal-bg-accent-dark focus:cal-outline-none focus:cal-ring-2 focus:cal-ring-theme-500 focus:cal-ring-offset-2 dark:cal-bg-theme-600 dark:hover:cal-bg-theme-700 dark:focus:cal-ring-theme-400 cal-transition-all cal-duration-75 cal-ease-out cal-group"
+            class="cal-mt-4 cal-rounded-lg cal-bg-accent-base cal-pl-4 cal-pr-2 cal-py-2 cal-text-sm cal-font-medium cal-text-white cal-shadow-sm hover:cal-bg-accent-dark focus:cal-outline-none focus:cal-ring-2 focus:cal-ring-theme-500 focus:cal-ring-offset-2 dark:cal-bg-theme-accent-base dark:hover:cal-bg-theme-accent-dark dark:focus:cal-ring-theme-400 cal-transition-all cal-duration-75 cal-ease-out cal-group"
             @click="next"
           >
-            <span class="cal-flex cal-items-center cal-justify-center">
+            <span
+              class="cal-flex cal-gap-1 cal-items-center cal-justify-center"
+            >
               {{ config.locale?.texts?.showNextMonth }}
               <ChevronRightIcon
-                class="cal-ml-1 group-hover:cal-translate-x-1 cal-transition-all cal-duration-75 cal-ease-out cal-h-6 cal-w-6"
+                class="group-hover:cal-translate-x-1 cal-transition-all cal-duration-75 cal-ease-out cal-h-6 cal-w-6"
               />
             </span>
           </button>

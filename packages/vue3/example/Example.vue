@@ -94,11 +94,11 @@ const config = ref<ZaptimeConfig>({
 
   // profileImage: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
 
-  locale: {
+  /*  locale: {
     texts: {
       showNextMonth: "Zobrazit další měsíc",
     },
-  },
+  }, */
   // theme: calypsoTheme,
 });
 </script>
