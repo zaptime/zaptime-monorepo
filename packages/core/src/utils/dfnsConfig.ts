@@ -85,6 +85,7 @@ export const getDfnsConfig = async (locale: string): Promise<DfnsConfig> => {
   if (locale === undefined) {
     dateFnsLocale = await import("date-fns/locale/en-US");
     const dfnsConf: DfnsConfig = {
+      // @ts-expect-error
       locale: dateFnsLocale.default,
     };
 
@@ -128,6 +129,7 @@ export const getDfnsConfig = async (locale: string): Promise<DfnsConfig> => {
   }
 
   const dfnsConf: DfnsConfig = {
+    // @ts-expect-error
     locale: dateFnsLocale.default,
   };
 

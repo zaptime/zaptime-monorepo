@@ -48,26 +48,29 @@ export function useStripe() {
   const elementStyles = computed(() => {
     return {
       base: {
-        // @ts-expect-error values are actually required
         color: isDark
-          ? config.value.theme.colors[100]
-          : config.value.theme.colors[900],
+          ? // @ts-expect-error
+            config.value.theme.colors[100]
+          : // @ts-expect-error
+            config.value.theme.colors[900],
         fontWeight: 600,
         fontFamily:
           '"Basier Circle", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
         fontSize: "14px",
         fontSmoothing: "antialiased",
         "::placeholder": {
-          // @ts-expect-error values are actually required
           color: isDark
-            ? config.value.theme.colors[500]
-            : config.value.theme.colors[400],
+            ? // @ts-expect-error
+              config.value.theme.colors[500]
+            : // @ts-expect-error
+              config.value.theme.colors[400],
         },
         ":-webkit-autofill": {
-          // @ts-expect-error values are actually required
           color: isDark
-            ? config.value.theme.colors[500]
-            : config.value.theme.colors[900],
+            ? // @ts-expect-error
+              config.value.theme.colors[500]
+            : // @ts-expect-error
+              config.value.theme.colors[900],
         },
         ":focus": {},
       },
