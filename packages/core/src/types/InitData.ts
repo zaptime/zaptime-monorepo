@@ -33,6 +33,7 @@ export type InitData = {
   customFields?: CustomField[];
   reservation?: Reservation;
   isSubscribed: boolean;
+  eventTypeName: string;
 };
 
 export type StripeConfig = {

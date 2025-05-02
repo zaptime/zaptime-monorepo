@@ -91,7 +91,10 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
 
         const analytics = getAnalytics(analyticsConfig);
 
-        analytics?.track("zaptime:calendar_opened");
+        analytics?.track("zaptime:calendar_opened", {
+          eventTypeName: initData.value.eventTypeName,
+        });
+
         setConfig(mergedConfig);
 
         await initCalendar();
