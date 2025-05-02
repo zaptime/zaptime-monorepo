@@ -1,8 +1,17 @@
 import type TimeSlot from "../types/TimeSlot";
 import type Status from "../types/Status";
-import type { AvailableTimeSlotResponse, ReservationResponse } from "../types/ApiResponses";
+import type {
+  AvailableTimeSlotResponse,
+  ReservationResponse,
+} from "../types/ApiResponses";
 import { Ok, Err, Result } from "ts-results-es";
-import { InitData, Success, Errors, Location, CustomFieldCollected } from "../types/InitData";
+import {
+  InitData,
+  Success,
+  Errors,
+  Location,
+  CustomFieldCollected,
+} from "../types/InitData";
 const defaultBaseUrl = "https://api.zaptime.app/";
 
 export interface IOptions {
@@ -65,12 +74,27 @@ export interface IOptions {
   customFields?: CustomFieldCollected[];
 }
 
-export interface IConfirmationOptions extends Omit<IOptions, "email" | "location" | "seats" | "timezone" | "timeSlot"> {
+export interface IConfirmationOptions
+  extends Omit<
+    IOptions,
+    "email" | "location" | "seats" | "timezone" | "timeSlot"
+  > {
   status: Status;
 }
 
 export const book = async (options: IOptions): Promise<ReservationResponse> => {
-  const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location, timezone } = options;
+  const {
+    email,
+    token,
+    timeSlot,
+    firstName,
+    lastName,
+    seats = 1,
+    baseUrl = defaultBaseUrl,
+    phone,
+    location,
+    timezone,
+  } = options;
   try {
     const data = await fetch(getBookUrl(baseUrl), {
       method: "POST",
@@ -135,8 +159,21 @@ export const reschedule = async ({
   }
 };
 
-export const reserve = async (options: IOptions): Promise<ReservationResponse> => {
-  const { email, token, timeSlot, firstName, lastName, seats = 1, baseUrl = defaultBaseUrl, phone, location, timezone } = options;
+export const reserve = async (
+  options: IOptions,
+): Promise<ReservationResponse> => {
+  const {
+    email,
+    token,
+    timeSlot,
+    firstName,
+    lastName,
+    seats = 1,
+    baseUrl = defaultBaseUrl,
+    phone,
+    location,
+    timezone,
+  } = options;
 
   try {
     const data = await fetch(getReserveUrl(baseUrl), {
@@ -166,8 +203,18 @@ export const reserve = async (options: IOptions): Promise<ReservationResponse> =
   }
 };
 
-export const confirm = async (options: IConfirmationOptions): Promise<ReservationResponse> => {
-  const { baseUrl = defaultBaseUrl, status, token, firstName, lastName, customFields, phone } = options;
+export const confirm = async (
+  options: IConfirmationOptions,
+): Promise<ReservationResponse> => {
+  const {
+    baseUrl = defaultBaseUrl,
+    status,
+    token,
+    firstName,
+    lastName,
+    customFields,
+    phone,
+  } = options;
   try {
     const data = await fetch(getConfirmUrl(baseUrl, status.uuid), {
       method: "POST",
@@ -190,7 +237,11 @@ export const confirm = async (options: IConfirmationOptions): Promise<Reservatio
   }
 };
 
-export const cancel = async (token: string, status: Status, baseUrl = defaultBaseUrl): Promise<boolean> => {
+export const cancel = async (
+  token: string,
+  status: Status,
+  baseUrl = defaultBaseUrl,
+): Promise<boolean> => {
   try {
     const data = await fetch(getCancelUrl(baseUrl, status.uuid), {
       method: "DELETE",
@@ -207,7 +258,11 @@ export const cancel = async (token: string, status: Status, baseUrl = defaultBas
   }
 };
 
-export const refreshReserve = async (token: string, status: Status, baseUrl = defaultBaseUrl): Promise<void> => {
+export const refreshReserve = async (
+  token: string,
+  status: Status,
+  baseUrl = defaultBaseUrl,
+): Promise<void> => {
   try {
     const data = await fetch(getRefreshReserveUrl(baseUrl, status.uuid), {
       method: "POST",
@@ -229,7 +284,12 @@ export const refreshReserve = async (token: string, status: Status, baseUrl = de
 };
 
 //token=token&from=from&until=until&group_by_day=group_by_day
-export const getAvailableTimeSlots = async (token: string, from: string, until: string, baseUrl = defaultBaseUrl): Promise<TimeSlot[]> => {
+export const getAvailableTimeSlots = async (
+  token: string,
+  from: string,
+  until: string,
+  baseUrl = defaultBaseUrl,
+): Promise<TimeSlot[]> => {
   try {
     const res = await fetch(
       getAvailableTimeSlotsUrl(baseUrl) +
@@ -244,7 +304,7 @@ export const getAvailableTimeSlots = async (token: string, from: string, until: 
           Accept: "application/json",
           Authorization: "Bearer " + token,
         },
-      }
+      },
     );
 
     if (res.status === 403) {
@@ -262,7 +322,11 @@ export const getAvailableTimeSlots = async (token: string, from: string, until: 
   }
 };
 
-export async function fetchRemoteConfig(token: string, baseUrl = defaultBaseUrl, reservationUuid?: string): Promise<Result<Success, Errors>> {
+export async function fetchRemoteConfig(
+  token: string,
+  baseUrl = defaultBaseUrl,
+  reservationUuid?: string,
+): Promise<Result<Success, Errors>> {
   if (token) {
     type Response = {
       success: boolean;

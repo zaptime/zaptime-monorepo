@@ -5,7 +5,8 @@ import { useConfig } from "@zaptime/core";
 export default function useCompactSwitcher(calendarId?: string) {
   const { config } = useConfig(calendarId);
 
-  const originalCompactPreference = config.value.compact === true ? true : false;
+  const originalCompactPreference =
+    config.value.compact === true ? true : false;
 
   const breakpoints = useBreakpoints({
     large: 860,

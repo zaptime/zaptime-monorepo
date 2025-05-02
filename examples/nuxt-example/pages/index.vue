@@ -2,9 +2,15 @@
   <NuxtLink class="text-blue-500" to="/page2">Go to page 2</NuxtLink>
 
   {{ calendarId1 }}
-  <ZaptimeCalendar :calendar-id="calendarId1" :config="config"></ZaptimeCalendar>
+  <ZaptimeCalendar
+    :calendar-id="calendarId1"
+    :config="config"
+  ></ZaptimeCalendar>
 
-  <ZaptimeCalendar :calendar-id="calendarId2" :config="config2"></ZaptimeCalendar>
+  <ZaptimeCalendar
+    :calendar-id="calendarId2"
+    :config="config2"
+  ></ZaptimeCalendar>
 </template>
 
 <script lang="ts" setup>

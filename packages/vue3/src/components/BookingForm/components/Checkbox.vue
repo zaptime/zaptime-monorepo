@@ -11,7 +11,11 @@
       />
     </div>
     <div class="cal-ml-3 cal-text-sm cal-leading-6">
-      <label :for="uuid" class="zaptime-checkbox-label cal-text-theme-700 dark:cal-text-theme-400" v-html="label"></label>
+      <label
+        :for="uuid"
+        class="zaptime-checkbox-label cal-text-theme-700 dark:cal-text-theme-400"
+        v-html="label"
+      ></label>
     </div>
   </div>
 </template>

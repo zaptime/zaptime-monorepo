@@ -1,5 +1,14 @@
 import type { ZaptimeConfig } from "@zaptime/core";
-import { useConfig, useCalendar, fetchRemoteConfiguration, useLocations, useStripeConfig, useBookingForm, useReservationReschedule, useDateFormatters } from "@zaptime/core";
+import {
+  useConfig,
+  useCalendar,
+  fetchRemoteConfiguration,
+  useLocations,
+  useStripeConfig,
+  useBookingForm,
+  useReservationReschedule,
+  useDateFormatters,
+} from "@zaptime/core";
 import { ref, nextTick } from "vue";
 import { getAnalytics, buildConfig } from "../analytics";
 import { mergeConfigs } from "../utils/mergeConfigs";
@@ -28,10 +37,14 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
   async function init() {
     if (config === undefined || config.token === undefined) {
       console.error(
-        "Zaptime error: Token is required, please enter your acquired token into the configuration. See more in the documentation: https://docs.zaptime.app/guide/vue-installation.html. If you don't have a token, you can acquire one at https://zaptime.app."
+        "Zaptime error: Token is required, please enter your acquired token into the configuration. See more in the documentation: https://docs.zaptime.app/guide/vue-installation.html. If you don't have a token, you can acquire one at https://zaptime.app.",
       );
     } else {
-      const initData = await fetchRemoteConfiguration(config.token, config.apiBaseUrl, config.reservationUuid);
+      const initData = await fetchRemoteConfiguration(
+        config.token,
+        config.apiBaseUrl,
+        config.reservationUuid,
+      );
 
       if (initData.isOk()) {
         if (initData.value.disabled) {
@@ -40,7 +53,9 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
           return;
         }
 
-        await loadDateFnsConfig(initData.value.configuration.locale?.preset || "en");
+        await loadDateFnsConfig(
+          initData.value.configuration.locale?.preset || "en",
+        );
 
         if (initData.value.reservation !== undefined) {
           setSelectedReservation(initData.value.reservation);
@@ -86,7 +101,10 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
           const selectedDay = state.days.find((day) => {
             if (day.date !== undefined) {
               //@ts-expect-error dunno wtf
-              return isSameDay(day.date, new Date(initData.value.reservation.start));
+              return isSameDay(
+                day.date,
+                new Date(initData.value.reservation.start),
+              );
             }
           });
 

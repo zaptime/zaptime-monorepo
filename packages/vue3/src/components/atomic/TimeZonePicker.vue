@@ -1,6 +1,10 @@
 <template>
   <div class="cal-w-full">
-    <Combobox :model-value="timezone" @update:model-value="setNewTimezone" @mouseover="getTimezones">
+    <Combobox
+      :model-value="timezone"
+      @update:model-value="setNewTimezone"
+      @mouseover="getTimezones"
+    >
       <div class="cal-relative cal-mt-1">
         <div
           class="cal-relative cal-w-full cal-cursor-default cal-overflow-hidden cal-rounded-md cal-bg-white cal-text-left focus:cal-outline-none focus:cal-ring-accent-base focus-visible:cal-ring-2 focus-visible:cal-ring-accent-base focus-visible:cal-ring-opacity-75 focus-visible:cal-ring-offset-2 focus-visible:cal-ring-offset-teal-300 dark:cal-bg-theme-700 sm:cal-text-sm"
@@ -13,8 +17,13 @@
             @change="setQuery($event.target.value)"
             @focus="selectAllText"
           />
-          <ComboboxButton class="cal-absolute cal-inset-y-0 cal-right-0 cal-flex cal-items-center cal-pr-2">
-            <ChevronUpDownIcon class="cal-h-5 cal-w-5 cal-text-theme-400" aria-hidden="true" />
+          <ComboboxButton
+            class="cal-absolute cal-inset-y-0 cal-right-0 cal-flex cal-items-center cal-pr-2"
+          >
+            <ChevronUpDownIcon
+              class="cal-h-5 cal-w-5 cal-text-theme-400"
+              aria-hidden="true"
+            />
           </ComboboxButton>
         </div>
         <TransitionRoot
@@ -29,18 +38,34 @@
           <ComboboxOptions
             class="cal-absolute -cal-top-3 cal-mt-1 cal-max-h-60 cal-w-[300px] -cal-translate-y-full cal-overflow-auto cal-rounded-md cal-border cal-border-theme-200 cal-bg-theme-100 cal-py-1 cal-pl-0 cal-text-base cal-shadow-lg cal-ring-1 cal-ring-black cal-ring-opacity-5 focus:cal-outline-none dark:cal-border-theme-600 dark:cal-bg-theme-800 sm:cal-text-sm"
           >
-            <div v-if="timezones.length === 0 && query !== ''" class="cal-relative cal-cursor-default cal-select-none cal-px-4 cal-py-2 cal-text-theme-700 dark:cal-text-theme-100">Nothing found.</div>
+            <div
+              v-if="timezones.length === 0 && query !== ''"
+              class="cal-relative cal-cursor-default cal-select-none cal-px-4 cal-py-2 cal-text-theme-700 dark:cal-text-theme-100"
+            >
+              Nothing found.
+            </div>
 
             <div v-for="(tz, id) in filteredTimezones" :key="id">
-              <ComboboxOption v-slot="{ selected, active }" as="template" :value="tz">
+              <ComboboxOption
+                v-slot="{ selected, active }"
+                as="template"
+                :value="tz"
+              >
                 <li
                   class="cal-relative cal-cursor-default cal-select-none cal-list-none cal-py-2 cal-pl-2 cal-pr-4"
                   :class="{
-                    'cal-bg-accent-base cal-text-white dark:cal-text-theme-900': active,
+                    'cal-bg-accent-base cal-text-white dark:cal-text-theme-900':
+                      active,
                     'cal-text-theme-900 dark:cal-text-theme-100': !active,
                   }"
                 >
-                  <span class="cal-block cal-truncate" :class="{ 'cal-font-medium': selected, 'cal-font-normal': !selected }">
+                  <span
+                    class="cal-block cal-truncate"
+                    :class="{
+                      'cal-font-medium': selected,
+                      'cal-font-normal': !selected,
+                    }"
+                  >
                     {{ tz }}
                   </span>
                 </li>
@@ -55,7 +80,14 @@
 
 <script lang="ts" setup>
 import { ref, computed, inject, watch } from "vue";
-import { Combobox, ComboboxInput, ComboboxButton, ComboboxOptions, ComboboxOption, TransitionRoot } from "@headlessui/vue";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxButton,
+  ComboboxOptions,
+  ComboboxOption,
+  TransitionRoot,
+} from "@headlessui/vue";
 import { ChevronUpDownIcon } from "@heroicons/vue/20/solid";
 import { useCurrentTimezone, useCalendar, useConfig } from "@zaptime/core";
 import { useDebounceFn } from "@vueuse/core";
@@ -83,7 +115,7 @@ const setQuery = useDebounceFn(
     query.value = newQuery;
   },
   500,
-  { maxWait: 5000 }
+  { maxWait: 5000 },
 );
 
 function setNewTimezone(newTz: string) {
@@ -110,7 +142,9 @@ async function getTimezones() {
 }
 
 function selectAllText() {
-  const input = document.querySelector("#zaptime-timezone-picker") as HTMLInputElement;
+  const input = document.querySelector(
+    "#zaptime-timezone-picker",
+  ) as HTMLInputElement;
   if (input) {
     input.select();
   }

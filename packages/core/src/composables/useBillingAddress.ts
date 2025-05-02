@@ -49,7 +49,10 @@ export default function useBillingAddress(calendarId?: string) {
     return state.value[calendarId];
   });
 
-  function updateBillingAddressField(field: keyof BillingAddress, value: string) {
+  function updateBillingAddressField(
+    field: keyof BillingAddress,
+    value: string,
+  ) {
     if (calendarId === undefined) {
       state.value.__DEFAULT__[field] = value;
     } else {

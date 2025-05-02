@@ -49,7 +49,9 @@ export function useStripe() {
     return {
       base: {
         // @ts-expect-error values are actually required
-        color: isDark ? config.value.theme.colors[100] : config.value.theme.colors[900],
+        color: isDark
+          ? config.value.theme.colors[100]
+          : config.value.theme.colors[900],
         fontWeight: 600,
         fontFamily:
           '"Basier Circle", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
@@ -57,11 +59,15 @@ export function useStripe() {
         fontSmoothing: "antialiased",
         "::placeholder": {
           // @ts-expect-error values are actually required
-          color: isDark ? config.value.theme.colors[500] : config.value.theme.colors[400],
+          color: isDark
+            ? config.value.theme.colors[500]
+            : config.value.theme.colors[400],
         },
         ":-webkit-autofill": {
           // @ts-expect-error values are actually required
-          color: isDark ? config.value.theme.colors[500] : config.value.theme.colors[900],
+          color: isDark
+            ? config.value.theme.colors[500]
+            : config.value.theme.colors[900],
         },
         ":focus": {},
       },
@@ -101,7 +107,13 @@ export function useStripe() {
     stripeCardCvc.value.mount("#card-cvc");
   }
 
-  async function handleSubmit({ billingAddress, reservationUuid }: { billingAddress: BillingAddress; reservationUuid: string }) {
+  async function handleSubmit({
+    billingAddress,
+    reservationUuid,
+  }: {
+    billingAddress: BillingAddress;
+    reservationUuid: string;
+  }) {
     if (stripe.value === undefined || stripeCardNumber.value === undefined) {
       return;
     }
@@ -114,25 +126,28 @@ export function useStripe() {
     let clientSecret: string;
 
     try {
-      const res = await fetch(apiBaseUrl.value + `api/reservations/${reservationUuid}/payments`, {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + config.value.token,
-          "Content-Type": "application/json",
-          Accept: "application/json",
+      const res = await fetch(
+        apiBaseUrl.value + `api/reservations/${reservationUuid}/payments`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + config.value.token,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            email: billingAddress.email,
+            name: billingAddress.name,
+            company: billingAddress.company || undefined,
+            street: billingAddress.address || undefined,
+            city: billingAddress.city || undefined,
+            postalCode: billingAddress.postalCode || undefined,
+            country: billingAddress.country,
+            taxId: billingAddress.vatId || undefined,
+            crn: billingAddress.crn || undefined,
+          }),
         },
-        body: JSON.stringify({
-          email: billingAddress.email,
-          name: billingAddress.name,
-          company: billingAddress.company || undefined,
-          street: billingAddress.address || undefined,
-          city: billingAddress.city || undefined,
-          postalCode: billingAddress.postalCode || undefined,
-          country: billingAddress.country,
-          taxId: billingAddress.vatId || undefined,
-          crn: billingAddress.crn || undefined,
-        }),
-      });
+      );
 
       const { data } = await res.json();
       clientSecret = data.clientSecret;

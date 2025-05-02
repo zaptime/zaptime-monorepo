@@ -1,6 +1,12 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import { ZaptimeConfig, book as bookZaptime, reserve as reserveZaptime, confirm as confirmZaptime, cancel as cancelZaptime } from "@zaptime/vue3";
+import {
+  ZaptimeConfig,
+  book as bookZaptime,
+  reserve as reserveZaptime,
+  confirm as confirmZaptime,
+  cancel as cancelZaptime,
+} from "@zaptime/vue3";
 import type { EventTypeGroup } from "./components/EventTypesGroup.vue";
 import type { TimeSlot } from "@zaptime/core";
 import "./assets/style.css";

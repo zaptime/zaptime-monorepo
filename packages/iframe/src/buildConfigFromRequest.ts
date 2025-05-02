@@ -30,14 +30,18 @@ export async function fetchRemoteConfig(token: string): Promise<ZaptimeConfig> {
   throw new Error("Invalid token");
 }
 
-export async function fetchRemoteGroupConfig(eventGroupToken: string): Promise<EventTypeGroup> {
+export async function fetchRemoteGroupConfig(
+  eventGroupToken: string,
+): Promise<EventTypeGroup> {
   if (eventGroupToken) {
     type Response = {
       success: boolean;
       data: EventTypeGroup;
     };
 
-    const res = await fetch("https://api.zaptime.app/event-type-groups/" + eventGroupToken);
+    const res = await fetch(
+      "https://api.zaptime.app/event-type-groups/" + eventGroupToken,
+    );
 
     const data: Response = await res.json();
 

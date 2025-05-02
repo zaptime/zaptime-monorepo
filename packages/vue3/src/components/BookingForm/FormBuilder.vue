@@ -1,7 +1,14 @@
 <template>
   <div>
     <div v-for="element of bookingForm" :key="element.uuid">
-      <div v-if="element.type === 'phone' || element.type === 'text' || element.type === 'email'" class="cal-mt-4">
+      <div
+        v-if="
+          element.type === 'phone' ||
+          element.type === 'text' ||
+          element.type === 'email'
+        "
+        class="cal-mt-4"
+      >
         <TextInput v-bind="element" />
       </div>
 

@@ -23,9 +23,13 @@ export default function useConfig(calendarId?: string) {
 
   const setConfig = (cfg: ZaptimeConfig) => {
     if (calendarId === undefined) {
-      _config.value.__DEFAULT__.config = reactifyObject(mergeObjects(defaultConfig, cfg));
+      _config.value.__DEFAULT__.config = reactifyObject(
+        mergeObjects(defaultConfig, cfg),
+      );
     } else {
-      _config.value[calendarId].config = reactifyObject(mergeObjects(defaultConfig, cfg));
+      _config.value[calendarId].config = reactifyObject(
+        mergeObjects(defaultConfig, cfg),
+      );
     }
   };
 

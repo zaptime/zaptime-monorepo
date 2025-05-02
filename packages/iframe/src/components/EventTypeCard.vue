@@ -1,8 +1,13 @@
 <template>
-  <button class="ring-1 flex flex-col ring-gray-300 dark:ring-gray-600 group items-center rounded-md px-4 py-4 min-w-[320px]" @click="cardClicked">
+  <button
+    class="ring-1 flex flex-col ring-gray-300 dark:ring-gray-600 group items-center rounded-md px-4 py-4 min-w-[320px]"
+    @click="cardClicked"
+  >
     <div class="inline-flex justify-between w-full items-center">
       <div class="text-left">
-        <span class="text-gray-700 line-clamp-2 dark:text-gray-200 text-left font-medium">
+        <span
+          class="text-gray-700 line-clamp-2 dark:text-gray-200 text-left font-medium"
+        >
           {{ config.name }}
         </span>
       </div>
@@ -18,14 +23,26 @@
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+          ></path>
         </svg>
       </div>
     </div>
 
     <div class="text-sm self-start text-left mt-4">
-      <span v-if="config.description" class="text-gray-600 dark:text-gray-300 line-clamp-3" v-html="config.description"> </span>
-      <div v-if="config.stripeConfig" class="mt-2 flex gap-1.5 text-gray-600 dark:text-gray-200">
+      <span
+        v-if="config.description"
+        class="text-gray-600 dark:text-gray-300 line-clamp-3"
+        v-html="config.description"
+      >
+      </span>
+      <div
+        v-if="config.stripeConfig"
+        class="mt-2 flex gap-1.5 text-gray-600 dark:text-gray-200"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
@@ -43,7 +60,12 @@
         </svg>
         {{ priceWithCurrency }}
       </div>
-      <div v-if="config.duration" class="bg-gray-100 dark:bg-gray-700 w-fit text-xs px-1.5 py-1 rounded-md mt-3 ring-1 ring-gray-200 dark:ring-gray-500 dark:text-gray-100">{{ config.duration }} min</div>
+      <div
+        v-if="config.duration"
+        class="bg-gray-100 dark:bg-gray-700 w-fit text-xs px-1.5 py-1 rounded-md mt-3 ring-1 ring-gray-200 dark:ring-gray-500 dark:text-gray-100"
+      >
+        {{ config.duration }} min
+      </div>
     </div>
   </button>
 </template>

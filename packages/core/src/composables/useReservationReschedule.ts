@@ -15,7 +15,10 @@ const selectedReservation = ref<Record<string, ReservationState>>({
  * This composable is used to store the recieved Reservation for rescheduling.
  */
 export default function useReservationReschedule(calendarId?: string) {
-  if (calendarId !== undefined && selectedReservation.value[calendarId] === undefined) {
+  if (
+    calendarId !== undefined &&
+    selectedReservation.value[calendarId] === undefined
+  ) {
     selectedReservation.value[calendarId] = {
       reservation: undefined,
     };

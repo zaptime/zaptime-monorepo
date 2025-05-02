@@ -2,12 +2,38 @@
   <div id="zaptime-calendar" class="cal-antialiased">
     <div class="" :class="[config.theme?.mode === 'light' ? '' : 'cal-dark']">
       <template v-if="isEnabled">
-        <Calendar v-show="loaded" :classes="$attrs['class'] ? String($attrs['class']) : ''" @booking-confirmed="(reservationConfirmedData) => emit('booking-confirmed', reservationConfirmedData)"></Calendar>
+        <Calendar
+          v-show="loaded"
+          :classes="$attrs['class'] ? String($attrs['class']) : ''"
+          @booking-confirmed="
+            (reservationConfirmedData) =>
+              emit('booking-confirmed', reservationConfirmedData)
+          "
+        ></Calendar>
       </template>
-      <div v-if="!loaded" class="cal-flex cal-min-h-[360px] cal-w-[820px] cal-items-center cal-justify-center">
-        <svg class="-cal-ml-1 cal-mr-3 cal-h-10 cal-w-10 cal-animate-spin cal-text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="cal-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="cal-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      <div
+        v-if="!loaded"
+        class="cal-flex cal-min-h-[360px] cal-w-[820px] cal-items-center cal-justify-center"
+      >
+        <svg
+          class="-cal-ml-1 cal-mr-3 cal-h-10 cal-w-10 cal-animate-spin cal-text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="cal-opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="cal-opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
         </svg>
       </div>
 
@@ -40,7 +66,7 @@ const props = withDefaults(
   {
     config: undefined,
     calendarId: undefined,
-  }
+  },
 );
 
 const emit = defineEmits<{
@@ -51,7 +77,10 @@ const emit = defineEmits<{
 
 provide("calendarId", props.calendarId);
 
-const { init, initLoaded, isEnabled } = useInitialization(props.config, props.calendarId);
+const { init, initLoaded, isEnabled } = useInitialization(
+  props.config,
+  props.calendarId,
+);
 
 const { setConfig, config } = useConfig(props.calendarId);
 
@@ -73,7 +102,7 @@ watch(
   () => props.config,
   (newValue) => {
     setConfig(mergeConfigs(config.value, newValue));
-  }
+  },
 );
 
 const borderRadius = computed(() => {
@@ -105,9 +134,15 @@ onMounted(async () => {
   --c-zaptime-800: v-bind(config?.theme?.colors?.[ "800"] || "#1e293b");
   --c-zaptime-900: v-bind(config?.theme?.colors?.[ "900"] || "#020617");
 
-  --c-zaptime-accent-light: v-bind(config?.theme?.colors?.accentLight || "#2ED3B7");
-  --c-zaptime-accent-base: v-bind(config?.theme?.colors?.accentBase || "#15B79E");
-  --c-zaptime-accent-dark: v-bind(config?.theme?.colors?.accentDark || "#0E9384");
+  --c-zaptime-accent-light: v-bind(
+    config?.theme?.colors?.accentLight || "#2ED3B7"
+  );
+  --c-zaptime-accent-base: v-bind(
+    config?.theme?.colors?.accentBase || "#15B79E"
+  );
+  --c-zaptime-accent-dark: v-bind(
+    config?.theme?.colors?.accentDark || "#0E9384"
+  );
 
   --radius-zaptime: v-bind(borderRadius);
 }

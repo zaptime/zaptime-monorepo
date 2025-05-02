@@ -1,9 +1,15 @@
 <template>
   <div>
-    <label class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200">
+    <label
+      class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200"
+    >
       {{ label }}
     </label>
-    <div v-for="(option, i) in options" :key="uuid + '_' + i" class="cal-relative cal-my-2 cal-flex cal-items-center">
+    <div
+      v-for="(option, i) in options"
+      :key="uuid + '_' + i"
+      class="cal-relative cal-my-2 cal-flex cal-items-center"
+    >
       <div class="cal-flex cal-h-6 cal-items-center">
         <input
           :id="uuid + '_' + i"
@@ -14,7 +20,11 @@
         />
       </div>
       <div class="cal-ml-3 cal-text-sm cal-leading-6">
-        <label :for="uuid + '_' + i" class="cal-block cal-text-sm cal-text-theme-500 dark:cal-text-theme-200" v-html="option"></label>
+        <label
+          :for="uuid + '_' + i"
+          class="cal-block cal-text-sm cal-text-theme-500 dark:cal-text-theme-200"
+          v-html="option"
+        ></label>
       </div>
     </div>
   </div>
@@ -39,7 +49,9 @@ function onChange(i: number) {
 
   const option = props.options[i];
 
-  selectedValue.value = selectedValue.value.includes(option) ? selectedValue.value.filter((value) => value !== option) : [...selectedValue.value, option];
+  selectedValue.value = selectedValue.value.includes(option)
+    ? selectedValue.value.filter((value) => value !== option)
+    : [...selectedValue.value, option];
 
   setCustomFieldValue(props.uuid, selectedValue.value);
 }

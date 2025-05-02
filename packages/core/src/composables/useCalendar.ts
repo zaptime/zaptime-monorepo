@@ -1,6 +1,12 @@
 import { computed, reactive, ref, watch } from "vue";
 
-import { addMonths, format, isPast, isFuture, differenceInCalendarMonths } from "date-fns";
+import {
+  addMonths,
+  format,
+  isPast,
+  isFuture,
+  differenceInCalendarMonths,
+} from "date-fns";
 
 import { getDays as getDaysExternal } from "../utils/calendar";
 import { getHeaders } from "../utils/localeLogic";
@@ -41,7 +47,8 @@ export default (calendarId?: string) => {
   }
 
   const { config } = useConfig(calendarId);
-  const { selectedTimeSlot, setSelectedTimeSlot } = useSelectedTimeSlot(calendarId);
+  const { selectedTimeSlot, setSelectedTimeSlot } =
+    useSelectedTimeSlot(calendarId);
   const { timezone } = useCurrentTimezone();
 
   const selectTimeSlot = (timeSlot: TimeSlot) => {
@@ -76,7 +83,11 @@ export default (calendarId?: string) => {
 
   function getFirstAvailableDayWithTimeSlot(days: Day[]): Day | undefined {
     for (const day of days) {
-      if (day.timeSlots !== undefined && day.timeSlots.length > 0 && !day.isPast) {
+      if (
+        day.timeSlots !== undefined &&
+        day.timeSlots.length > 0 &&
+        !day.isPast
+      ) {
         return day;
       }
     }
@@ -89,11 +100,20 @@ export default (calendarId?: string) => {
     setState("timeSlots", []);
     setState("selectedDay", null);
 
-    if (state.value.dfnsConfig !== undefined && state.value.dfnsConfig !== null) {
-      const { days, hasAnyTimeSlot } = await getDaysExternal(state.value.date, state.value.dfnsConfig, config.value, timezone.value);
+    if (
+      state.value.dfnsConfig !== undefined &&
+      state.value.dfnsConfig !== null
+    ) {
+      const { days, hasAnyTimeSlot } = await getDaysExternal(
+        state.value.date,
+        state.value.dfnsConfig,
+        config.value,
+        timezone.value,
+      );
 
       if (hasAnyTimeSlot) {
-        const firstAvailableDayWithTimeSlot = getFirstAvailableDayWithTimeSlot(days);
+        const firstAvailableDayWithTimeSlot =
+          getFirstAvailableDayWithTimeSlot(days);
 
         if (firstAvailableDayWithTimeSlot !== undefined) {
           setState("selectedDay", firstAvailableDayWithTimeSlot);
@@ -200,18 +220,30 @@ export default (calendarId?: string) => {
     });
   });
 
-  watch([() => config.value.locale?.preset, () => config.value.closestBookableDay, () => config.value.locale?.startDayOfWeek], async () => {
-    if (state.value.initLoaded) {
-      await setLocales();
-      //refetch days with new given locales
-      await getDays();
-    }
-  });
+  watch(
+    [
+      () => config.value.locale?.preset,
+      () => config.value.closestBookableDay,
+      () => config.value.locale?.startDayOfWeek,
+    ],
+    async () => {
+      if (state.value.initLoaded) {
+        await setLocales();
+        //refetch days with new given locales
+        await getDays();
+      }
+    },
+  );
 
   const setLocales = async () => {
     if (config.value && config.value.locale) {
-      state.value.dfnsConfig = await getDfnsConfig(config.value.locale.preset || "en");
-      setState("headers", getHeaders(config.value.locale, state.value.dfnsConfig));
+      state.value.dfnsConfig = await getDfnsConfig(
+        config.value.locale.preset || "en",
+      );
+      setState(
+        "headers",
+        getHeaders(config.value.locale, state.value.dfnsConfig),
+      );
     }
   };
 

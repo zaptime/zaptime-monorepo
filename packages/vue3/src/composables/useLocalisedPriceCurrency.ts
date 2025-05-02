@@ -1,7 +1,15 @@
 import { computed } from "vue";
 import { useConfig } from "@zaptime/core";
 
-export function useLocalisedPriceCurrency({ currency: currency, price: price, calendarId: calendarId }: { currency: string; price: number; calendarId?: string }) {
+export function useLocalisedPriceCurrency({
+  currency: currency,
+  price: price,
+  calendarId: calendarId,
+}: {
+  currency: string;
+  price: number;
+  calendarId?: string;
+}) {
   const { config } = useConfig(calendarId);
 
   const priceCurrency = computed(() => {

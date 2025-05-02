@@ -1,6 +1,9 @@
 <template>
   <div>
-    <label :for="name" class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200">
+    <label
+      :for="name"
+      class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200"
+    >
       {{ label }}
     </label>
     <div class="cal-mt-2">

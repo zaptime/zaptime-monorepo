@@ -1,11 +1,26 @@
 <template>
-  <div v-if="selectedLocation && selectedLocation.id !== 'no-location' && !config.hideLocation" class="cal-mt-6 cal-flex cal-items-center cal-justify-between cal-gap-2 cal-px-2.5">
+  <div
+    v-if="
+      selectedLocation &&
+      selectedLocation.id !== 'no-location' &&
+      !config.hideLocation
+    "
+    class="cal-mt-6 cal-flex cal-items-center cal-justify-between cal-gap-2 cal-px-2.5"
+  >
     <div class="cal-flex cal-w-full cal-gap-2">
-      <div class="cal-h-5 cal-w-5 dark:cal-text-theme-200" v-html="selectedLocation?.icon"></div>
-      <p class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200">{{ locationLabel }}</p>
+      <div
+        class="cal-h-5 cal-w-5 dark:cal-text-theme-200"
+        v-html="selectedLocation?.icon"
+      ></div>
+      <p class="cal-text-sm cal-text-theme-600 dark:cal-text-theme-200">
+        {{ locationLabel }}
+      </p>
     </div>
 
-    <div v-if="stripeConfig" class="cal-flex cal-shrink-0 cal-items-center cal-gap-1.5">
+    <div
+      v-if="stripeConfig"
+      class="cal-flex cal-shrink-0 cal-items-center cal-gap-1.5"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20"
@@ -37,10 +52,17 @@ const { locations } = useLocations(inject("calendarId"));
 const { stripeConfig } = useStripeConfig(inject("calendarId"));
 const { config } = useConfig(inject("calendarId"));
 
-const { priceCurrency } = useLocalisedPriceCurrency({ price: stripeConfig.value?.price || 0, currency: stripeConfig.value?.currency || "", calendarId: inject("calendarId") });
+const { priceCurrency } = useLocalisedPriceCurrency({
+  price: stripeConfig.value?.price || 0,
+  currency: stripeConfig.value?.currency || "",
+  calendarId: inject("calendarId"),
+});
 
 const locationLabel = computed(() => {
-  if (selectedLocation.value?.id === "in-person" || selectedLocation.value?.id === "phone") {
+  if (
+    selectedLocation.value?.id === "in-person" ||
+    selectedLocation.value?.id === "phone"
+  ) {
     return locations.value[0].value;
   }
 
@@ -51,7 +73,9 @@ const locationLabel = computed(() => {
 
 const selectedLocation = computed(() => {
   if (locations.value && locations.value.length > 0) {
-    return locationOptions.value.find((location) => location.id === locations.value[0].type);
+    return locationOptions.value.find(
+      (location) => location.id === locations.value[0].type,
+    );
   }
 });
 

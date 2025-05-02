@@ -39,7 +39,7 @@ export function buildConfig(initData: InitAnalyticsData[]) {
           googleAnalyticsPlugin({
             measurementIds: [data.data.measurementId],
             enabled: true,
-          })
+          }),
         );
         break;
 
@@ -48,7 +48,7 @@ export function buildConfig(initData: InitAnalyticsData[]) {
           facebokPixelAnalyticsPlugin({
             pixelId: data.data.pixelId,
             enabled: true,
-          })
+          }),
         );
         break;
       case "umami":
@@ -57,7 +57,7 @@ export function buildConfig(initData: InitAnalyticsData[]) {
             dataWebsiteId: data.data.dataWebsiteId,
             src: data.data.src,
             enabled: true,
-          })
+          }),
         );
         break;
 
@@ -66,7 +66,7 @@ export function buildConfig(initData: InitAnalyticsData[]) {
           gtmPlugin({
             containerId: data.data.containerId,
             enabled: true,
-          })
+          }),
         );
         break;
 

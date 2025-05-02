@@ -4,7 +4,9 @@
       v-model="enabled"
       :required="required"
       :class="[
-        enabled ? 'cal-bg-accent-base' : 'cal-bg-theme-200 dark:cal-bg-theme-700',
+        enabled
+          ? 'cal-bg-accent-base'
+          : 'cal-bg-theme-200 dark:cal-bg-theme-700',
         'cal-focus:outline-none cal-focus:ring-2 cal-focus:ring-indigo-600 cal-focus:ring-offset-2 cal-relative cal-inline-flex cal-h-6 cal-w-11 cal-flex-shrink-0 cal-cursor-pointer cal-rounded-full cal-border-2 cal-border-transparent cal-transition-colors cal-duration-200 cal-ease-in-out',
       ]"
     >

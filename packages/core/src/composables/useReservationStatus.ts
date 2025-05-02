@@ -20,7 +20,11 @@ export default function useReservationStatus(calendarId?: string) {
       return _reservationStatusState.value as Status;
     }
 
-    return (_reservationStatusState[calendarId as keyof ReservationStatus] as Ref<Status>).value;
+    return (
+      _reservationStatusState[
+        calendarId as keyof ReservationStatus
+      ] as Ref<Status>
+    ).value;
   });
 
   return {

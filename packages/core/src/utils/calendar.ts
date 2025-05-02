@@ -3,15 +3,34 @@ import TimeSlot from "../types/TimeSlot";
 import ZaptimeConfig from "../types/ZaptimeConfig";
 import type DfnsConfig from "../types/DfnsConfig";
 
-import { getDaysInMonth, startOfMonth, subMonths, lastDayOfMonth, subDays, endOfMonth, addDays, isPast, isToday, isThisMonth, format } from "date-fns";
+import {
+  getDaysInMonth,
+  startOfMonth,
+  subMonths,
+  lastDayOfMonth,
+  subDays,
+  endOfMonth,
+  addDays,
+  isPast,
+  isToday,
+  isThisMonth,
+  format,
+} from "date-fns";
 import { tz } from "@date-fns/tz";
 import { getAvailableTimeSlots } from "../api/api";
 import { getStartOfTheWeekIndex } from "../utils/localeLogic";
 
-export const getTimeSlotsForDivenDate = (date: Date, timeSlots: TimeSlot[], timeZone: string): TimeSlot[] | undefined => {
+export const getTimeSlotsForDivenDate = (
+  date: Date,
+  timeSlots: TimeSlot[],
+  timeZone: string,
+): TimeSlot[] | undefined => {
   const collectedTimeSlots: TimeSlot[] = [];
   for (const timeSlot of timeSlots) {
-    if (format(date, "d", { in: tz(timeZone) }) === format(new Date(timeSlot.start), "d", { in: tz(timeZone) })) {
+    if (
+      format(date, "d", { in: tz(timeZone) }) ===
+      format(new Date(timeSlot.start), "d", { in: tz(timeZone) })
+    ) {
       collectedTimeSlots.push(timeSlot);
     }
   }
@@ -23,20 +42,38 @@ export const getTimeSlotsForDivenDate = (date: Date, timeSlots: TimeSlot[], time
   return undefined;
 };
 
-export const getDays = async (date: Date, dfnsConfig: DfnsConfig, zapTimeConfig: ZaptimeConfig, timezone: string): Promise<{ days: Day[]; hasAnyTimeSlot: boolean }> => {
+export const getDays = async (
+  date: Date,
+  dfnsConfig: DfnsConfig,
+  zapTimeConfig: ZaptimeConfig,
+  timezone: string,
+): Promise<{ days: Day[]; hasAnyTimeSlot: boolean }> => {
   const dayCountInMonth = getDaysInMonth(date);
   const startDateOfTheMonth = startOfMonth(date);
   let hasAnyTimeSlot = false;
 
-  const timeSlots = await getAvailableTimeSlots(zapTimeConfig.token, getStartDate(date, zapTimeConfig, timezone), format(endOfMonth(date), "yyyy-MM-dd", { in: tz(timezone) }), zapTimeConfig.apiBaseUrl);
+  const timeSlots = await getAvailableTimeSlots(
+    zapTimeConfig.token,
+    getStartDate(date, zapTimeConfig, timezone),
+    format(endOfMonth(date), "yyyy-MM-dd", { in: tz(timezone) }),
+    zapTimeConfig.apiBaseUrl,
+  );
 
   if (Object.keys(timeSlots).length > 0) {
     hasAnyTimeSlot = true;
   }
 
-  const startOfTheWeekIndex = zapTimeConfig && zapTimeConfig.locale !== undefined ? getStartOfTheWeekIndex(zapTimeConfig.locale) : 0;
+  const startOfTheWeekIndex =
+    zapTimeConfig && zapTimeConfig.locale !== undefined
+      ? getStartOfTheWeekIndex(zapTimeConfig.locale)
+      : 0;
 
-  const numberOfDay = parseInt(format(startDateOfTheMonth, "i", { ...dfnsConfig, in: tz(timezone) })) - startOfTheWeekIndex + 1;
+  const numberOfDay =
+    parseInt(
+      format(startDateOfTheMonth, "i", { ...dfnsConfig, in: tz(timezone) }),
+    ) -
+    startOfTheWeekIndex +
+    1;
 
   const previousMonth = subMonths(startDateOfTheMonth, 1);
 
@@ -46,7 +83,9 @@ export const getDays = async (date: Date, dfnsConfig: DfnsConfig, zapTimeConfig:
 
   for (let k = 1; k < numberOfDay; k++) {
     days.unshift({
-      label: format(subDays(lastDateOfPreviousMonth, k - 1), "d", { in: tz(timezone) }),
+      label: format(subDays(lastDateOfPreviousMonth, k - 1), "d", {
+        in: tz(timezone),
+      }),
       isPast: true,
     });
   }
@@ -67,9 +106,11 @@ export const getDays = async (date: Date, dfnsConfig: DfnsConfig, zapTimeConfig:
   let nextMonthRemainingDays = 0;
 
   if (days.length <= 35) {
-    nextMonthRemainingDays = 35 - dayCountInMonth - numberOfDay + 1 + startOfTheWeekIndex;
+    nextMonthRemainingDays =
+      35 - dayCountInMonth - numberOfDay + 1 + startOfTheWeekIndex;
   } else {
-    nextMonthRemainingDays = 42 - dayCountInMonth - numberOfDay + 1 + startOfTheWeekIndex;
+    nextMonthRemainingDays =
+      42 - dayCountInMonth - numberOfDay + 1 + startOfTheWeekIndex;
   }
 
   for (let j = 1; j <= nextMonthRemainingDays - startOfTheWeekIndex; j++) {
@@ -83,9 +124,17 @@ export const getDays = async (date: Date, dfnsConfig: DfnsConfig, zapTimeConfig:
   return { days, hasAnyTimeSlot };
 };
 
-const getStartDate = (date: Date, zapTimeConfig: ZaptimeConfig, timezone: string): string => {
+const getStartDate = (
+  date: Date,
+  zapTimeConfig: ZaptimeConfig,
+  timezone: string,
+): string => {
   if (isThisMonth(date) && zapTimeConfig.closestBookableDay !== undefined) {
-    return format(addDays(date, zapTimeConfig.closestBookableDay), "yyyy-MM-dd", { in: tz(timezone) });
+    return format(
+      addDays(date, zapTimeConfig.closestBookableDay),
+      "yyyy-MM-dd",
+      { in: tz(timezone) },
+    );
   }
 
   return format(startOfMonth(date), "yyyy-MM-dd", { in: tz(timezone) });

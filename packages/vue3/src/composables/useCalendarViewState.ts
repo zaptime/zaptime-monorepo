@@ -16,7 +16,10 @@ const _calendarView = ref<Record<string, CalendarViewState>>({
 });
 
 export default function (calendarId?: string) {
-  if (calendarId !== undefined && _calendarView.value[calendarId] === undefined) {
+  if (
+    calendarId !== undefined &&
+    _calendarView.value[calendarId] === undefined
+  ) {
     _calendarView.value[calendarId] = {
       view: "calendar" as View,
       calendarView: "pickingDate" as CalendarView,

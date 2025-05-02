@@ -30,7 +30,7 @@ export default function umami(config: Config): AnalyticsPlugin {
             } else {
               umamiLoaded = true;
             }
-          }
+          },
         );
       }
     },

@@ -19,7 +19,10 @@ function onTimeSlotChanged(timeSlot: TimeSlot | undefined) {
   }
 }
 
-function isSingleConfig(_config: ZaptimeConfig | IEventTypeGroup, type: "single" | "group"): _config is ZaptimeConfig {
+function isSingleConfig(
+  _config: ZaptimeConfig | IEventTypeGroup,
+  type: "single" | "group",
+): _config is ZaptimeConfig {
   return type === "single";
 }
 
@@ -46,10 +49,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div id="iframe-app" :class="[config.theme?.mode === 'dark' ? 'dark' : '', positionCssClass]" class="flex w-full">
+  <div
+    id="iframe-app"
+    :class="[config.theme?.mode === 'dark' ? 'dark' : '', positionCssClass]"
+    class="flex w-full"
+  >
     <div v-if="config && loaded">
       <div v-if="isSingleConfig(config, type)">
-        <EventType :config="config" @time-slot-changed="onTimeSlotChanged"> </EventType>
+        <EventType :config="config" @time-slot-changed="onTimeSlotChanged">
+        </EventType>
       </div>
 
       <div v-else>
