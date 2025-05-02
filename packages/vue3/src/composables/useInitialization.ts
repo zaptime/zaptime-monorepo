@@ -99,8 +99,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
         // Select day if rescheduling
         if (initData.value.reservation !== undefined) {
           const selectedDay = state.days.find((day) => {
-            if (day.date !== undefined) {
-              //@ts-expect-error dunno wtf
+            if (day.date !== undefined && initData.value.reservation) {
               return isSameDay(
                 day.date,
                 new Date(initData.value.reservation.start),
