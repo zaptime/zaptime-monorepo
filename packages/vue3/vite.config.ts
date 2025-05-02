@@ -12,6 +12,11 @@ export default defineConfig(({ mode }) => {
         port: 8888,
       },
       root: resolve(__dirname, "./example"),
+      resolve: {
+        alias: {
+          "@zaptime/core": resolve(__dirname, "../core/src/entry.ts"),
+        },
+      },
     };
   } else {
     return {
@@ -27,7 +32,10 @@ export default defineConfig(({ mode }) => {
         rollupOptions: {
           // make sure to externalize deps that shouldn't be bundled
           // into your library
-          external: [...Object.keys(peerDependencies), ...Object.keys(dependencies)],
+          external: [
+            ...Object.keys(peerDependencies),
+            ...Object.keys(dependencies),
+          ],
           output: {
             // Provide global variables to use in the UMD build
             // for externalized deps
@@ -42,6 +50,11 @@ export default defineConfig(({ mode }) => {
               return assetInfo.name || "asset";
             },
           },
+        },
+      },
+      resolve: {
+        alias: {
+          "@zaptime/core": resolve(__dirname, "../core/src/entry.ts"),
         },
       },
     };

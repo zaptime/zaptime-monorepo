@@ -9,6 +9,7 @@ export default defineConfig({
       name: "zaptime-core",
       fileName: (format) => `zaptime-core.${format}.js`,
     },
+    sourcemap: true,
     rollupOptions: {
       external: ["vue"],
       output: {

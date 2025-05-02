@@ -12,7 +12,10 @@
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "types": ["node", "web-bluetooth", "stripe-v3"],
-    "stripInternal": true
+    "stripInternal": true,
+    "paths": {
+      "@zaptime/core": ["../core/src/entry.ts"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": ["node_modules"]
