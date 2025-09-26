@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.9.0
+
+### Minor Changes
+
+- 4631398: Add a check when no reservations are present for current month, switch to next month by default. In the month with no reservations, show button.
+
 ## 2.8.7
 
 ### Patch Changes

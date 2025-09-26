@@ -1,5 +1,16 @@
 # @zaptime/vue3
 
+## 3.9.0
+
+### Minor Changes
+
+- 4631398: Add a check when no reservations are present for current month, switch to next month by default. In the month with no reservations, show button.
+
+### Patch Changes
+
+- Updated dependencies [4631398]
+  - @zaptime/core@2.9.0
+
 ## 3.8.9
 
 ### Patch Changes
