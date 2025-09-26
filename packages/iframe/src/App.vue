@@ -5,6 +5,7 @@ import EventTypeGroup from "./components/EventTypesGroup.vue";
 import type { EventTypeGroup as IEventTypeGroup } from "./components/EventTypesGroup.vue";
 import { fetchRemoteGroupConfig } from "./buildConfigFromRequest";
 import { computed, onMounted, ref } from "vue";
+import ZaptimeButton from "./components/ZaptimeButton.vue";
 const type = window.xprops.type ? window.xprops.type : "single";
 const position = window.xprops.position ? window.xprops.position : "center";
 const config = ref(window.xprops.config);
@@ -49,7 +50,12 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div class="m-10">
+    <ZaptimeButton></ZaptimeButton>
+  </div>
+
   <div
+    v-if="false"
     id="iframe-app"
     :class="[config.theme?.mode === 'dark' ? 'dark' : '', positionCssClass]"
     class="flex w-full"
