@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.9.1
+
+### Patch Changes
+
+- b8eb573: Rename analytics event. booking_confirmed -> zaptime:booking_confirmed
+
 ## 3.9.0
 
 ### Minor Changes
