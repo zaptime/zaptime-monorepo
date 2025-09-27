@@ -256,7 +256,7 @@ async function onSubmit() {
       }
     }
 
-    analytics?.track("booking_confirmed", {
+    analytics?.track("zatime:booking_confirmed", {
       timeSlot: selectedTimeSlot.value
         ? selectedTimeSlot.value.start
         : undefined,
