@@ -61,7 +61,7 @@ onMounted(async () => {
       </div>
 
       <div v-else>
-        <EventTypeGroup :config="config" />
+        <EventTypeGroup :config="config as IEventTypeGroup" />
       </div>
     </div>
   </div>
