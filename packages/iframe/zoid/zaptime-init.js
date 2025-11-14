@@ -35,7 +35,7 @@ var Zaptime = zoid.create({
   },
 });
 
-window.ZaptimePugin = {
+window.ZaptimePlugin = {
   postMessage(action, data) {
     var iframe = document.querySelector(".zoid-visible");
 
