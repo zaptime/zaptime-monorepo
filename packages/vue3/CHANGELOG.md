@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.9.2
+
+### Patch Changes
+
+- missing STRIPE KEY
+
 ## 3.9.1
 
 ### Patch Changes
