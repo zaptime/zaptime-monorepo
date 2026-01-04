@@ -43,6 +43,8 @@ jobs:
 
       - name: Build Vue3
         run: pnpm --filter @zaptime/vue3 build
+        env:
+          VITE_STRIPE_CLIENT_KEY: ${{ secrets.VITE_STRIPE_CLIENT_KEY }}
 
       - name: Create Release Pull Request or Publish Packages
         uses: changesets/action@v1
