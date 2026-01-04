@@ -1,5 +1,12 @@
 # iframe
 
+## 0.0.77
+
+### Patch Changes
+
+- Updated dependencies
+  - @zaptime/vue3@3.9.3
+
 ## 0.0.76
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.9.3
+
+### Patch Changes
+
+- Fix: properly load env var
+
 ## 3.9.2
 
 ### Patch Changes

@@ -1,11 +1,10 @@
 import vue from "@vitejs/plugin-vue";
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig } from "vite";
 import { resolve } from "path";
 import { peerDependencies, dependencies } from "./package.json";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, __dirname, "");
   if (mode !== "production") {
     return {
       plugins: [vue()],
@@ -20,11 +19,12 @@ export default defineConfig(({ mode }) => {
       },
     };
   } else {
+    // Production: inline env var at build time (reads from CI system env)
     return {
       plugins: [vue()],
       define: {
         "import.meta.env.VITE_STRIPE_CLIENT_KEY": JSON.stringify(
-          env.VITE_STRIPE_CLIENT_KEY,
+          process.env.VITE_STRIPE_CLIENT_KEY,
         ),
       },
       build: {
