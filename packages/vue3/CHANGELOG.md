@@ -1,5 +1,11 @@
 # @zaptime/vue3
 
+## 3.9.4
+
+### Patch Changes
+
+- 14e7405: add env var
+
 ## 3.9.3
 
 ### Patch Changes
