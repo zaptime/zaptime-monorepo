@@ -1,0 +1,13 @@
+import { defineConfig } from 'vitest/config'
+
+export default defineConfig({
+  test: {
+    environment: 'happy-dom',
+    include: ['__tests__/**/*.test.ts'],
+    coverage: {
+      provider: 'v8',
+      include: ['src/zaptime-init/**/*.ts'],
+      exclude: ['src/zaptime-init/types/**'],
+    },
+  },
+})

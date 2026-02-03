@@ -5,10 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build && pnpm run merge-files",
+    "build": "vue-tsc --noEmit && vite build && pnpm build:init && pnpm merge-files",
+    "build:init": "tsdown",
     "merge-files": "cat ./zoid/zoid.js ./zoid/zaptime-init.js > ./dist/zaptime.js",
     "preview": "vite preview",
-    "deploy": "CLOUDFLARE_ACCOUNT_ID=ba3f25490fcc7591a079aa5d771245ad npx wrangler pages deploy dist --commit-dirty=true"
+    "deploy": "CLOUDFLARE_ACCOUNT_ID=ba3f25490fcc7591a079aa5d771245ad npx wrangler pages deploy dist --commit-dirty=true",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@zaptime/core": "workspace:*",
@@ -22,11 +26,15 @@
   "devDependencies": {
     "@types/node": "^20.11.19",
     "@vitejs/plugin-vue": "^5.0.4",
+    "@vitest/coverage-v8": "^3.0.5",
     "autoprefixer": "^10.4.17",
+    "happy-dom": "^17.4.4",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
+    "tsdown": "^0.9.4",
     "typescript": "^5.8.3",
     "vite": "^6.2.6",
+    "vitest": "^3.0.5",
     "vue-tsc": "^2.2.8"
   }
 }
