@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zaptime Embedding Modes Test</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: #555;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+    .test-section {
+      background: white;
+      padding: 24px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .test-section p {
+      color: #666;
+      margin-bottom: 16px;
+    }
+    button.test-btn {
+      background: #15B79E;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    button.test-btn:hover {
+      background: #0e9382;
+    }
+    button.test-btn.secondary {
+      background: #6b7280;
+    }
+    button.test-btn.secondary:hover {
+      background: #4b5563;
+    }
+    a[data-zaptime-link] {
+      color: #15B79E;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    #inline-container {
+      border: 2px dashed #ddd;
+      min-height: 700px;
+      border-radius: 8px;
+    }
+    .code-block {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 16px;
+      border-radius: 6px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+    .log-output {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 12px;
+      min-height: 60px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Zaptime Embedding Modes Test</h1>
+
+  <!-- Test 1: Inline Mode (existing) -->
+  <div class="test-section">
+    <h2>1. Inline Mode (Existing)</h2>
+    <p>The calendar renders directly inside a container element.</p>
+    <div id="inline-container"></div>
+  </div>
+
+  <!-- Test 2: Floating Button Mode -->
+  <div class="test-section">
+    <h2>2. Floating Button Mode</h2>
+    <p>A floating button appears at the bottom of the screen. Click it to open the calendar modal.</p>
+
+    <h3>Bottom-Right (with branding - default)</h3>
+    <button class="test-btn" onclick="createFloatingRight()">Create Bottom-Right Button</button>
+    <button class="test-btn secondary" onclick="destroyFloatingRight()">Destroy</button>
+
+    <h3>Bottom-Left (custom text - PRO)</h3>
+    <button class="test-btn" onclick="createFloatingLeft()">Create Bottom-Left Button</button>
+    <button class="test-btn secondary" onclick="destroyFloatingLeft()">Destroy</button>
+
+    <h3>Programmatic Control</h3>
+    <button class="test-btn" onclick="openFloatingRight()">Open Modal (Right)</button>
+    <button class="test-btn" onclick="closeFloatingRight()">Close Modal (Right)</button>
+
+    <h3>Event Log</h3>
+    <div class="log-output" id="floating-log"></div>
+  </div>
+
+  <!-- Test 3: Popup Mode (External Element Trigger) -->
+  <div class="test-section">
+    <h2>3. Popup Mode (External Element Trigger)</h2>
+    <p>Any element with <code>data-zaptime-link</code> attribute will open the calendar when clicked.</p>
+
+    <button class="test-btn" onclick="initPopup()">Initialize Popup Mode</button>
+    <button class="test-btn secondary" onclick="destroyPopup()">Destroy</button>
+
+    <h3>Test Elements</h3>
+    <p>
+      Click this <a href="#" data-zaptime-link>link to book a meeting</a> or
+      <button data-zaptime-link class="test-btn">this button</button>
+    </p>
+
+    <h3>Dynamic Element Test</h3>
+    <button class="test-btn" onclick="addDynamicElement()">Add Dynamic Link</button>
+    <div id="dynamic-container"></div>
+
+    <h3>Programmatic Control</h3>
+    <button class="test-btn" onclick="openPopup()">Open Popup Programmatically</button>
+    <button class="test-btn" onclick="closePopup()">Close Popup</button>
+
+    <h3>Event Log</h3>
+    <div class="log-output" id="popup-log"></div>
+  </div>
+
+  <!-- Scripts - Load from local dist for testing new features -->
+  <script src="./dist/zaptime.js"></script>
+  <script>
+    // Config
+    var demoConfig = { token: 'L4n5ie2OwtXy7NMvfllqOAu3BWl3WLph' };
+
+    // Render inline calendar immediately
+    Zaptime({
+      type: 'single',
+      config: demoConfig
+    }).render('#inline-container');
+
+    // Instance references
+    var floatingRight = null;
+    var floatingLeft = null;
+    var popup = null;
+
+    // Logging helpers
+    function log(containerId, message) {
+      var container = document.getElementById(containerId);
+      var time = new Date().toLocaleTimeString();
+      container.innerHTML += '[' + time + '] ' + message + '\n';
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // Floating Button - Right
+    function createFloatingRight() {
+      if (floatingRight) {
+        log('floating-log', 'Right button already exists');
+        return;
+      }
+      floatingRight = Zaptime.floatingButton({
+        type: 'single',
+        config: demoConfig,
+        position: 'bottom-right',
+
+        branding: false,
+        buttonText: 'Domluvit si konzultaci',
+        buttonColor: '#6366f1',
+        buttonTextColor: '#ffffff',        
+        onOpen: function() { log('floating-log', 'Right modal opened'); },
+        onClose: function() { log('floating-log', 'Right modal closed'); }
+      });
+      log('floating-log', 'Created floating button (right) - ID: ' + floatingRight.id);
+    }
+
+    function destroyFloatingRight() {
+      if (floatingRight) {
+        floatingRight.destroy();
+        log('floating-log', 'Destroyed floating button (right)');
+        floatingRight = null;
+      }
+    }
+
+    function openFloatingRight() {
+      if (floatingRight) {
+        floatingRight.open();
+      } else {
+        log('floating-log', 'Create button first');
+      }
+    }
+
+    function closeFloatingRight() {
+      if (floatingRight) {
+        floatingRight.close();
+      }
+    }
+
+    // Floating Button - Left
+    function createFloatingLeft() {
+      if (floatingLeft) {
+        log('floating-log', 'Left button already exists');
+        return;
+      }
+      floatingLeft = Zaptime.floatingButton({
+        type: 'single',
+        config: demoConfig,
+        position: 'bottom-left',
+        branding: false,
+        buttonText: 'Domluvit si konzultaci',
+        buttonColor: '#6366f1',
+        buttonTextColor: '#ffffff',
+        onOpen: function() { log('floating-log', 'Left modal opened'); },
+        onClose: function() { log('floating-log', 'Left modal closed'); }
+      });
+      log('floating-log', 'Created floating button (left) - ID: ' + floatingLeft.id);
+    }
+
+    function destroyFloatingLeft() {
+      if (floatingLeft) {
+        floatingLeft.destroy();
+        log('floating-log', 'Destroyed floating button (left)');
+        floatingLeft = null;
+      }
+    }
+
+    // Popup Mode
+    function initPopup() {
+      if (popup) {
+        log('popup-log', 'Popup already initialized');
+        return;
+      }
+      popup = Zaptime.popup({
+        type: 'single',
+        config: demoConfig,
+        selector: '[data-zaptime-link]',
+        onOpen: function() { log('popup-log', 'Popup opened'); },
+        onClose: function() { log('popup-log', 'Popup closed'); }
+      });
+      log('popup-log', 'Popup initialized - ID: ' + popup.id);
+    }
+
+    function destroyPopup() {
+      if (popup) {
+        popup.destroy();
+        log('popup-log', 'Popup destroyed');
+        popup = null;
+      }
+    }
+
+    function openPopup() {
+      if (popup) {
+        popup.open();
+      } else {
+        log('popup-log', 'Initialize popup first');
+      }
+    }
+
+    function closePopup() {
+      if (popup) {
+        popup.close();
+      }
+    }
+
+    var dynamicCounter = 0;
+    function addDynamicElement() {
+      dynamicCounter++;
+      var container = document.getElementById('dynamic-container');
+      var link = document.createElement('a');
+      link.href = '#';
+      link.setAttribute('data-zaptime-link', '');
+      link.textContent = 'Dynamic Link #' + dynamicCounter;
+      link.style.marginRight = '10px';
+      link.style.color = '#15B79E';
+      container.appendChild(link);
+      log('popup-log', 'Added dynamic link #' + dynamicCounter + ' (should auto-bind if MutationObserver works)');
+    }
+
+    console.log('Zaptime test page loaded. Use the buttons above to test different embedding modes.');
+  </script>
+</body>
+</html>
