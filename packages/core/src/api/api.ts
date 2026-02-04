@@ -72,6 +72,11 @@ export interface IOptions {
    * Custom fields
    */
   customFields?: CustomFieldCollected[];
+
+  /**
+   * Guest emails to invite
+   */
+  guests?: string[];
 }
 
 export interface IConfirmationOptions
@@ -94,6 +99,7 @@ export const book = async (options: IOptions): Promise<ReservationResponse> => {
     phone,
     location,
     timezone,
+    guests,
   } = options;
   try {
     const data = await fetch(getBookUrl(baseUrl), {
@@ -109,6 +115,7 @@ export const book = async (options: IOptions): Promise<ReservationResponse> => {
         location: location,
         timezone: timezone,
         customFields: options.customFields,
+        guests: guests,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -173,6 +180,7 @@ export const reserve = async (
     phone,
     location,
     timezone,
+    guests,
   } = options;
 
   try {
@@ -189,6 +197,7 @@ export const reserve = async (
         location: location,
         timezone: timezone,
         customFields: options.customFields,
+        guests: guests,
       }),
       headers: {
         "Content-Type": "application/json",

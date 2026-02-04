@@ -32,6 +32,10 @@
         <Radio v-bind="element" />
       </div>
     </div>
+
+    <div v-if="isGuestsEnabled" class="cal-mt-4">
+      <GuestsInput />
+    </div>
   </div>
 </template>
 
@@ -42,9 +46,11 @@ import Textarea from "./components/Textarea.vue";
 import Select from "./components/Select.vue";
 import Multiselect from "./components/Multiselect.vue";
 import Radio from "./components/Radio.vue";
+import GuestsInput from "./components/GuestsInput.vue";
 
 import { inject } from "vue";
-import { useBookingForm } from "@zaptime/core";
+import { useBookingForm, useGuests } from "@zaptime/core";
 
 const { bookingForm } = useBookingForm(inject("calendarId"));
+const { isEnabled: isGuestsEnabled } = useGuests(inject("calendarId"));
 </script>

@@ -139,6 +139,7 @@ import {
   useBillingAddress,
   useReservationReschedule,
   cancel,
+  useGuests,
 } from "@zaptime/core";
 import PrimaryButton from "./atomic/PrimaryButton.vue";
 import SecondaryButton from "./atomic/SecondaryButton.vue";
@@ -161,6 +162,7 @@ const { stripeConfig } = useStripeConfig(inject("calendarId"));
 const { collectFormValues } = useBookingForm(inject("calendarId"));
 const { billingAddress } = useBillingAddress(inject("calendarId"));
 const { reservation } = useReservationReschedule(inject("calendarId"));
+const { collectGuests } = useGuests(inject("calendarId"));
 
 const { initGateway, handleSubmit: handleStripePayment } = useStripe();
 
@@ -195,6 +197,7 @@ async function handleSubmittionWithPayment() {
       seats: seats.value,
       calendarId,
       location: locations.value[0],
+      guests: collectGuests(),
     });
 
     if (billingAddress.value.email === "") {
@@ -249,6 +252,7 @@ async function onSubmit() {
         calendarId,
         location: locations.value[0],
         ...collectFormValues(),
+        guests: collectGuests(),
       });
 
       if (!res.success) {

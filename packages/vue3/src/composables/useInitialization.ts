@@ -8,6 +8,7 @@ import {
   useBookingForm,
   useReservationReschedule,
   useDateFormatters,
+  useGuests,
 } from "@zaptime/core";
 import { ref, nextTick } from "vue";
 import { getAnalytics, buildConfig } from "../analytics";
@@ -27,6 +28,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
   const { setSelectedReservation } = useReservationReschedule(calendarId);
   const { init: initCalendar, dayClicked, state } = useCalendar(calendarId);
   const { setIsSubscribed } = useIsSubscribed();
+  const { setGuestsConfig } = useGuests(calendarId);
   /**
    * Setups the calendar and configuration based on the provided token and configuration.
    * If the token is not provided, an error will be logged.
@@ -71,6 +73,10 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
 
         if (initData.value.customFields) {
           setBookingForm(initData.value.customFields);
+        }
+
+        if (initData.value.guestsConfig) {
+          setGuestsConfig(initData.value.guestsConfig);
         }
 
         if (initData.value.isSubscribed === false) {

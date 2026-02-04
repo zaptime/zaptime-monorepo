@@ -34,12 +34,18 @@ export type InitData = {
   reservation?: Reservation;
   isSubscribed: boolean;
   eventTypeName: string;
+  guestsConfig?: GuestsConfig;
 };
 
 export type StripeConfig = {
   price: number;
   currency: string;
   stripeAccountId: string;
+};
+
+export type GuestsConfig = {
+  enabled: boolean;
+  maxGuests?: number;
 };
 
 export type CustomFieldCollected = {
