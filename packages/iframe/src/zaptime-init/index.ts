@@ -3,11 +3,13 @@
 
 import type {
   FloatingButtonOptions,
+  InlineButtonOptions,
   PopupOptions,
   ZaptimeInstance,
 } from "./types/options";
 import type { ZaptimeConfig } from "@zaptime/core";
 import { createFloatingButton } from "./components/FloatingButton";
+import { createInlineButton } from "./components/InlineButton";
 import { createPopup } from "./components/Popup";
 import { setZaptimeComponent } from "./components/Modal";
 import { ZaptimePlugin } from "./plugin/ZaptimePlugin";
@@ -30,6 +32,7 @@ interface ZoidComponent {
     render: (container: HTMLElement | string) => Promise<void>;
   };
   floatingButton?: (options: FloatingButtonOptions) => ZaptimeInstance;
+  inlineButton?: (options: InlineButtonOptions) => ZaptimeInstance;
   popup?: (options: PopupOptions) => ZaptimeInstance;
 }
 
@@ -79,6 +82,13 @@ Zaptime.floatingButton = function (
   options: FloatingButtonOptions,
 ): ZaptimeInstance {
   return createFloatingButton(options);
+};
+
+// Add inlineButton method
+Zaptime.inlineButton = function (
+  options: InlineButtonOptions,
+): ZaptimeInstance {
+  return createInlineButton(options);
 };
 
 // Add popup method

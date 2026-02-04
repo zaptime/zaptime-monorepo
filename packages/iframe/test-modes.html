@@ -120,9 +120,31 @@
     <div class="log-output" id="floating-log"></div>
   </div>
 
-  <!-- Test 3: Popup Mode (External Element Trigger) -->
+  <!-- Test 3: Inline Button Mode -->
   <div class="test-section">
-    <h2>3. Popup Mode (External Element Trigger)</h2>
+    <h2>3. Inline Button Mode</h2>
+    <p>A button rendered inside a specified container element. Click it to open the calendar modal.</p>
+
+    <h3>Button Container</h3>
+    <div id="inline-button-container" style="border: 2px dashed #ddd; padding: 20px; border-radius: 8px; margin-bottom: 16px;">
+      <!-- Inline button will be inserted here -->
+    </div>
+
+    <h3>Controls</h3>
+    <button class="test-btn" onclick="createInlineButtonDemo()">Create Inline Button</button>
+    <button class="test-btn secondary" onclick="destroyInlineButtonDemo()">Destroy</button>
+
+    <h3>Programmatic Control</h3>
+    <button class="test-btn" onclick="openInlineButtonModal()">Open Modal</button>
+    <button class="test-btn" onclick="closeInlineButtonModal()">Close Modal</button>
+
+    <h3>Event Log</h3>
+    <div class="log-output" id="inline-button-log"></div>
+  </div>
+
+  <!-- Test 4: Popup Mode (External Element Trigger) -->
+  <div class="test-section">
+    <h2>4. Popup Mode (External Element Trigger)</h2>
     <p>Any element with <code>data-zaptime-link</code> attribute will open the calendar when clicked.</p>
 
     <button class="test-btn" onclick="initPopup()">Initialize Popup Mode</button>
@@ -161,6 +183,7 @@
     // Instance references
     var floatingRight = null;
     var floatingLeft = null;
+    var inlineButtonInstance = null;
     var popup = null;
 
     // Logging helpers
@@ -236,6 +259,47 @@
         floatingLeft.destroy();
         log('floating-log', 'Destroyed floating button (left)');
         floatingLeft = null;
+      }
+    }
+
+    // Inline Button Mode
+    function createInlineButtonDemo() {
+      if (inlineButtonInstance) {
+        log('inline-button-log', 'Inline button already exists');
+        return;
+      }
+      inlineButtonInstance = Zaptime.inlineButton({
+        selector: '#inline-button-container',
+        type: 'single',
+        config: demoConfig,
+        buttonText: 'Domluvit si konzultaci',
+        buttonColor: '#6366f1',
+        buttonTextColor: '#ffffff',
+        onOpen: function() { log('inline-button-log', 'Modal opened'); },
+        onClose: function() { log('inline-button-log', 'Modal closed'); }
+      });
+      log('inline-button-log', 'Created inline button - ID: ' + inlineButtonInstance.id);
+    }
+
+    function destroyInlineButtonDemo() {
+      if (inlineButtonInstance) {
+        inlineButtonInstance.destroy();
+        log('inline-button-log', 'Destroyed inline button');
+        inlineButtonInstance = null;
+      }
+    }
+
+    function openInlineButtonModal() {
+      if (inlineButtonInstance) {
+        inlineButtonInstance.open();
+      } else {
+        log('inline-button-log', 'Create inline button first');
+      }
+    }
+
+    function closeInlineButtonModal() {
+      if (inlineButtonInstance) {
+        inlineButtonInstance.close();
       }
     }
 
