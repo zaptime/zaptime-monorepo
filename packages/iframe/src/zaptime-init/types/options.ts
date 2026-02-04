@@ -23,6 +23,13 @@ export interface PopupOptions extends ModalOptions {
   selector?: string;
 }
 
+export interface InlineButtonOptions extends ModalOptions {
+  selector: string; // Required: CSS selector where button will be inserted
+  buttonColor?: string;
+  buttonTextColor?: string;
+  buttonText?: string;
+}
+
 export interface ZaptimeInstance {
   id: string;
   open: () => void;

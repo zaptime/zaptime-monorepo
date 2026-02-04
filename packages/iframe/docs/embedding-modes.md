@@ -1,6 +1,6 @@
 # Zaptime Embedding Modes
 
-Zaptime can be embedded on your website in three different ways: **Inline**, **Floating Button**, and **Popup**. Each mode serves different use cases.
+Zaptime can be embedded on your website in four different ways: **Inline**, **Floating Button**, **Inline Button**, and **Popup**. Each mode serves different use cases.
 
 ## Quick Start
 
@@ -118,7 +118,96 @@ console.log(floatingCalendar.id);
 
 ---
 
-## 3. Popup Mode
+## 3. Inline Button Mode
+
+Renders a button inside a specified container element. Clicking it opens the calendar in a modal. Unlike Floating Button, the button is part of the normal document flow and can be placed anywhere on your page.
+
+### Basic Usage
+
+```html
+<div id="booking-button"></div>
+
+<script>
+var inlineButton = Zaptime.inlineButton({
+  selector: '#booking-button',
+  type: 'single',
+  config: {
+    token: 'YOUR_TOKEN'
+  }
+});
+</script>
+```
+
+### Customization
+
+```html
+<div id="booking-button"></div>
+
+<script>
+var inlineButton = Zaptime.inlineButton({
+  selector: '#booking-button',
+  type: 'single',
+  config: {
+    token: 'YOUR_TOKEN'
+  },
+
+  // Button appearance (PRO feature - free tier shows Zaptime branding)
+  buttonText: 'Schedule a Call',    // Custom text
+  buttonColor: '#6366f1',           // Background color
+  buttonTextColor: '#ffffff',       // Text color
+
+  // Event callbacks
+  onOpen: function() {
+    console.log('Modal opened');
+  },
+  onClose: function() {
+    console.log('Modal closed');
+  }
+});
+</script>
+```
+
+### Options
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `selector` | `string` | Yes | CSS selector for the container where the button will be inserted. |
+| `type` | `'single'` \| `'group'` | No | Event type. |
+| `config` | `object` | Yes | Configuration object with `token`. |
+| `buttonText` | `string` | No | Button label. Default: `'Book a Meeting'` (PRO feature). |
+| `buttonColor` | `string` | No | Button background color. Default: `'#15B79E'` (PRO feature). |
+| `buttonTextColor` | `string` | No | Button text color. Default: `'#FFFFFF'` (PRO feature). |
+| `onOpen` | `function` | No | Callback when modal opens. |
+| `onClose` | `function` | No | Callback when modal closes. |
+| `onEventChanged` | `function` | No | Callback when selected event changes. |
+
+### Programmatic Control
+
+```javascript
+// Open the modal programmatically
+inlineButton.open();
+
+// Close the modal
+inlineButton.close();
+
+// Remove the button and modal from the page
+inlineButton.destroy();
+
+// Get the instance ID
+console.log(inlineButton.id);
+```
+
+### Comparison with Floating Button
+
+| Aspect | Floating Button | Inline Button |
+|--------|-----------------|---------------|
+| Position | Fixed to bottom of viewport | Inside specified container |
+| z-index | Very high (always visible) | Normal document flow |
+| Use case | Global CTA, always accessible | Contextual CTA, specific location |
+
+---
+
+## 4. Popup Mode
 
 Binds click handlers to existing elements on your page. When clicked, they open the calendar in a modal.
 
@@ -209,7 +298,7 @@ document.body.appendChild(link);
 
 ## Modal Behavior
 
-Both **Floating Button** and **Popup** modes use the same modal component with these features:
+**Floating Button**, **Inline Button**, and **Popup** modes all use the same modal component with these features:
 
 - **Click outside to close**: Clicking the backdrop closes the modal
 - **Escape key**: Press `Escape` to close the modal
@@ -261,6 +350,11 @@ ZaptimePlugin.cancel({
   <!-- Inline calendar -->
   <div id="calendar"></div>
 
+  <!-- Inline button container -->
+  <p>
+    Book directly: <span id="booking-button"></span>
+  </p>
+
   <!-- Popup triggers -->
   <p>
     Or <a href="#" data-zaptime-link>click here</a> to open in a modal.
@@ -276,11 +370,19 @@ ZaptimePlugin.cancel({
       config: config
     }).render('#calendar');
 
-    // Floating button
+    // Floating button (fixed to bottom of screen)
     var floating = Zaptime.floatingButton({
       type: 'single',
       config: config,
       position: 'bottom-right'
+    });
+
+    // Inline button (inside a specific container)
+    var inlineBtn = Zaptime.inlineButton({
+      selector: '#booking-button',
+      type: 'single',
+      config: config,
+      buttonText: 'Schedule Now'
     });
 
     // Popup mode for data-zaptime-link elements

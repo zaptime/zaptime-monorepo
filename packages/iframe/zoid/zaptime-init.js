@@ -99,6 +99,26 @@ const floatingButtonStyles = {
 	positionLeft: { left: TOKENS.dimensions.buttonBottom },
 	positionRight: { right: TOKENS.dimensions.buttonBottom }
 };
+const inlineButtonStyles = {
+	base: {
+		display: "inline-flex",
+		alignItems: "center",
+		gap: TOKENS.dimensions.buttonGap,
+		padding: `${TOKENS.dimensions.buttonPaddingY} ${TOKENS.dimensions.buttonPaddingX}`,
+		border: "none",
+		borderRadius: TOKENS.borderRadius.button,
+		cursor: "pointer",
+		boxShadow: TOKENS.shadows.button,
+		transition: `transform ${TOKENS.timing.hover} ${TOKENS.easing.hover}, box-shadow ${TOKENS.timing.hover} ${TOKENS.easing.hover}`,
+		fontFamily: TOKENS.fonts.family,
+		fontSize: TOKENS.fonts.size,
+		fontWeight: TOKENS.fonts.weight
+	},
+	hover: {
+		transform: TOKENS.transforms.buttonHover,
+		boxShadow: TOKENS.shadows.buttonHover
+	}
+};
 
 //#endregion
 //#region src/zaptime-init/styles/utils.ts
@@ -130,12 +150,6 @@ function generateUniqueId() {
 
 //#endregion
 //#region src/zaptime-init/utils/icons.ts
-/**
-* Get the Zaptime logo SVG with the specified color
-*/
-function getZaptimeLogo(color = "#FFFFFF") {
-	return "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z\" fill=\"" + color + "\"/></svg>";
-}
 /**
 * Get the close icon SVG
 */
@@ -472,7 +486,6 @@ function createFloatingButton(options = {}) {
 	const customButtonColor = options.buttonColor || TOKENS.colors.buttonDefault;
 	const customButtonTextColor = options.buttonTextColor || TOKENS.colors.white;
 	const customButtonText = options.buttonText || "Book a Meeting";
-	const wantsBranding = options.branding !== false;
 	const id = generateUniqueId();
 	let button = null;
 	let modal = null;
@@ -486,20 +499,13 @@ function createFloatingButton(options = {}) {
 	function applyButtonStyling() {
 		if (!button) return;
 		const positionStyles = position === "bottom-left" ? floatingButtonStyles.positionLeft : floatingButtonStyles.positionRight;
-		if (isSubscribed && !wantsBranding) {
+		if (isSubscribed) {
 			const buttonStyles = mergeStyles(floatingButtonStyles.base, positionStyles, {
 				backgroundColor: customButtonColor,
 				color: customButtonTextColor
 			});
 			applyStyles(button, buttonStyles);
 			button.innerHTML = "<span>" + customButtonText + "</span>";
-		} else if (isSubscribed && wantsBranding) {
-			const buttonStyles = mergeStyles(floatingButtonStyles.base, positionStyles, {
-				backgroundColor: TOKENS.colors.buttonDefault,
-				color: TOKENS.colors.white
-			});
-			applyStyles(button, buttonStyles);
-			button.innerHTML = getZaptimeLogo(TOKENS.colors.white) + "<span>Zaptime</span>";
 		} else {
 			const buttonStyles = mergeStyles(floatingButtonStyles.base, positionStyles, {
 				background: "linear-gradient(134.86deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)",
@@ -543,6 +549,121 @@ function createFloatingButton(options = {}) {
 			modal.open();
 		});
 		document.body.appendChild(button);
+	}
+	function init() {
+		if (token) fetchAccountStatus(token).then((status) => {
+			if (status?.disabled) return;
+			if (status) isSubscribed = status.isSubscribed;
+			createButton();
+		});
+		else createButton();
+	}
+	function open() {
+		if (!modal) modal = new ZaptimeModal({
+			type: options.type,
+			config: options.config,
+			onEventChanged: options.onEventChanged,
+			onOpen: options.onOpen,
+			onClose: options.onClose
+		});
+		modal.open();
+	}
+	function close() {
+		if (modal) modal.close();
+	}
+	function destroy() {
+		if (button && button.parentNode) {
+			button.parentNode.removeChild(button);
+			button = null;
+		}
+		if (modal) {
+			modal.destroy();
+			modal = null;
+		}
+	}
+	init();
+	return {
+		id,
+		open,
+		close,
+		destroy
+	};
+}
+
+//#endregion
+//#region src/zaptime-init/components/InlineButton.ts
+function createInlineButton(options) {
+	const selector = options.selector;
+	const customButtonColor = options.buttonColor || TOKENS.colors.buttonDefault;
+	const customButtonTextColor = options.buttonTextColor || TOKENS.colors.white;
+	const customButtonText = options.buttonText || "Book a Meeting";
+	const id = generateUniqueId();
+	let button = null;
+	let modal = null;
+	let isSubscribed = false;
+	const token = options.config?.token;
+	/**
+	* Apply button styling based on subscription status
+	* - If subscribed: use custom options provided by user
+	* - If not subscribed: force Zaptime branding
+	*/
+	function applyButtonStyling() {
+		if (!button) return;
+		if (isSubscribed) {
+			const buttonStyles = mergeStyles(inlineButtonStyles.base, {
+				backgroundColor: customButtonColor,
+				color: customButtonTextColor
+			});
+			applyStyles(button, buttonStyles);
+			button.innerHTML = "<span>" + customButtonText + "</span>";
+		} else {
+			const buttonStyles = mergeStyles(inlineButtonStyles.base, {
+				background: "linear-gradient(134.86deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)",
+				boxShadow: "0 6px 10px rgba(9, 15, 35, 0.05)",
+				color: TOKENS.colors.white,
+				borderRadius: "0.5rem",
+				padding: "12px 24px 12px 18px"
+			});
+			applyStyles(button, buttonStyles);
+			button.innerHTML = getZaptimeFreeLogo() + "<span>Zaptime</span>";
+		}
+	}
+	function createButton() {
+		const container = document.querySelector(selector);
+		if (!container) {
+			console.warn(`Zaptime: Container not found for selector "${selector}"`);
+			return;
+		}
+		button = document.createElement("button");
+		button.id = `${id}-button`;
+		button.type = "button";
+		applyButtonStyling();
+		button.addEventListener("mouseenter", () => {
+			if (button) {
+				applyStyles(button, inlineButtonStyles.hover);
+				if (!isSubscribed) button.style.background = "linear-gradient(100deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)";
+			}
+		});
+		button.addEventListener("mouseleave", () => {
+			if (button) {
+				button.style.transform = "";
+				if (!isSubscribed) {
+					button.style.boxShadow = "0 6px 10px rgba(9, 15, 35, 0.05)";
+					button.style.background = "linear-gradient(134.86deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)";
+				} else button.style.boxShadow = TOKENS.shadows.button;
+			}
+		});
+		button.addEventListener("click", () => {
+			if (!modal) modal = new ZaptimeModal({
+				type: options.type,
+				config: options.config,
+				onEventChanged: options.onEventChanged,
+				onOpen: options.onOpen,
+				onClose: options.onClose
+			});
+			modal.open();
+		});
+		container.appendChild(button);
 	}
 	function init() {
 		if (token) fetchAccountStatus(token).then((status) => {
@@ -729,6 +850,9 @@ const Zaptime = zoid.create({
 setZaptimeComponent(Zaptime);
 Zaptime.floatingButton = function(options) {
 	return createFloatingButton(options);
+};
+Zaptime.inlineButton = function(options) {
+	return createInlineButton(options);
 };
 Zaptime.popup = function(options) {
 	return createPopup(options);
