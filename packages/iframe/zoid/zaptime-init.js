@@ -23,7 +23,7 @@ const TOKENS = {
 		},
 		dark: {
 			backdrop: "rgba(0, 0, 0, 0.7)",
-			modalBg: "#262626",
+			modalBg: "#171717",
 			closeButtonBg: "rgba(255, 255, 255, 0.1)",
 			closeButtonHoverBg: "rgba(255, 255, 255, 0.2)",
 			closeButtonColor: "#e5e7eb"
