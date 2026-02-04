@@ -40,7 +40,7 @@ export class ZaptimeModal {
   constructor(options: ModalOptions) {
     this.id = generateUniqueId();
     this.options = options;
-    this.isDark = isDarkMode();
+    this.isDark = this.options.config?.theme?.mode === 'dark' || isDarkMode();
     this.styles = createModalStyles(this.isDark);
   }
 
@@ -120,11 +120,13 @@ export class ZaptimeModal {
     };
     document.addEventListener("keydown", this.handleKeyDown);
 
-    // Listen for dark mode changes
-    this.removeDarkModeListener = onDarkModeChange((isDark) => {
-      this.isDark = isDark;
-      this.updateStyles();
-    });
+    // Listen for dark mode changes (only if no explicit theme in config)
+    if (!this.options.config?.theme?.mode) {
+      this.removeDarkModeListener = onDarkModeChange((isDark) => {
+        this.isDark = isDark;
+        this.updateStyles();
+      });
+    }
 
     document.body.appendChild(this.backdrop);
 
@@ -151,7 +153,7 @@ export class ZaptimeModal {
     document.body.style.overflow = "hidden";
 
     if (this.backdrop) {
-      this.backdrop.style.display = "flex";
+      this.backdrop.style.display = "block";
     }
 
     // Trigger animation

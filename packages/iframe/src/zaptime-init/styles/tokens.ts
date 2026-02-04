@@ -19,7 +19,7 @@ export const TOKENS = {
     },
     dark: {
       backdrop: 'rgba(0, 0, 0, 0.7)',
-      modalBg: '#1f2937',
+      modalBg: '#171717',
       closeButtonBg: 'rgba(255, 255, 255, 0.1)',
       closeButtonHoverBg: 'rgba(255, 255, 255, 0.2)',
       closeButtonColor: '#e5e7eb',
@@ -47,9 +47,10 @@ export const TOKENS = {
   },
   dimensions: {
     modalWidth: '90vw',
-    modalMaxWidth: '900px',
+    modalMaxWidth: '1050px',
     modalHeight: '90vh',
     modalMaxHeight: '850px',
+    contentMaxWidth: '1050px',
     closeButtonSize: '32px',
     buttonPaddingY: '12px',
     buttonPaddingX: '24px',

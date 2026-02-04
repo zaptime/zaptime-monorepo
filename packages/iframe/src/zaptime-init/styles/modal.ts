@@ -17,15 +17,9 @@ function createModalStyles(isDark: boolean): ModalStyleSet {
   return {
     backdrop: {
       position: 'fixed',
-      top: '0',
-      left: '0',
-      width: '100%',
-      height: '100%',
+      inset: '0',
       backgroundColor: colors.backdrop,
       zIndex: TOKENS.zIndex.modal,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
       opacity: '0',
       transition: `opacity ${TOKENS.timing.fadeIn} ${TOKENS.easing.default}`,
     },
@@ -35,7 +29,9 @@ function createModalStyles(isDark: boolean): ModalStyleSet {
     },
 
     container: {
-      position: 'relative',
+      position: 'absolute',
+      inset: '0',
+      margin: 'auto',
       backgroundColor: colors.modalBg,
       borderRadius: TOKENS.borderRadius.modal,
       boxShadow: TOKENS.shadows.modal,
@@ -44,12 +40,15 @@ function createModalStyles(isDark: boolean): ModalStyleSet {
       height: TOKENS.dimensions.modalHeight,
       maxHeight: TOKENS.dimensions.modalMaxHeight,
       overflow: 'hidden',
-      transform: TOKENS.transforms.modalHidden,
+      transform: 'scale(0.95)',
       transition: `transform ${TOKENS.timing.fadeIn} ${TOKENS.easing.default}, background-color ${TOKENS.timing.fadeIn} ${TOKENS.easing.default}`,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
 
     containerVisible: {
-      transform: TOKENS.transforms.modalVisible,
+      transform: 'scale(1)',
     },
 
     closeButton: {
