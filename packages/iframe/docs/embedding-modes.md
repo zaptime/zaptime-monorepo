@@ -70,13 +70,10 @@ var floatingCalendar = Zaptime.floatingButton({
   // Position: 'bottom-right' (default) or 'bottom-left'
   position: 'bottom-left',
 
-  // Button appearance
-  buttonText: 'Schedule a Call',    // Custom text (requires branding: false)
+  // Button appearance (PRO feature - free tier shows Zaptime branding)
+  buttonText: 'Schedule a Call',    // Custom text
   buttonColor: '#6366f1',           // Background color
   buttonTextColor: '#ffffff',       // Text color
-
-  // Branding (free tier shows Zaptime logo, PRO can disable)
-  branding: false,
 
   // Event callbacks
   onOpen: function() {
@@ -96,10 +93,9 @@ var floatingCalendar = Zaptime.floatingButton({
 | `type` | `'single'` \| `'group'` | - | Event type. |
 | `config` | `object` | - | Configuration object with `token`. |
 | `position` | `'bottom-right'` \| `'bottom-left'` | `'bottom-right'` | Button position on screen. |
-| `buttonText` | `string` | `'Book a Meeting'` | Button label (only shown when `branding: false`). |
-| `buttonColor` | `string` | `'#15B79E'` | Button background color. |
-| `buttonTextColor` | `string` | `'#FFFFFF'` | Button text color. |
-| `branding` | `boolean` | `true` | Show Zaptime logo. Set to `false` for custom text (PRO feature). |
+| `buttonText` | `string` | `'Book a Meeting'` | Button label (PRO feature). |
+| `buttonColor` | `string` | `'#15B79E'` | Button background color (PRO feature). |
+| `buttonTextColor` | `string` | `'#FFFFFF'` | Button text color (PRO feature). |
 | `onOpen` | `function` | - | Callback when modal opens. |
 | `onClose` | `function` | - | Callback when modal closes. |
 | `onEventChanged` | `function` | - | Callback when selected event changes. |

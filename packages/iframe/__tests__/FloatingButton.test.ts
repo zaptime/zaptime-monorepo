@@ -111,7 +111,6 @@ describe('createFloatingButton', () => {
     const instance = createFloatingButton({
       config: { token: 'test-token' },
       buttonColor: '#FF0000',
-      branding: false,
     })
 
     await flushPromises()
@@ -127,7 +126,6 @@ describe('createFloatingButton', () => {
     const instance = createFloatingButton({
       config: { token: 'test-token' },
       buttonColor: '#FF0000',
-      branding: false,
     })
 
     await flushPromises()
@@ -150,12 +148,11 @@ describe('createFloatingButton', () => {
     expect(button?.innerHTML).toContain('<svg')
   })
 
-  it('should enforce Zaptime branding when branding is false but account is unsubscribed', async () => {
+  it('should enforce Zaptime branding when custom options passed but account is unsubscribed', async () => {
     mockApiResponse(false) // Not subscribed
 
     const instance = createFloatingButton({
       config: { token: 'test-token' },
-      branding: false,
       buttonText: 'Schedule Now',
     })
 
@@ -168,12 +165,11 @@ describe('createFloatingButton', () => {
     expect(button?.innerHTML).not.toContain('Schedule Now')
   })
 
-  it('should show custom text when branding is false and account is subscribed', async () => {
+  it('should show custom text when account is subscribed', async () => {
     mockApiResponse(true) // Subscribed
 
     const instance = createFloatingButton({
       config: { token: 'test-token' },
-      branding: false,
       buttonText: 'Schedule Now',
     })
 
@@ -182,23 +178,6 @@ describe('createFloatingButton', () => {
     const button = document.getElementById(`${instance.id}-button`)
     expect(button?.innerHTML).toContain('Schedule Now')
     expect(button?.innerHTML).not.toContain('Zaptime')
-  })
-
-  it('should show Zaptime branding when user wants branding even if subscribed', async () => {
-    mockApiResponse(true) // Subscribed
-
-    const instance = createFloatingButton({
-      config: { token: 'test-token' },
-      branding: true, // User explicitly wants branding
-      buttonText: 'Custom Text',
-    })
-
-    await flushPromises()
-
-    const button = document.getElementById(`${instance.id}-button`)
-    // Should show Zaptime branding because user wants it
-    expect(button?.innerHTML).toContain('Zaptime')
-    expect(button?.innerHTML).toContain('<svg')
   })
 
   it('should not show button when event type is disabled', async () => {

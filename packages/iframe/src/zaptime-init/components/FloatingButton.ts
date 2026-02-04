@@ -3,7 +3,7 @@ import { floatingButtonStyles } from '../styles/button'
 import { TOKENS } from '../styles/tokens'
 import { applyStyles, mergeStyles } from '../styles/utils'
 import { generateUniqueId } from '../utils/dom'
-import { getZaptimeLogo, getZaptimeFreeLogo } from '../utils/icons'
+import { getZaptimeFreeLogo } from '../utils/icons'
 import { fetchAccountStatus } from '../utils/accountStatus'
 import { ZaptimeModal } from './Modal'
 
@@ -14,7 +14,6 @@ export function createFloatingButton(options: FloatingButtonOptions = {} as Floa
   const customButtonColor = options.buttonColor || TOKENS.colors.buttonDefault
   const customButtonTextColor = options.buttonTextColor || TOKENS.colors.white
   const customButtonText = options.buttonText || 'Book a Meeting'
-  const wantsBranding = options.branding !== false // User's preference
 
   const id = generateUniqueId()
   let button: HTMLButtonElement | null = null
@@ -35,22 +34,14 @@ export function createFloatingButton(options: FloatingButtonOptions = {} as Floa
     const positionStyles =
       position === 'bottom-left' ? floatingButtonStyles.positionLeft : floatingButtonStyles.positionRight
 
-    if (isSubscribed && !wantsBranding) {
-      // Subscribed account with branding disabled - use custom styling
+    if (isSubscribed) {
+      // Subscribed account - use custom styling
       const buttonStyles = mergeStyles(floatingButtonStyles.base, positionStyles, {
         backgroundColor: customButtonColor,
         color: customButtonTextColor,
       })
       applyStyles(button, buttonStyles)
       button.innerHTML = '<span>' + customButtonText + '</span>'
-    } else if (isSubscribed && wantsBranding) {
-      // Subscribed account with branding enabled - use default Zaptime styling
-      const buttonStyles = mergeStyles(floatingButtonStyles.base, positionStyles, {
-        backgroundColor: TOKENS.colors.buttonDefault,
-        color: TOKENS.colors.white,
-      })
-      applyStyles(button, buttonStyles)
-      button.innerHTML = getZaptimeLogo(TOKENS.colors.white) + '<span>Zaptime</span>'
     } else {
       // Free account - show gradient Zaptime branding
       const buttonStyles = mergeStyles(floatingButtonStyles.base, positionStyles, {
