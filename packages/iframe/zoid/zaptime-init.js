@@ -598,7 +598,7 @@ function createInlineButton(options) {
 	const customButtonTextColor = options.buttonTextColor || TOKENS.colors.white;
 	const customButtonText = options.buttonText || "Book a Meeting";
 	const id = generateUniqueId();
-	let button = null;
+	let buttons = [];
 	let modal = null;
 	let isSubscribed = false;
 	const token = options.config?.token;
@@ -607,8 +607,7 @@ function createInlineButton(options) {
 	* - If subscribed: use custom options provided by user
 	* - If not subscribed: force Zaptime branding
 	*/
-	function applyButtonStyling() {
-		if (!button) return;
+	function applyButtonStyling(button) {
 		if (isSubscribed) {
 			const buttonStyles = mergeStyles(inlineButtonStyles.base, {
 				backgroundColor: customButtonColor,
@@ -628,50 +627,49 @@ function createInlineButton(options) {
 			button.innerHTML = getZaptimeFreeLogo() + "<span>Zaptime</span>";
 		}
 	}
-	function createButton() {
-		const container = document.querySelector(selector);
-		if (!container) {
-			console.warn(`Zaptime: Container not found for selector "${selector}"`);
+	function createButtons() {
+		const containers = document.querySelectorAll(selector);
+		if (containers.length === 0) {
+			console.warn(`Zaptime: No containers found for selector "${selector}"`);
 			return;
 		}
-		button = document.createElement("button");
-		button.id = `${id}-button`;
-		button.type = "button";
-		applyButtonStyling();
-		button.addEventListener("mouseenter", () => {
-			if (button) {
+		containers.forEach((container, index) => {
+			const button = document.createElement("button");
+			button.id = `${id}-button-${index}`;
+			button.type = "button";
+			applyButtonStyling(button);
+			button.addEventListener("mouseenter", () => {
 				applyStyles(button, inlineButtonStyles.hover);
 				if (!isSubscribed) button.style.background = "linear-gradient(100deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)";
-			}
-		});
-		button.addEventListener("mouseleave", () => {
-			if (button) {
+			});
+			button.addEventListener("mouseleave", () => {
 				button.style.transform = "";
 				if (!isSubscribed) {
 					button.style.boxShadow = "0 6px 10px rgba(9, 15, 35, 0.05)";
 					button.style.background = "linear-gradient(134.86deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)";
 				} else button.style.boxShadow = TOKENS.shadows.button;
-			}
-		});
-		button.addEventListener("click", () => {
-			if (!modal) modal = new ZaptimeModal({
-				type: options.type,
-				config: options.config,
-				onEventChanged: options.onEventChanged,
-				onOpen: options.onOpen,
-				onClose: options.onClose
 			});
-			modal.open();
+			button.addEventListener("click", () => {
+				if (!modal) modal = new ZaptimeModal({
+					type: options.type,
+					config: options.config,
+					onEventChanged: options.onEventChanged,
+					onOpen: options.onOpen,
+					onClose: options.onClose
+				});
+				modal.open();
+			});
+			container.appendChild(button);
+			buttons.push(button);
 		});
-		container.appendChild(button);
 	}
 	function init() {
 		if (token) fetchAccountStatus(token).then((status) => {
 			if (status?.disabled) return;
 			if (status) isSubscribed = status.isSubscribed;
-			createButton();
+			createButtons();
 		});
-		else createButton();
+		else createButtons();
 	}
 	function open() {
 		if (!modal) modal = new ZaptimeModal({
@@ -687,10 +685,10 @@ function createInlineButton(options) {
 		if (modal) modal.close();
 	}
 	function destroy() {
-		if (button && button.parentNode) {
-			button.parentNode.removeChild(button);
-			button = null;
-		}
+		buttons.forEach((button) => {
+			if (button.parentNode) button.parentNode.removeChild(button);
+		});
+		buttons = [];
 		if (modal) {
 			modal.destroy();
 			modal = null;
