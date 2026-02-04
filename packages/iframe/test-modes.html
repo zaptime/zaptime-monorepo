@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      max-width: 800px;
+      max-width: 1050px;
       margin: 0 auto;
       padding: 40px 20px;
       background: #f5f5f5;
@@ -96,7 +96,8 @@
   <div class="test-section">
     <h2>1. Inline Mode (Existing)</h2>
     <p>The calendar renders directly inside a container element.</p>
-    <div id="inline-container"></div>
+    <div id="inline-container" style="background-color: #1e1e1e;"></div>
+
   </div>
 
   <!-- Test 2: Floating Button Mode -->
@@ -198,7 +199,7 @@
   <script src="./dist/zaptime.js"></script>
   <script>
     // Config
-    var demoConfig = { token: 'L4n5ie2OwtXy7NMvfllqOAu3BWl3WLph' };
+    var demoConfig = { token: 'f33slNABua1UavaXHr98hrxRxoj4qDBP' };
 
     // Render inline calendar immediately
     Zaptime({

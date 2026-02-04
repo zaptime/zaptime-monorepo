@@ -23,7 +23,7 @@ const TOKENS = {
 		},
 		dark: {
 			backdrop: "rgba(0, 0, 0, 0.7)",
-			modalBg: "#1f2937",
+			modalBg: "#262626",
 			closeButtonBg: "rgba(255, 255, 255, 0.1)",
 			closeButtonHoverBg: "rgba(255, 255, 255, 0.2)",
 			closeButtonColor: "#e5e7eb"
@@ -51,9 +51,10 @@ const TOKENS = {
 	},
 	dimensions: {
 		modalWidth: "90vw",
-		modalMaxWidth: "900px",
+		modalMaxWidth: "1050px",
 		modalHeight: "90vh",
 		modalMaxHeight: "850px",
+		contentMaxWidth: "1050px",
 		closeButtonSize: "32px",
 		buttonPaddingY: "12px",
 		buttonPaddingX: "24px",
@@ -234,21 +235,17 @@ function createModalStyles(isDark) {
 	return {
 		backdrop: {
 			position: "fixed",
-			top: "0",
-			left: "0",
-			width: "100%",
-			height: "100%",
+			inset: "0",
 			backgroundColor: colors.backdrop,
 			zIndex: TOKENS.zIndex.modal,
-			display: "flex",
-			alignItems: "center",
-			justifyContent: "center",
 			opacity: "0",
 			transition: `opacity ${TOKENS.timing.fadeIn} ${TOKENS.easing.default}`
 		},
 		backdropVisible: { opacity: "1" },
 		container: {
-			position: "relative",
+			position: "absolute",
+			inset: "0",
+			margin: "auto",
 			backgroundColor: colors.modalBg,
 			borderRadius: TOKENS.borderRadius.modal,
 			boxShadow: TOKENS.shadows.modal,
@@ -257,10 +254,13 @@ function createModalStyles(isDark) {
 			height: TOKENS.dimensions.modalHeight,
 			maxHeight: TOKENS.dimensions.modalMaxHeight,
 			overflow: "hidden",
-			transform: TOKENS.transforms.modalHidden,
-			transition: `transform ${TOKENS.timing.fadeIn} ${TOKENS.easing.default}, background-color ${TOKENS.timing.fadeIn} ${TOKENS.easing.default}`
+			transform: "scale(0.95)",
+			transition: `transform ${TOKENS.timing.fadeIn} ${TOKENS.easing.default}, background-color ${TOKENS.timing.fadeIn} ${TOKENS.easing.default}`,
+			display: "flex",
+			alignItems: "center",
+			justifyContent: "center"
 		},
-		containerVisible: { transform: TOKENS.transforms.modalVisible },
+		containerVisible: { transform: "scale(1)" },
 		closeButton: {
 			position: "absolute",
 			top: "12px",
@@ -371,7 +371,7 @@ var ZaptimeModal = class {
 	constructor(options) {
 		this.id = generateUniqueId();
 		this.options = options;
-		this.isDark = isDarkMode();
+		this.isDark = this.options.config?.theme?.mode === "dark" || isDarkMode();
 		this.styles = createModalStyles(this.isDark);
 	}
 	updateStyles() {
@@ -422,7 +422,7 @@ var ZaptimeModal = class {
 			if (e.key === "Escape" && this.isOpen) this.close();
 		};
 		document.addEventListener("keydown", this.handleKeyDown);
-		this.removeDarkModeListener = onDarkModeChange((isDark) => {
+		if (!this.options.config?.theme?.mode) this.removeDarkModeListener = onDarkModeChange((isDark) => {
 			this.isDark = isDark;
 			this.updateStyles();
 		});
@@ -441,7 +441,7 @@ var ZaptimeModal = class {
 		if (!this.backdrop) this.create();
 		this.originalBodyOverflow = document.body.style.overflow;
 		document.body.style.overflow = "hidden";
-		if (this.backdrop) this.backdrop.style.display = "flex";
+		if (this.backdrop) this.backdrop.style.display = "block";
 		requestAnimationFrame(() => {
 			if (this.backdrop && this.container) {
 				applyStyles(this.backdrop, this.styles.backdropVisible);
@@ -600,32 +600,18 @@ function createInlineButton(options) {
 	const id = generateUniqueId();
 	let buttons = [];
 	let modal = null;
-	let isSubscribed = false;
 	const token = options.config?.token;
 	/**
-	* Apply button styling based on subscription status
-	* - If subscribed: use custom options provided by user
-	* - If not subscribed: force Zaptime branding
+	* Apply button styling with custom options
+	* Only called for subscribed accounts (free accounts don't render InlineButton)
 	*/
 	function applyButtonStyling(button) {
-		if (isSubscribed) {
-			const buttonStyles = mergeStyles(inlineButtonStyles.base, {
-				backgroundColor: customButtonColor,
-				color: customButtonTextColor
-			});
-			applyStyles(button, buttonStyles);
-			button.innerHTML = "<span>" + customButtonText + "</span>";
-		} else {
-			const buttonStyles = mergeStyles(inlineButtonStyles.base, {
-				background: "linear-gradient(134.86deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)",
-				boxShadow: "0 6px 10px rgba(9, 15, 35, 0.05)",
-				color: TOKENS.colors.white,
-				borderRadius: "0.5rem",
-				padding: "12px 24px 12px 18px"
-			});
-			applyStyles(button, buttonStyles);
-			button.innerHTML = getZaptimeFreeLogo() + "<span>Zaptime</span>";
-		}
+		const buttonStyles = mergeStyles(inlineButtonStyles.base, {
+			backgroundColor: customButtonColor,
+			color: customButtonTextColor
+		});
+		applyStyles(button, buttonStyles);
+		button.innerHTML = "<span>" + customButtonText + "</span>";
 	}
 	function createButtons() {
 		const containers = document.querySelectorAll(selector);
@@ -640,14 +626,10 @@ function createInlineButton(options) {
 			applyButtonStyling(button);
 			button.addEventListener("mouseenter", () => {
 				applyStyles(button, inlineButtonStyles.hover);
-				if (!isSubscribed) button.style.background = "linear-gradient(100deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)";
 			});
 			button.addEventListener("mouseleave", () => {
 				button.style.transform = "";
-				if (!isSubscribed) {
-					button.style.boxShadow = "0 6px 10px rgba(9, 15, 35, 0.05)";
-					button.style.background = "linear-gradient(134.86deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)";
-				} else button.style.boxShadow = TOKENS.shadows.button;
+				button.style.boxShadow = TOKENS.shadows.button;
 			});
 			button.addEventListener("click", () => {
 				if (!modal) modal = new ZaptimeModal({
@@ -664,12 +646,12 @@ function createInlineButton(options) {
 		});
 	}
 	function init() {
-		if (token) fetchAccountStatus(token).then((status) => {
+		if (!token) return;
+		fetchAccountStatus(token).then((status) => {
 			if (status?.disabled) return;
-			if (status) isSubscribed = status.isSubscribed;
+			if (!status?.isSubscribed) return;
 			createButtons();
 		});
-		else createButtons();
 	}
 	function open() {
 		if (!modal) modal = new ZaptimeModal({

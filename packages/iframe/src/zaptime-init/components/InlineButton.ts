@@ -3,14 +3,13 @@ import { inlineButtonStyles } from '../styles/button'
 import { TOKENS } from '../styles/tokens'
 import { applyStyles, mergeStyles } from '../styles/utils'
 import { generateUniqueId } from '../utils/dom'
-import { getZaptimeFreeLogo } from '../utils/icons'
 import { fetchAccountStatus } from '../utils/accountStatus'
 import { ZaptimeModal } from './Modal'
 
 export function createInlineButton(options: InlineButtonOptions): ZaptimeInstance {
   const selector = options.selector
 
-  // User's custom options (will only be applied if account is subscribed)
+  // User's custom styling options
   const customButtonColor = options.buttonColor || TOKENS.colors.buttonDefault
   const customButtonTextColor = options.buttonTextColor || TOKENS.colors.white
   const customButtonText = options.buttonText || 'Book a Meeting'
@@ -18,38 +17,21 @@ export function createInlineButton(options: InlineButtonOptions): ZaptimeInstanc
   const id = generateUniqueId()
   let buttons: HTMLButtonElement[] = []
   let modal: ZaptimeModal | null = null
-  let isSubscribed = false
 
   // Get token from config for account status lookup
   const token = options.config?.token as string | undefined
 
   /**
-   * Apply button styling based on subscription status
-   * - If subscribed: use custom options provided by user
-   * - If not subscribed: force Zaptime branding
+   * Apply button styling with custom options
+   * Only called for subscribed accounts (free accounts don't render InlineButton)
    */
   function applyButtonStyling(button: HTMLButtonElement): void {
-    if (isSubscribed) {
-      // Subscribed account - use custom styling
-      const buttonStyles = mergeStyles(inlineButtonStyles.base, {
-        backgroundColor: customButtonColor,
-        color: customButtonTextColor,
-      })
-      applyStyles(button, buttonStyles)
-      button.innerHTML = '<span>' + customButtonText + '</span>'
-    } else {
-      // Free account - show gradient Zaptime branding
-      const buttonStyles = mergeStyles(inlineButtonStyles.base, {
-        background:
-          'linear-gradient(134.86deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)',
-        boxShadow: '0 6px 10px rgba(9, 15, 35, 0.05)',
-        color: TOKENS.colors.white,
-        borderRadius: '0.5rem',
-        padding: '12px 24px 12px 18px',
-      })
-      applyStyles(button, buttonStyles)
-      button.innerHTML = getZaptimeFreeLogo() + '<span>Zaptime</span>'
-    }
+    const buttonStyles = mergeStyles(inlineButtonStyles.base, {
+      backgroundColor: customButtonColor,
+      color: customButtonTextColor,
+    })
+    applyStyles(button, buttonStyles)
+    button.innerHTML = '<span>' + customButtonText + '</span>'
   }
 
   function createButtons(): void {
@@ -66,28 +48,16 @@ export function createInlineButton(options: InlineButtonOptions): ZaptimeInstanc
       button.id = `${id}-button-${index}`
       button.type = 'button'
 
-      // Apply styling based on subscription status
+      // Apply custom styling
       applyButtonStyling(button)
 
       // Hover effects
       button.addEventListener('mouseenter', () => {
         applyStyles(button, inlineButtonStyles.hover)
-        // Free account hover - change gradient angle
-        if (!isSubscribed) {
-          button.style.background =
-            'linear-gradient(100deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)'
-        }
       })
       button.addEventListener('mouseleave', () => {
         button.style.transform = ''
-        // Restore appropriate shadow and background
-        if (!isSubscribed) {
-          button.style.boxShadow = '0 6px 10px rgba(9, 15, 35, 0.05)'
-          button.style.background =
-            'linear-gradient(134.86deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)'
-        } else {
-          button.style.boxShadow = TOKENS.shadows.button
-        }
+        button.style.boxShadow = TOKENS.shadows.button
       })
 
       // Click opens modal (shared modal instance for all buttons)
@@ -110,26 +80,26 @@ export function createInlineButton(options: InlineButtonOptions): ZaptimeInstanc
   }
 
   function init(): void {
-    // Fetch account status first, then show button
-    if (token) {
-      fetchAccountStatus(token).then((status) => {
-        // If event type is disabled, don't show the button at all
-        if (status?.disabled) {
-          return
-        }
-
-        // Update subscription status
-        if (status) {
-          isSubscribed = status.isSubscribed
-        }
-
-        // Now create and show the buttons
-        createButtons()
-      })
-    } else {
-      // No token, show buttons immediately with default branding
-      createButtons()
+    // InlineButton is only available for paid accounts
+    // Without a token, we can't verify subscription status
+    if (!token) {
+      return
     }
+
+    fetchAccountStatus(token).then((status) => {
+      // If event type is disabled, don't show the button
+      if (status?.disabled) {
+        return
+      }
+
+      // Only show button for subscribed accounts
+      if (!status?.isSubscribed) {
+        return
+      }
+
+      // Create and show the buttons for paid users
+      createButtons()
+    })
   }
 
   function open(): void {
