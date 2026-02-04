@@ -104,11 +104,11 @@
     <h2>2. Floating Button Mode</h2>
     <p>A floating button appears at the bottom of the screen. Click it to open the calendar modal.</p>
 
-    <h3>Bottom-Right (with branding - default)</h3>
+    <h3>Bottom-Right (custom styling - PRO)</h3>
     <button class="test-btn" onclick="createFloatingRight()">Create Bottom-Right Button</button>
     <button class="test-btn secondary" onclick="destroyFloatingRight()">Destroy</button>
 
-    <h3>Bottom-Left (custom text - PRO)</h3>
+    <h3>Bottom-Left (custom styling - PRO)</h3>
     <button class="test-btn" onclick="createFloatingLeft()">Create Bottom-Left Button</button>
     <button class="test-btn secondary" onclick="destroyFloatingLeft()">Destroy</button>
 
@@ -181,11 +181,9 @@
         type: 'single',
         config: demoConfig,
         position: 'bottom-right',
-
-        branding: false,
         buttonText: 'Domluvit si konzultaci',
         buttonColor: '#6366f1',
-        buttonTextColor: '#ffffff',        
+        buttonTextColor: '#ffffff',
         onOpen: function() { log('floating-log', 'Right modal opened'); },
         onClose: function() { log('floating-log', 'Right modal closed'); }
       });
@@ -224,7 +222,6 @@
         type: 'single',
         config: demoConfig,
         position: 'bottom-left',
-        branding: false,
         buttonText: 'Domluvit si konzultaci',
         buttonColor: '#6366f1',
         buttonTextColor: '#ffffff',

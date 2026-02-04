@@ -17,7 +17,6 @@ export interface FloatingButtonOptions extends ModalOptions {
   buttonColor?: string;
   buttonTextColor?: string;
   buttonText?: string;
-  branding?: boolean;
 }
 
 export interface PopupOptions extends ModalOptions {
