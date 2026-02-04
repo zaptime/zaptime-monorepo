@@ -142,6 +142,32 @@
     <div class="log-output" id="inline-button-log"></div>
   </div>
 
+  <!-- Test 3b: Multiple Inline Buttons with Single Selector -->
+  <div class="test-section">
+    <h2>3b. Multiple Inline Buttons (Single Selector)</h2>
+    <p>Using a class selector to create multiple buttons with a single <code>Zaptime.inlineButton()</code> call. All buttons share the same modal.</p>
+
+    <h3>Multiple Button Containers (same class)</h3>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 16px;">
+      <div class="booking-btn" style="border: 2px dashed #ddd; padding: 20px; border-radius: 8px; flex: 1; min-width: 200px; text-align: center;">
+        <small style="color: #666;">Nav area</small>
+      </div>
+      <div class="booking-btn" style="border: 2px dashed #ddd; padding: 20px; border-radius: 8px; flex: 1; min-width: 200px; text-align: center;">
+        <small style="color: #666;">Hero area</small>
+      </div>
+      <div class="booking-btn" style="border: 2px dashed #ddd; padding: 20px; border-radius: 8px; flex: 1; min-width: 200px; text-align: center;">
+        <small style="color: #666;">Footer area</small>
+      </div>
+    </div>
+
+    <h3>Controls</h3>
+    <button class="test-btn" onclick="createMultipleInlineButtons()">Create Multiple Buttons</button>
+    <button class="test-btn secondary" onclick="destroyMultipleInlineButtons()">Destroy All</button>
+
+    <h3>Event Log</h3>
+    <div class="log-output" id="multiple-inline-log"></div>
+  </div>
+
   <!-- Test 4: Popup Mode (External Element Trigger) -->
   <div class="test-section">
     <h2>4. Popup Mode (External Element Trigger)</h2>
@@ -300,6 +326,35 @@
     function closeInlineButtonModal() {
       if (inlineButtonInstance) {
         inlineButtonInstance.close();
+      }
+    }
+
+    // Multiple Inline Buttons Mode
+    var multipleInlineInstance = null;
+
+    function createMultipleInlineButtons() {
+      if (multipleInlineInstance) {
+        log('multiple-inline-log', 'Multiple buttons already exist');
+        return;
+      }
+      multipleInlineInstance = Zaptime.inlineButton({
+        selector: '.booking-btn',
+        type: 'single',
+        config: demoConfig,
+        buttonText: 'Book a Meeting',
+        buttonColor: '#15B79E',
+        buttonTextColor: '#ffffff',
+        onOpen: function() { log('multiple-inline-log', 'Modal opened (shared by all buttons)'); },
+        onClose: function() { log('multiple-inline-log', 'Modal closed'); }
+      });
+      log('multiple-inline-log', 'Created multiple inline buttons - ID: ' + multipleInlineInstance.id);
+    }
+
+    function destroyMultipleInlineButtons() {
+      if (multipleInlineInstance) {
+        multipleInlineInstance.destroy();
+        log('multiple-inline-log', 'Destroyed all inline buttons');
+        multipleInlineInstance = null;
       }
     }
 

@@ -16,7 +16,7 @@ export function createInlineButton(options: InlineButtonOptions): ZaptimeInstanc
   const customButtonText = options.buttonText || 'Book a Meeting'
 
   const id = generateUniqueId()
-  let button: HTMLButtonElement | null = null
+  let buttons: HTMLButtonElement[] = []
   let modal: ZaptimeModal | null = null
   let isSubscribed = false
 
@@ -28,9 +28,7 @@ export function createInlineButton(options: InlineButtonOptions): ZaptimeInstanc
    * - If subscribed: use custom options provided by user
    * - If not subscribed: force Zaptime branding
    */
-  function applyButtonStyling(): void {
-    if (!button) return
-
+  function applyButtonStyling(button: HTMLButtonElement): void {
     if (isSubscribed) {
       // Subscribed account - use custom styling
       const buttonStyles = mergeStyles(inlineButtonStyles.base, {
@@ -54,35 +52,33 @@ export function createInlineButton(options: InlineButtonOptions): ZaptimeInstanc
     }
   }
 
-  function createButton(): void {
-    // Find the container element
-    const container = document.querySelector(selector)
-    if (!container) {
-      console.warn(`Zaptime: Container not found for selector "${selector}"`)
+  function createButtons(): void {
+    // Find all container elements matching the selector
+    const containers = document.querySelectorAll(selector)
+    if (containers.length === 0) {
+      console.warn(`Zaptime: No containers found for selector "${selector}"`)
       return
     }
 
-    // Create inline button
-    button = document.createElement('button')
-    button.id = `${id}-button`
-    button.type = 'button'
+    containers.forEach((container, index) => {
+      // Create inline button
+      const button = document.createElement('button')
+      button.id = `${id}-button-${index}`
+      button.type = 'button'
 
-    // Apply styling based on subscription status
-    applyButtonStyling()
+      // Apply styling based on subscription status
+      applyButtonStyling(button)
 
-    // Hover effects
-    button.addEventListener('mouseenter', () => {
-      if (button) {
+      // Hover effects
+      button.addEventListener('mouseenter', () => {
         applyStyles(button, inlineButtonStyles.hover)
         // Free account hover - change gradient angle
         if (!isSubscribed) {
           button.style.background =
             'linear-gradient(100deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)'
         }
-      }
-    })
-    button.addEventListener('mouseleave', () => {
-      if (button) {
+      })
+      button.addEventListener('mouseleave', () => {
         button.style.transform = ''
         // Restore appropriate shadow and background
         if (!isSubscribed) {
@@ -92,24 +88,25 @@ export function createInlineButton(options: InlineButtonOptions): ZaptimeInstanc
         } else {
           button.style.boxShadow = TOKENS.shadows.button
         }
-      }
-    })
+      })
 
-    // Click opens modal
-    button.addEventListener('click', () => {
-      if (!modal) {
-        modal = new ZaptimeModal({
-          type: options.type,
-          config: options.config,
-          onEventChanged: options.onEventChanged,
-          onOpen: options.onOpen,
-          onClose: options.onClose,
-        })
-      }
-      modal.open()
-    })
+      // Click opens modal (shared modal instance for all buttons)
+      button.addEventListener('click', () => {
+        if (!modal) {
+          modal = new ZaptimeModal({
+            type: options.type,
+            config: options.config,
+            onEventChanged: options.onEventChanged,
+            onOpen: options.onOpen,
+            onClose: options.onClose,
+          })
+        }
+        modal.open()
+      })
 
-    container.appendChild(button)
+      container.appendChild(button)
+      buttons.push(button)
+    })
   }
 
   function init(): void {
@@ -126,12 +123,12 @@ export function createInlineButton(options: InlineButtonOptions): ZaptimeInstanc
           isSubscribed = status.isSubscribed
         }
 
-        // Now create and show the button
-        createButton()
+        // Now create and show the buttons
+        createButtons()
       })
     } else {
-      // No token, show button immediately with default branding
-      createButton()
+      // No token, show buttons immediately with default branding
+      createButtons()
     }
   }
 
@@ -155,10 +152,12 @@ export function createInlineButton(options: InlineButtonOptions): ZaptimeInstanc
   }
 
   function destroy(): void {
-    if (button && button.parentNode) {
-      button.parentNode.removeChild(button)
-      button = null
-    }
+    buttons.forEach((button) => {
+      if (button.parentNode) {
+        button.parentNode.removeChild(button)
+      }
+    })
+    buttons = []
     if (modal) {
       modal.destroy()
       modal = null
