@@ -152,7 +152,7 @@ export const confirm = async (
   const { config } = useConfig(options?.calendarId);
 
   if (reservationStatus.value !== undefined) {
-    return await confirmApi({
+    const res = await confirmApi({
       token: config.value.token,
       status: reservationStatus.value,
       baseUrl: config.value.apiBaseUrl,
@@ -161,9 +161,9 @@ export const confirm = async (
       phone: options?.phone,
       customFields: options?.customFields,
     });
+    stopReservationRefresh();
+    return res;
   }
-
-  stopReservationInterval();
 
   throw new Error(
     "Confirming a time slot failed because time slot was not reserved!",
@@ -181,11 +181,13 @@ export const cancel = async (calendarId?: string): Promise<boolean> => {
   const { config } = useConfig(calendarId);
 
   if (reservationStatus.value !== undefined) {
-    return await cancelApi(
+    const res = await cancelApi(
       config.value.token,
       reservationStatus.value,
       config.value.apiBaseUrl,
     );
+    stopReservationRefresh();
+    return res;
   }
 
   return false;
@@ -322,18 +324,16 @@ const startReservationInterval = (options: IBookingOptions) => {
 
   // Start the interval to keep reserving every 15 minutes
   reservationIntervalId = setInterval(() => {
-    try {
-      res = refreshReservation(options);
-    } catch (err) {
-      throw new Error("Repeated reservation failed");
-    }
+    refreshReservation(options).catch(() => {
+      stopReservationRefresh();
+    });
   }, 15 * 60 * 1000);
 
   return res;
 };
 
 // Function to stop the interval when needed
-const stopReservationInterval = () => {
+export const stopReservationRefresh = () => {
   if (reservationIntervalId) {
     clearInterval(reservationIntervalId);
     reservationIntervalId = null;
