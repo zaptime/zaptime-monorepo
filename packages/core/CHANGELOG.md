@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.9.1
+
+### Patch Changes
+
+- 0cdbf65: Stop refresing reservations in success and error case for confirm, cancel reservat. Stop refreshing when refreshing itself fails.
+
 ## 2.9.0
 
 ### Minor Changes
