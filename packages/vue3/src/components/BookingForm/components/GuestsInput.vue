@@ -1,63 +1,71 @@
 <template>
-  <div>
+  <div
+    class="cal-border-t cal-border-theme-200 cal-pt-4 dark:cal-border-theme-700"
+  >
     <label
-      class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200"
+      class="cal-mb-1.5 cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200"
     >
       Add guests
     </label>
-    <div class="cal-mt-2 cal-flex cal-gap-2">
+    <div class="cal-flex cal-items-center cal-gap-1.5">
       <input
+        ref="emailInput"
         v-model="inputEmail"
         type="email"
+        required
         autocomplete="off"
-        class="cal-block cal-flex-1 cal-rounded-md cal-border cal-border-theme-300 cal-bg-theme-50 cal-px-5 cal-py-3.5 cal-text-base cal-font-medium cal-text-theme-900 cal-placeholder-theme-400 focus:cal-border-theme-400 focus:cal-outline-none focus:cal-ring-theme-500 dark:cal-border-theme-600 dark:cal-bg-theme-800 dark:cal-text-theme-100 dark:cal-placeholder-theme-500 dark:focus:cal-border-theme-400 sm:cal-text-sm"
+        class="cal-block cal-min-w-0 cal-flex-1 cal-rounded cal-border cal-border-theme-200 cal-bg-theme-50 cal-px-2.5 cal-py-1.5 cal-text-sm cal-text-theme-900 cal-placeholder-theme-400 focus:cal-border-theme-400 focus:cal-outline-none dark:cal-border-theme-600 dark:cal-bg-theme-800 dark:cal-text-theme-100 dark:cal-placeholder-theme-500 dark:focus:cal-border-theme-400"
         placeholder="guest@example.com"
         :disabled="!canAddMore"
         @keydown.enter.prevent="onAdd"
       />
       <button
         type="button"
-        class="cal-rounded-md cal-bg-accent-base cal-px-4 cal-py-2 cal-font-medium cal-text-white cal-transition-all cal-duration-75 cal-ease-out hover:cal-bg-accent-dark disabled:cal-cursor-not-allowed disabled:cal-opacity-50 disabled:hover:cal-bg-accent-base dark:cal-bg-accent-base dark:cal-text-theme-900 hover:dark:cal-bg-accent-dark hover:dark:cal-text-theme-900"
+        class="cal-flex cal-shrink-0 cal-items-center cal-justify-center cal-rounded cal-bg-accent-base cal-p-1.5 cal-text-white cal-transition-all cal-duration-75 cal-ease-out hover:cal-bg-accent-dark disabled:cal-cursor-not-allowed disabled:cal-opacity-40 disabled:hover:cal-bg-accent-base dark:cal-bg-accent-base dark:cal-text-theme-900 hover:dark:cal-bg-accent-dark"
         :disabled="!canAddMore || !inputEmail.trim()"
         @click="onAdd"
       >
-        Add
+        <!-- Plus icon -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="cal-h-4 cal-w-4"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+            clip-rule="evenodd"
+          />
+        </svg>
       </button>
     </div>
 
     <p
       v-if="error"
-      class="cal-mt-1 cal-text-sm cal-text-red-500 dark:cal-text-red-400"
+      class="cal-mt-1 cal-text-xs cal-text-red-500 dark:cal-text-red-400"
     >
       {{ error }}
     </p>
 
-    <p
-      v-if="!canAddMore"
-      class="cal-mt-1 cal-text-sm cal-text-theme-500 dark:cal-text-theme-400"
+    <div
+      v-if="guests.length > 0"
+      class="cal-mt-2 cal-flex cal-flex-wrap cal-gap-1.5"
     >
-      Maximum {{ maxGuests }} guests reached
-    </p>
-
-    <ul v-if="guests.length > 0" class="cal-mt-3 cal-space-y-2">
-      <li
+      <span
         v-for="guest in guests"
         :key="guest"
-        class="cal-flex cal-items-center cal-justify-between cal-rounded-md cal-bg-theme-100 cal-px-3 cal-py-2 dark:cal-bg-theme-800"
+        class="cal-inline-flex cal-items-center cal-gap-1 cal-rounded-full cal-bg-theme-100 cal-py-0.5 cal-pl-2.5 cal-pr-1 cal-text-xs cal-text-theme-700 dark:cal-bg-theme-800 dark:cal-text-theme-200"
       >
-        <span
-          class="cal-text-sm cal-text-theme-700 dark:cal-text-theme-200"
-        >
-          {{ guest }}
-        </span>
+        {{ guest }}
         <button
           type="button"
-          class="cal-ml-2 cal-text-theme-400 cal-transition-colors hover:cal-text-red-500 dark:cal-text-theme-500 dark:hover:cal-text-red-400"
+          class="cal-rounded-full cal-p-0.5 cal-text-theme-400 cal-transition-colors hover:cal-bg-theme-200 hover:cal-text-red-500 dark:cal-text-theme-500 dark:hover:cal-bg-theme-700 dark:hover:cal-text-red-400"
           @click="onRemove(guest)"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="cal-h-4 cal-w-4"
+            class="cal-h-3 cal-w-3"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -68,8 +76,8 @@
             />
           </svg>
         </button>
-      </li>
-    </ul>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -77,15 +85,23 @@
 import { ref, inject } from "vue";
 import { useGuests } from "@zaptime/core";
 
-const { guests, maxGuests, canAddMore, addGuest, removeGuest } = useGuests(
+const { guests, canAddMore, addGuest, removeGuest } = useGuests(
   inject("calendarId"),
 );
 
+const emailInput = ref<HTMLInputElement | null>(null);
 const inputEmail = ref("");
 const error = ref("");
 
 function onAdd() {
   error.value = "";
+  emailInput.value?.setCustomValidity("");
+
+  if (!emailInput.value?.checkValidity()) {
+    emailInput.value?.reportValidity();
+    return;
+  }
+
   const result = addGuest(inputEmail.value);
   if (result.success) {
     inputEmail.value = "";

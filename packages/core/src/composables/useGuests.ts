@@ -1,24 +1,29 @@
 import { ref, computed } from "vue";
-import { GuestsConfig } from "../types/InitData";
-
-const DEFAULT_MAX_GUESTS = 10;
 
 const state = ref<
   Record<
     string,
     {
       guests: string[];
-      config: GuestsConfig | null;
+      maxGuests: number | null;
     }
   >
 >({
   __DEFAULT__: {
     guests: [],
-    config: null,
+    maxGuests: null,
   },
 });
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const normalizeMaxGuests = (
+  value: number | null | undefined,
+): number | null => {
+  if (typeof value === "number" && Number.isFinite(value) && value >= 0) {
+    return value;
+  }
+
+  return null;
+};
 
 export default function useGuests(calendarId?: string) {
   const getState = () => {
@@ -28,25 +33,24 @@ export default function useGuests(calendarId?: string) {
     if (!state.value[calendarId]) {
       state.value[calendarId] = {
         guests: [],
-        config: null,
+        maxGuests: null,
       };
     }
     return state.value[calendarId];
   };
 
-  const setGuestsConfig = (config: GuestsConfig) => {
+  const setMaxGuests = (maxGuests: number | null) => {
     const s = getState();
-    s.config = config;
+    s.maxGuests = normalizeMaxGuests(maxGuests);
   };
 
   const isEnabled = computed(() => {
     const s = getState();
-    return s.config?.enabled ?? false;
+    return typeof s.maxGuests === "number";
   });
 
   const maxGuests = computed(() => {
-    const s = getState();
-    return s.config?.maxGuests ?? DEFAULT_MAX_GUESTS;
+    return getState().maxGuests;
   });
 
   const guests = computed(() => {
@@ -54,30 +58,35 @@ export default function useGuests(calendarId?: string) {
   });
 
   const canAddMore = computed(() => {
+    if (typeof maxGuests.value !== "number") {
+      return false;
+    }
+
     return guests.value.length < maxGuests.value;
   });
 
-  const addGuest = (
-    email: string,
-  ): { success: boolean; error?: string } => {
+  const addGuest = (email: string): { success: boolean; error?: string } => {
     const trimmedEmail = email.trim().toLowerCase();
 
     if (!trimmedEmail) {
       return { success: false, error: "Email is required" };
     }
 
-    if (!emailRegex.test(trimmedEmail)) {
-      return { success: false, error: "Invalid email format" };
-    }
-
     const s = getState();
+
+    if (typeof maxGuests.value !== "number") {
+      return { success: false, error: "Guests are disabled" };
+    }
 
     if (s.guests.some((g) => g.toLowerCase() === trimmedEmail)) {
       return { success: false, error: "This email is already added" };
     }
 
     if (s.guests.length >= maxGuests.value) {
-      return { success: false, error: `Maximum ${maxGuests.value} guests allowed` };
+      return {
+        success: false,
+        error: `Maximum ${maxGuests.value} guests allowed`,
+      };
     }
 
     s.guests.push(trimmedEmail);
@@ -108,7 +117,7 @@ export default function useGuests(calendarId?: string) {
     maxGuests,
     isEnabled,
     canAddMore,
-    setGuestsConfig,
+    setMaxGuests,
     addGuest,
     removeGuest,
     clearGuests,
