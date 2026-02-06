@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.9.5
+
+### Patch Changes
+
+- 0cdbf65: Stop refresing reservations in success and error case for confirm, cancel reservat. Stop refreshing when refreshing itself fails.
+- Updated dependencies [0cdbf65]
+  - @zaptime/core@2.9.1
+
 ## 3.9.4
 
 ### Patch Changes
