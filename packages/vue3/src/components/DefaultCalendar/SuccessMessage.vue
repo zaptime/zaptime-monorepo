@@ -39,14 +39,13 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from "vue";
 import {
   useConfig,
   useSelectedTimeSlot,
   useDateFormatters,
 } from "@zaptime/core";
 
-const { config } = useConfig(inject("calendarId"));
-const { selectedTimeSlot } = useSelectedTimeSlot(inject("calendarId"));
+const { config } = useConfig();
+const { selectedTimeSlot } = useSelectedTimeSlot();
 const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters();
 </script>

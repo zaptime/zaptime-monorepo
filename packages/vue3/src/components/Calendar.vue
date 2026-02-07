@@ -111,11 +111,9 @@ const emit = defineEmits<{
   (e: "booking-confirmed", reservation: ReservationResponse): void;
 }>();
 
-const { view, calendarView, setView } = useCalendarViewState(
-  inject("calendarId"),
-);
+const { view, calendarView, setView } = useCalendarViewState();
 
-const { config } = useConfig(inject("calendarId"));
+const { config } = useConfig();
 
 const color = inject<string>("color");
 const color2 = inject<string>("color2");

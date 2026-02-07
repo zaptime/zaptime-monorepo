@@ -1,14 +1,14 @@
-import { ref } from "vue";
-
-const isSubscribed = ref(true);
+import { useVue3CalendarScope } from "./useVue3CalendarScope";
 
 export function useIsSubscribed() {
+  const scope = useVue3CalendarScope();
+
   function setIsSubscribed(value: boolean) {
-    isSubscribed.value = value;
+    scope.isSubscribed.value = value;
   }
 
   return {
     setIsSubscribed,
-    isSubscribed,
+    isSubscribed: scope.isSubscribed,
   };
 }

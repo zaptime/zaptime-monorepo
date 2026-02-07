@@ -160,7 +160,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useStripeConfig } from "@zaptime/core";
 import { useConfig } from "@zaptime/core";
 import { useBillingAddress, useBookingForm } from "@zaptime/core";
@@ -170,34 +170,27 @@ import { useLocalisedPriceCurrency } from "../composables/useLocalisedPriceCurre
 
 const showAllBillingDetails = ref(false);
 
-const { stripeConfig } = useStripeConfig(inject("calendarId"));
-const { config } = useConfig(inject("calendarId"));
-const { billingAddress } = useBillingAddress(inject("calendarId"));
-const { collectFormValues } = useBookingForm(inject("calendarId"));
+const { stripeConfig } = useStripeConfig();
+const { config } = useConfig();
+const { billingAddress } = useBillingAddress();
+const { collectFormValues } = useBookingForm();
 
 const { priceCurrency } = useLocalisedPriceCurrency({
   price: stripeConfig.value?.price || 0,
   currency: stripeConfig.value?.currency || "",
-  calendarId: inject("calendarId"),
 });
 
 // prefill billing address with user data provided in booking form
 watch(showAllBillingDetails, () => {
   const values = collectFormValues();
 
-  console.log(values);
-
   if (
     billingAddress.value.name === "" &&
     values.firstName !== undefined &&
     values.lastName !== undefined
   ) {
-    console.log(values.firstName);
-
     billingAddress.value.name = values.firstName + " " + values.lastName;
   }
-
-  console.log(billingAddress.value.email);
 
   if (billingAddress.value.email === "") {
     billingAddress.value.email = values.email;

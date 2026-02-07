@@ -1,6 +1,9 @@
 <template>
   <div id="zaptime-calendar" class="cal-antialiased">
-    <div class="" :class="[config.theme?.mode === 'light' ? '' : 'cal-dark']">
+    <div
+      class=""
+      :class="[coreConfig.theme?.mode === 'light' ? '' : 'cal-dark']"
+    >
       <template v-if="isEnabled">
         <Calendar
           v-show="loaded"
@@ -48,24 +51,28 @@
 import { provide, watch, computed, onMounted, ref } from "vue";
 
 import Calendar from "./components/Calendar.vue";
-import { useConfig, ZaptimeConfig, useSelectedTimeSlot } from "@zaptime/core";
+import {
+  useConfig,
+  ZaptimeConfig,
+  useSelectedTimeSlot,
+  provideCalendarScope,
+} from "@zaptime/core";
 import useCompactSwticher from "./composables/useCompactSwitcher";
 import useAlphaColors from "./composables/useAlphaColors";
 import { useInitialization } from "./composables/useInitialization";
 import CalendarDisabled from "./components/CalendarDisabled.vue";
 import { mergeConfigs } from "./utils/mergeConfigs";
 import type { TimeSlot, ReservationResponse } from "@zaptime/core";
+import { provideVue3CalendarScope } from "./composables/useVue3CalendarScope";
 
 const loaded = ref(false);
 
 const props = withDefaults(
   defineProps<{
     config: ZaptimeConfig;
-    calendarId?: string;
   }>(),
   {
     config: undefined,
-    calendarId: undefined,
   },
 );
 
@@ -75,23 +82,21 @@ const emit = defineEmits<{
   (e: "calendar-loaded"): void;
 }>();
 
-provide("calendarId", props.calendarId);
+provideCalendarScope();
+provideVue3CalendarScope();
 
-const { init, initLoaded, isEnabled } = useInitialization(
-  props.config,
-  props.calendarId,
-);
+const { init, initLoaded, isEnabled } = useInitialization(props.config);
 
-const { setConfig, config } = useConfig(props.calendarId);
+const { setConfig, config: coreConfig } = useConfig();
 
-const { selectedTimeSlot } = useSelectedTimeSlot(props.calendarId);
+const { selectedTimeSlot } = useSelectedTimeSlot();
 
-const { color, color2 } = useAlphaColors(props.calendarId);
+const { color, color2 } = useAlphaColors();
 provide("color", color);
 provide("color2", color2);
 
 // Automatically switches to compact on mobile
-useCompactSwticher(props.calendarId);
+useCompactSwticher();
 
 watch(selectedTimeSlot, (newV) => {
   emit("time-slot-changed", newV);
@@ -101,13 +106,13 @@ watch(selectedTimeSlot, (newV) => {
 watch(
   () => props.config,
   (newValue) => {
-    setConfig(mergeConfigs(config.value, newValue));
+    setConfig(mergeConfigs(coreConfig.value, newValue));
   },
 );
 
 const borderRadius = computed(() => {
-  if (config?.value.theme?.borderRadius !== "full") {
-    return config?.value.theme?.borderRadius;
+  if (coreConfig?.value.theme?.borderRadius !== "full") {
+    return coreConfig?.value.theme?.borderRadius;
   }
 
   return "24px";
@@ -122,26 +127,26 @@ onMounted(async () => {
 
 <style>
 #zaptime-calendar {
-  --c-zaptime-25: v-bind(config?.theme?.colors?.[ "25"] || "#f8fafc");
-  --c-zaptime-50: v-bind(config?.theme?.colors?.[ "50"] || "#f8fafc");
-  --c-zaptime-100: v-bind(config?.theme?.colors?.[ "100"] || "#f1f5f9");
-  --c-zaptime-200: v-bind(config?.theme?.colors?.[ "200"] || "#e2e8f0");
-  --c-zaptime-300: v-bind(config?.theme?.colors?.[ "300"] || "#cbd5e1");
-  --c-zaptime-400: v-bind(config?.theme?.colors?.[ "400"] || "#64748b");
-  --c-zaptime-500: v-bind(config?.theme?.colors?.[ "500"] || "#475569");
-  --c-zaptime-600: v-bind(config?.theme?.colors?.[ "600"] || "#334155");
-  --c-zaptime-700: v-bind(config?.theme?.colors?.[ "700"] || "#384250");
-  --c-zaptime-800: v-bind(config?.theme?.colors?.[ "800"] || "#1e293b");
-  --c-zaptime-900: v-bind(config?.theme?.colors?.[ "900"] || "#020617");
+  --c-zaptime-25: v-bind(coreConfig?.theme?.colors?.[ "25"] || "#f8fafc");
+  --c-zaptime-50: v-bind(coreConfig?.theme?.colors?.[ "50"] || "#f8fafc");
+  --c-zaptime-100: v-bind(coreConfig?.theme?.colors?.[ "100"] || "#f1f5f9");
+  --c-zaptime-200: v-bind(coreConfig?.theme?.colors?.[ "200"] || "#e2e8f0");
+  --c-zaptime-300: v-bind(coreConfig?.theme?.colors?.[ "300"] || "#cbd5e1");
+  --c-zaptime-400: v-bind(coreConfig?.theme?.colors?.[ "400"] || "#64748b");
+  --c-zaptime-500: v-bind(coreConfig?.theme?.colors?.[ "500"] || "#475569");
+  --c-zaptime-600: v-bind(coreConfig?.theme?.colors?.[ "600"] || "#334155");
+  --c-zaptime-700: v-bind(coreConfig?.theme?.colors?.[ "700"] || "#384250");
+  --c-zaptime-800: v-bind(coreConfig?.theme?.colors?.[ "800"] || "#1e293b");
+  --c-zaptime-900: v-bind(coreConfig?.theme?.colors?.[ "900"] || "#020617");
 
   --c-zaptime-accent-light: v-bind(
-    config?.theme?.colors?.accentLight || "#2ED3B7"
+    coreConfig?.theme?.colors?.accentLight || "#2ED3B7"
   );
   --c-zaptime-accent-base: v-bind(
-    config?.theme?.colors?.accentBase || "#15B79E"
+    coreConfig?.theme?.colors?.accentBase || "#15B79E"
   );
   --c-zaptime-accent-dark: v-bind(
-    config?.theme?.colors?.accentDark || "#0E9384"
+    coreConfig?.theme?.colors?.accentDark || "#0E9384"
   );
 
   --radius-zaptime: v-bind(borderRadius);

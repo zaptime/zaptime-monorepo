@@ -34,17 +34,14 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
 import { useCalendar } from "@zaptime/core";
 import { Day } from "@zaptime/core";
 
 import useCalendarViewState from "../../composables/useCalendarViewState";
 
-const { setCalendarView } = useCalendarViewState(inject("calendarId"));
+const { setCalendarView } = useCalendarViewState();
 
-const { dayHasTimeSlot, isSelectedDay, dayClicked, state } = useCalendar(
-  inject("calendarId") as string,
-);
+const { dayHasTimeSlot, isSelectedDay, dayClicked, state } = useCalendar();
 
 const dayClickedLocalProxy = (day: Day) => {
   dayClicked(day);

@@ -83,11 +83,10 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
 import { useCalendar, useConfig } from "@zaptime/core";
 
 const { monthName, currentYear, prev, prevDisabled, next, nextDisabled } =
-  useCalendar(inject("calendarId") as string);
+  useCalendar();
 
-const { config } = useConfig(inject("calendarId"));
+const { config } = useConfig();
 </script>

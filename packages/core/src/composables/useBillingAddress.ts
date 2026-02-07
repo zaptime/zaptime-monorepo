@@ -1,63 +1,32 @@
-import { ref, computed } from "vue";
+import { computed } from "vue";
+import {
+  createDefaultBillingAddress,
+  type BillingAddress,
+  useCalendarScope,
+} from "../scope/calendarScope";
 
-export type BillingAddress = {
-  name: string;
-  email: string;
-  company: string;
-  address: string;
-  city: string;
-  postalCode: string;
-  country: string;
-  crn: string;
-  vatId: string;
-};
+export type { BillingAddress };
 
-const defaultBillingAddress: BillingAddress = {
-  name: "",
-  email: "",
-  company: "",
-  address: "",
-  city: "",
-  postalCode: "",
-  country: "",
-  crn: "",
-  vatId: "",
-};
+export default function useBillingAddress() {
+  const scope = useCalendarScope();
 
-const state = ref<Record<string, BillingAddress>>({
-  __DEFAULT__: defaultBillingAddress,
-});
-
-export default function useBillingAddress(calendarId?: string) {
   const setBillingAddress = (billingAddress: BillingAddress) => {
-    if (calendarId === undefined) {
-      state.value.__DEFAULT__ = billingAddress;
-    } else {
-      state.value[calendarId] = billingAddress;
-      console.log(state.value[calendarId]);
-    }
+    scope.billingAddress.value = billingAddress;
   };
 
   const billingAddress = computed(() => {
-    if (calendarId === undefined) {
-      return state.value.__DEFAULT__;
-    }
-
-    if (state.value[calendarId] === undefined) {
-      state.value[calendarId] = defaultBillingAddress;
-    }
-    return state.value[calendarId];
+    return scope.billingAddress.value;
   });
 
   function updateBillingAddressField(
     field: keyof BillingAddress,
     value: string,
   ) {
-    if (calendarId === undefined) {
-      state.value.__DEFAULT__[field] = value;
-    } else {
-      state.value[calendarId][field] = value;
+    if (scope.billingAddress.value === undefined) {
+      scope.billingAddress.value = createDefaultBillingAddress();
     }
+
+    scope.billingAddress.value[field] = value;
   }
 
   return {

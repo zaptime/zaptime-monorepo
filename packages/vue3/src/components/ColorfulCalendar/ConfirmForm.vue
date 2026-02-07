@@ -46,17 +46,18 @@
 import { computed, inject, ref } from "vue";
 import {
   useSelectedTimeSlot,
-  book,
+  useBookingActions,
   useConfig,
   useDateFormatters,
 } from "@zaptime/core";
 import PrimaryButton from "./atomic/PrimaryButton.vue";
 import SecondaryButton from "./atomic/SecondaryButton.vue";
 
-const { selectedTimeSlot } = useSelectedTimeSlot(inject("calendarId"));
+const { selectedTimeSlot } = useSelectedTimeSlot();
 const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } =
   useDateFormatters();
-const { config } = useConfig(inject("calendarId"));
+const { config } = useConfig();
+const { book } = useBookingActions();
 const color2 = inject<string>("color2");
 
 defineEmits(["confirmBooking", "goBack"]);
