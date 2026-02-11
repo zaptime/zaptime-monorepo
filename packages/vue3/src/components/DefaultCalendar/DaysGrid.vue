@@ -72,7 +72,6 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
 import { useCalendar, useConfig } from "@zaptime/core";
 import { Day } from "@zaptime/core";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
@@ -80,13 +79,12 @@ import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 import useCalendarViewState from "../../composables/useCalendarViewState";
 import DaysGridLoadingSkeleton from "./DaysGridLoadingSkeleton.vue";
 
-const { setCalendarView } = useCalendarViewState(inject("calendarId"));
+const { setCalendarView } = useCalendarViewState();
 
-const { config } = useConfig(inject("calendarId"));
+const { config } = useConfig();
 
-const { dayHasTimeSlot, isSelectedDay, dayClicked, state, next } = useCalendar(
-  inject("calendarId"),
-);
+const { dayHasTimeSlot, isSelectedDay, dayClicked, state, next } =
+  useCalendar();
 
 const dayClickedLocalProxy = (day: Day) => {
   dayClicked(day);

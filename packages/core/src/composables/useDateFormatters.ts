@@ -3,26 +3,27 @@ import useCurrentTimezone from "./useCurrentTimezone";
 import useHourCycle from "./useHourCycle";
 import { tz } from "@date-fns/tz";
 import { getDfnsConfig } from "../utils/dfnsConfig";
-let dateFnsConfig: any = undefined;
+import { useCalendarScope } from "../scope/calendarScope";
 
 export const useDateFormatters = () => {
   const { timezone } = useCurrentTimezone();
   const { hourCycle } = useHourCycle();
+  const scope = useCalendarScope();
 
   async function loadDateFnsConfig(locale: string) {
-    dateFnsConfig = await getDfnsConfig(locale);
+    scope.dateFnsConfig.value = await getDfnsConfig(locale);
   }
 
   const getFormattedTime = (date: string) => {
     if (hourCycle.value === "h11") {
       return format(parseISO(date), "h:mmaaa", {
         in: tz(timezone.value),
-        ...dateFnsConfig,
+        ...scope.dateFnsConfig.value,
       });
     } else {
       return format(parseISO(date), "H:mm", {
         in: tz(timezone.value),
-        ...dateFnsConfig,
+        ...scope.dateFnsConfig.value,
       });
     }
   };
@@ -30,7 +31,7 @@ export const useDateFormatters = () => {
   //e.g. Thursday
   const getFormattedDay = (date: string) => {
     return format(parseISO(date), "EEEE", {
-      ...dateFnsConfig,
+      ...scope.dateFnsConfig.value,
       in: tz(timezone.value),
     });
   };
@@ -38,7 +39,7 @@ export const useDateFormatters = () => {
   //e. g. November 21
   const getFormattedDayInMonth = (date: string) => {
     return format(parseISO(date), "PPPP", {
-      ...dateFnsConfig,
+      ...scope.dateFnsConfig.value,
       in: tz(timezone.value),
     });
   };

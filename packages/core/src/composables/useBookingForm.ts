@@ -1,13 +1,10 @@
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import {
   CustomField,
   CustomFieldValue,
   CustomFieldCollected,
 } from "../types/InitData";
-
-const state = ref<Record<string, CustomField[]>>({
-  __DEFAULT__: [],
-});
+import { useCalendarScope } from "../scope/calendarScope";
 
 const knownFieldsByMergeTag = [
   "FIRST_NAME",
@@ -16,21 +13,15 @@ const knownFieldsByMergeTag = [
   "PHONE",
 ] as const;
 
-export default function useBookingForm(calendarId?: string) {
+export default function useBookingForm() {
+  const scope = useCalendarScope();
+
   const setBookingForm = (customFields: CustomField[]) => {
-    if (calendarId === undefined) {
-      state.value.__DEFAULT__ = customFields;
-    } else {
-      state.value[calendarId] = customFields;
-    }
+    scope.bookingForm.value = customFields;
   };
 
   const bookingForm = computed(() => {
-    if (calendarId === undefined) {
-      return state.value.__DEFAULT__;
-    }
-
-    return state.value[calendarId];
+    return scope.bookingForm.value;
   });
 
   function setCustomFieldValue(uuid: string, value: CustomFieldValue) {

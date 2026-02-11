@@ -292,7 +292,7 @@ import useCalendarViewState from "../composables/useCalendarViewState";
 import { inject } from "vue";
 import { Day, TimeSlot } from "@zaptime/core";
 
-const { setView, setCalendarView } = useCalendarViewState(inject("calendarId"));
+const { setView, setCalendarView } = useCalendarViewState();
 
 const {
   monthName,
@@ -307,7 +307,7 @@ const {
   isSelectedDay,
   nextDisabled,
   state,
-} = useCalendar(inject("calendarId"));
+} = useCalendar();
 
 const config = inject("config") as ZaptimeConfig;
 

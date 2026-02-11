@@ -79,7 +79,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, inject, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import {
   Combobox,
   ComboboxInput,
@@ -93,8 +93,8 @@ import { useCurrentTimezone, useCalendar, useConfig } from "@zaptime/core";
 import { useDebounceFn } from "@vueuse/core";
 
 const { timezone, setTimezone } = useCurrentTimezone();
-const { getDays } = useCalendar(inject("calendarId"));
-const { config } = useConfig(inject("calendarId"));
+const { getDays } = useCalendar();
+const { config } = useConfig();
 
 const timezones = ref<string[]>([]);
 
@@ -110,8 +110,6 @@ watch(timezone, () => {
 
 const setQuery = useDebounceFn(
   (newQuery: string) => {
-    console.log("test");
-
     query.value = newQuery;
   },
   500,

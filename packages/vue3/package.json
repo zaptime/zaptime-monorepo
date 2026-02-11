@@ -18,7 +18,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit  && vite build && pnpm vue-tsc --declaration --emitDeclarationOnly",
-    "analyze": "vite build --config analyze.config.ts"
+    "analyze": "vite build --config analyze.config.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "peerDependencies": {
     "vue": "^3.0.0"
@@ -47,12 +49,16 @@
     "@types/stripe-v3": "^3.1.33",
     "@types/web-bluetooth": "^0.0.21",
     "@vitejs/plugin-vue": "^5.0.4",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.17",
+    "happy-dom": "^17.4.4",
     "postcss": "^8.4.35",
     "rollup-plugin-visualizer": "^5.12.0",
     "tailwindcss": "3.4.17",
     "typescript": "^5.8.3",
     "vite": "^6.2.5",
+    "vitest": "^3.2.4",
     "vue": "^3.4.19",
     "vue-tsc": "^2.2.8"
   },

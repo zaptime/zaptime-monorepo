@@ -1,9 +1,11 @@
-import { ref } from "vue";
-
-const clientOriginalTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-const timezone = ref<string>(clientOriginalTimezone);
+import {
+  clientOriginalTimezone,
+  useCalendarScope,
+} from "../scope/calendarScope";
 
 export default function useCurrentTimezone() {
+  const { timezone } = useCalendarScope();
+
   const setTimezone = (tz: string) => {
     timezone.value = tz;
   };

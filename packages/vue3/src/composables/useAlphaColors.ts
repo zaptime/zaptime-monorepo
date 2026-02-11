@@ -2,8 +2,8 @@ import { useConfig } from "@zaptime/core";
 import { computed } from "vue";
 import mix from "../utils/mixColors";
 
-export default function useAlphaColors(calendarId?: string) {
-  const { config } = useConfig(calendarId);
+export default function useAlphaColors() {
+  const { config } = useConfig();
 
   const color = computed(() => {
     return getColorForAlpha(0.34);

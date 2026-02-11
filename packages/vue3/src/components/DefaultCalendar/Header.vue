@@ -9,7 +9,6 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
 import { useCalendar } from "@zaptime/core";
-const { state } = useCalendar(inject("calendarId"));
+const { state } = useCalendar();
 </script>

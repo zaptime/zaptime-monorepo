@@ -133,14 +133,13 @@
 import { useCalendar, useConfig, useDateFormatters } from "@zaptime/core";
 import useCalendarViewState from "../../composables/useCalendarViewState";
 import PrimaryButton from "../atomic/PrimaryButton.vue";
-import { inject } from "vue";
 import { TimeSlot } from "@zaptime/core";
 
-const { setView, setCalendarView } = useCalendarViewState(inject("calendarId"));
+const { setView, setCalendarView } = useCalendarViewState();
 
-const { selectTimeSlot, isSelected, state } = useCalendar(inject("calendarId"));
+const { selectTimeSlot, isSelected, state } = useCalendar();
 
-const { config } = useConfig(inject("calendarId"));
+const { config } = useConfig();
 
 const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } =
   useDateFormatters();

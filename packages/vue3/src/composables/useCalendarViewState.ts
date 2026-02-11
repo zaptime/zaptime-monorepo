@@ -1,68 +1,27 @@
-import { ref, computed } from "vue";
+import { computed } from "vue";
+import {
+  type CalendarView,
+  type View,
+  useVue3CalendarScope,
+} from "./useVue3CalendarScope";
 
-type View = "form" | "calendar" | "success";
-type CalendarView = "pickingDate" | "pickingTime";
-
-type CalendarViewState = {
-  view: View;
-  calendarView: CalendarView;
-};
-
-const _calendarView = ref<Record<string, CalendarViewState>>({
-  __DEFAULT__: {
-    view: "calendar" as View,
-    calendarView: "pickingDate" as CalendarView,
-  },
-});
-
-export default function (calendarId?: string) {
-  if (
-    calendarId !== undefined &&
-    _calendarView.value[calendarId] === undefined
-  ) {
-    _calendarView.value[calendarId] = {
-      view: "calendar" as View,
-      calendarView: "pickingDate" as CalendarView,
-    };
-  }
+export default function () {
+  const scope = useVue3CalendarScope();
 
   const view = computed(() => {
-    if (calendarId === undefined) {
-      return _calendarView.value.__DEFAULT__.view;
-    } else {
-      return _calendarView.value[calendarId].view;
-    }
+    return scope.view.value;
   });
 
   const calendarView = computed(() => {
-    if (calendarId === undefined) {
-      return _calendarView.value.__DEFAULT__.calendarView;
-    } else {
-      return _calendarView.value[calendarId].calendarView;
-    }
+    return scope.calendarView.value;
   });
 
-  const setView = (view: View) => {
-    if (calendarId === undefined) {
-      _calendarView.value.__DEFAULT__.view = view;
-    } else {
-      _calendarView.value[calendarId].view = view;
-    }
+  const setView = (value: View) => {
+    scope.view.value = value;
   };
 
-  const setCalendarView = (___calendarView: CalendarView) => {
-    if (calendarId === undefined) {
-      _calendarView.value.__DEFAULT__.calendarView = ___calendarView;
-    } else {
-      if (_calendarView.value[calendarId] === undefined) {
-        _calendarView.value[calendarId] = {
-          calendarView: ___calendarView,
-          view: view.value,
-        };
-      } else {
-        _calendarView.value[calendarId].calendarView = ___calendarView;
-      }
-    }
+  const setCalendarView = (value: CalendarView) => {
+    scope.calendarView.value = value;
   };
 
   return {

@@ -16,7 +16,6 @@ type BookAndReservePayload = {
   firstName?: string;
   lastName?: string;
   seats?: number;
-  calendarId?: string;
 };
 declare global {
   interface Window {
@@ -30,8 +29,8 @@ declare global {
     ZaptimeProxy: {
       book(payload: BookAndReservePayload): void;
       reserve(payload: BookAndReservePayload): void;
-      confirm(calendarId?: string): void;
-      cancel(calendarId?: string): void;
+      confirm(): void;
+      cancel(): void;
     };
   }
 }
@@ -43,11 +42,11 @@ window.ZaptimeProxy = {
   reserve(payload) {
     reserveZaptime({ email: payload.email });
   },
-  confirm(calendarId) {
-    confirmZaptime({ calendarId: calendarId });
+  confirm() {
+    confirmZaptime();
   },
-  cancel(calendarId) {
-    cancelZaptime(calendarId);
+  cancel() {
+    cancelZaptime();
   },
 };
 

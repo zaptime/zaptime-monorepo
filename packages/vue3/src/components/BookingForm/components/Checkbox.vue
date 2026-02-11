@@ -23,11 +23,10 @@
 <script lang="ts" setup>
 import type { CustomField } from "@zaptime/core";
 import { useBookingForm } from "@zaptime/core";
-import { inject } from "vue";
 type Props = CustomField;
 const props = defineProps<Props>();
 
-const { setCustomFieldValue } = useBookingForm(inject("calendarId"));
+const { setCustomFieldValue } = useBookingForm();
 
 function onChange(e: Event) {
   if (e.target instanceof HTMLInputElement) {

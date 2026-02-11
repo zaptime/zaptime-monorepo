@@ -52,10 +52,7 @@
           ></path>
         </svg>
       </button>
-      <EventType
-        :calendar-id="index.toString()"
-        :config="{ token: selectedEventTypeToken }"
-      />
+      <EventType :config="{ token: selectedEventTypeToken }" />
     </div>
   </div>
 </template>

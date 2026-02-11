@@ -33,12 +33,12 @@
 <script setup lang="ts">
 import type { CustomField } from "@zaptime/core";
 import { useBookingForm } from "@zaptime/core";
-import { ref, inject } from "vue";
+import { ref } from "vue";
 
 type Props = CustomField;
 const props = defineProps<Props>();
 
-const { setCustomFieldValue } = useBookingForm(inject("calendarId"));
+const { setCustomFieldValue } = useBookingForm();
 
 const selectedValue = ref<string[]>([]);
 

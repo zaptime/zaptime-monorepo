@@ -9,7 +9,6 @@
 
       <ZaptimeCalendar
         :config="config"
-        :calendar-id="calendarId"
         @booking-confirmed="(data) => bookingConfirmed(data)"
       ></ZaptimeCalendar>
     </div>
@@ -29,19 +28,16 @@
 import { default as ZaptimeCalendar } from "../src/App.vue";
 import {
   ZaptimeConfig,
-  reserve,
-  confirm,
+  useBookingActions,
   ReservationResponse,
   useCalendar,
 } from "@zaptime/core";
 import { ref } from "vue";
 
 const { getDays } = useCalendar();
-const calendarId = "this-is-my-calendar-id";
+const { reserve, confirm } = useBookingActions();
 function confirmDemocall() {
-  confirm({
-    calendarId,
-  });
+  confirm();
 }
 
 function reserveDemocall() {
@@ -49,7 +45,6 @@ function reserveDemocall() {
     firstName: "John",
     lastName: "Doe",
     email: "john@doe.test",
-    calendarId: calendarId,
   });
 }
 
