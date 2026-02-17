@@ -9,7 +9,7 @@
     "build:init": "tsdown",
     "merge-files": "cat ./zoid/zoid.js ./zoid/zaptime-init.js > ./dist/zaptime.js",
     "preview": "vite preview",
-    "deploy": "CLOUDFLARE_ACCOUNT_ID=ba3f25490fcc7591a079aa5d771245ad npx wrangler pages deploy dist --commit-dirty=true",
+    "deploy": "wrangler deploy --name iframe --compatibility-date 2026-02-17 --assets dist",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
