@@ -5,7 +5,6 @@ import type { TimeSlot } from "@zaptime/core";
 
 defineProps<{
   config: ZaptimeConfig;
-  calendarId?: string;
 }>();
 
 const emit = defineEmits<{
@@ -24,7 +23,6 @@ const onTimeSlotChanged = (timeSlot: TimeSlot | undefined) => {
 <template>
   <div>
     <ZaptimeCalendar
-      :calendar-id="calendarId"
       :config="config"
       @time-slot-changed="onTimeSlotChanged"
     ></ZaptimeCalendar>

@@ -43,8 +43,7 @@ import Select from "./components/Select.vue";
 import Multiselect from "./components/Multiselect.vue";
 import Radio from "./components/Radio.vue";
 
-import { inject } from "vue";
 import { useBookingForm } from "@zaptime/core";
 
-const { bookingForm } = useBookingForm(inject("calendarId"));
+const { bookingForm } = useBookingForm();
 </script>

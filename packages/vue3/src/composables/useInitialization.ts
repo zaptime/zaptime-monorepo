@@ -15,17 +15,17 @@ import { mergeConfigs } from "../utils/mergeConfigs";
 import { isSameDay } from "date-fns";
 import { useIsSubscribed } from "./useIsSubscribed";
 
-export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
+export function useInitialization(config: ZaptimeConfig) {
   const isEnabled = ref(false);
   const initLoaded = ref(false);
 
-  const { setConfig } = useConfig(calendarId);
-  const { setLocations } = useLocations(calendarId);
+  const { setConfig } = useConfig();
+  const { setLocations } = useLocations();
   const { loadDateFnsConfig } = useDateFormatters();
-  const { setStripeConfig } = useStripeConfig(calendarId);
-  const { setBookingForm } = useBookingForm(calendarId);
-  const { setSelectedReservation } = useReservationReschedule(calendarId);
-  const { init: initCalendar, dayClicked, state } = useCalendar(calendarId);
+  const { setStripeConfig } = useStripeConfig();
+  const { setBookingForm } = useBookingForm();
+  const { setSelectedReservation } = useReservationReschedule();
+  const { init: initCalendar, dayClicked, state } = useCalendar();
   const { setIsSubscribed } = useIsSubscribed();
   /**
    * Setups the calendar and configuration based on the provided token and configuration.

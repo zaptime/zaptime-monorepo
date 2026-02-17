@@ -127,18 +127,14 @@
 import { computed, inject, ref, onMounted } from "vue";
 import {
   useSelectedTimeSlot,
-  book,
-  reserve,
-  confirm,
+  useBookingActions,
   useConfig,
-  reschedule,
   useDateFormatters,
   useLocations,
   useStripeConfig,
   useBookingForm,
   useBillingAddress,
   useReservationReschedule,
-  cancel,
 } from "@zaptime/core";
 import PrimaryButton from "./atomic/PrimaryButton.vue";
 import SecondaryButton from "./atomic/SecondaryButton.vue";
@@ -153,19 +149,19 @@ const emit = defineEmits<{
   (e: "go-back"): void;
 }>();
 
-const { selectedTimeSlot } = useSelectedTimeSlot(inject("calendarId"));
+const { selectedTimeSlot } = useSelectedTimeSlot();
 const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters();
-const { config } = useConfig(inject("calendarId"));
-const { locations } = useLocations(inject("calendarId"));
-const { stripeConfig } = useStripeConfig(inject("calendarId"));
-const { collectFormValues } = useBookingForm(inject("calendarId"));
-const { billingAddress } = useBillingAddress(inject("calendarId"));
-const { reservation } = useReservationReschedule(inject("calendarId"));
+const { config } = useConfig();
+const { locations } = useLocations();
+const { stripeConfig } = useStripeConfig();
+const { collectFormValues } = useBookingForm();
+const { billingAddress } = useBillingAddress();
+const { reservation } = useReservationReschedule();
+const { reserve, confirm, cancel, book, reschedule } = useBookingActions();
 
 const { initGateway, handleSubmit: handleStripePayment } = useStripe();
 
 const color2 = inject<string>("color2");
-const calendarId = inject<string>("calendarId");
 const seats = ref(1);
 const disabled = ref(false);
 const analytics = getAnalytics();
@@ -193,7 +189,6 @@ async function handleSubmittionWithPayment() {
     const res = await reserve({
       ...collectedValues,
       seats: seats.value,
-      calendarId,
       location: locations.value[0],
     });
 
@@ -219,7 +214,7 @@ async function handleSubmittionWithPayment() {
       reservationUuid: res.data.uuid,
     });
 
-    const confirmRes = await confirm({ calendarId: calendarId });
+    const confirmRes = await confirm();
 
     if (!confirmRes.success) {
       throw new Error("Failed to confirm");
@@ -229,7 +224,7 @@ async function handleSubmittionWithPayment() {
   } catch (err) {
     if (err instanceof PaymentError) {
       console.error(err.message);
-      await cancel(calendarId);
+      await cancel();
     }
     throw new Error("Failed to reserve");
   }
@@ -246,7 +241,6 @@ async function onSubmit() {
     } else {
       res = await book({
         seats: seats.value,
-        calendarId,
         location: locations.value[0],
         ...collectFormValues(),
       });
@@ -280,7 +274,7 @@ async function onSubmit() {
 async function submitReschedule() {
   disabled.value = true;
 
-  const res = await reschedule(calendarId);
+  const res = await reschedule();
   emit("booking-confirmed", res);
 
   disabled.value = false;

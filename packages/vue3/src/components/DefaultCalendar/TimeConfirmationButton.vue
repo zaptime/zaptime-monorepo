@@ -77,13 +77,13 @@
 <script setup lang="ts">
 import type { TimeSlot } from "@zaptime/core";
 import { useCalendar, useDateFormatters, useConfig } from "@zaptime/core";
-import { ref, inject } from "vue";
+import { ref } from "vue";
 import { onClickOutside } from "@vueuse/core";
 import PrimaryButton from "../atomic/PrimaryButton.vue";
 
 const { getFormattedTime } = useDateFormatters();
-const { isSelected } = useCalendar(inject("calendarId"));
-const { config } = useConfig(inject("calendarId"));
+const { isSelected } = useCalendar();
+const { config } = useConfig();
 
 const target = ref();
 const confirmationState = ref(false);

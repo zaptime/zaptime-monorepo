@@ -99,7 +99,6 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
 import {
   useCalendar,
   useConfig,
@@ -109,9 +108,9 @@ import {
 import MeetingInformation from "./MeetingInformation.vue";
 
 const { monthName, currentYear, prev, prevDisabled, next, nextDisabled } =
-  useCalendar(inject("calendarId") as string);
+  useCalendar();
 
-const { config } = useConfig(inject("calendarId"));
-const { reservation } = useReservationReschedule(inject("calendarId"));
+const { config } = useConfig();
+const { reservation } = useReservationReschedule();
 const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters();
 </script>

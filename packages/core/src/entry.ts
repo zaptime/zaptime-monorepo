@@ -9,8 +9,9 @@ export {
   reserve,
   confirm,
   cancel,
-  fetchRemoteConfiguration,
   reschedule,
+  useBookingActions,
+  fetchRemoteConfiguration,
   stopReservationRefresh,
 } from "./composables/useApi";
 export { default as useCalendar } from "./composables/useCalendar";
@@ -24,6 +25,11 @@ export { default as useBookingForm } from "./composables/useBookingForm";
 export { default as useBillingAddress } from "./composables/useBillingAddress";
 export { useDateFormatters } from "./composables/useDateFormatters";
 export { default as useReservationReschedule } from "./composables/useReservationReschedule";
+export {
+  createCalendarScope,
+  provideCalendarScope,
+  useCalendarScope,
+} from "./scope/calendarScope";
 
 export { default as mergeObjects } from "./utils/mergeObjects";
 

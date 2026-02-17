@@ -172,7 +172,7 @@ import {
 } from "@zaptime/core";
 import useCalendarViewState from "../../composables/useCalendarViewState";
 import PrimaryButton from "../atomic/PrimaryButton.vue";
-import { inject, computed } from "vue";
+import { computed } from "vue";
 import type { TimeSlot } from "@zaptime/core";
 import ConfirmationButton from "./TimeConfirmationButton.vue";
 import TimeZonePicker from "../atomic/TimeZonePicker.vue";
@@ -181,11 +181,11 @@ import { getAnalytics } from "../../analytics";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 
 const { hourCycle } = useHourCycle();
-const { setView, setCalendarView } = useCalendarViewState(inject("calendarId"));
-const { selectTimeSlot, state, next } = useCalendar(inject("calendarId"));
-const { config } = useConfig(inject("calendarId"));
+const { setView, setCalendarView } = useCalendarViewState();
+const { selectTimeSlot, state, next } = useCalendar();
+const { config } = useConfig();
 const { getFormattedDayInMonth } = useDateFormatters();
-const { reservation } = useReservationReschedule(inject("calendarId"));
+const { reservation } = useReservationReschedule();
 
 const hourCycleSwitchValue = computed({
   get() {

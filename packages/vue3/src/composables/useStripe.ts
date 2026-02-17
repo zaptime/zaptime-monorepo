@@ -1,4 +1,4 @@
-import { ref, inject, computed } from "vue";
+import { ref, computed } from "vue";
 import { useConfig } from "@zaptime/core";
 
 export type BillingAddress = {
@@ -29,7 +29,7 @@ export function useStripe() {
   const stripeCardNumber = ref<stripe.elements.Element>();
   const stripeCardExpiry = ref<stripe.elements.Element>();
   const stripeCardCvc = ref<stripe.elements.Element>();
-  const { config } = useConfig(inject("calendarId"));
+  const { config } = useConfig();
 
   const isDark = config.value.theme?.mode === "dark";
 

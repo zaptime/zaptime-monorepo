@@ -1,4 +1,4 @@
-import { computed, reactive, ref, watch } from "vue";
+import { computed, watch } from "vue";
 
 import {
   addMonths,
@@ -13,42 +13,20 @@ import { getHeaders } from "../utils/localeLogic";
 import { getDfnsConfig } from "../utils/dfnsConfig";
 
 import TimeSlot from "../types/TimeSlot";
-import CalendarState from "../types/CalendarState";
 import Day from "../types/Day";
 import useSelectedTimeSlot from "./useSelectedTimeSlot";
 
 import useConfig from "../composables/useConfig";
 import useCurrentTimezone from "./useCurrentTimezone";
+import {
+  createInitialCalendarState,
+  useCalendarScope,
+} from "../scope/calendarScope";
 
-type CalendarStates = Record<string, CalendarState>;
-
-const initCalendarState: CalendarState = {
-  date: new Date(),
-  days: [],
-  timeSlots: [],
-  monthHasTimeSlots: false,
-  selectedDay: null,
-  loading: true,
-  headers: [],
-  dfnsConfig: undefined,
-  attendeeState: undefined,
-  initLoaded: false,
-};
-
-const _state = reactive<CalendarStates>({
-  __DEFAULT__: { ...initCalendarState },
-});
-
-export default (calendarId?: string) => {
-  if (calendarId !== undefined) {
-    if (_state[calendarId] === undefined) {
-      _state[calendarId] = { ...initCalendarState };
-    }
-  }
-
-  const { config } = useConfig(calendarId);
-  const { selectedTimeSlot, setSelectedTimeSlot } =
-    useSelectedTimeSlot(calendarId);
+export default () => {
+  const scope = useCalendarScope();
+  const { config } = useConfig();
+  const { selectedTimeSlot, setSelectedTimeSlot } = useSelectedTimeSlot();
   const { timezone } = useCurrentTimezone();
 
   const selectTimeSlot = (timeSlot: TimeSlot) => {
@@ -56,29 +34,20 @@ export default (calendarId?: string) => {
   };
 
   const state = computed(() => {
-    if (calendarId === undefined) {
-      return _state["__DEFAULT__"] as CalendarState;
-    } else {
-      return _state[calendarId] as CalendarState;
-    }
+    return scope.calendarState;
   });
 
-  const setState = (key: string, value: unknown) => {
-    if (calendarId === undefined) {
-      //@ts-expect-error TODO: fix type
-      _state["__DEFAULT__"][key] = value;
-    } else {
-      //@ts-expect-error TODO: fix type
-      _state[calendarId][key] = value;
-    }
+  const setState = <
+    K extends keyof ReturnType<typeof createInitialCalendarState>,
+  >(
+    key: K,
+    value: ReturnType<typeof createInitialCalendarState>[K],
+  ) => {
+    scope.calendarState[key] = value;
   };
 
   const clearState = () => {
-    if (calendarId === undefined) {
-      _state["__DEFAULT__"] = { ...initCalendarState };
-    } else {
-      _state[calendarId] = { ...initCalendarState };
-    }
+    Object.assign(scope.calendarState, createInitialCalendarState());
   };
 
   function getFirstAvailableDayWithTimeSlot(days: Day[]): Day | undefined {

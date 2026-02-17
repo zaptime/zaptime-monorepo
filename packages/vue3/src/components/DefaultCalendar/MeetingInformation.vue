@@ -44,18 +44,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed } from "vue";
+import { ref, computed } from "vue";
 import { useLocations, useStripeConfig, useConfig } from "@zaptime/core";
 import { useLocalisedPriceCurrency } from "../../composables/useLocalisedPriceCurrency";
 
-const { locations } = useLocations(inject("calendarId"));
-const { stripeConfig } = useStripeConfig(inject("calendarId"));
-const { config } = useConfig(inject("calendarId"));
+const { locations } = useLocations();
+const { stripeConfig } = useStripeConfig();
+const { config } = useConfig();
 
 const { priceCurrency } = useLocalisedPriceCurrency({
   price: stripeConfig.value?.price || 0,
   currency: stripeConfig.value?.currency || "",
-  calendarId: inject("calendarId"),
 });
 
 const locationLabel = computed(() => {
@@ -69,6 +68,8 @@ const locationLabel = computed(() => {
   if (selectedLocation.value) {
     return selectedLocation.value.name;
   }
+
+  return undefined;
 });
 
 const selectedLocation = computed(() => {
@@ -77,6 +78,8 @@ const selectedLocation = computed(() => {
       (location) => location.id === locations.value[0].type,
     );
   }
+
+  return undefined;
 });
 
 const locationOptions = ref([
