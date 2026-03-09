@@ -1,5 +1,16 @@
 # @zaptime/vue3
 
+## 3.10.0
+
+### Minor Changes
+
+- e65559f: feat: add guests
+
+### Patch Changes
+
+- Updated dependencies [e65559f]
+  - @zaptime/core@2.10.0
+
 ## 3.9.5
 
 ### Patch Changes
