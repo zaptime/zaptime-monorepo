@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.10.0
+
+### Minor Changes
+
+- e65559f: feat: add guests
+
 ## 2.9.1
 
 ### Patch Changes
