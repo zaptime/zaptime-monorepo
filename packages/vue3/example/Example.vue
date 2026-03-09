@@ -74,10 +74,7 @@ const config = ref<ZaptimeConfig>({
   //@ts-expect-error - This is a valid config
   token: import.meta.env.VITE_ZAP_KEY,
 
-  // token: 'T7yScBeVefuiwwXyNvJDntql6TNZbc1D',
-
   // compact: false,
-
   apiBaseUrl: "https://api.zaptime.test/",
 
   // hideLocation: true,
