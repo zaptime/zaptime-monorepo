@@ -4,6 +4,7 @@ import {
   CustomFieldValue,
   CustomFieldCollected,
 } from "../types/InitData";
+import useGuests from "./useGuests";
 
 const state = ref<Record<string, CustomField[]>>({
   __DEFAULT__: [],
@@ -80,6 +81,11 @@ export default function useBookingForm(calendarId?: string) {
 
   function collectFormValues() {
     const { firstName, lastName, email, phone } = collectKnownFields();
+    const { guests, guestsEnabled } = useGuests(calendarId);
+
+    const filteredGuests = guestsEnabled.value
+      ? guests.value.filter((g) => g.trim() !== "")
+      : undefined;
 
     return {
       firstName,
@@ -87,6 +93,10 @@ export default function useBookingForm(calendarId?: string) {
       email,
       phone,
       customFields: collectUnknownFields(),
+      guests:
+        filteredGuests && filteredGuests.length > 0
+          ? filteredGuests
+          : undefined,
     };
   }
 

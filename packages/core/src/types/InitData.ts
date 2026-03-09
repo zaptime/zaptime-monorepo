@@ -34,6 +34,7 @@ export type InitData = {
   reservation?: Reservation;
   isSubscribed: boolean;
   eventTypeName: string;
+  maxGuests?: number | null;
 };
 
 export type StripeConfig = {

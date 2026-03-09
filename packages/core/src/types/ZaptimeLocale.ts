@@ -23,6 +23,7 @@ export default interface ZaptimeLocale {
   confirmationForm?: {
     confirmBooking?: string;
     reschedulingEvent?: string;
+    addGuests?: string;
     buttons?: {
       confirmBooking?: string;
       reschedule?: string;

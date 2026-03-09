@@ -21,6 +21,7 @@ export { default as useHourCycle } from "./composables/useHourCycle";
 export { default as useLocations } from "./composables/useLocations";
 export { default as useStripeConfig } from "./composables/useStripeConfig";
 export { default as useBookingForm } from "./composables/useBookingForm";
+export { default as useGuests } from "./composables/useGuests";
 export { default as useBillingAddress } from "./composables/useBillingAddress";
 export { useDateFormatters } from "./composables/useDateFormatters";
 export { default as useReservationReschedule } from "./composables/useReservationReschedule";

@@ -2,7 +2,7 @@
   "name": "@zaptime/vue3",
   "version": "3.9.5",
   "author": "Zaptime s.r.o.",
-  "types": "./dist/types/entry.d.ts",
+  "types": "./dist/types/vue3/src/entry.d.ts",
   "files": [
     "dist"
   ],
@@ -10,7 +10,7 @@
   "module": "./dist/zaptime-vue3.es.js",
   "exports": {
     ".": {
-      "types": "./dist/types/entry.d.ts",
+      "types": "./dist/types/vue3/src/entry.d.ts",
       "import": "./dist/zaptime-vue3.es.js",
       "require": "./dist/zaptime-vue3.umd.js"
     }

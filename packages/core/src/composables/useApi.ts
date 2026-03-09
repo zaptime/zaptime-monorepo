@@ -63,6 +63,11 @@ export interface IBookingOptions {
    * Custom fields
    */
   customFields?: CustomFieldCollected[];
+
+  /**
+   * Guest email addresses
+   */
+  guests?: string[];
 }
 
 export type IConfirmationOptions = Omit<
@@ -88,6 +93,7 @@ export const book = async (
     phone,
     location,
     customFields,
+    guests,
   } = options;
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
   const { config } = useConfig(calendarId);
@@ -108,6 +114,7 @@ export const book = async (
         location: location ?? internalLocations.value[0],
         timezone: timezone.value,
         customFields: customFields,
+        guests,
       });
 
       if (config.value.redirectAfterBookingUrl !== undefined) {
@@ -160,6 +167,7 @@ export const confirm = async (
       lastName: options?.lastName,
       phone: options?.phone,
       customFields: options?.customFields,
+      guests: options?.guests,
     });
     stopReservationRefresh();
     return res;
@@ -254,6 +262,7 @@ async function initReservation(options: IBookingOptions) {
     location,
     phone,
     customFields,
+    guests,
   } = options;
 
   const { selectedTimeSlot } = useSelectedTimeSlot(calendarId);
@@ -276,6 +285,7 @@ async function initReservation(options: IBookingOptions) {
       location: location ?? internalLocations.value[0],
       timezone: timezone.value,
       customFields: customFields,
+      guests,
     });
 
     setReservationStatus(data.data);

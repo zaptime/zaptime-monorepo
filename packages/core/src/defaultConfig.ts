@@ -14,6 +14,7 @@ const config: ZaptimeConfig = {
     confirmationForm: {
       confirmBooking: "Confirm booking",
       reschedulingEvent: "Rescheduling event",
+      addGuests: "Add guest",
       buttons: {
         confirmBooking: "Confirm booking",
         reschedule: "Reschedule",

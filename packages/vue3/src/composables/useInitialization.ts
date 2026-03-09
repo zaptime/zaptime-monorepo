@@ -6,6 +6,7 @@ import {
   useLocations,
   useStripeConfig,
   useBookingForm,
+  useGuests,
   useReservationReschedule,
   useDateFormatters,
 } from "@zaptime/core";
@@ -24,6 +25,7 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
   const { loadDateFnsConfig } = useDateFormatters();
   const { setStripeConfig } = useStripeConfig(calendarId);
   const { setBookingForm } = useBookingForm(calendarId);
+  const { setMaxGuests } = useGuests(calendarId);
   const { setSelectedReservation } = useReservationReschedule(calendarId);
   const { init: initCalendar, dayClicked, state } = useCalendar(calendarId);
   const { setIsSubscribed } = useIsSubscribed();
@@ -72,6 +74,8 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
         if (initData.value.customFields) {
           setBookingForm(initData.value.customFields);
         }
+
+        setMaxGuests(initData.value.maxGuests ?? null);
 
         if (initData.value.isSubscribed === false) {
           setIsSubscribed(false);

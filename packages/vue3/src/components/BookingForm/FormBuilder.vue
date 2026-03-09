@@ -32,6 +32,8 @@
         <Radio v-bind="element" />
       </div>
     </div>
+
+    <GuestEmails />
   </div>
 </template>
 
@@ -42,6 +44,7 @@ import Textarea from "./components/Textarea.vue";
 import Select from "./components/Select.vue";
 import Multiselect from "./components/Multiselect.vue";
 import Radio from "./components/Radio.vue";
+import GuestEmails from "./components/GuestEmails.vue";
 
 import { inject } from "vue";
 import { useBookingForm } from "@zaptime/core";
