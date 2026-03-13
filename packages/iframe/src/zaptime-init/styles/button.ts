@@ -1,17 +1,17 @@
-import type { CSSStyleObject } from '../types/styles'
-import { TOKENS } from './tokens'
+import type { CSSStyleObject } from "../types/styles";
+import { TOKENS } from "./tokens";
 
 export const floatingButtonStyles = {
   base: {
-    position: 'fixed',
+    position: "fixed",
     bottom: TOKENS.dimensions.buttonBottom,
     zIndex: TOKENS.zIndex.button,
     padding: `${TOKENS.dimensions.buttonPaddingY} ${TOKENS.dimensions.buttonPaddingX}`,
-    border: 'none',
+    border: "none",
     borderRadius: TOKENS.borderRadius.button,
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
     gap: TOKENS.dimensions.buttonGap,
     boxShadow: TOKENS.shadows.button,
     transition: `transform ${TOKENS.timing.hover} ${TOKENS.easing.hover}, box-shadow ${TOKENS.timing.hover} ${TOKENS.easing.hover}`,
@@ -32,17 +32,17 @@ export const floatingButtonStyles = {
   positionRight: {
     right: TOKENS.dimensions.buttonBottom,
   } as CSSStyleObject,
-}
+};
 
 export const inlineButtonStyles = {
   base: {
-    display: 'inline-flex',
-    alignItems: 'center',
+    display: "inline-flex",
+    alignItems: "center",
     gap: TOKENS.dimensions.buttonGap,
     padding: `${TOKENS.dimensions.buttonPaddingY} ${TOKENS.dimensions.buttonPaddingX}`,
-    border: 'none',
+    border: "none",
     borderRadius: TOKENS.borderRadius.button,
-    cursor: 'pointer',
+    cursor: "pointer",
     boxShadow: TOKENS.shadows.button,
     transition: `transform ${TOKENS.timing.hover} ${TOKENS.easing.hover}, box-shadow ${TOKENS.timing.hover} ${TOKENS.easing.hover}`,
     fontFamily: TOKENS.fonts.family,
@@ -54,4 +54,4 @@ export const inlineButtonStyles = {
     transform: TOKENS.transforms.buttonHover,
     boxShadow: TOKENS.shadows.buttonHover,
   } as CSSStyleObject,
-}
+};

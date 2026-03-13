@@ -33,6 +33,7 @@ export default defineConfig(({ mode }) => {
         lib: {
           entry: resolve(__dirname, "src/entry.ts"),
           name: "zaptime-vue3",
+          formats: ["es"],
           fileName: (format) => `zaptime-vue3.${format}.js`,
         },
         rollupOptions: {
@@ -43,14 +44,6 @@ export default defineConfig(({ mode }) => {
             ...Object.keys(dependencies),
           ],
           output: {
-            // Provide global variables to use in the UMD build
-            // for externalized deps
-            globals: {
-              vue: "Vue",
-              "@zaptime/core": "ZaptimeCore",
-              "date-fns": "dateFns",
-              "@vueuse/core": "VueUseCore",
-            },
             assetFileNames: (assetInfo) => {
               if (assetInfo.name === "vue3.css") return "style.css";
               return assetInfo.name || "asset";

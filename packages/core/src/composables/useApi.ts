@@ -333,11 +333,14 @@ const startReservationInterval = (options: IBookingOptions) => {
   // Immediately reserve once, then continue every 15 minutes
 
   // Start the interval to keep reserving every 15 minutes
-  reservationIntervalId = setInterval(() => {
-    refreshReservation(options).catch(() => {
-      stopReservationRefresh();
-    });
-  }, 15 * 60 * 1000);
+  reservationIntervalId = setInterval(
+    () => {
+      refreshReservation(options).catch(() => {
+        stopReservationRefresh();
+      });
+    },
+    15 * 60 * 1000,
+  );
 
   return res;
 };

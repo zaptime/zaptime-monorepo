@@ -4,47 +4,47 @@
  */
 
 interface ZoidPropDefinition {
-  type: 'string' | 'object' | 'function' | 'boolean' | 'number'
-  required?: boolean
-  default?: () => unknown
+  type: "string" | "object" | "function" | "boolean" | "number";
+  required?: boolean;
+  default?: () => unknown;
 }
 
 interface ZoidDimensions {
-  width: string
-  height: string
+  width: string;
+  height: string;
 }
 
 interface ZoidAutoResize {
-  width?: boolean
-  height?: boolean
+  width?: boolean;
+  height?: boolean;
 }
 
 interface ZoidComponentOptions {
-  tag: string
-  url: string
-  dimensions?: ZoidDimensions
-  autoResize?: ZoidAutoResize
-  props?: Record<string, ZoidPropDefinition>
+  tag: string;
+  url: string;
+  dimensions?: ZoidDimensions;
+  autoResize?: ZoidAutoResize;
+  props?: Record<string, ZoidPropDefinition>;
 }
 
 interface ZoidRenderOptions {
-  type?: string
-  config: object
-  onEventChanged?: (event: unknown) => void
-  position?: string
+  type?: string;
+  config: object;
+  onEventChanged?: (event: unknown) => void;
+  position?: string;
 }
 
 interface ZoidInstance {
-  render: (container: HTMLElement | string) => Promise<void>
-  close: () => Promise<void>
+  render: (container: HTMLElement | string) => Promise<void>;
+  close: () => Promise<void>;
 }
 
 type ZoidComponent = {
-  (options: ZoidRenderOptions): ZoidInstance
-}
+  (options: ZoidRenderOptions): ZoidInstance;
+};
 
 interface Zoid {
-  create: (options: ZoidComponentOptions) => ZoidComponent
+  create: (options: ZoidComponentOptions) => ZoidComponent;
 }
 
-declare const zoid: Zoid
+declare const zoid: Zoid;
