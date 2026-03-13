@@ -6,31 +6,26 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --recursive --parallel --stream run dev",
-    "lint": "eslint --cache packages --ext .ts,.vue",
-    "format": "prettier --write '**/*.{js,ts,vue}'",
-    "format:check": "prettier --check '**/*.{js,ts,vue}'"
+    "lint": "oxlint packages",
+    "format": "oxfmt packages",
+    "format:check": "oxfmt --check packages"
   },
   "keywords": [],
   "author": "Zaptime s.r.o.",
   "license": "",
   "dependencies": {
-    "@changesets/cli": "^2.26.0"
+    "@changesets/cli": "^2.29.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/zaptime/zaptime-monorepo"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "rolldown", "@parcel/watcher"]
+  },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.57.0",
-    "@typescript-eslint/parser": "^5.57.0",
-    "@vue/eslint-config-prettier": "^7.1.0",
-    "@vue/eslint-config-typescript": "^11.0.2",
-    "eslint": "^8.36.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.10.0",
-    "prettier": "^2.8.7",
-    "prettier-plugin-tailwindcss": "^0.2.7",
-    "typescript": "^5.0.3"
+    "oxlint": "^0.16.0",
+    "oxfmt": "^0.7.0",
+    "typescript": "^5.8.2"
   }
 }

@@ -3,20 +3,22 @@
  */
 
 export interface ZaptimePluginPayload {
-  [key: string]: unknown
+  [key: string]: unknown;
 }
 
 export interface ZaptimePluginInterface {
-  postMessage: (action: string, data?: ZaptimePluginPayload) => void
-  book: (payload?: ZaptimePluginPayload) => void
-  reserve: (payload?: ZaptimePluginPayload) => void
-  confirm: (payload?: ZaptimePluginPayload) => void
-  cancel: (payload?: ZaptimePluginPayload) => void
+  postMessage: (action: string, data?: ZaptimePluginPayload) => void;
+  book: (payload?: ZaptimePluginPayload) => void;
+  reserve: (payload?: ZaptimePluginPayload) => void;
+  confirm: (payload?: ZaptimePluginPayload) => void;
+  cancel: (payload?: ZaptimePluginPayload) => void;
 }
 
 export const ZaptimePlugin: ZaptimePluginInterface = {
   postMessage(action: string, data?: ZaptimePluginPayload): void {
-    const iframe = document.querySelector('.zoid-visible') as HTMLIFrameElement | null
+    const iframe = document.querySelector(
+      ".zoid-visible",
+    ) as HTMLIFrameElement | null;
 
     if (iframe && iframe.contentWindow) {
       iframe.contentWindow.postMessage(
@@ -24,24 +26,24 @@ export const ZaptimePlugin: ZaptimePluginInterface = {
           action,
           data,
         },
-        '*'
-      )
+        "*",
+      );
     }
   },
 
   book(payload?: ZaptimePluginPayload): void {
-    this.postMessage('book', payload)
+    this.postMessage("book", payload);
   },
 
   reserve(payload?: ZaptimePluginPayload): void {
-    this.postMessage('reserve', payload)
+    this.postMessage("reserve", payload);
   },
 
   confirm(payload?: ZaptimePluginPayload): void {
-    this.postMessage('confirm', payload)
+    this.postMessage("confirm", payload);
   },
 
   cancel(payload?: ZaptimePluginPayload): void {
-    this.postMessage('cancel', payload)
+    this.postMessage("cancel", payload);
   },
-}
+};
