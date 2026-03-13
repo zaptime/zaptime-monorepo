@@ -1,2 +1,2 @@
-export * from './options'
-export * from './styles'
+export * from "./options";
+export * from "./styles";

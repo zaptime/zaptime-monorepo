@@ -1,1 +1,1 @@
-export * from './ZaptimePlugin'
+export * from "./ZaptimePlugin";
