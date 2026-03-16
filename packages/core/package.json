@@ -1,14 +1,17 @@
 {
   "name": "@zaptime/core",
   "description": "Core library for Zaptime",
-  "version": "2.11.0-beta.0",
+  "version": "2.11.0-beta.1",
   "type": "module",
-  "main": "dist/entry.js",
-  "types": "dist/entry.d.ts",
+  "main": "dist/entry.mjs",
+  "module": "dist/entry.mjs",
+  "types": "dist/entry.d.mts",
   "author": "Zaptime s.r.o.",
   "exports": {
     ".": {
-      "import": "./dist/entry.js"
+      "types": "./dist/entry.d.mts",
+      "import": "./dist/entry.mjs",
+      "default": "./dist/entry.mjs"
     }
   },
   "files": [

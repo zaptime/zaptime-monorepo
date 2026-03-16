@@ -1,5 +1,13 @@
 # iframe
 
+## 0.1.0-beta.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @zaptime/core@2.11.0-beta.1
+  - @zaptime/vue3@3.11.0-beta.1
+
 ## 0.1.0-beta.0
 
 ### Minor Changes
@@ -19,6 +27,7 @@
 - Updated dependencies
   - @zaptime/core@2.11.0-beta.0
   - @zaptime/vue3@3.11.0-beta.0
+
 
 ## 0.0.80
 
