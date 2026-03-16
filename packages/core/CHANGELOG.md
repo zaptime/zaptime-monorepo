@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.11.0-beta.1
+
+### Patch Changes
+
+- Fix module import
+
 ## 2.11.0-beta.0
 
 ### Minor Changes
@@ -13,6 +19,7 @@
   ### Linting & formatting
 
   - Replaced ESLint + Prettier with oxlint + oxfmt
+
 
 ## 2.10.0
 

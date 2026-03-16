@@ -1,5 +1,12 @@
 # @zaptime/vue3
 
+## 3.11.0-beta.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @zaptime/core@2.11.0-beta.1
+
 ## 3.11.0-beta.0
 
 ### Minor Changes
@@ -18,6 +25,7 @@
 
 - Updated dependencies
   - @zaptime/core@2.11.0-beta.0
+
 
 ## 3.10.0
 
