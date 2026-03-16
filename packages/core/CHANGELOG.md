@@ -1,5 +1,19 @@
 # @zaptime/core
 
+## 2.11.0-beta.0
+
+### Minor Changes
+
+- ### Build tooling
+
+  - Vite 8
+  - @zaptime/core: tsup → tsdown (new `tsdown.config.ts`, removed `vite.config.ts`)
+  - @zaptime/vue3: ESM-only output (dropped UMD build, removed `require` export)
+
+  ### Linting & formatting
+
+  - Replaced ESLint + Prettier with oxlint + oxfmt
+
 ## 2.10.0
 
 ### Minor Changes

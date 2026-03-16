@@ -21,11 +21,15 @@
     "url": "https://github.com/zaptime/zaptime-monorepo"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "rolldown", "@parcel/watcher"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "rolldown",
+      "@parcel/watcher"
+    ]
   },
   "devDependencies": {
-    "oxlint": "^0.16.0",
-    "oxfmt": "^0.7.0",
-    "typescript": "^5.8.2"
+    "oxfmt": "^0.40.0",
+    "oxlint": "^1.55.0",
+    "typescript": "^5.9.3"
   }
 }

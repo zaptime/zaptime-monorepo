@@ -1,7 +1,7 @@
 {
   "name": "@zaptime/core",
   "description": "Core library for Zaptime",
-  "version": "2.10.0",
+  "version": "2.11.0-beta.0",
   "type": "module",
   "main": "dist/entry.js",
   "types": "dist/entry.d.ts",
@@ -18,8 +18,8 @@
     "build": "tsdown"
   },
   "dependencies": {
-    "@date-fns/tz": "^1.2.0",
-    "@vueuse/core": "^13.1.0",
+    "@date-fns/tz": "^1.4.1",
+    "@vueuse/core": "^14.2.1",
     "date-fns": "^4.1.0",
     "ts-results-es": "^5.0.1"
   },
@@ -31,12 +31,12 @@
     "url": "https://github.com/zaptime/zaptime-monorepo"
   },
   "devDependencies": {
-    "@babel/types": "^7.26.10",
+    "@babel/types": "^7.29.0",
     "@types/node": "^22.14.0",
-    "tsdown": "^0.9.4",
-    "typescript": "^5.8.2",
+    "tsdown": "^0.21.3",
+    "typescript": "^5.9.3",
     "vite": "^8.0.0",
-    "vue": "^3.5.13"
+    "vue": "^3.5.30"
   },
   "publishConfig": {
     "access": "public"
