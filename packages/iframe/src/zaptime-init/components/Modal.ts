@@ -40,7 +40,7 @@ export class ZaptimeModal {
   constructor(options: ModalOptions) {
     this.id = generateUniqueId();
     this.options = options;
-    this.isDark = this.options.config?.theme?.mode === 'dark' || isDarkMode();
+    this.isDark = this.options.config?.theme?.mode === "dark" || isDarkMode();
     this.styles = createModalStyles(this.isDark);
   }
 

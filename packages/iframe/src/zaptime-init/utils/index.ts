@@ -1,3 +1,3 @@
-export * from './dom'
-export * from './icons'
-export * from './darkMode'
+export * from "./dom";
+export * from "./icons";
+export * from "./darkMode";

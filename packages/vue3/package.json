@@ -1,6 +1,6 @@
 {
   "name": "@zaptime/vue3",
-  "version": "3.10.0",
+  "version": "3.11.0-beta.0",
   "author": "Zaptime s.r.o.",
   "types": "./dist/types/vue3/src/entry.d.ts",
   "files": [
@@ -11,14 +11,12 @@
   "exports": {
     ".": {
       "types": "./dist/types/vue3/src/entry.d.ts",
-      "import": "./dist/zaptime-vue3.es.js",
-      "require": "./dist/zaptime-vue3.umd.js"
+      "import": "./dist/zaptime-vue3.es.js"
     }
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit  && vite build && pnpm vue-tsc --declaration --emitDeclarationOnly",
-    "analyze": "vite build --config analyze.config.ts"
+    "build": "vue-tsc --noEmit  && vite build && pnpm vue-tsc --declaration --emitDeclarationOnly"
   },
   "peerDependencies": {
     "vue": "^3.0.0"
@@ -30,31 +28,30 @@
   "dependencies": {
     "@analytics/google-analytics": "^1.0.7",
     "@analytics/google-tag-manager": "^0.6.0",
-    "@date-fns/tz": "^1.2.0",
+    "@date-fns/tz": "^1.4.1",
     "@headlessui/vue": "^1.7.19",
     "@heroicons/vue": "^2.1.1",
-    "@vueuse/core": "^13.1.0",
+    "@vueuse/core": "^14.2.1",
     "@zaptime/core": "workspace:*",
-    "analytics": "^0.8.11",
+    "analytics": "^0.8.19",
     "date-fns": "^4.1.0",
     "load-script": "^2.0.0",
     "react-facebook-pixel": "^1.0.4"
   },
   "devDependencies": {
-    "@babel/types": "^7.23.9",
-    "@tailwindcss/forms": "^0.5.7",
+    "@babel/types": "^7.26.10",
+    "@tailwindcss/forms": "^0.5.11",
     "@types/node": "^22.14.0",
     "@types/stripe-v3": "^3.1.33",
     "@types/web-bluetooth": "^0.0.21",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "autoprefixer": "^10.4.17",
-    "postcss": "^8.4.35",
-    "rollup-plugin-visualizer": "^5.12.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
     "tailwindcss": "3.4.17",
-    "typescript": "^5.8.3",
-    "vite": "^6.2.5",
-    "vue": "^3.4.19",
-    "vue-tsc": "^2.2.8"
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0",
+    "vue": "^3.5.30",
+    "vue-tsc": "^3.2.5"
   },
   "publishConfig": {
     "access": "public"

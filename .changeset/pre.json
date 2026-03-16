@@ -1,0 +1,12 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "@zaptime/core": "2.10.0",
+    "iframe": "0.0.80",
+    "@zaptime/vue3": "3.10.0"
+  },
+  "changesets": [
+    "floppy-places-exist"
+  ]
+}

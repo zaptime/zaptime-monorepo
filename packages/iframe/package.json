@@ -1,7 +1,7 @@
 {
   "name": "iframe",
   "private": true,
-  "version": "0.0.80",
+  "version": "0.1.0-beta.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -17,24 +17,24 @@
   "dependencies": {
     "@zaptime/core": "workspace:*",
     "@zaptime/vue3": "workspace:*",
-    "vue": "^3.4.19"
+    "vue": "^3.5.30"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/zaptime/zaptime-monorepo"
   },
   "devDependencies": {
-    "@types/node": "^20.11.19",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "@vitest/coverage-v8": "^3.0.5",
-    "autoprefixer": "^10.4.17",
-    "happy-dom": "^17.4.4",
-    "postcss": "^8.4.35",
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vitest/coverage-v8": "^4.1.0",
+    "autoprefixer": "^10.4.27",
+    "happy-dom": "^20.8.4",
+    "postcss": "^8.5.8",
     "tailwindcss": "^3.4.1",
-    "tsdown": "^0.9.4",
-    "typescript": "^5.8.3",
-    "vite": "^6.2.6",
-    "vitest": "^3.0.5",
-    "vue-tsc": "^2.2.8"
+    "tsdown": "^0.21.3",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.0",
+    "vue-tsc": "^3.2.5"
   }
 }
