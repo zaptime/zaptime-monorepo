@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "Zaptime s.r.o.",
-  "license": "",
+  "license": "MIT",
   "dependencies": {
     "@changesets/cli": "^2.29.0"
   },
