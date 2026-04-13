@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.11.1
+
+### Patch Changes
+
+- a6a5ebd: Fix: fix race condition od dfns language resolve
+- Updated dependencies [a6a5ebd]
+  - @zaptime/core@2.11.1
+
 ## 3.11.0
 
 ### Minor Changes
