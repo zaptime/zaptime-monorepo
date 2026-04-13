@@ -55,10 +55,6 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
           return;
         }
 
-        await loadDateFnsConfig(
-          initData.value.configuration.locale?.preset || "en",
-        );
-
         if (initData.value.reservation !== undefined) {
           setSelectedReservation(initData.value.reservation);
         }
@@ -84,6 +80,10 @@ export function useInitialization(config: ZaptimeConfig, calendarId?: string) {
         isEnabled.value = true;
 
         const mergedConfig = mergeConfigs(initData.value.configuration, config);
+
+        await loadDateFnsConfig(
+          mergedConfig.locale?.preset || "en",
+        );
 
         // perepared entry for backend
 
