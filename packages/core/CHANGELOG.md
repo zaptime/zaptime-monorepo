@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.11.1
+
+### Patch Changes
+
+- a6a5ebd: Fix: fix race condition od dfns language resolve
+
 ## 2.11.0
 
 ### Minor Changes
