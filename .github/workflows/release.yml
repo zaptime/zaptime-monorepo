@@ -38,6 +38,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Test Core
+        run: pnpm --filter @zaptime/core test
+
       - name: Build Core
         run: pnpm --filter @zaptime/core build
 

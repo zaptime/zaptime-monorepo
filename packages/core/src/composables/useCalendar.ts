@@ -74,11 +74,17 @@ export default (calendarId?: string) => {
   };
 
   const clearState = () => {
-    if (calendarId === undefined) {
-      _state["__DEFAULT__"] = { ...initCalendarState };
-    } else {
-      _state[calendarId] = { ...initCalendarState };
-    }
+    const key = calendarId === undefined ? "__DEFAULT__" : calendarId;
+    _state[key].date = new Date();
+    _state[key].days = [];
+    _state[key].timeSlots = [];
+    _state[key].monthHasTimeSlots = false;
+    _state[key].selectedDay = null;
+    _state[key].loading = true;
+    _state[key].headers = [];
+    _state[key].dfnsConfig = undefined;
+    _state[key].attendeeState = undefined;
+    _state[key].initLoaded = false;
   };
 
   function getFirstAvailableDayWithTimeSlot(days: Day[]): Day | undefined {

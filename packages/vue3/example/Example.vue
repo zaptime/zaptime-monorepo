@@ -7,11 +7,7 @@
 
       <button @click="refresh">refresh</button>
 
-      <ZaptimeCalendar
-        :config="config"
-        :calendar-id="calendarId"
-        @booking-confirmed="(data) => bookingConfirmed(data)"
-      ></ZaptimeCalendar>
+      <ZaptimeCalendar :config="config" :calendar-id="calendarId" @booking-confirmed="(data) => bookingConfirmed(data)"></ZaptimeCalendar>
     </div>
 
     <!-- <ZaptimeCalendar
@@ -27,13 +23,7 @@
 
 <script setup lang="ts">
 import { default as ZaptimeCalendar } from "../src/App.vue";
-import {
-  ZaptimeConfig,
-  reserve,
-  confirm,
-  ReservationResponse,
-  useCalendar,
-} from "@zaptime/core";
+import { ZaptimeConfig, reserve, confirm, ReservationResponse, useCalendar } from "@zaptime/core";
 import { ref } from "vue";
 
 const { getDays } = useCalendar();
@@ -71,7 +61,6 @@ function bookingConfirmed(reservation: ReservationResponse) {
 }
 
 const config = ref<ZaptimeConfig>({
-  //@ts-expect-error - This is a valid config
   token: import.meta.env.VITE_ZAP_KEY,
 
   // compact: false,
@@ -91,6 +80,9 @@ const config = ref<ZaptimeConfig>({
 
   // profileImage: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
 
+  locale: {
+    preset: "sk",
+  },
   /*  locale: {
     texts: {
       showNextMonth: "Zobrazit další měsíc",
