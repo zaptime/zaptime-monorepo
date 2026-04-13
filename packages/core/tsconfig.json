@@ -3,18 +3,16 @@
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
-    "moduleResolution": "node",
-    "declaration": true,
-    "emitDeclarationOnly": true,
+    "moduleResolution": "bundler",
     "strict": true,
     "jsx": "preserve",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowJs": false,
     "lib": ["esnext", "dom"],
-    "outDir": "./dist/types",
-    "types": ["node"],    
+    "rootDir": "./src",
+    "types": ["node"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }

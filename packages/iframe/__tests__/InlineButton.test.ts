@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vite-plus/test";
 import { resetMockZaptime } from "./setup";
 import { createInlineButton } from "../src/zaptime-init/components/InlineButton";
 import { clearAccountStatus } from "../src/zaptime-init/utils/accountStatus";

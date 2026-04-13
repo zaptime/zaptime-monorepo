@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vite-plus/test";
 import { applyStyles, mergeStyles } from "../src/zaptime-init/styles/utils";
 import { TOKENS } from "../src/zaptime-init/styles/tokens";
 import { modalStyles } from "../src/zaptime-init/styles/modal";

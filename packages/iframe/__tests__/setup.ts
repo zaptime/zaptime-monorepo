@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { vi } from "vite-plus/test";
 import { setZaptimeComponent } from "../src/zaptime-init/components/Modal";
 
 // Mock the Zaptime component for testing
