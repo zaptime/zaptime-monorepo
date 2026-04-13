@@ -1,2 +1,6 @@
 node_modules
 .eslintcache
+dist
+packages/core/src/**/*.d.ts
+!packages/core/src/env.d.ts
+packages/iframe/zoid/zaptime-init.iife.js
