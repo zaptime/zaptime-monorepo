@@ -9,7 +9,7 @@
     "build:init": "tsdown",
     "merge-files": "cat ./zoid/zoid.js ./zoid/zaptime-init.js > ./dist/zaptime.js",
     "preview": "vite preview",
-    "deploy": "wrangler deploy --name iframe --compatibility-date 2026-02-17 --assets dist",
+    "deploy": "wrangler pages deploy dist --project-name zaptime --branch main",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
@@ -35,6 +35,7 @@
     "typescript": "^5.9.3",
     "vite": "^8.0.0",
     "vitest": "^4.1.0",
-    "vue-tsc": "^3.2.5"
+    "vue-tsc": "^3.2.5",
+    "wrangler": "^4.99.0"
   }
 }

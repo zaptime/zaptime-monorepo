@@ -1,5 +1,5 @@
 import vue from "@vitejs/plugin-vue";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import { resolve } from "path";
 import { peerDependencies, dependencies } from "./package.json";
 
@@ -19,12 +19,20 @@ export default defineConfig(({ mode }) => {
       },
     };
   } else {
-    // Production: inline env var at build time (reads from CI system env)
+    // Production: inline env var at build time, from the system env (CI) or
+    // packages/vue3/.env (local). loadEnv is needed because Vite does not put
+    // .env values into process.env during config evaluation.
+    const env = loadEnv(mode, __dirname, "VITE_");
+    if (!env.VITE_STRIPE_CLIENT_KEY) {
+      throw new Error(
+        "VITE_STRIPE_CLIENT_KEY is not set. The Stripe publishable key is inlined into the bundle at build time — building without it ships a broken payment flow. Set it in the environment or in packages/vue3/.env and rebuild.",
+      );
+    }
     return {
       plugins: [vue()],
       define: {
         "import.meta.env.VITE_STRIPE_CLIENT_KEY": JSON.stringify(
-          process.env.VITE_STRIPE_CLIENT_KEY,
+          env.VITE_STRIPE_CLIENT_KEY,
         ),
       },
       build: {
