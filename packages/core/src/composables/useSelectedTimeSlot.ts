@@ -1,5 +1,5 @@
-import TimeSlot from "../types/TimeSlot";
-import { ref, computed } from "vue";
+import type { TimeSlot } from "@zaptime/core-shared";
+import { ref, computed, type ComputedRef } from "vue";
 
 type SelectedTimeSlot = {
   selectedTimeSlot: TimeSlot | undefined;
@@ -11,7 +11,10 @@ const _selectedTimeSlot = ref<Record<string, SelectedTimeSlot>>({
   },
 });
 
-export default function useSelectedTimeSlot(calendarId?: string) {
+export default function useSelectedTimeSlot(calendarId?: string): {
+  setSelectedTimeSlot: (timeSlot: TimeSlot | undefined) => void;
+  selectedTimeSlot: ComputedRef<TimeSlot | undefined>;
+} {
   if (
     calendarId !== undefined &&
     _selectedTimeSlot.value[calendarId] === undefined
@@ -29,7 +32,7 @@ export default function useSelectedTimeSlot(calendarId?: string) {
     }
   };
 
-  const selectedTimeSlot = computed(() => {
+  const selectedTimeSlot: ComputedRef<TimeSlot | undefined> = computed(() => {
     if (calendarId === undefined) {
       return _selectedTimeSlot.value.__DEFAULT__.selectedTimeSlot as
         | TimeSlot

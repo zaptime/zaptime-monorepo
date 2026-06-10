@@ -8,13 +8,13 @@ import {
   differenceInCalendarMonths,
 } from "date-fns";
 
-import { getDays as getDaysExternal } from "../utils/calendar";
-import { getHeaders } from "../utils/localeLogic";
-import { getDfnsConfig } from "../utils/dfnsConfig";
+import {
+  getDays as getDaysExternal,
+  getHeaders,
+  getDfnsConfig,
+} from "@zaptime/core-shared";
 
-import TimeSlot from "../types/TimeSlot";
-import CalendarState from "../types/CalendarState";
-import Day from "../types/Day";
+import type { TimeSlot, CalendarState, Day } from "@zaptime/core-shared";
 import useSelectedTimeSlot from "./useSelectedTimeSlot";
 
 import useConfig from "../composables/useConfig";

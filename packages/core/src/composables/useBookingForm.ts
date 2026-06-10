@@ -1,9 +1,9 @@
 import { ref, computed } from "vue";
-import {
+import type {
   CustomField,
   CustomFieldValue,
   CustomFieldCollected,
-} from "../types/InitData";
+} from "@zaptime/core-shared";
 import useGuests from "./useGuests";
 
 const state = ref<Record<string, CustomField[]>>({

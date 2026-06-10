@@ -1,4 +1,4 @@
-import { Location } from "../types/InitData";
+import type { Location } from "@zaptime/core-shared";
 import { ref, computed } from "vue";
 
 const state = ref<Record<string, Location[]>>({

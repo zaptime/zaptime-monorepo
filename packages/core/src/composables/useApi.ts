@@ -2,7 +2,6 @@ import useReservationStatus from "./useReservationStatus";
 import useSelectedTimeSlot from "./useSelectedTimeSlot";
 import useLocations from "./useLocations";
 import useConfig from "./useConfig";
-import { Success, Errors, Location } from "../types/InitData";
 import {
   book as bookApi,
   reserve as reserveApi,
@@ -11,11 +10,16 @@ import {
   fetchRemoteConfig,
   reschedule as rescheduleApi,
   refreshReserve as refreshReserveApi,
-} from "../api/api";
-import { ReservationResponse } from "../types/ApiResponses";
+} from "@zaptime/core-shared";
+import type {
+  Success,
+  Errors,
+  Location,
+  ReservationResponse,
+  CustomFieldCollected,
+} from "@zaptime/core-shared";
 import { Result, Err, Ok } from "ts-results-es";
 import useCurrentTimezone from "./useCurrentTimezone";
-import { CustomFieldCollected } from "../types/InitData";
 import useReservationReschedule from "./useReservationReschedule";
 
 let reservationIntervalId: NodeJS.Timeout | null = null;

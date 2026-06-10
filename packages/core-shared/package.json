@@ -1,0 +1,43 @@
+{
+  "name": "@zaptime/core-shared",
+  "description": "Framework-agnostic core (API client, calendar logic, types) shared by @zaptime/core (Vue) and @zaptime/react-core (React).",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./api": {
+      "types": "./src/api/api.ts",
+      "import": "./src/api/api.ts",
+      "default": "./src/api/api.ts"
+    }
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "author": "Zaptime s.r.o.",
+  "license": "MIT",
+  "dependencies": {
+    "@date-fns/tz": "^1.4.1",
+    "date-fns": "^4.1.0",
+    "ts-results-es": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zaptime/zaptime-monorepo"
+  }
+}

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getDfnsConfig } from "../src/utils/dfnsConfig";
+import { getDfnsConfig } from "@zaptime/core-shared";
 
 describe("getDfnsConfig", () => {
   it("returns Slovak locale for 'sk' preset", async () => {

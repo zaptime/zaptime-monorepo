@@ -1,4 +1,4 @@
-import Status from "../types/Status";
+import type { Status } from "@zaptime/core-shared";
 import { ref, Ref, computed } from "vue";
 
 type ReservationStatus = Ref<Status> | Record<string, Ref<Status>>;

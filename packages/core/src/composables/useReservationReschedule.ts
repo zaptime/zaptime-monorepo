@@ -1,5 +1,5 @@
-import { ref, computed } from "vue";
-import type { Reservation } from "../types/InitData";
+import { ref, computed, type ComputedRef } from "vue";
+import type { Reservation } from "@zaptime/core-shared";
 
 type ReservationState = {
   reservation: Reservation | undefined;
@@ -14,7 +14,10 @@ const selectedReservation = ref<Record<string, ReservationState>>({
 /*
  * This composable is used to store the recieved Reservation for rescheduling.
  */
-export default function useReservationReschedule(calendarId?: string) {
+export default function useReservationReschedule(calendarId?: string): {
+  setSelectedReservation: (timeSlot: Reservation | undefined) => void;
+  reservation: ComputedRef<Reservation | undefined>;
+} {
   if (
     calendarId !== undefined &&
     selectedReservation.value[calendarId] === undefined
@@ -32,7 +35,7 @@ export default function useReservationReschedule(calendarId?: string) {
     }
   };
 
-  const reservation = computed(() => {
+  const reservation: ComputedRef<Reservation | undefined> = computed(() => {
     if (calendarId === undefined) {
       return selectedReservation.value.__DEFAULT__.reservation;
     } else {

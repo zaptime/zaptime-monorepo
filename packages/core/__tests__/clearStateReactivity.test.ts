@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
 import { nextTick, watchEffect } from "vue";
 
-// Mock external API calls
-vi.mock("../src/api/api", () => ({
+// Mock external API calls (pure HTTP layer now lives in @zaptime/core-shared)
+vi.mock("../../core-shared/src/api/api", () => ({
   getAvailableTimeSlots: vi.fn().mockResolvedValue([]),
 }));
 

@@ -1,7 +1,6 @@
-import ZaptimeConfig from "../types/ZaptimeConfig";
-import defaultConfig from "../defaultConfig";
+import { defaultConfig, mergeObjects } from "@zaptime/core-shared";
+import type { ZaptimeConfig } from "@zaptime/core-shared";
 import { ref, computed } from "vue";
-import mergeObjects from "../utils/mergeObjects";
 import { reactifyObject } from "@vueuse/core";
 
 interface IConfigState {

@@ -1,8 +1,12 @@
-import type Day from "./types/Day";
-import type TimeSlot from "./types/TimeSlot";
-import type { CustomField, CustomFieldCollected } from "./types/InitData";
-import type ZaptimeConfig from "./types/ZaptimeConfig";
-import type { ReservationResponse } from "./types/ApiResponses";
+import type {
+  Day,
+  TimeSlot,
+  CustomField,
+  CustomFieldCollected,
+  ZaptimeConfig,
+  ReservationResponse,
+  CalendarState,
+} from "@zaptime/core-shared";
 
 export {
   book,
@@ -26,7 +30,7 @@ export { default as useBillingAddress } from "./composables/useBillingAddress";
 export { useDateFormatters } from "./composables/useDateFormatters";
 export { default as useReservationReschedule } from "./composables/useReservationReschedule";
 
-export { default as mergeObjects } from "./utils/mergeObjects";
+export { mergeObjects } from "@zaptime/core-shared";
 
 export type {
   Day,
@@ -35,4 +39,7 @@ export type {
   CustomField,
   CustomFieldCollected,
   ReservationResponse,
+  // Re-exported so the generated declaration file is self-contained: it is the
+  // type of `useCalendar().state`. Previously inlined; now an explicit export.
+  CalendarState,
 };

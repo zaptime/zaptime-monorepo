@@ -1,0 +1,182 @@
+:root {
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  color: #1f2430;
+}
+
+body {
+  margin: 0;
+  background: #f5f6f8;
+}
+
+.page {
+  max-width: 420px;
+  margin: 48px auto;
+  padding: 0 16px;
+}
+
+.page h1 {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 14px;
+  margin-top: 0;
+}
+
+.subtitle code {
+  background: #eceef1;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.zt {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+}
+
+.zt-center {
+  text-align: center;
+}
+
+.zt-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.zt-nav button {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.zt-nav button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.zt-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.zt-head {
+  text-align: center;
+  font-size: 11px;
+  color: #9ca3af;
+  padding: 4px 0;
+  text-transform: uppercase;
+}
+
+.zt-day {
+  aspect-ratio: 1;
+  border: 1px solid transparent;
+  background: #f3f4f6;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.zt-day:disabled {
+  background: transparent;
+  color: #d1d5db;
+  cursor: default;
+}
+
+.zt-day.is-selected {
+  background: #2563eb;
+  color: #fff;
+}
+
+.zt-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.zt-time {
+  border: 1px solid #d1d5db;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.zt-time.is-selected {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #fff;
+}
+
+.zt-primary {
+  width: 100%;
+  border: 0;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.zt-primary:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.zt-link {
+  border: 0;
+  background: none;
+  color: #2563eb;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 12px;
+}
+
+.zt-field {
+  display: block;
+  margin: 12px 0;
+}
+
+.zt-field span {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.zt-field input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 9px 10px;
+  font-size: 14px;
+}
+
+.zt-muted {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.zt-error {
+  color: #dc2626;
+  font-size: 13px;
+}

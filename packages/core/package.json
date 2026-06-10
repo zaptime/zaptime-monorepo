@@ -39,6 +39,7 @@
   "devDependencies": {
     "@babel/types": "^7.29.0",
     "@types/node": "^22.14.0",
+    "@zaptime/core-shared": "workspace:*",
     "happy-dom": "^20.8.4",
     "tsdown": "^0.21.3",
     "typescript": "^5.9.3",

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getDfnsConfig } from "../src/utils/dfnsConfig";
+import { getDfnsConfig } from "@zaptime/core-shared";
 import { useDateFormatters } from "../src/composables/useDateFormatters";
 
 describe("locale preset override", () => {

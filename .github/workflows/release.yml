@@ -38,8 +38,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Test Core-shared
+        run: pnpm --filter @zaptime/core-shared test
+
       - name: Test Core
         run: pnpm --filter @zaptime/core test
+
+      - name: Test React Core
+        run: pnpm --filter @zaptime/react-core test
 
       - name: Build Core
         run: pnpm --filter @zaptime/core build
@@ -48,6 +54,9 @@ jobs:
         run: pnpm --filter @zaptime/vue3 build
         env:
           VITE_STRIPE_CLIENT_KEY: ${{ secrets.VITE_STRIPE_CLIENT_KEY }}
+
+      - name: Build React Core
+        run: pnpm --filter @zaptime/react-core build
 
       - name: Create Release Pull Request or Publish Packages
         uses: changesets/action@v1

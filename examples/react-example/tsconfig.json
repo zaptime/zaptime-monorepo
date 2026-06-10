@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@zaptime/react-core": ["../../packages/react-core/src/entry.ts"],
+      "@zaptime/core-shared": ["../../packages/core-shared/src/index.ts"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}

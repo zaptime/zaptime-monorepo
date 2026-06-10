@@ -2,7 +2,7 @@ import { parseISO, format } from "date-fns";
 import useCurrentTimezone from "./useCurrentTimezone";
 import useHourCycle from "./useHourCycle";
 import { tz } from "@date-fns/tz";
-import { getDfnsConfig } from "../utils/dfnsConfig";
+import { getDfnsConfig } from "@zaptime/core-shared";
 let dateFnsConfig: any = undefined;
 
 export const useDateFormatters = () => {
