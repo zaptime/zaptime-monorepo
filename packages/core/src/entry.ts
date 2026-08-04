@@ -28,6 +28,7 @@ export { useDateFormatters } from "./composables/useDateFormatters";
 export { default as useReservationReschedule } from "./composables/useReservationReschedule";
 
 export { default as mergeObjects } from "./utils/mergeObjects";
+export { default as slotNoLongerAvailableText } from "./utils/slotNoLongerAvailableText";
 
 export type {
   Day,

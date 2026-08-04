@@ -35,10 +35,7 @@
         class="cal-my-5 cal-text-lg cal-text-red-500"
         role="alert"
       >
-        {{
-          locale?.confirmationForm?.slotNoLongerAvailable ??
-          "This time slot is no longer available. Please go back and pick another time."
-        }}
+        {{ slotNoLongerAvailableText(locale) }}
       </div>
 
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
@@ -62,6 +59,7 @@ import {
   useDateFormatters,
   useCalendar,
   SlotNoLongerAvailableError,
+  slotNoLongerAvailableText,
 } from "@zaptime/core";
 import PrimaryButton from "./atomic/PrimaryButton.vue";
 import SecondaryButton from "./atomic/SecondaryButton.vue";
