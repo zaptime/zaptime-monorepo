@@ -30,6 +30,17 @@
         {{ getFormattedTime(selectedTimeSlot.end) }}
       </h3>
 
+      <div
+        v-if="slotTakenError"
+        class="cal-my-5 cal-text-lg cal-text-red-500"
+        role="alert"
+      >
+        {{
+          locale?.confirmationForm?.slotNoLongerAvailable ??
+          "This time slot is no longer available. Please go back and pick another time."
+        }}
+      </div>
+
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
         <SecondaryButton @click="$emit('goBack')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
@@ -49,6 +60,8 @@ import {
   book,
   useConfig,
   useDateFormatters,
+  useCalendar,
+  SlotNoLongerAvailableError,
 } from "@zaptime/core";
 import PrimaryButton from "./atomic/PrimaryButton.vue";
 import SecondaryButton from "./atomic/SecondaryButton.vue";
@@ -64,6 +77,8 @@ defineEmits(["confirmBooking", "goBack"]);
 const email = ref("");
 const name = ref("");
 const seats = ref(1);
+const slotTakenError = ref(false);
+const { getDays } = useCalendar(inject("calendarId"));
 
 const locale = computed(() => {
   if (config === undefined) {
@@ -94,11 +109,24 @@ const splitName = (name: string) => {
 const onSubmit = async () => {
   const { firstName, lastName } = splitName(name.value);
 
-  await book({
-    email: email.value,
-    firstName,
-    lastName,
-    seats: seats.value,
-  });
+  slotTakenError.value = false;
+
+  try {
+    await book({
+      email: email.value,
+      firstName,
+      lastName,
+      seats: seats.value,
+    });
+  } catch (err) {
+    if (err instanceof SlotNoLongerAvailableError) {
+      slotTakenError.value = true;
+      getDays().catch(() => {
+        // refreshing the calendar in the background is best-effort
+      });
+      return;
+    }
+    throw err;
+  }
 };
 </script>

@@ -41,6 +41,17 @@
         Payment has failed
       </div>
 
+      <div
+        v-if="slotTakenError"
+        class="cal-my-5 cal-text-lg cal-text-red-500"
+        role="alert"
+      >
+        {{
+          locale?.confirmationForm?.slotNoLongerAvailable ??
+          "This time slot is no longer available. Please go back and pick another time."
+        }}
+      </div>
+
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
         <SecondaryButton
           type="button"
@@ -138,7 +149,9 @@ import {
   useBookingForm,
   useBillingAddress,
   useReservationReschedule,
+  useCalendar,
   cancel,
+  SlotNoLongerAvailableError,
 } from "@zaptime/core";
 import PrimaryButton from "./atomic/PrimaryButton.vue";
 import SecondaryButton from "./atomic/SecondaryButton.vue";
@@ -161,6 +174,7 @@ const { stripeConfig } = useStripeConfig(inject("calendarId"));
 const { collectFormValues } = useBookingForm(inject("calendarId"));
 const { billingAddress } = useBillingAddress(inject("calendarId"));
 const { reservation } = useReservationReschedule(inject("calendarId"));
+const { getDays } = useCalendar(inject("calendarId"));
 
 const { initGateway, handleSubmit: handleStripePayment } = useStripe();
 
@@ -171,6 +185,7 @@ const disabled = ref(false);
 const analytics = getAnalytics();
 
 const paymentError = ref(false);
+const slotTakenError = ref(false);
 
 class ValidationError extends Error {
   constructor() {
@@ -227,6 +242,9 @@ async function handleSubmittionWithPayment() {
 
     return confirmRes;
   } catch (err) {
+    if (err instanceof SlotNoLongerAvailableError) {
+      throw err;
+    }
     if (err instanceof PaymentError) {
       console.error(err.message);
       await cancel(calendarId);
@@ -237,6 +255,7 @@ async function handleSubmittionWithPayment() {
 
 async function onSubmit() {
   disabled.value = true;
+  slotTakenError.value = false;
 
   try {
     let res;
@@ -266,6 +285,13 @@ async function onSubmit() {
 
     disabled.value = false;
   } catch (err) {
+    if (err instanceof SlotNoLongerAvailableError) {
+      slotTakenError.value = true;
+      getDays().catch(() => {
+        // refreshing the calendar in the background is best-effort
+      });
+      return;
+    }
     if (err instanceof ValidationError) {
       console.error("Booking failed! Please try again or contact support.");
       return;

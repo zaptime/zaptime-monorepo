@@ -24,6 +24,7 @@ export default interface ZaptimeLocale {
     confirmBooking?: string;
     reschedulingEvent?: string;
     addGuests?: string;
+    slotNoLongerAvailable?: string;
     buttons?: {
       confirmBooking?: string;
       reschedule?: string;

@@ -14,6 +14,18 @@ import {
 } from "../types/InitData";
 const defaultBaseUrl = "https://api.zaptime.app/";
 
+/**
+ * The API answered 409 Conflict: the selected time slot is no longer
+ * available (it was taken, or no host can serve it anymore). The caller
+ * should refresh the available time slots and let the attendee pick again.
+ */
+export class SlotNoLongerAvailableError extends Error {
+  constructor() {
+    super("The selected time slot is no longer available.");
+    this.name = "SlotNoLongerAvailableError";
+  }
+}
+
 export interface IOptions {
   /**
    * Email of the attendee
@@ -101,7 +113,7 @@ export const book = async (options: IOptions): Promise<ReservationResponse> => {
     timezone,
   } = options;
   try {
-    const data = await fetch(getBookUrl(baseUrl), {
+    const response = await fetch(getBookUrl(baseUrl), {
       method: "POST",
       body: JSON.stringify({
         start: timeSlot.start,
@@ -121,10 +133,17 @@ export const book = async (options: IOptions): Promise<ReservationResponse> => {
         Accept: "application/json",
         Authorization: "Bearer " + token,
       },
-    }).then((response) => response.json());
+    });
 
-    return data;
+    if (response.status === 409) {
+      throw new SlotNoLongerAvailableError();
+    }
+
+    return await response.json();
   } catch (err) {
+    if (err instanceof SlotNoLongerAvailableError) {
+      throw err;
+    }
     throw new Error("Booking time slot failed!");
   }
 };
@@ -182,7 +201,7 @@ export const reserve = async (
   } = options;
 
   try {
-    const data = await fetch(getReserveUrl(baseUrl), {
+    const response = await fetch(getReserveUrl(baseUrl), {
       method: "POST",
       body: JSON.stringify({
         start: timeSlot.start,
@@ -202,10 +221,17 @@ export const reserve = async (
         Accept: "application/json",
         Authorization: "Bearer " + token,
       },
-    }).then((response) => response.json());
+    });
 
-    return data;
+    if (response.status === 409) {
+      throw new SlotNoLongerAvailableError();
+    }
+
+    return await response.json();
   } catch (err) {
+    if (err instanceof SlotNoLongerAvailableError) {
+      throw err;
+    }
     throw new Error("Reserving time slot failed!");
   }
 };
