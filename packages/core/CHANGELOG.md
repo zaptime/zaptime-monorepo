@@ -1,5 +1,11 @@
 # @zaptime/core
 
+## 2.11.2
+
+### Patch Changes
+
+- 90bf985: Handle 409 Conflict from the booking API as a slot-no-longer-available error, with localized messages (en/cs/pl) shown in the confirm form.
+
 ## 2.11.1
 
 ### Patch Changes
