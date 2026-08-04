@@ -11,6 +11,7 @@ import {
   fetchRemoteConfig,
   reschedule as rescheduleApi,
   refreshReserve as refreshReserveApi,
+  SlotNoLongerAvailableError,
 } from "../api/api";
 import { ReservationResponse } from "../types/ApiResponses";
 import { Result, Err, Ok } from "ts-results-es";
@@ -123,6 +124,9 @@ export const book = async (
 
       return res;
     } catch (e) {
+      if (e instanceof SlotNoLongerAvailableError) {
+        throw e;
+      }
       throw new Error(
         "Booking a time slot failed because time slot was not selected!",
       );
