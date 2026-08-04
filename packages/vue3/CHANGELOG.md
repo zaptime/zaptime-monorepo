@@ -1,5 +1,13 @@
 # @zaptime/vue3
 
+## 3.11.2
+
+### Patch Changes
+
+- 90bf985: Handle 409 Conflict from the booking API as a slot-no-longer-available error, with localized messages (en/cs/pl) shown in the confirm form.
+- Updated dependencies [90bf985]
+  - @zaptime/core@2.11.2
+
 ## 3.11.1
 
 ### Patch Changes
