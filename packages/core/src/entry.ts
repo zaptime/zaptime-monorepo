@@ -13,6 +13,7 @@ export {
   reschedule,
   stopReservationRefresh,
 } from "./composables/useApi";
+export { SlotNoLongerAvailableError } from "./api/api";
 export { default as useCalendar } from "./composables/useCalendar";
 export { default as useConfig } from "./composables/useConfig";
 export { default as useSelectedTimeSlot } from "./composables/useSelectedTimeSlot";
