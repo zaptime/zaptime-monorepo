@@ -46,6 +46,27 @@ describe("reschedule API error handling", () => {
     await expect(reschedule(rescheduleParams)).rejects.toThrow("Rescheduling time slot failed!");
   });
 
+  it("sends the reschedule override token in the request body", async () => {
+    const payload = {
+      success: true,
+      data: {
+        uuid: "test-uuid",
+        userId: 1,
+        userName: "Host",
+        userEmail: "host@example.com",
+      },
+    };
+
+    stubFetch(200, payload);
+
+    await reschedule({ ...rescheduleParams, overrideToken: "organizer-proof" });
+
+    const fetchMock = fetch as ReturnType<typeof vi.fn>;
+    const body = JSON.parse(fetchMock.mock.calls[0][1].body as string);
+
+    expect(body.overrideToken).toBe("organizer-proof");
+  });
+
   it("resolves with the response payload on success", async () => {
     const payload = {
       success: true,

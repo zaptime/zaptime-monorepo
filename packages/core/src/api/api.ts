@@ -167,6 +167,7 @@ export const reschedule = async ({
   timezone,
   token,
   baseUrl = defaultBaseUrl,
+  overrideToken,
 }: {
   start: string;
   end: string;
@@ -174,6 +175,7 @@ export const reschedule = async ({
   token: string;
   timezone: string;
   baseUrl?: string;
+  overrideToken?: string;
 }): Promise<ReservationResponse> => {
   try {
     const response = await fetch(getRescheduleUrl(baseUrl, uuid), {
@@ -182,6 +184,7 @@ export const reschedule = async ({
         start: start,
         end: end,
         timezone: timezone,
+        overrideToken: overrideToken,
       }),
       headers: {
         "Content-Type": "application/json",

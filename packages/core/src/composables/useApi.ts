@@ -227,6 +227,7 @@ export const reschedule = async (
       uuid: reservation.value?.uuid,
       baseUrl: config.value.apiBaseUrl,
       timezone: timezone.value,
+      overrideToken: config.value.rescheduleOverrideToken,
     });
   }
 
