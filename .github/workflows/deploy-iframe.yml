@@ -1,0 +1,60 @@
+name: Deploy iframe
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/core/**"
+      - "packages/vue3/**"
+      - "packages/iframe/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/deploy-iframe.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-iframe
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build and deploy to Cloudflare Pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.6.5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.18.x
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Core
+        run: pnpm --filter @zaptime/core build
+
+      - name: Build Vue3
+        run: pnpm --filter @zaptime/vue3 build
+        env:
+          VITE_STRIPE_CLIENT_KEY: ${{ secrets.VITE_STRIPE_CLIENT_KEY }}
+
+      - name: Test iframe
+        run: pnpm --filter iframe test
+
+      - name: Build iframe
+        run: pnpm --filter iframe build
+
+      - name: Deploy to Cloudflare Pages
+        run: pnpm --filter iframe deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
