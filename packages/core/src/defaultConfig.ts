@@ -15,8 +15,6 @@ const config: ZaptimeConfig = {
       confirmBooking: "Confirm booking",
       reschedulingEvent: "Rescheduling event",
       addGuests: "Add guest",
-      slotNoLongerAvailable:
-        "This time slot is no longer available. Please go back and pick another time.",
       buttons: {
         confirmBooking: "Confirm booking",
         reschedule: "Reschedule",
