@@ -27,8 +27,8 @@ describe("createInlineButton", () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="button-container"></div>';
     clearAccountStatus();
-    // Default mock to prevent actual API calls
-    mockApiResponse(false);
+    // Default mock: subscribed account (InlineButton only renders for paid accounts)
+    mockApiResponse(true);
     // Reset mock Zaptime component AFTER other mocks are set
     resetMockZaptime();
   });
@@ -48,20 +48,18 @@ describe("createInlineButton", () => {
   });
 
   it("should add button to specified container after API response", async () => {
-    mockApiResponse(false);
-
     const instance = createInlineButton({
       selector: "#button-container",
       config: { token: "test-token" },
     });
 
     // Button should not exist yet
-    expect(document.getElementById(`${instance.id}-button`)).toBeNull();
+    expect(document.getElementById(`${instance.id}-button-0`)).toBeNull();
 
     await flushPromises();
 
     // Now button should exist
-    const button = document.getElementById(`${instance.id}-button`);
+    const button = document.getElementById(`${instance.id}-button-0`);
     expect(button).not.toBeNull();
     expect(button?.tagName).toBe("BUTTON");
 
@@ -70,9 +68,26 @@ describe("createInlineButton", () => {
     expect(container?.contains(button)).toBe(true);
   });
 
-  it("should not use fixed positioning", async () => {
-    mockApiResponse(false);
+  it("should render a button in every container matching the selector", async () => {
+    document.body.innerHTML =
+      '<div class="zaptime-slot"></div><div class="zaptime-slot"></div>';
 
+    const instance = createInlineButton({
+      selector: ".zaptime-slot",
+      config: { token: "test-token" },
+    });
+
+    await flushPromises();
+
+    const containers = document.querySelectorAll(".zaptime-slot");
+    containers.forEach((container, index) => {
+      const button = document.getElementById(`${instance.id}-button-${index}`);
+      expect(button).not.toBeNull();
+      expect(container.contains(button)).toBe(true);
+    });
+  });
+
+  it("should not use fixed positioning", async () => {
     const instance = createInlineButton({
       selector: "#button-container",
       config: { token: "test-token" },
@@ -80,12 +95,12 @@ describe("createInlineButton", () => {
 
     await flushPromises();
 
-    const button = document.getElementById(`${instance.id}-button`);
+    const button = document.getElementById(`${instance.id}-button-0`);
     expect(button?.style.position).not.toBe("fixed");
     expect(button?.style.display).toBe("inline-flex");
   });
 
-  it("should use gradient for unsubscribed accounts", async () => {
+  it("should not render button for unsubscribed accounts", async () => {
     mockApiResponse(false); // Not subscribed
 
     const instance = createInlineButton({
@@ -95,30 +110,10 @@ describe("createInlineButton", () => {
 
     await flushPromises();
 
-    const button = document.getElementById(`${instance.id}-button`);
-    // Free accounts use gradient background
-    expect(button?.style.background).toContain("linear-gradient");
-  });
-
-  it("should ignore custom button color for unsubscribed accounts", async () => {
-    mockApiResponse(false); // Not subscribed
-
-    const instance = createInlineButton({
-      selector: "#button-container",
-      config: { token: "test-token" },
-      buttonColor: "#FF0000",
-    });
-
-    await flushPromises();
-
-    const button = document.getElementById(`${instance.id}-button`);
-    // Should use gradient, not custom color, for free accounts
-    expect(button?.style.background).toContain("linear-gradient");
+    expect(document.getElementById(`${instance.id}-button-0`)).toBeNull();
   });
 
   it("should use custom button color when account is subscribed", async () => {
-    mockApiResponse(true); // Subscribed
-
     const instance = createInlineButton({
       selector: "#button-container",
       config: { token: "test-token" },
@@ -127,46 +122,11 @@ describe("createInlineButton", () => {
 
     await flushPromises();
 
-    const button = document.getElementById(`${instance.id}-button`);
+    const button = document.getElementById(`${instance.id}-button-0`);
     expect(button?.style.backgroundColor).toMatch(/#FF0000|rgb\(255, 0, 0\)/i);
   });
 
-  it("should show Zaptime branding for unsubscribed accounts", async () => {
-    mockApiResponse(false); // Not subscribed
-
-    const instance = createInlineButton({
-      selector: "#button-container",
-      config: { token: "test-token" },
-    });
-
-    await flushPromises();
-
-    const button = document.getElementById(`${instance.id}-button`);
-    expect(button?.innerHTML).toContain("Zaptime");
-    expect(button?.innerHTML).toContain("<svg");
-  });
-
-  it("should enforce Zaptime branding when custom options passed but account is unsubscribed", async () => {
-    mockApiResponse(false); // Not subscribed
-
-    const instance = createInlineButton({
-      selector: "#button-container",
-      config: { token: "test-token" },
-      buttonText: "Schedule Now",
-    });
-
-    await flushPromises();
-
-    const button = document.getElementById(`${instance.id}-button`);
-    // Should show Zaptime branding, not custom text
-    expect(button?.innerHTML).toContain("Zaptime");
-    expect(button?.innerHTML).toContain("<svg");
-    expect(button?.innerHTML).not.toContain("Schedule Now");
-  });
-
   it("should show custom text when account is subscribed", async () => {
-    mockApiResponse(true); // Subscribed
-
     const instance = createInlineButton({
       selector: "#button-container",
       config: { token: "test-token" },
@@ -175,7 +135,7 @@ describe("createInlineButton", () => {
 
     await flushPromises();
 
-    const button = document.getElementById(`${instance.id}-button`);
+    const button = document.getElementById(`${instance.id}-button-0`);
     expect(button?.innerHTML).toContain("Schedule Now");
     expect(button?.innerHTML).not.toContain("Zaptime");
   });
@@ -190,12 +150,11 @@ describe("createInlineButton", () => {
 
     await flushPromises();
 
-    const button = document.getElementById(`${instance.id}-button`);
+    const button = document.getElementById(`${instance.id}-button-0`);
     expect(button).toBeNull();
   });
 
   it("should not create button when selector not found", async () => {
-    mockApiResponse(false);
     const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
     const instance = createInlineButton({
@@ -205,18 +164,16 @@ describe("createInlineButton", () => {
 
     await flushPromises();
 
-    const button = document.getElementById(`${instance.id}-button`);
+    const button = document.getElementById(`${instance.id}-button-0`);
     expect(button).toBeNull();
     expect(consoleSpy).toHaveBeenCalledWith(
-      'Zaptime: Container not found for selector "#non-existent-container"',
+      'Zaptime: No containers found for selector "#non-existent-container"',
     );
 
     consoleSpy.mockRestore();
   });
 
   it("should open modal when clicked", async () => {
-    mockApiResponse(false);
-
     const instance = createInlineButton({
       selector: "#button-container",
       config: { token: "test-token" },
@@ -224,7 +181,7 @@ describe("createInlineButton", () => {
 
     await flushPromises();
 
-    const button = document.getElementById(`${instance.id}-button`);
+    const button = document.getElementById(`${instance.id}-button-0`);
     button?.click();
 
     // Check that backdrop was created
@@ -233,8 +190,6 @@ describe("createInlineButton", () => {
   });
 
   it("should open modal programmatically", async () => {
-    mockApiResponse(false);
-
     const instance = createInlineButton({
       selector: "#button-container",
       config: { token: "test-token" },
@@ -250,7 +205,6 @@ describe("createInlineButton", () => {
 
   it("should close modal programmatically", async () => {
     vi.useFakeTimers();
-    mockApiResponse(false);
 
     const instance = createInlineButton({
       selector: "#button-container",
@@ -270,9 +224,7 @@ describe("createInlineButton", () => {
     vi.useRealTimers();
   });
 
-  it("should destroy button and modal", async () => {
-    mockApiResponse(false);
-
+  it("should destroy buttons and modal", async () => {
     const instance = createInlineButton({
       selector: "#button-container",
       config: { token: "test-token" },
@@ -283,13 +235,11 @@ describe("createInlineButton", () => {
     instance.open();
     instance.destroy();
 
-    expect(document.getElementById(`${instance.id}-button`)).toBeNull();
+    expect(document.getElementById(`${instance.id}-button-0`)).toBeNull();
     expect(document.querySelector('[id$="-backdrop"]')).toBeNull();
   });
 
   it("should apply hover styles on mouseenter", async () => {
-    mockApiResponse(false);
-
     const instance = createInlineButton({
       selector: "#button-container",
       config: { token: "test-token" },
@@ -297,15 +247,13 @@ describe("createInlineButton", () => {
 
     await flushPromises();
 
-    const button = document.getElementById(`${instance.id}-button`);
+    const button = document.getElementById(`${instance.id}-button-0`);
     button?.dispatchEvent(new MouseEvent("mouseenter"));
 
     expect(button?.style.transform).toBe("translateY(-2px)");
   });
 
   it("should remove hover styles on mouseleave", async () => {
-    mockApiResponse(false);
-
     const instance = createInlineButton({
       selector: "#button-container",
       config: { token: "test-token" },
@@ -313,22 +261,22 @@ describe("createInlineButton", () => {
 
     await flushPromises();
 
-    const button = document.getElementById(`${instance.id}-button`);
+    const button = document.getElementById(`${instance.id}-button-0`);
     button?.dispatchEvent(new MouseEvent("mouseenter"));
     button?.dispatchEvent(new MouseEvent("mouseleave"));
 
     expect(button?.style.transform).toBe("");
   });
 
-  it("should show button immediately when no token is provided", () => {
+  it("should not render button when no token is provided", async () => {
     const instance = createInlineButton({
       selector: "#button-container",
       config: {},
     });
 
-    // Button should exist immediately since no API call is made
-    const button = document.getElementById(`${instance.id}-button`);
-    expect(button).not.toBeNull();
-    expect(button?.innerHTML).toContain("Zaptime");
+    await flushPromises();
+
+    // Without a token, subscription status can't be verified, so no button renders
+    expect(document.getElementById(`${instance.id}-button-0`)).toBeNull();
   });
 });

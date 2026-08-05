@@ -29,7 +29,7 @@ describe("ZaptimeModal", () => {
 
     const backdrop = document.getElementById(`${modal.id}-backdrop`);
     expect(backdrop).not.toBeNull();
-    expect(backdrop?.style.display).toBe("flex");
+    expect(backdrop?.style.display).toBe("block");
   });
 
   it("should call onOpen callback when opened", () => {

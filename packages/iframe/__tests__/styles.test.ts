@@ -88,7 +88,7 @@ describe("TOKENS", () => {
   });
 
   it("should have dimension tokens", () => {
-    expect(TOKENS.dimensions.modalMaxWidth).toBe("900px");
+    expect(TOKENS.dimensions.modalMaxWidth).toBe("1050px");
     expect(TOKENS.dimensions.modalMaxHeight).toBe("850px");
   });
 });
