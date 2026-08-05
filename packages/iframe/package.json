@@ -9,7 +9,7 @@
     "build:init": "tsdown",
     "merge-files": "cat ./zoid/zoid.js ./zoid/zaptime-init.js > ./dist/zaptime.js",
     "preview": "vite preview",
-    "deploy": "wrangler pages deploy dist --project-name zaptime --branch main",
+    "deploy": "wrangler pages deploy dist --project-name iframe --branch main",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
