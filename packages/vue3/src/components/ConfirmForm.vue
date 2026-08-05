@@ -115,6 +115,22 @@
         {{ getFormattedTime(selectedTimeSlot.end) }}
       </h3>
 
+      <div
+        v-if="rescheduleNotAllowedError"
+        class="cal-my-5 cal-text-lg cal-text-red-500"
+        role="alert"
+      >
+        {{ rescheduleNotAllowedText(locale) }}
+      </div>
+
+      <div
+        v-if="rescheduleFailedError"
+        class="cal-my-5 cal-text-lg cal-text-red-500"
+        role="alert"
+      >
+        Rescheduling failed. Please try again.
+      </div>
+
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
         <SecondaryButton
           :disabled="disabled"
@@ -150,6 +166,8 @@ import {
   cancel,
   SlotNoLongerAvailableError,
   slotNoLongerAvailableText,
+  RescheduleNotAllowedError,
+  rescheduleNotAllowedText,
 } from "@zaptime/core";
 import PrimaryButton from "./atomic/PrimaryButton.vue";
 import SecondaryButton from "./atomic/SecondaryButton.vue";
@@ -184,6 +202,8 @@ const analytics = getAnalytics();
 
 const paymentError = ref(false);
 const slotTakenError = ref(false);
+const rescheduleNotAllowedError = ref(false);
+const rescheduleFailedError = ref(false);
 
 class ValidationError extends Error {
   constructor() {
@@ -303,11 +323,22 @@ async function onSubmit() {
 
 async function submitReschedule() {
   disabled.value = true;
+  rescheduleNotAllowedError.value = false;
+  rescheduleFailedError.value = false;
 
-  const res = await reschedule(calendarId);
-  emit("booking-confirmed", res);
-
-  disabled.value = false;
+  try {
+    const res = await reschedule(calendarId);
+    emit("booking-confirmed", res);
+  } catch (err) {
+    if (err instanceof RescheduleNotAllowedError) {
+      rescheduleNotAllowedError.value = true;
+      return;
+    }
+    rescheduleFailedError.value = true;
+    console.error(err);
+  } finally {
+    disabled.value = false;
+  }
 }
 
 onMounted(async () => {

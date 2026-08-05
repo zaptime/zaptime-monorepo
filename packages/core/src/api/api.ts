@@ -26,6 +26,18 @@ export class SlotNoLongerAvailableError extends Error {
   }
 }
 
+/**
+ * The API answered 403 Forbidden: the reservation can no longer be
+ * rescheduled (the reschedule notice period was violated, the reservation
+ * already started, or rescheduling is disabled for the event type).
+ */
+export class RescheduleNotAllowedError extends Error {
+  constructor() {
+    super("This reservation can no longer be rescheduled.");
+    this.name = "RescheduleNotAllowedError";
+  }
+}
+
 export interface IOptions {
   /**
    * Email of the attendee
@@ -164,7 +176,7 @@ export const reschedule = async ({
   baseUrl?: string;
 }): Promise<ReservationResponse> => {
   try {
-    const data = await fetch(getRescheduleUrl(baseUrl, uuid), {
+    const response = await fetch(getRescheduleUrl(baseUrl, uuid), {
       method: "PUT",
       body: JSON.stringify({
         start: start,
@@ -176,11 +188,28 @@ export const reschedule = async ({
         Accept: "application/json",
         Authorization: "Bearer " + token,
       },
-    }).then((response) => response.json());
+    });
+
+    if (response.status === 403) {
+      throw new RescheduleNotAllowedError();
+    }
+
+    if (!response.ok) {
+      throw new Error("Rescheduling time slot failed!");
+    }
+
+    const data: ReservationResponse = await response.json();
+
+    if (!data.success) {
+      throw new Error("Rescheduling time slot failed!");
+    }
 
     return data;
   } catch (err) {
-    throw new Error("Booking time slot failed!");
+    if (err instanceof RescheduleNotAllowedError) {
+      throw err;
+    }
+    throw new Error("Rescheduling time slot failed!");
   }
 };
 

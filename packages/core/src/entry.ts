@@ -13,7 +13,7 @@ export {
   reschedule,
   stopReservationRefresh,
 } from "./composables/useApi";
-export { SlotNoLongerAvailableError } from "./api/api";
+export { SlotNoLongerAvailableError, RescheduleNotAllowedError } from "./api/api";
 export { default as useCalendar } from "./composables/useCalendar";
 export { default as useConfig } from "./composables/useConfig";
 export { default as useSelectedTimeSlot } from "./composables/useSelectedTimeSlot";
@@ -29,6 +29,7 @@ export { default as useReservationReschedule } from "./composables/useReservatio
 
 export { default as mergeObjects } from "./utils/mergeObjects";
 export { default as slotNoLongerAvailableText } from "./utils/slotNoLongerAvailableText";
+export { default as rescheduleNotAllowedText } from "./utils/rescheduleNotAllowedText";
 
 export type {
   Day,
