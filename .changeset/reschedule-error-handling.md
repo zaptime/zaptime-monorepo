@@ -14,3 +14,8 @@ a localized (en/cs/pl) message instead of emitting `booking-confirmed`.
 New `rescheduleOverrideToken` config option: a server-issued proof that the
 visitor is the reservation's organizer, forwarded with the reschedule request
 so the API can apply organizer rules instead of the attendee-facing policies.
+
+Fix: `slotNoLongerAvailable` and `rescheduleNotAllowed` are no longer baked
+into `defaultConfig` — the deep-merged English default shadowed the
+preset-based fallback, so cs/sk/pl visitors always saw the English message.
+Slovak fallbacks added for both texts.

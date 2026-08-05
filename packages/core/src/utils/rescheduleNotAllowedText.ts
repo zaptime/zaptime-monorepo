@@ -3,6 +3,7 @@ import type ZaptimeLocale from "../types/ZaptimeLocale";
 const fallbacks: Record<string, string> = {
   en: "This booking can no longer be rescheduled. Please contact the organizer directly.",
   cs: "Termín této rezervace již bohužel nelze změnit. Kontaktujte prosím přímo organizátora.",
+  sk: "Termín tejto rezervácie už bohužiaľ nie je možné zmeniť. Kontaktujte prosím priamo organizátora.",
   pl: "Terminu tej rezerwacji nie można już zmienić. Skontaktuj się bezpośrednio z organizatorem.",
 };
 
