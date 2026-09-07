@@ -1,6 +1,9 @@
 <p align="center">
   <a href="https://zaptime.app">
-    <img src=".github/assets/zaptime-logo.svg" alt="Zaptime" width="240">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset=".github/assets/zaptime-logo-dark.svg">
+      <img src=".github/assets/zaptime-logo.svg" alt="Zaptime" width="240">
+    </picture>
   </a>
 </p>
 
