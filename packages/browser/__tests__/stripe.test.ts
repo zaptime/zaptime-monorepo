@@ -162,3 +162,25 @@ it("bounds a stalled SDK mount and releases a disposed form", async () => {
   await rejected;
   await disposing;
 });
+it.each([
+  ["succeeded", "success"],
+  ["processing", "recovery-required"],
+  ["requires_payment_method", "recovery-required"],
+])("integrates SDK %s with the real core workflow phase %s", async (status, phase) => {
+  const { fixture, input: bookingInput } = await import("../../core/__tests__/bookingFixture");
+  sdk.confirm.mockResolvedValue({ paymentIntent: { id: "pi_test", status } });
+  const driver = createStripePaymentDriver({ publishableKey: "pk_test", elements: fields() });
+  await driver.mount();
+  const { calendar, fetcher } = await fixture({ paid: true, payment: driver });
+  const events: string[] = [];
+  calendar.onEvent((event) => events.push(event.type));
+  const result = calendar.actions.submit(bookingInput);
+  if (status === "succeeded") await expect(result).resolves.toBeDefined();
+  else await expect(result).rejects.toBeDefined();
+  expect(calendar.getSnapshot().phase).toBe(phase);
+  expect(events.filter((type) => type === "booking-confirmed")).toHaveLength(status === "succeeded" ? 1 : 0);
+  expect(sdk.confirm).toHaveBeenCalledTimes(1);
+  expect(fetcher.mock.calls.filter((call) => String(call[0]).endsWith("/confirm"))).toHaveLength(status === "succeeded" ? 1 : 0);
+  await calendar.dispose();
+  await driver.dispose();
+});

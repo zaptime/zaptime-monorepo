@@ -1,1 +1,43 @@
-{"name":"@zaptime/browser","version":"1.0.0","type":"module","main":"dist/entry.mjs","module":"dist/entry.mjs","types":"dist/entry.d.mts","exports":{".":{"types":"./dist/entry.d.mts","import":"./dist/entry.mjs","default":"./dist/entry.mjs"}},"files":["dist"],"scripts":{"build":"tsdown","test":"vitest run","typecheck":"tsc --noEmit"},"dependencies":{"@zaptime/core":"workspace:*","@stripe/stripe-js":"^8.0.0","@analytics/google-analytics":"^1.0.7","@analytics/google-tag-manager":"^0.6.0","analytics":"^0.8.19","load-script":"^2.0.0","react-facebook-pixel":"^1.0.4"},"devDependencies":{"@types/node":"^22.14.0","happy-dom":"^20.8.4","tsdown":"^0.21.3","typescript":"^5.9.3","vite":"^8.0.0","vitest":"^4.1.0"},"publishConfig":{"access":"public"}}
+{
+  "name": "@zaptime/browser",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/entry.mjs",
+  "module": "dist/entry.mjs",
+  "types": "dist/entry.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/entry.d.mts",
+      "import": "./dist/entry.mjs",
+      "default": "./dist/entry.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@zaptime/core": "workspace:*",
+    "@stripe/stripe-js": "^8.0.0",
+    "@analytics/google-analytics": "^1.0.7",
+    "@analytics/google-tag-manager": "^0.6.0",
+    "analytics": "^0.8.19",
+    "load-script": "^2.0.0",
+    "react-facebook-pixel": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "happy-dom": "^20.8.4",
+    "tsdown": "^0.21.3",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
