@@ -7,6 +7,8 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "strict": true,
+    // Temporary while the legacy Vue facade exposes VueUse declarations (Task 10).
+    "skipLibCheck": true,
     "jsx": "preserve",
     "resolveJsonModule": true,
     "esModuleInterop": true,

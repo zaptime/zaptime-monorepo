@@ -39,3 +39,11 @@ export type {
   CustomFieldCollected,
   ReservationResponse,
 };
+
+export { createCalendar } from "./calendar/createCalendar";
+export { CalendarError } from "./api/errors";
+export type { CalendarErrorCode } from "./api/errors";
+export type * from "./calendar/types";
+export type { BillingAddress } from "./types/BillingAddress";
+export type { default as CalendarState } from "./types/CalendarState";
+export type { Analytics, Location, Reservation, StripeConfig, CustomFieldValue } from "./types/InitData";
