@@ -3,6 +3,7 @@ import { createGuestActions } from "../forms/guests";
 import { createBillingActions } from "../forms/billing";
 import { assertFormEditable, invalid, validateSeats } from "../booking/validation";
 import { CalendarError } from "../api/errors";
+import { createInitialization } from "./initialization";
 import { createCalendarContext } from "./lifecycle";
 import type { CalendarActions, CalendarFormatters, CalendarInstance, CalendarSelectors, CreateCalendarOptions } from "./types";
 
@@ -10,6 +11,7 @@ import type { CalendarActions, CalendarFormatters, CalendarInstance, CalendarSel
 export function createCalendar(options: CreateCalendarOptions): CalendarInstance {
   const context = createCalendarContext(options);
   const { store } = context;
+  const initialization = createInitialization(context);
   const pending = (operation: string): never => {
     context.assertActive();
     throw new CalendarError("api", `${operation} is not implemented`);
@@ -20,10 +22,7 @@ export function createCalendar(options: CreateCalendarOptions): CalendarInstance
     ...createFieldActions(context),
     ...guests.actions,
     ...createBillingActions(context),
-    getDays: pendingAsync("getDays"),
-    next: pendingAsync("next"),
-    prev: pendingAsync("prev"),
-    dayClicked: () => pending("dayClicked"),
+    ...initialization.actions,
     setSelectedTimeSlot(slot) {
       context.assertActive();
       const previous = store.getSnapshot().selectedTimeSlot;
@@ -31,9 +30,6 @@ export function createCalendar(options: CreateCalendarOptions): CalendarInstance
       store.commit({ selectedTimeSlot: slot });
       context.emit({ type: "time-slot-changed", payload: slot });
     },
-    setConfig: pendingAsync("setConfig"),
-    setTimezone: pendingAsync("setTimezone"),
-    setHourCycle: () => pending("setHourCycle"),
     setLocations(locations) { assertFormEditable(context); store.commit({ locations }); },
     setStripeConfig(stripeConfig) { assertFormEditable(context); store.commit({ stripeConfig }); },
     setSelectedReservation(reservation) { assertFormEditable(context); store.commit({ reservation }); },
@@ -50,27 +46,16 @@ export function createCalendar(options: CreateCalendarOptions): CalendarInstance
     stopReservationRefresh: () => pending("stopReservationRefresh"),
   };
   const selectors: CalendarSelectors = {
-    nextDisabled: () => pending("nextDisabled"),
-    prevDisabled: () => pending("prevDisabled"),
-    monthName: () => pending("monthName"),
-    currentYear: () => pending("currentYear"),
-    isSelected: () => pending("isSelected"),
-    isSelectedDay: () => pending("isSelectedDay"),
-    dayHasTimeSlot: () => pending("dayHasTimeSlot"),
+    ...initialization.selectors,
     ...guests.selectors,
     isPhoneCall: () => store.getSnapshot().locations.some(location => location.value === "phone"),
   };
-  const formatters: CalendarFormatters = {
-    loadDateFnsConfig: pendingAsync("loadDateFnsConfig"),
-    getFormattedTime: () => pending("getFormattedTime"),
-    getFormattedDay: () => pending("getFormattedDay"),
-    getFormattedDayInMonth: () => pending("getFormattedDayInMonth"),
-  };
+  const formatters: CalendarFormatters = initialization.formatters;
   return {
     getSnapshot: store.getSnapshot,
     subscribe: (listener) => (context.isDisposed() ? () => {} : store.subscribe(listener)),
     onEvent: context.onEvent,
-    init: pendingAsync("init"),
+    init: initialization.init,
     actions: Object.freeze(actions),
     selectors: Object.freeze(selectors),
     formatters: Object.freeze(formatters),

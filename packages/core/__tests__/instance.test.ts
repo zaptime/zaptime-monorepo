@@ -106,9 +106,7 @@ test("disposal detaches listeners synchronously and rejects subsequent actions",
 
 test("unfinished operations explicitly reject without pretending initialization succeeded", async () => {
   const a = calendar();
-  await expect(a.init()).rejects.toThrow("not implemented");
   await expect(a.actions.book({ email: "attendee@example.test" })).rejects.toThrow("not implemented");
-  await expect(a.actions.getDays()).rejects.toThrow("not implemented");
   expect(a.getSnapshot().phase).toBe("idle");
 });
 

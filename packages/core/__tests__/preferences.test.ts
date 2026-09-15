@@ -1,0 +1,36 @@
+import { it, expect } from "vitest";
+import { fixture, slot } from "./initialization.fixtures";
+it("isolates formatters and preserves selected instants on appearance updates", async () => {
+  const a = fixture().calendar;
+  const b = fixture().calendar;
+  await Promise.all([a.init(), b.init()]);
+  a.actions.setSelectedTimeSlot(slot);
+  await a.actions.setConfig({ locale: { preset: "cs" }, theme: { preset: "basic" } });
+  expect(a.getSnapshot().selectedTimeSlot?.start).toBe(slot.start);
+  expect(a.formatters.getFormattedDay(slot.start)).toBe("středa");
+  expect(b.formatters.getFormattedDay(slot.start)).toBe("Wednesday");
+  a.actions.setHourCycle("h23");
+  expect(a.formatters.getFormattedTime(slot.start)).toBe("10:00");
+  expect(b.formatters.getFormattedTime(slot.start)).toContain("am");
+});
+it("rejects invalid preferences before state mutation", async () => {
+  const { calendar } = fixture();
+  await calendar.init();
+  const before = calendar.getSnapshot();
+  expect(() => calendar.actions.setTimezone("Invalid/Zone")).toThrow();
+  expect(() => calendar.actions.setConfig({ token: "" })).toThrow();
+  expect(calendar.getSnapshot()).toBe(before);
+});
+it("rejects identity writes synchronously while busy and preserves presentation updates", async () => {
+  const { createCalendarContext } = await import("../src/calendar/lifecycle");
+  const { createInitialization } = await import("../src/calendar/initialization");
+  const context = createCalendarContext({ config: { token: "x" } });
+  const preferences = createInitialization(context);
+  context.store.commit({ phase: "submitting" });
+  expect(() => preferences.actions.setConfig({ token: "y" })).toThrow(expect.objectContaining({ code: "busy" }));
+  expect(() => preferences.actions.setConfig({ rescheduleOverrideToken: "new" })).toThrow(expect.objectContaining({ code: "busy" }));
+  await preferences.actions.setConfig({ theme: { preset: "basic" } });
+  expect(context.store.getSnapshot().config.token).toBe("x");
+  context.store.commit({ phase: "recovery-required" });
+  expect(() => preferences.actions.setConfig({ reservationUuid: "r" })).toThrow(expect.objectContaining({ code: "busy" }));
+});
