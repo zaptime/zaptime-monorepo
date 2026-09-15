@@ -9,7 +9,10 @@ const options = { token: "secret-token", status };
 const booking = { token: options.token, email: "a@example.com", timezone: "UTC", timeSlot: { start: "2026-10-01T10:00:00Z", end: "2026-10-01T11:00:00Z" } };
 const success = { success: true, data: { uuid: "r-1", userId: 1, userName: "Host", userEmail: "host@example.com" } };
 const clientFor = (body: unknown, status = 200) => createZaptimeClient({ fetch: vi.fn<typeof fetch>().mockResolvedValue(Response.json(body, { status })) });
-afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
+afterEach(() => {
+  vi.useRealTimers();
+  vi.unstubAllGlobals();
+});
 
 describe("normalized API outcomes", () => {
   it.each([400, 500])("rejects HTTP %s even with a success body", async (statusCode) => {
@@ -30,7 +33,9 @@ describe("normalized API outcomes", () => {
   it("retains a transport cause without copying credentials into the message and never retries", async () => {
     const cause = new Error("secret-token");
     const transport = vi.fn<typeof fetch>().mockRejectedValue(cause);
-    const error = await createZaptimeClient({ fetch: transport }).confirm(options).catch(e => e);
+    const error = await createZaptimeClient({ fetch: transport })
+      .confirm(options)
+      .catch((e) => e);
     expect(error).toBeInstanceOf(CalendarError);
     expect(error).toMatchObject({ code: "recovery-required", cause });
     expect(error.message).not.toContain(options.token);
@@ -76,7 +81,8 @@ describe("normalized API outcomes", () => {
     expect(transport.mock.calls[0][1]?.signal?.aborted).toBe(true);
   });
   it("propagates read abort and avoids sending already aborted reads", async () => {
-    const controller = new AbortController(); controller.abort();
+    const controller = new AbortController();
+    controller.abort();
     const transport = vi.fn<typeof fetch>();
     await expect(createZaptimeClient({ fetch: transport }).fetchRemoteConfig(options.token, undefined, undefined, controller.signal)).rejects.toMatchObject({ code: "network" });
     expect(transport).not.toHaveBeenCalled();

@@ -70,11 +70,7 @@ export interface IOptions {
   guests?: string[];
 }
 
-export interface IConfirmationOptions
-  extends Omit<
-    IOptions,
-    "email" | "location" | "seats" | "timezone" | "timeSlot"
-  > {
+export interface IConfirmationOptions extends Omit<IOptions, "email" | "location" | "seats" | "timezone" | "timeSlot"> {
   status: Status;
 }
 
@@ -88,6 +84,9 @@ export const cancel: ReturnType<typeof createZaptimeClient>["cancel"] = (...args
 export const refreshReserve: ReturnType<typeof createZaptimeClient>["refreshReserve"] = (...args) => client().refreshReserve(...args);
 export const getAvailableTimeSlots: ReturnType<typeof createZaptimeClient>["getAvailableTimeSlots"] = (...args) => client().getAvailableTimeSlots(...args);
 export async function fetchRemoteConfig(token: string, baseUrl?: string, reservationUuid?: string): Promise<Result<Success, Errors>> {
-  try { return new Ok(await client().fetchRemoteConfig(token, baseUrl, reservationUuid)); }
-  catch { return new Err("invalidToken"); }
+  try {
+    return new Ok(await client().fetchRemoteConfig(token, baseUrl, reservationUuid));
+  } catch {
+    return new Err("invalidToken");
+  }
 }
