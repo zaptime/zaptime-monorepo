@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import type { CalendarSnapshot, CalendarState, ZaptimeConfig } from "@zaptime/core";
+import { FormValidationError, type CalendarSnapshot, type CalendarState, type ZaptimeConfig } from "@zaptime/core";
 import { resolveCalendar } from "../context";
 import type { CalendarTarget } from "../scope";
 import { snapshotBridge, editable, facade, copy } from "../bridge";
@@ -27,9 +27,18 @@ export function useCalendar(target?: CalendarTarget) {
     prev: c.actions.prev,
     selectTimeSlot: c.actions.setSelectedTimeSlot,
     dayClicked: c.actions.dayClicked,
-    dayHasTimeSlot: c.selectors.dayHasTimeSlot,
-    isSelectedDay: c.selectors.isSelectedDay,
-    isSelected: c.selectors.isSelected,
+    dayHasTimeSlot: (value: Parameters<typeof c.selectors.dayHasTimeSlot>[0]) => {
+      void s.value;
+      return c.selectors.dayHasTimeSlot(value);
+    },
+    isSelectedDay: (value: Parameters<typeof c.selectors.isSelectedDay>[0]) => {
+      void s.value;
+      return c.selectors.isSelectedDay(value);
+    },
+    isSelected: (value: Parameters<typeof c.selectors.isSelected>[0]) => {
+      void s.value;
+      return c.selectors.isSelected(value);
+    },
     nextDisabled: derived("nextDisabled"),
     prevDisabled: derived("prevDisabled"),
     currentYear: derived("currentYear"),
@@ -60,6 +69,8 @@ export function useGuests(target?: CalendarTarget) {
   const { calendar: c, snapshot: s } = context(target);
   return {
     guests: editable(s, "guests", (values) => {
+      if (!Array.isArray(values) || [...values].some((value) => typeof value !== "string")) throw new FormValidationError([{ field: "guests", code: "type" }]);
+      if (values.length > (c.getSnapshot().maxGuests ?? 0)) throw new FormValidationError([{ field: "guests", code: "limit" }]);
       while (c.getSnapshot().guests.length > values.length) c.actions.removeGuest(c.getSnapshot().guests.length - 1);
       values.forEach((value, i) => {
         if (i < c.getSnapshot().guests.length) c.actions.updateGuest(i, value);
@@ -83,19 +94,31 @@ export function useGuests(target?: CalendarTarget) {
 }
 function projection<K extends keyof CalendarSnapshot>(target: CalendarTarget | undefined, key: K) {
   const { calendar, snapshot } = context(target);
-  return { calendar, value: computed(() => copy(snapshot.value[key]) as CalendarSnapshot[K]) };
+  return { calendar, snapshot, value: computed(() => copy(snapshot.value[key]) as CalendarSnapshot[K]) };
 }
 export function useSelectedTimeSlot(target?: CalendarTarget) {
   const { calendar: c, value } = projection(target, "selectedTimeSlot");
   return { selectedTimeSlot: value, setSelectedTimeSlot: c.actions.setSelectedTimeSlot };
 }
 export function useCurrentTimezone(target?: CalendarTarget) {
-  const { calendar: c, value } = projection(target, "timezone");
-  return { timezone: value, clientOriginalTimezone: c.getSnapshot().clientOriginalTimezone, setTimezone: c.actions.setTimezone };
+  const { calendar: c, snapshot, value } = projection(target, "timezone");
+  return {
+    timezone: value,
+    get clientOriginalTimezone() {
+      return snapshot.value.clientOriginalTimezone;
+    },
+    setTimezone: c.actions.setTimezone,
+  };
 }
 export function useHourCycle(target?: CalendarTarget) {
-  const { calendar: c, value } = projection(target, "hourCycle");
-  return { hourCycle: value, clientOriginalHourCycle: c.getSnapshot().clientOriginalHourCycle, setHourCycle: c.actions.setHourCycle };
+  const { calendar: c, snapshot, value } = projection(target, "hourCycle");
+  return {
+    hourCycle: value,
+    get clientOriginalHourCycle() {
+      return snapshot.value.clientOriginalHourCycle;
+    },
+    setHourCycle: c.actions.setHourCycle,
+  };
 }
 export function useLocations(target?: CalendarTarget) {
   const { calendar: c, snapshot: s } = context(target);

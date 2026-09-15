@@ -33,3 +33,17 @@ stable across identity resets.
 
 Browser integrations and complete calendar UI are separate packages. Core helper,
 error and domain type exports remain available from this package.
+
+Original client preferences are live scalar getters. Initialization captures them;
+reading the getters later reflects those captured values. Destructuring the scalar
+before initialization keeps the initial fallback. To retain reactivity, read the
+property in a render function or computed getter:
+
+```ts
+const timezoneApi = useCurrentTimezone(calendar);
+const originalTimezone = computed(() => timezoneApi.clientOriginalTimezone);
+```
+
+The same rule applies to `useHourCycle().clientOriginalHourCycle`. Guest array
+mutations validate the complete proposed array before applying changes, so invalid
+limits or non-string values leave the current guests unchanged.
