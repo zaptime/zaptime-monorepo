@@ -95,7 +95,9 @@ export function facade<T extends object>(read: () => T, write?: (value: T, path?
   };
   return proxy([]);
 }
-export function editable<K extends keyof CalendarSnapshot>(snapshot: Ref<DeepReadonly<CalendarSnapshot>>, key: K, write: (value: CalendarSnapshot[K], path?: PropertyKey[]) => void): Ref<CalendarSnapshot[K]> {
+/** Preserve the one-argument Vue 3.4 Ref contract in inferred public declarations. */
+export interface EditableRef<T> extends Ref<T> {}
+export function editable<K extends keyof CalendarSnapshot>(snapshot: Ref<DeepReadonly<CalendarSnapshot>>, key: K, write: (value: CalendarSnapshot[K], path?: PropertyKey[]) => void): EditableRef<CalendarSnapshot[K]> {
   const read = () => snapshot.value[key] as CalendarSnapshot[K];
   const value = facade(
     read as () => object,

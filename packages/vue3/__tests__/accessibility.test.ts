@@ -10,6 +10,7 @@ afterEach(() => {
   apps.splice(0).forEach((app) => app.unmount());
   document.body.innerHTML = "";
   vi.unstubAllGlobals();
+  vi.restoreAllMocks();
   vi.useRealTimers();
 });
 async function mount(compact = false) {
@@ -28,6 +29,8 @@ async function mount(compact = false) {
   return host;
 }
 it("names month and timezone controls and exposes zones to keyboard users", async () => {
+  // The test exercises keyboard access, not the host ICU database's size.
+  vi.spyOn(Intl, "supportedValuesOf").mockReturnValue(["Europe/Prague", "America/New_York"]);
   const host = await mount();
   expect(host.querySelector('button[aria-label="Next month"]')).not.toBeNull();
   const input = host.querySelector('input[aria-label="Timezone"]') as HTMLInputElement;

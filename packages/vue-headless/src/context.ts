@@ -1,4 +1,4 @@
-import { defineComponent, getCurrentInstance, inject, provide, onMounted, onUnmounted, type InjectionKey, type PropType } from "vue";
+import { defineComponent, getCurrentInstance, inject, provide, onMounted, onUnmounted, type InjectionKey, type PropType, type DefineComponent } from "vue";
 import type { CalendarInstance } from "@zaptime/core";
 import { createCalendarScope, mountScope, resolveBrowser, type CalendarScope, type CalendarTarget } from "./scope";
 const calendarKey: InjectionKey<CalendarInstance> = Symbol("zaptime.calendar");
@@ -42,7 +42,7 @@ export function provideCalendar(calendar: CalendarInstance, id?: string): void {
     unmountIndex();
   });
 }
-export const ZaptimeProvider = defineComponent({
+export const ZaptimeProvider: DefineComponent<{ calendar: CalendarInstance; calendarId?: string }> = defineComponent({
   name: "ZaptimeProvider",
   props: { calendar: { type: Object as PropType<CalendarInstance>, required: true }, calendarId: String },
   setup(props, { slots }) {
