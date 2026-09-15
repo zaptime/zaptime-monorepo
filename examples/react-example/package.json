@@ -1,0 +1,8 @@
+{
+  "name": "react-example",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "vite --host 127.0.0.1 --port 4174", "build": "tsc --noEmit && vite build", "typecheck": "tsc --noEmit" },
+  "dependencies": { "@zaptime/core": "workspace:*", "@zaptime/react-headless": "workspace:*", "@zaptime/react": "workspace:*", "react": "^19.0.0", "react-dom": "^19.0.0" },
+  "devDependencies": { "@types/react": "^19.0.0", "@types/react-dom": "^19.0.0", "@types/node": "^22", "typescript": "^5.9.3", "vite": "^8.0.0" }
+}

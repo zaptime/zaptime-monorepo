@@ -2,10 +2,7 @@
   <NuxtLink to="/">Go To home</NuxtLink>
 
   {{ calendarId1 }}
-  <ZaptimeCalendar
-    :calendar-id="calendarId1"
-    :config="config"
-  ></ZaptimeCalendar>
+  <ZaptimeCalendar :calendar-id="calendarId1" :config="config"></ZaptimeCalendar>
 </template>
 
 <script lang="ts" setup>
