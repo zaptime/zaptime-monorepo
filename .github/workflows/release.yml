@@ -3,53 +3,47 @@ name: Release
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
 
 permissions:
-  contents: write # for creating releases & tags
-  pull-requests: write # for creating release pull requests
-  id-token: write # for npm provenance / trusted publishing
+  contents: write
+  pull-requests: write
+  id-token: write
 
 jobs:
-  release:
-    name: Release
-    runs-on: ubuntu-latest
+  verification:
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
 
+  release:
+    name: Release verified calendars
+    needs: verification
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+      - name: Require reviewed backend recovery evidence
+        env:
+          RECOVERY_VERIFIED: ${{ vars.CALENDAR_RECOVERY_VERIFIED }}
+        run: |
+          if [ "$RECOVERY_VERIFIED" != "true" ]; then
+            echo "Release blocked: complete docs/contracts/booking-recovery.md and docs/validation/calendar-release.md, then set CALENDAR_RECOVERY_VERIFIED=true."
+            exit 1
+          fi
       - uses: pnpm/action-setup@v4
         with:
           version: 10.6.5
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22.18.x
           registry-url: https://registry.npmjs.org
-          cache: "pnpm"
-
-        # Pin npm version for supply chain security
-      - name: Upgrade npm for OIDC trusted publishing
-        run: |
-          npm install -g npm@11.6.4
-          echo "npm version: $(npm --version)"
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Test Core
-        run: pnpm --filter @zaptime/core test
-
-      - name: Build Core
-        run: pnpm --filter @zaptime/core build
-
-      - name: Build Vue3
-        run: pnpm --filter @zaptime/vue3 build
+          cache: pnpm
+      - run: npm install -g npm@11.6.4
+      - run: pnpm install --frozen-lockfile
+      - name: Build all publishable packages in dependency order
+        run: pnpm -r --filter '@zaptime/*' run build
         env:
           VITE_STRIPE_CLIENT_KEY: ${{ secrets.VITE_STRIPE_CLIENT_KEY }}
-
-      - name: Create Release Pull Request or Publish Packages
+      - name: Create release pull request or publish verified packages
         uses: changesets/action@v1
         with:
           publish: pnpm publish -r --access public --provenance
