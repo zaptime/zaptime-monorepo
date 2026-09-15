@@ -7,7 +7,7 @@ const appScopes = new WeakMap<object, CalendarScope>();
 export function currentScope() {
   const vm = getCurrentInstance();
   if (!vm) throw new Error("Calendar setup context required");
-  const inherited = (vm as unknown as { provides: Record<symbol, CalendarScope> }).provides[calendarScopeKey] ?? inject(calendarScopeKey, undefined);
+  const inherited = (vm as unknown as { provides: Record<symbol, CalendarScope> }).provides[calendarScopeKey as symbol] ?? inject(calendarScopeKey, undefined);
   if (inherited) return inherited;
   let scope = appScopes.get(vm.appContext);
   if (!scope) {
