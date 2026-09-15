@@ -47,6 +47,8 @@ export function createCalendarContext(options: CreateCalendarOptions) {
   const store = createStore(initialSnapshot(options));
   const runtime = resolveRuntime(options.runtime);
   const eventListeners = new Set<(event: CalendarEvent) => void>();
+  const transactions = new Set<Promise<unknown>>();
+  const disposers = new Set<() => void>();
   const cleanups = new Set<() => void | Promise<void>>();
   let disposed = false;
   let disposal: Promise<void> | undefined;
@@ -83,13 +85,29 @@ export function createCalendarContext(options: CreateCalendarOptions) {
         cleanups.delete(cleanup);
       };
     },
+    onDispose(callback: () => void) {
+      disposers.add(callback);
+      return () => {
+        disposers.delete(callback);
+      };
+    },
+    trackTransaction(transaction: Promise<unknown>) {
+      transactions.add(transaction);
+      void transaction.then(
+        () => transactions.delete(transaction),
+        () => transactions.delete(transaction),
+      );
+    },
     dispose(): Promise<void> {
       if (disposal) return disposal;
       disposed = true;
       store.clearListeners();
       eventListeners.clear();
+      for (const callback of disposers) callback();
+      disposers.clear();
       store.commit({ phase: "disposing" });
       disposal = Promise.resolve().then(async () => {
+        await Promise.allSettled([...transactions]);
         const results = await Promise.allSettled([...cleanups].map((cleanup) => Promise.resolve().then(cleanup)));
         cleanups.clear();
         store.commit({ phase: "disposed" });

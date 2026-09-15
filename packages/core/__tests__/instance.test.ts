@@ -104,9 +104,9 @@ test("disposal detaches listeners synchronously and rejects subsequent actions",
   expect(listener).not.toHaveBeenCalled();
 });
 
-test("unfinished operations explicitly reject without pretending initialization succeeded", async () => {
+test("booking without a selected slot rejects validation without initializing", async () => {
   const a = calendar();
-  await expect(a.actions.book({ email: "attendee@example.test" })).rejects.toThrow("not implemented");
+  await expect(a.actions.book({ email: "attendee@example.test" })).rejects.toMatchObject({ code: "validation" });
   expect(a.getSnapshot().phase).toBe("idle");
 });
 

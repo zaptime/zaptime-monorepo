@@ -2,7 +2,7 @@ import { createFieldActions } from "../forms/fields";
 import { createGuestActions } from "../forms/guests";
 import { createBillingActions } from "../forms/billing";
 import { assertFormEditable, invalid, validateSeats } from "../booking/validation";
-import { CalendarError } from "../api/errors";
+import { createBookingActions } from "../booking/actions";
 import { createInitialization } from "./initialization";
 import { createCalendarContext } from "./lifecycle";
 import type { CalendarActions, CalendarFormatters, CalendarInstance, CalendarSelectors, CreateCalendarOptions } from "./types";
@@ -12,11 +12,6 @@ export function createCalendar(options: CreateCalendarOptions): CalendarInstance
   const context = createCalendarContext(options);
   const { store } = context;
   const initialization = createInitialization(context);
-  const pending = (operation: string): never => {
-    context.assertActive();
-    throw new CalendarError("api", `${operation} is not implemented`);
-  };
-  const pendingAsync = (operation: string) => async (): Promise<never> => pending(operation);
   const guests = createGuestActions(context);
   const actions: CalendarActions = {
     ...createFieldActions(context),
@@ -24,31 +19,45 @@ export function createCalendar(options: CreateCalendarOptions): CalendarInstance
     ...createBillingActions(context),
     ...initialization.actions,
     setSelectedTimeSlot(slot) {
-      context.assertActive();
+      assertFormEditable(context);
       const previous = store.getSnapshot().selectedTimeSlot;
       if (previous === slot || (previous && slot && Object.keys(previous).every((key) => previous[key as keyof typeof previous] === slot[key as keyof typeof slot]))) return;
       store.commit({ selectedTimeSlot: slot });
       context.emit({ type: "time-slot-changed", payload: slot });
     },
-    setLocations(locations) { assertFormEditable(context); store.commit({ locations }); },
-    setStripeConfig(stripeConfig) { assertFormEditable(context); store.commit({ stripeConfig }); },
-    setSelectedReservation(reservation) { assertFormEditable(context); store.commit({ reservation }); },
-    setSeats(seats) { assertFormEditable(context); validateSeats(seats, store.getSnapshot().selectedTimeSlot?.seats); store.commit({ seats }); },
-    setView(view) { context.assertActive(); if (!["calendar", "form", "success"].includes(view)) invalid("view", "option"); if (store.commit({ view })) context.emit({ type: "view-changed", payload: view }); },
-    setCalendarView(calendarView) { context.assertActive(); if (!["pickingDate", "pickingTime"].includes(calendarView)) invalid("calendarView", "option"); store.commit({ calendarView }); },
-    book: pendingAsync("book"),
-    reserve: pendingAsync("reserve"),
-    confirm: pendingAsync("confirm"),
-    cancel: pendingAsync("cancel"),
-    reschedule: pendingAsync("reschedule"),
-    submit: pendingAsync("submit"),
-    recover: pendingAsync("recover"),
-    stopReservationRefresh: () => pending("stopReservationRefresh"),
+    setLocations(locations) {
+      assertFormEditable(context);
+      store.commit({ locations });
+    },
+    setStripeConfig(stripeConfig) {
+      assertFormEditable(context);
+      store.commit({ stripeConfig });
+    },
+    setSelectedReservation(reservation) {
+      assertFormEditable(context);
+      store.commit({ reservation });
+    },
+    setSeats(seats) {
+      assertFormEditable(context);
+      validateSeats(seats, store.getSnapshot().selectedTimeSlot?.seats);
+      store.commit({ seats });
+    },
+    setView(view) {
+      context.assertActive();
+      if (!["calendar", "form", "success"].includes(view)) invalid("view", "option");
+      if (store.commit({ view })) context.emit({ type: "view-changed", payload: view });
+    },
+    setCalendarView(calendarView) {
+      context.assertActive();
+      if (!["pickingDate", "pickingTime"].includes(calendarView)) invalid("calendarView", "option");
+      store.commit({ calendarView });
+    },
+    ...createBookingActions(context).actions,
   };
   const selectors: CalendarSelectors = {
     ...initialization.selectors,
     ...guests.selectors,
-    isPhoneCall: () => store.getSnapshot().locations.some(location => location.value === "phone"),
+    isPhoneCall: () => store.getSnapshot().locations.some((location) => location.value === "phone"),
   };
   const formatters: CalendarFormatters = initialization.formatters;
   return {
