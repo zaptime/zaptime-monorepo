@@ -1,2 +1,4 @@
 node_modules
 .eslintcache
+test-results/
+playwright-report/

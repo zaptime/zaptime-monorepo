@@ -1,6 +1,6 @@
 {
   "name": "@zaptime/browser",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "type": "module",
   "main": "dist/entry.mjs",
   "module": "dist/entry.mjs",
@@ -39,5 +39,7 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "license": "MIT",
+  "author": "Zaptime s.r.o."
 }

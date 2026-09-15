@@ -1,0 +1,16 @@
+{
+  "name": "zaptime-packed-core-consumer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@zaptime/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "^22.14.0"
+  }
+}
