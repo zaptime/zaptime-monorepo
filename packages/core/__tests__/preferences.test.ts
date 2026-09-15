@@ -1,5 +1,5 @@
 import { it, expect } from "vitest";
-import { fixture, slot } from "./initialization.fixtures";
+import { fixture, slot, remote } from "./initialization.fixtures";
 it("isolates formatters and preserves selected instants on appearance updates", async () => {
   const a = fixture().calendar;
   const b = fixture().calendar;
@@ -33,4 +33,13 @@ it("rejects identity writes synchronously while busy and preserves presentation 
   expect(context.store.getSnapshot().config.token).toBe("x");
   context.store.commit({ phase: "recovery-required" });
   expect(() => preferences.actions.setConfig({ reservationUuid: "r" })).toThrow(expect.objectContaining({ code: "busy" }));
+});
+it("clears authorization in the published snapshot and retains a remote locale on text edits", async () => {
+  const { calendar } = fixture({ ...remote, configuration: { locale: { preset: "cs", texts: { chooseDate: "Vyberte" } } } });
+  await calendar.init();
+  await calendar.actions.setConfig({ rescheduleOverrideToken: "proof" });
+  await calendar.actions.setConfig({ rescheduleOverrideToken: undefined, locale: { texts: { chooseDate: "Custom" }, headers: { mon: "M" } } });
+  expect(calendar.getSnapshot().config.rescheduleOverrideToken).toBeUndefined();
+  expect(calendar.getSnapshot().config.locale?.preset).toBe("cs");
+  expect(calendar.formatters.getFormattedDay(slot.start)).toBe("středa");
 });

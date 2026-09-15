@@ -89,3 +89,47 @@ it("preserves closest-day and previous-month bounds and clears unavailable selec
   expect(calendar.getSnapshot().selectedTimeSlot).toBeUndefined();
   expect(events).toEqual([undefined]);
 });
+it("publishes coherent selection snapshots on refresh and day clicks", async () => {
+  const { calendar, fetch } = fixture();
+  await calendar.init();
+  calendar.actions.setSelectedTimeSlot(slot);
+  const observed: ReturnType<typeof calendar.getSnapshot>[] = [];
+  calendar.subscribe(() => observed.push(calendar.getSnapshot()));
+  fetch.mockImplementationOnce(async () => response([]));
+  await calendar.actions.getDays();
+  for (const s of observed) if (s.selectedTimeSlot) expect(s.calendar.timeSlots.some((time) => time.start === s.selectedTimeSlot!.start)).toBe(true);
+  await calendar.actions.getDays();
+  calendar.actions.setSelectedTimeSlot(slot);
+  observed.length = 0;
+  calendar.actions.dayClicked(calendar.getSnapshot().calendar.days.find((d) => d.date && d.label === "17")!);
+  expect(observed).toHaveLength(1);
+  expect(observed[0].selectedTimeSlot).toBeUndefined();
+  expect(observed[0].calendar.selectedDay?.label).toBe("17");
+});
+it("rejects availability actions while busy and discards a read overtaken by submission", async () => {
+  const { createCalendarContext } = await import("../src/calendar/lifecycle");
+  const { createInitialization } = await import("../src/calendar/initialization");
+  let resolve!: (r: Response) => void;
+  let deferred = false;
+  const context = createCalendarContext({
+    config: { token: "x", max: 1 },
+    runtime: {
+      now: () => new Date("2026-09-15T12:00:00Z"),
+      getTimezone: () => "UTC",
+      fetch: async (url) => (String(url).includes("init") ? response(remote) : deferred ? new Promise((r) => (resolve = r)) : response([slot])),
+    },
+  });
+  const calendar = createInitialization(context);
+  await calendar.init();
+  deferred = true;
+  const old = calendar.actions.getDays();
+  context.store.commit({ phase: "submitting" });
+  const busy = context.store.getSnapshot();
+  for (const action of [calendar.actions.getDays, calendar.actions.next, calendar.actions.prev]) await expect(action()).rejects.toMatchObject({ code: "busy" });
+  expect(context.store.getSnapshot()).toBe(busy);
+  context.store.commit({ phase: "ready" });
+  const current = context.store.getSnapshot();
+  resolve(response([]));
+  await old;
+  expect(context.store.getSnapshot()).toBe(current);
+});

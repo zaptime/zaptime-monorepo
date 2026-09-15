@@ -10,7 +10,7 @@ import { createAvailability } from "./availability";
 import { createPreferences, validateTimezone, validateHourCycle } from "./preferences";
 export type CalendarStatePatch = Partial<CalendarState>;
 
-/** Merge detached plain configuration values; explicit undefined restores defaults. */
+/** Merge detached plain configuration values; undefined leaves earlier values intact. Identity/authorization clearing is handled explicitly by setConfig. */
 function merge(...sources: unknown[]): any {
   const result: Record<string, unknown> = {};
   for (const source of sources)
@@ -56,7 +56,7 @@ export function createInitialization(context: CalendarContext) {
     preferences.invalidate();
     promise = undefined;
   };
-  context.addCleanup(invalidate);
+  context.onDispose(invalidate);
   function init(): Promise<void> {
     if (context.isDisposed()) return Promise.reject(new CalendarError("disposed", "Calendar has been disposed"));
     validate(local);
@@ -151,11 +151,13 @@ export function createInitialization(context: CalendarContext) {
       if (s.selectedTimeSlot) context.emit({ type: "time-slot-changed", payload: undefined });
       return init();
     }
-    store.commit({ config: { ...merge(s.config, patch), apiBaseUrl: endpoint(next.apiBaseUrl) } });
+    const effective: ZaptimeConfig = { ...merge(s.config, patch), apiBaseUrl: endpoint(next.apiBaseUrl) };
+    if (Object.prototype.hasOwnProperty.call(patch, "rescheduleOverrideToken")) effective.rescheduleOverrideToken = patch.rescheduleOverrideToken;
+    store.commit({ config: effective });
     if (s.phase === "idle") return Promise.resolve();
     const current = generation;
     const update = async () => {
-      if (patch.locale) await preferences.formatters.loadDateFnsConfig(next.locale?.preset ?? "en");
+      if (patch.locale) await preferences.formatters.loadDateFnsConfig(effective.locale?.preset ?? "en");
       if (context.isDisposed() || generation !== current) return;
       if (patch.closestBookableDay !== undefined || patch.locale?.startDayOfWeek !== undefined) await availability.getDays();
     };

@@ -22,13 +22,18 @@ export function createAvailability(context: CalendarContext) {
     generation++;
     controller?.abort();
   };
-  context.addCleanup(invalidate);
-  function clearSelection() {
-    if (context.store.getSnapshot().selectedTimeSlot) {
-      context.store.commit({ selectedTimeSlot: undefined });
-      context.emit({ type: "time-slot-changed", payload: undefined });
-    }
-  }
+  const isBusy = () => ["submitting", "recovery-required"].includes(context.store.getSnapshot().phase);
+  const assertEditable = () => {
+    context.assertActive();
+    if (isBusy()) throw new CalendarError("busy", "Calendar is busy");
+  };
+  const unsubscribe = context.store.subscribe(() => {
+    if (isBusy()) invalidate();
+  });
+  context.onDispose(() => {
+    invalidate();
+    unsubscribe();
+  });
   function bound(direction: number) {
     const s = context.store.getSnapshot();
     const options = { in: tz(s.timezone) };
@@ -36,7 +41,7 @@ export function createAvailability(context: CalendarContext) {
     return direction > 0 ? s.config.max !== undefined && distance > s.config.max : s.config.min !== undefined && -distance > s.config.min;
   }
   async function getDays() {
-    context.assertActive();
+    assertEditable();
     if (context.store.getSnapshot().phase === "disabled") return;
     invalidate();
     const current = generation;
@@ -47,10 +52,10 @@ export function createAvailability(context: CalendarContext) {
     const now = context.runtime.now();
     let from = dateKey(start, s.timezone);
     if (differenceInCalendarMonths(start, now, options) === 0 && s.config.closestBookableDay !== undefined) from = dateKey(addDays(now, s.config.closestBookableDay, options), s.timezone);
-    commitCalendar({ loading: true, selectedDay: null, timeSlots: [] });
+    commitCalendar({ loading: true });
     try {
       const slots = await client.getAvailableTimeSlots(s.config.token, from, dateKey(endOfMonth(start, options), s.timezone), s.config.apiBaseUrl, controller.signal);
-      if (context.isDisposed() || current !== generation) return;
+      if (context.isDisposed() || current !== generation || isBusy()) return;
       const days: Day[] = [];
       const offset = (getDay(start, options) - getStartOfTheWeekIndex(s.config.locale ?? {}) + 7) % 7;
       for (let i = offset; i > 0; i--) days.push({ label: format(addDays(start, -i, options), "d", options), isPast: true });
@@ -68,10 +73,14 @@ export function createAvailability(context: CalendarContext) {
       const retained = selectedSlot && available.find((d) => d.timeSlots?.some((slot) => sameSlot(slot, selectedSlot)));
       const reservation = s.reservation && available.find((d) => dateKey(d.date!, s.timezone) === dateKey(s.reservation!.start, s.timezone));
       const selectedDay = retained || reservation || available[0] || null;
-      commitCalendar({ days, monthHasTimeSlots: days.some((d) => !!d.timeSlots?.length), selectedDay, timeSlots: selectedDay?.timeSlots ?? [], loading: false });
-      if (selectedSlot && !retained) clearSelection();
+      const invalidated = !!selectedSlot && !retained;
+      context.store.commit({
+        calendar: { ...context.store.getSnapshot().calendar, days, monthHasTimeSlots: days.some((d) => !!d.timeSlots?.length), selectedDay, timeSlots: selectedDay?.timeSlots ?? [], loading: false } as CalendarState,
+        ...(invalidated ? { selectedTimeSlot: undefined } : {}),
+      });
+      if (invalidated) context.emit({ type: "time-slot-changed", payload: undefined });
     } catch (cause) {
-      if (context.isDisposed() || current !== generation) return;
+      if (context.isDisposed() || current !== generation || isBusy()) return;
       const error = cause instanceof CalendarError ? cause : new CalendarError("network", "Loading availability failed", { cause });
       commitCalendar({ loading: false });
       context.store.commit({ error });
@@ -86,11 +95,12 @@ export function createAvailability(context: CalendarContext) {
     if (!day.date) return;
     const selected = s.calendar.days.find((d) => d.date && dateKey(d.date, s.timezone) === dateKey(day.date!, s.timezone));
     if (!selected) return;
-    if (!s.calendar.selectedDay?.date || dateKey(s.calendar.selectedDay.date, s.timezone) !== dateKey(day.date, s.timezone)) clearSelection();
-    commitCalendar({ selectedDay: selected as Day, timeSlots: (selected.timeSlots ?? []) as TimeSlot[] });
+    const invalidated = !!s.selectedTimeSlot && (!s.calendar.selectedDay?.date || dateKey(s.calendar.selectedDay.date, s.timezone) !== dateKey(day.date, s.timezone));
+    context.store.commit({ calendar: { ...s.calendar, selectedDay: selected, timeSlots: selected.timeSlots ?? [] } as CalendarState, ...(invalidated ? { selectedTimeSlot: undefined } : {}) });
+    if (invalidated) context.emit({ type: "time-slot-changed", payload: undefined });
   }
   const move = async (direction: number) => {
-    context.assertActive();
+    assertEditable();
     if (bound(direction)) return;
     const s = context.store.getSnapshot();
     commitCalendar({ date: addMonths(new Date(s.calendar.date.getTime()), direction, { in: tz(s.timezone) }) });
