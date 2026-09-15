@@ -1,7 +1,31 @@
 "use client";
-export * from "./hooks";
+export {
+  useCalendar,
+  useConfig,
+  useSelectedTimeSlot,
+  useCurrentTimezone,
+  useHourCycle,
+  useLocations,
+  useStripeConfig,
+  useBookingForm,
+  useGuests,
+  useBillingAddress,
+  useReservationReschedule,
+  useCalendarViewState,
+  useDateFormatters,
+} from "./hooks";
 export { ZaptimeProvider, CalendarProviderError } from "./context";
-export type { CalendarInstance, CreateCalendarOptions, CalendarSnapshot, ZaptimeConfig, Day, TimeSlot, CustomField, CustomFieldCollected, ReservationResponse, BillingAddress } from "@zaptime/core";
-export { CalendarError, SlotNoLongerAvailableError, RescheduleNotAllowedError, FormValidationError, mergeObjects, slotNoLongerAvailableText, rescheduleNotAllowedText, fetchRemoteConfiguration } from "@zaptime/core";
+export type * from "@zaptime/core";
+export {
+  createCalendar,
+  CalendarError,
+  SlotNoLongerAvailableError,
+  RescheduleNotAllowedError,
+  FormValidationError,
+  mergeObjects,
+  slotNoLongerAvailableText,
+  rescheduleNotAllowedText,
+  fetchRemoteConfiguration,
+} from "@zaptime/core";
 
 export { useCalendarInstance } from "./instance";

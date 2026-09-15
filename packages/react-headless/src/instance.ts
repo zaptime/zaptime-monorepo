@@ -19,9 +19,15 @@ export function useCalendarInstance(options: CreateCalendarOptions) {
   }, [owner]);
   useEffect(() => {
     if (equal(owner.config, options.config)) return;
+    const patch = { ...options.config };
+    for (const key of ["apiBaseUrl", "reservationUuid", "rescheduleOverrideToken"] as const) {
+      if (key in owner.config && !(key in patch)) patch[key] = undefined;
+    }
+    // Synchronous validation stays visible to React error boundaries. Core reports
+    // asynchronous initialization errors through its state/events.
+    const update = owner.calendar.actions.setConfig(patch);
     owner.config = structuredClone(options.config);
-    // Core reports asynchronous initialization errors through its state/events.
-    void owner.calendar.actions.setConfig(options.config).catch(() => {});
+    void update.catch(() => {});
   });
   return owner.calendar;
 }

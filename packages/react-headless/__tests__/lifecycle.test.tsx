@@ -66,3 +66,15 @@ it("borrows nearest provider and never initializes or disposes host instances", 
 it("throws a typed error for missing provider", () => {
   expect(() => renderHook(() => useCalendar())).toThrow(CalendarProviderError);
 });
+it("clears removed optional authorization props on reconciliation", async () => {
+  const opts = options();
+  const { result, rerender } = renderHook(({ override }: { override?: string }) => useCalendarInstance({ ...opts, config: { ...opts.config, ...(override ? { rescheduleOverrideToken: override } : {}) } }), {
+    initialProps: { override: "proof" } as { override?: string },
+  });
+  await act(async () => {
+    await result.current.init();
+  });
+  rerender({});
+  await act(async () => {});
+  expect(result.current.getSnapshot().config.rescheduleOverrideToken).toBeUndefined();
+});

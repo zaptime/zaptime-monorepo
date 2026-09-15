@@ -13,6 +13,7 @@ it("renders inert deterministic markup and hydrates without mismatch", async () 
     return <div>{state.loading ? "Loading" : "Calendar"}</div>;
   }
   const html = renderToString(<App />);
+  expect(html).toBe("<div>Loading</div>");
   expect(fetch).not.toHaveBeenCalled();
   expect(schedule).not.toHaveBeenCalled();
   expect(renderToString(<App />)).toBe(html);
