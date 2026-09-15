@@ -8,7 +8,8 @@
     "dev": "pnpm --recursive --parallel --stream run dev",
     "lint": "oxlint packages",
     "format": "oxfmt packages",
-    "format:check": "oxfmt --check packages"
+    "format:check": "oxfmt --check packages",
+    "test:staging": "playwright test --config playwright.staging.config.ts"
   },
   "keywords": [],
   "author": "Zaptime s.r.o.",
@@ -28,8 +29,15 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^22",
     "oxfmt": "^0.40.0",
     "oxlint": "^1.55.0",
     "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@10.6.5",
+  "engines": {
+    "node": "22.18.x",
+    "pnpm": "10.6.5"
   }
 }
