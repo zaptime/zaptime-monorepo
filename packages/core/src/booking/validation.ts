@@ -6,14 +6,14 @@ import type { BookingInput } from "./types";
 
 export interface FieldValidationError {
   field: string;
-  code: "required" | "email" | "type" | "option" | "range" | "limit" | "index" | "unknown-field";
+  code: "required" | "email" | "type" | "option" | "range" | "limit" | "index" | "unknown-field" | "duplicate-field";
 }
 export class FormValidationError extends CalendarError {
   readonly fieldErrors: readonly Readonly<FieldValidationError>[];
   constructor(errors: FieldValidationError[]) {
     super("validation", "Booking input is invalid");
     this.name = "FormValidationError";
-    this.fieldErrors = Object.freeze(errors.map(error => Object.freeze({ ...error })));
+    this.fieldErrors = Object.freeze(errors.map((error) => Object.freeze({ ...error })));
   }
 }
 export function invalid(field: string, code: FieldValidationError["code"]): never {
@@ -29,10 +29,14 @@ const blank = (value: unknown) => value === undefined || value === null || (type
 const emailValid = (email: string) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*$/.test(email);
 
 export function validateFieldValue(field: DeepReadonly<CustomField>, value: DeepReadonly<CustomFieldValue>) {
-  const valid = field.type === "number" ? (value === "" || (typeof value === "number" && Number.isFinite(value)) || (typeof value === "string" && value.trim() !== "" && Number.isFinite(Number(value))))
-    : field.type === "checkbox" || field.type === "switch" ? typeof value === "boolean"
-    : field.type === "multiselect" ? Array.isArray(value) && value.every(item => typeof item === "string")
-    : typeof value === "string";
+  const valid =
+    field.type === "number"
+      ? value === "" || (typeof value === "number" && Number.isFinite(value)) || (typeof value === "string" && value.trim() !== "" && Number.isFinite(Number(value)))
+      : field.type === "checkbox" || field.type === "switch"
+        ? typeof value === "boolean"
+        : field.type === "multiselect"
+          ? Array.isArray(value) && value.every((item) => typeof item === "string")
+          : typeof value === "string";
   if (!valid) invalid(field.uuid, "type");
   if (field.options && ["select", "radio", "multiselect"].includes(field.type) && !blank(value)) {
     for (const item of Array.isArray(value) ? value : [value]) if (!field.options.includes(String(item))) invalid(field.uuid, "option");
@@ -42,7 +46,7 @@ export function validateFields(fields: readonly DeepReadonly<CustomField>[]) {
   const errors: FieldValidationError[] = [];
   for (const field of fields) {
     try {
-      if (field.required && (blank(field.value) || ((field.type === "checkbox" || field.type === "switch") && field.value !== true))) invalid(field.uuid, "required");
+      if (field.required && blank(field.value)) invalid(field.uuid, "required");
       if (field.value !== undefined) validateFieldValue(field, field.value);
       if ((field.type === "email" || field.mergeTag === "EMAIL") && !blank(field.value) && !emailValid(String(field.value))) invalid(field.uuid, "email");
     } catch (error) {
@@ -61,15 +65,22 @@ export function validateBookingInput(snapshot: DeepReadonly<CalendarSnapshot>, i
   if (typeof input.email !== "string" || !emailValid(input.email)) invalid("email", "email");
   validateSeats(input.seats ?? snapshot.seats, snapshot.selectedTimeSlot?.seats);
   const known: Record<string, string | undefined> = { FIRST_NAME: input.firstName, LAST_NAME: input.lastName, EMAIL: input.email, PHONE: input.phone };
+  const seenFields = new Set<string>();
   for (const field of input.customFields ?? []) {
-    if (!snapshot.bookingForm.some(candidate => candidate.uuid === field.uuid && !Object.hasOwn(known, candidate.mergeTag ?? ""))) invalid(field.uuid, "unknown-field");
+    if (seenFields.has(field.uuid)) invalid(field.uuid, "duplicate-field");
+    seenFields.add(field.uuid);
+    if (!snapshot.bookingForm.some((candidate) => candidate.uuid === field.uuid && !Object.hasOwn(known, candidate.mergeTag ?? ""))) invalid(field.uuid, "unknown-field");
   }
-  validateFields(snapshot.bookingForm.map(field => ({
-    ...field,
-    value: Object.hasOwn(known, field.mergeTag ?? "") ? known[field.mergeTag!] : input.customFields?.find(candidate => candidate.uuid === field.uuid)?.value,
-  })));
-  if (input.guests !== undefined && (!Array.isArray(input.guests) || input.guests.some(guest => typeof guest !== "string"))) invalid("guests", "type");
-  const guests = input.guests?.filter(guest => guest.trim() !== "") ?? [];
+  validateFields(
+    snapshot.bookingForm.map((field) => ({
+      ...field,
+      value: Object.hasOwn(known, field.mergeTag ?? "") ? known[field.mergeTag!] : input.customFields?.find((candidate) => candidate.uuid === field.uuid)?.value,
+    })),
+  );
+  if (input.guests !== undefined && (!Array.isArray(input.guests) || input.guests.some((guest) => typeof guest !== "string"))) invalid("guests", "type");
+  const guests = input.guests?.filter((guest) => guest.trim() !== "") ?? [];
   if (guests.length > (snapshot.maxGuests ?? 0)) invalid("guests", "limit");
-  guests.forEach((guest, index) => { if (!emailValid(guest)) invalid(`guests.${index}`, "email"); });
+  input.guests?.forEach((guest, index) => {
+    if (guest.trim() !== "" && !emailValid(guest)) invalid(`guests.${index}`, "email");
+  });
 }

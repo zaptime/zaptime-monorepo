@@ -15,22 +15,31 @@ export function createFieldActions(context: CalendarContext): Pick<CalendarActio
     setCustomFieldValue(uuid, value) {
       assertFormEditable(context);
       const fields = store.getSnapshot().bookingForm;
-      const field = fields.find(field => field.uuid === uuid);
+      const field = fields.find((field) => field.uuid === uuid);
       if (!field) invalid(uuid, "unknown-field");
       validateFieldValue(field, value);
-      store.commit({ bookingForm: fields.map(field => ({ ...field, options: field.options ? [...field.options] : undefined, value: field.uuid === uuid ? value : Array.isArray(field.value) ? [...field.value] : field.value })) as CustomField[] });
+      store.commit({
+        bookingForm: fields.map((field) => ({
+          ...field,
+          options: field.options ? [...field.options] : undefined,
+          value: field.uuid === uuid ? value : Array.isArray(field.value) ? [...field.value] : field.value,
+        })) as CustomField[],
+      });
     },
     collectFormValues() {
       context.assertActive();
       const { bookingForm, guests, maxGuests } = store.getSnapshot();
       const known = (tag: string) => {
-        const value = bookingForm.find(field => field.mergeTag === tag)?.value;
+        const value = bookingForm.find((field) => field.mergeTag === tag)?.value;
         return value === undefined || value === "" ? undefined : String(value);
       };
-      const filtered = (maxGuests ?? 0) > 0 ? guests.filter(guest => guest.trim() !== "") : [];
+      const filtered = (maxGuests ?? 0) > 0 ? guests.filter((guest) => guest.trim() !== "") : [];
       return {
-        firstName: known("FIRST_NAME"), lastName: known("LAST_NAME"), email: known("EMAIL") ?? "", phone: known("PHONE"),
-        customFields: bookingForm.filter(field => !knownTags.includes(field.mergeTag ?? "")).map(({uuid, value}) => ({uuid, value: typeof value === "object" ? [...value] : value})),
+        firstName: known("FIRST_NAME"),
+        lastName: known("LAST_NAME"),
+        email: known("EMAIL") ?? "",
+        phone: known("PHONE"),
+        customFields: bookingForm.filter((field) => !knownTags.includes(field.mergeTag ?? "")).map(({ uuid, value }) => ({ uuid, value: typeof value === "object" ? [...value] : value })),
         guests: filtered.length ? filtered : undefined,
       };
     },

@@ -22,13 +22,15 @@ export function createGuestActions(context: CalendarContext) {
       store.commit({ guests: [...store.getSnapshot().guests, email] });
     },
     removeGuest(index) {
-      assertFormEditable(context); indexExists(index);
+      assertFormEditable(context);
+      indexExists(index);
       store.commit({ guests: store.getSnapshot().guests.filter((_, i) => i !== index) });
     },
     updateGuest(index, email) {
-      assertFormEditable(context); indexExists(index);
+      assertFormEditable(context);
+      indexExists(index);
       if (typeof email !== "string") invalid(`guests.${index}`, "type");
-      store.commit({ guests: store.getSnapshot().guests.map((guest, i) => i === index ? email : guest) });
+      store.commit({ guests: store.getSnapshot().guests.map((guest, i) => (i === index ? email : guest)) });
     },
   };
   return { actions, selectors: { guestsEnabled, canAddGuest } };
