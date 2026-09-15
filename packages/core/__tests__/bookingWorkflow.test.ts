@@ -103,3 +103,27 @@ it("locks slot and identity immediately and snapshots caller inputs", async () =
   await pending;
   await calendar.dispose();
 });
+it("submits the reservation loaded during reschedule initialization", async () => {
+  const { rescheduleInitData } = await import("../../../tests/contracts/fixtures");
+  const transport = createFixtureFetch({ paid: true });
+  const payment = { confirm: vi.fn() };
+  const { calendar, fetcher } = await fixture({
+    payment,
+    fetch: (url, init) =>
+      String(url).endsWith("/event-types/init")
+        ? Promise.resolve(Response.json({ success: true, data: rescheduleInitData }))
+        : init?.method === "PUT"
+          ? Promise.resolve(Response.json(reservationResponse))
+          : transport(url, init),
+  });
+  await expect(calendar.actions.submit()).resolves.toEqual(reservationResponse);
+  expect(fetcher.mock.calls.some((c) => c[1]?.method === "PUT")).toBe(true);
+  expect(payment.confirm).not.toHaveBeenCalled();
+  await calendar.dispose();
+});
+it("missing payment fields fail before reserving", async () => {
+  const { calendar, fetcher } = await fixture({ paid: true });
+  await expect(calendar.actions.submit(input)).rejects.toMatchObject({ code: "payment-failed" });
+  expect(fetcher.mock.calls.some((c) => String(c[0]).endsWith("/reservations/prepare"))).toBe(false);
+  await calendar.dispose();
+});

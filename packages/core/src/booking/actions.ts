@@ -87,7 +87,8 @@ export function createBookingActions(context: CalendarContext) {
           if (operation !== "confirm" && !snapshot.selectedTimeSlot) throw new CalendarError("validation", "Select a time slot");
           if (operation !== "reschedule" && !(operation === "submit" && (snapshot.reservation || snapshot.config.reservationUuid))) validateBookingInput(snapshot, input);
         }
-        if ((operation === "reserve" || operation === "book" || operation === "submit") && snapshot.reservationUuid) throw new CalendarError("busy", "An existing reservation must be resolved first");
+        if ((operation === "reserve" || operation === "book" || (operation === "submit" && !snapshot.reservation && !snapshot.config.reservationUuid)) && snapshot.reservationUuid)
+          throw new CalendarError("busy", "An existing reservation must be resolved first");
         retained = tx;
         store.commit({ phase: "submitting", error: undefined });
         const response = await workflow.run(tx);
