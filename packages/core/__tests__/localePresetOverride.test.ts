@@ -1,57 +1,110 @@
-import { describe, it, expect } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 import { getDfnsConfig } from "../src/utils/dfnsConfig";
 import { useDateFormatters } from "../src/composables/useDateFormatters";
+import useCurrentTimezone from "../src/composables/useCurrentTimezone";
+import useConfig from "../src/composables/useConfig";
+import mergeObjects from "../src/utils/mergeObjects";
+import { book, reserve, confirm, reschedule } from "../src/api/api";
+import { config, slot, reservationResponse, createFixtureFetch } from "../../../tests/contracts/fixtures";
+
+afterEach(() => vi.unstubAllGlobals());
 
 describe("locale preset override", () => {
-  it("user preset 'sk' overrides backend preset 'cs'", async () => {
-    // Simulate the fix: user config with preset 'sk' should take precedence
-    // over backend config with preset 'cs'
-    const backendPreset = "cs";
-    const userPreset = "sk";
-
-    // Before fix: loadDateFnsConfig was called with backend preset
-    const backendConfig = await getDfnsConfig(backendPreset);
-    expect(backendConfig.locale!.code).toBe("cs");
-
-    // After fix: loadDateFnsConfig is called with merged config preset (user wins)
-    const mergedPreset = userPreset; // user override takes precedence
-    const mergedConfig = await getDfnsConfig(mergedPreset);
-    expect(mergedConfig.locale!.code).toBe("sk");
+  it("retains local text and preset overrides when merging backend configuration", async () => {
+    const merged = mergeObjects({ locale: { preset: "cs", texts: { chooseDate: "Backend date", pickTime: "Backend time" } } }, { token: "test-token", locale: { preset: "sk", texts: { chooseDate: "Local date" } } });
+    const calendarConfig = useConfig("compat-local-text");
+    calendarConfig.setConfig(merged);
+    expect(calendarConfig.config.value.locale?.preset).toBe("sk");
+    expect(calendarConfig.config.value.locale?.texts?.chooseDate).toBe("Local date");
+    expect(calendarConfig.config.value.locale?.texts?.pickTime).toBe("Backend time");
+    const dfns = await getDfnsConfig(calendarConfig.config.value.locale!.preset!);
+    expect(dfns.locale!.code).toBe("sk");
   });
 
-  it("falls back to backend preset when user does not override", async () => {
-    const backendPreset = "cs";
-    const userPreset = undefined;
-
-    const effectivePreset = userPreset || backendPreset;
-    const config = await getDfnsConfig(effectivePreset);
-    expect(config.locale!.code).toBe("cs");
+  it("retains the backend preset when local configuration omits it", async () => {
+    const merged = mergeObjects({ locale: { preset: "cs" } }, { token: "test-token" });
+    const calendarConfig = useConfig("compat-backend-locale");
+    calendarConfig.setConfig(merged);
+    expect((await getDfnsConfig(calendarConfig.config.value.locale!.preset!)).locale!.code).toBe("cs");
   });
 
-  it("falls back to 'en' when no preset is provided", async () => {
-    const effectivePreset = undefined || "en";
-    const config = await getDfnsConfig(effectivePreset);
-    expect(config.locale!.code).toBe("en-US");
+  it("uses the default English locale when neither source supplies a preset", async () => {
+    // Fresh modules characterize the default independently of legacy shared config mutation.
+    vi.resetModules();
+    const { default: freshUseConfig } = await import("../src/composables/useConfig");
+    const calendarConfig = freshUseConfig("compat-default-locale");
+    calendarConfig.setConfig({ token: "test-token" });
+    expect((await getDfnsConfig(calendarConfig.config.value.locale!.preset!)).locale!.code).toBe("en-US");
   });
 
-  it("useDateFormatters uses the loaded locale for formatting", async () => {
-    const { loadDateFnsConfig, getFormattedDay } = useDateFormatters();
+  it("uses the loaded locale for formatting in a deterministic timezone", async () => {
+    const preferences = useCurrentTimezone();
+    const previous = preferences.timezone.value;
+    preferences.setTimezone("UTC");
+    try {
+      const formatter = useDateFormatters();
+      await formatter.loadDateFnsConfig("sk");
+      expect(formatter.getFormattedDay("2030-05-02T10:00:00Z")).toBe("štvrtok");
+      await formatter.loadDateFnsConfig("cs");
+      expect(formatter.getFormattedDay("2030-05-02T10:00:00Z")).toBe("čtvrtek");
+    } finally {
+      preferences.setTimezone(previous);
+      await useDateFormatters().loadDateFnsConfig("en");
+    }
+  });
+});
 
-    // Load Slovak locale (user override)
-    await loadDateFnsConfig("sk");
+describe("compatibility wire payloads", () => {
+  it.each([
+    ["book", book],
+    ["reserve", reserve],
+  ] as const)("%s preserves lowercase wire names and guest/custom-field payloads", async (_name, action) => {
+    const fetch = vi.fn(createFixtureFetch());
+    vi.stubGlobal("fetch", fetch);
+    expect(
+      await action({
+        token: config.token,
+        baseUrl: config.apiBaseUrl,
+        timeSlot: slot,
+        email: "attendee@example.test",
+        firstName: "Test",
+        lastName: "Attendee",
+        timezone: "UTC",
+        seats: 2,
+        guests: ["guest@example.test"],
+        customFields: [{ uuid: "field-note", value: "Test note" }],
+      }),
+    ).toEqual(reservationResponse);
+    expect(JSON.parse(String(fetch.mock.calls[0][1]?.body))).toEqual({
+      start: "2030-05-02T10:00:00Z",
+      end: "2030-05-02T10:30:00Z",
+      email: "attendee@example.test",
+      firstname: "Test",
+      lastname: "Attendee",
+      timezone: "UTC",
+      seats: 2,
+      guests: ["guest@example.test"],
+      customFields: [{ uuid: "field-note", value: "Test note" }],
+    });
+  });
 
-    // Wednesday 2026-04-15 in Slovak is "streda"
-    const dayName = getFormattedDay("2026-04-15T12:00:00Z");
-    expect(dayName.toLowerCase()).toContain("stred");
+  it("confirmation preserves lowercase wire names", async () => {
+    const fetch = vi.fn(createFixtureFetch());
+    vi.stubGlobal("fetch", fetch);
+    expect(await confirm({ token: config.token, baseUrl: config.apiBaseUrl, status: reservationResponse.data, firstName: "Test", lastName: "Attendee", guests: ["guest@example.test"] })).toEqual(reservationResponse);
+    expect(JSON.parse(String(fetch.mock.calls[0][1]?.body))).toEqual({ firstname: "Test", lastname: "Attendee", guests: ["guest@example.test"] });
+  });
 
-    // Reload with Czech locale
-    await loadDateFnsConfig("cs");
+  it("rescheduling forwards the host override as overrideToken", async () => {
+    const fetch = vi.fn<typeof globalThis.fetch>().mockResolvedValue(Response.json(reservationResponse));
+    vi.stubGlobal("fetch", fetch);
+    await reschedule({ start: slot.start, end: slot.end, uuid: "r-test", token: config.token, baseUrl: config.apiBaseUrl, timezone: "UTC", overrideToken: "fixture-host-proof" });
+    expect(fetch.mock.calls[0][0]).toBe("https://booking.example.test/reservations/r-test");
+    expect(fetch.mock.calls[0][1]?.method).toBe("PUT");
+    expect(JSON.parse(String(fetch.mock.calls[0][1]?.body))).toEqual({ start: slot.start, end: slot.end, timezone: "UTC", overrideToken: "fixture-host-proof" });
+  });
 
-    // Wednesday in Czech is "středa"
-    const czechDayName = getFormattedDay("2026-04-15T12:00:00Z");
-    expect(czechDayName.toLowerCase()).toContain("střed");
-
-    // They should be different
-    expect(dayName).not.toBe(czechDayName);
+  it("rejects unknown fixture requests instead of fabricating successful bookings", async () => {
+    await expect(createFixtureFetch()("https://booking.example.test/unknown", { method: "DELETE" })).rejects.toThrow("Unexpected fixture request: DELETE /unknown");
   });
 });
