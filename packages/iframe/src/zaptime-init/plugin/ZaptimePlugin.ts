@@ -16,9 +16,7 @@ export interface ZaptimePluginInterface {
 
 export const ZaptimePlugin: ZaptimePluginInterface = {
   postMessage(action: string, data?: ZaptimePluginPayload): void {
-    const iframe = document.querySelector(
-      ".zoid-visible",
-    ) as HTMLIFrameElement | null;
+    const iframe = document.querySelector(".zoid-visible") as HTMLIFrameElement | null;
 
     if (iframe && iframe.contentWindow) {
       iframe.contentWindow.postMessage(

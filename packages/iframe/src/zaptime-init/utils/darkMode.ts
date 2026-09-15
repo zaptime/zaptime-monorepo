@@ -42,13 +42,8 @@ export function isDarkMode(): boolean {
  * Listen for website dark mode changes
  * Uses MutationObserver to watch for class/attribute changes on html and body
  */
-export function onDarkModeChange(
-  callback: (isDark: boolean) => void,
-): () => void {
-  if (
-    typeof document === "undefined" ||
-    typeof MutationObserver === "undefined"
-  ) {
+export function onDarkModeChange(callback: (isDark: boolean) => void): () => void {
+  if (typeof document === "undefined" || typeof MutationObserver === "undefined") {
     return () => {};
   }
 

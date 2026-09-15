@@ -27,10 +27,7 @@ describe("ZaptimePlugin", () => {
     it("should send postMessage to zoid iframe", () => {
       ZaptimePlugin.postMessage("test-action", { key: "value" });
 
-      expect(mockContentWindow.postMessage).toHaveBeenCalledWith(
-        { action: "test-action", data: { key: "value" } },
-        "*",
-      );
+      expect(mockContentWindow.postMessage).toHaveBeenCalledWith({ action: "test-action", data: { key: "value" } }, "*");
     });
 
     it("should not throw if no iframe found", () => {
@@ -44,10 +41,7 @@ describe("ZaptimePlugin", () => {
     it("should handle undefined data", () => {
       ZaptimePlugin.postMessage("test-action");
 
-      expect(mockContentWindow.postMessage).toHaveBeenCalledWith(
-        { action: "test-action", data: undefined },
-        "*",
-      );
+      expect(mockContentWindow.postMessage).toHaveBeenCalledWith({ action: "test-action", data: undefined }, "*");
     });
   });
 
@@ -55,19 +49,13 @@ describe("ZaptimePlugin", () => {
     it("should send book action", () => {
       ZaptimePlugin.book({ eventId: "123" });
 
-      expect(mockContentWindow.postMessage).toHaveBeenCalledWith(
-        { action: "book", data: { eventId: "123" } },
-        "*",
-      );
+      expect(mockContentWindow.postMessage).toHaveBeenCalledWith({ action: "book", data: { eventId: "123" } }, "*");
     });
 
     it("should work without payload", () => {
       ZaptimePlugin.book();
 
-      expect(mockContentWindow.postMessage).toHaveBeenCalledWith(
-        { action: "book", data: undefined },
-        "*",
-      );
+      expect(mockContentWindow.postMessage).toHaveBeenCalledWith({ action: "book", data: undefined }, "*");
     });
   });
 
@@ -75,10 +63,7 @@ describe("ZaptimePlugin", () => {
     it("should send reserve action", () => {
       ZaptimePlugin.reserve({ slotId: "456" });
 
-      expect(mockContentWindow.postMessage).toHaveBeenCalledWith(
-        { action: "reserve", data: { slotId: "456" } },
-        "*",
-      );
+      expect(mockContentWindow.postMessage).toHaveBeenCalledWith({ action: "reserve", data: { slotId: "456" } }, "*");
     });
   });
 
@@ -86,10 +71,7 @@ describe("ZaptimePlugin", () => {
     it("should send confirm action", () => {
       ZaptimePlugin.confirm({ bookingId: "789" });
 
-      expect(mockContentWindow.postMessage).toHaveBeenCalledWith(
-        { action: "confirm", data: { bookingId: "789" } },
-        "*",
-      );
+      expect(mockContentWindow.postMessage).toHaveBeenCalledWith({ action: "confirm", data: { bookingId: "789" } }, "*");
     });
   });
 
@@ -97,10 +79,7 @@ describe("ZaptimePlugin", () => {
     it("should send cancel action", () => {
       ZaptimePlugin.cancel({ bookingId: "789" });
 
-      expect(mockContentWindow.postMessage).toHaveBeenCalledWith(
-        { action: "cancel", data: { bookingId: "789" } },
-        "*",
-      );
+      expect(mockContentWindow.postMessage).toHaveBeenCalledWith({ action: "cancel", data: { bookingId: "789" } }, "*");
     });
   });
 });

@@ -2,9 +2,7 @@ import type { PopupOptions, ZaptimeInstance } from "../types/options";
 import { generateUniqueId } from "../utils/dom";
 import { ZaptimeModal } from "./Modal";
 
-export function createPopup(
-  options: PopupOptions = {} as PopupOptions,
-): ZaptimeInstance {
+export function createPopup(options: PopupOptions = {} as PopupOptions): ZaptimeInstance {
   const selector = options.selector || "[data-zaptime-link]";
   const id = generateUniqueId();
   let modal: ZaptimeModal | null = null;

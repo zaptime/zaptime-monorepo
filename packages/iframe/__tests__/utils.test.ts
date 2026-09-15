@@ -1,10 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { generateUniqueId } from "../src/zaptime-init/utils/dom";
 import { getZaptimeLogo, getCloseIcon } from "../src/zaptime-init/utils/icons";
-import {
-  isDarkMode,
-  onDarkModeChange,
-} from "../src/zaptime-init/utils/darkMode";
+import { isDarkMode, onDarkModeChange } from "../src/zaptime-init/utils/darkMode";
 
 describe("generateUniqueId", () => {
   it('should generate an id starting with "zaptime-"', () => {

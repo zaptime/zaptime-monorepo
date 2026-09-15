@@ -6,11 +6,7 @@ import { getCloseIcon } from "../utils/icons";
 import { isDarkMode, onDarkModeChange } from "../utils/darkMode";
 import { type ZaptimeConfig } from "@zaptime/core";
 
-export type ZaptimeComponentFn = (options: {
-  type?: string;
-  config: ZaptimeConfig;
-  onEventChanged?: (event: unknown) => void;
-}) => { render: (container: HTMLElement) => void };
+export type ZaptimeComponentFn = (options: { type?: string; config: ZaptimeConfig; onEventChanged?: (event: unknown) => void }) => { render: (container: HTMLElement) => void };
 
 // Zaptime component reference - set by index.ts after zoid.create()
 let ZaptimeComponent: ZaptimeComponentFn | null = null;

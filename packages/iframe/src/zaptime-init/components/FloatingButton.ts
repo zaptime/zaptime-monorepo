@@ -7,9 +7,7 @@ import { getZaptimeFreeLogo } from "../utils/icons";
 import { fetchAccountStatus } from "../utils/accountStatus";
 import { ZaptimeModal } from "./Modal";
 
-export function createFloatingButton(
-  options: FloatingButtonOptions = {} as FloatingButtonOptions,
-): ZaptimeInstance {
+export function createFloatingButton(options: FloatingButtonOptions = {} as FloatingButtonOptions): ZaptimeInstance {
   const position = options.position || "bottom-right";
 
   // User's custom options (will only be applied if account is subscribed)
@@ -33,37 +31,25 @@ export function createFloatingButton(
   function applyButtonStyling(): void {
     if (!button) return;
 
-    const positionStyles =
-      position === "bottom-left"
-        ? floatingButtonStyles.positionLeft
-        : floatingButtonStyles.positionRight;
+    const positionStyles = position === "bottom-left" ? floatingButtonStyles.positionLeft : floatingButtonStyles.positionRight;
 
     if (isSubscribed) {
       // Subscribed account - use custom styling
-      const buttonStyles = mergeStyles(
-        floatingButtonStyles.base,
-        positionStyles,
-        {
-          backgroundColor: customButtonColor,
-          color: customButtonTextColor,
-        },
-      );
+      const buttonStyles = mergeStyles(floatingButtonStyles.base, positionStyles, {
+        backgroundColor: customButtonColor,
+        color: customButtonTextColor,
+      });
       applyStyles(button, buttonStyles);
       button.innerHTML = "<span>" + customButtonText + "</span>";
     } else {
       // Free account - show gradient Zaptime branding
-      const buttonStyles = mergeStyles(
-        floatingButtonStyles.base,
-        positionStyles,
-        {
-          background:
-            "linear-gradient(134.86deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)",
-          boxShadow: "0 6px 10px rgba(9, 15, 35, 0.05)",
-          color: TOKENS.colors.white,
-          borderRadius: "0.5rem",
-          padding: "12px 24px 12px 18px",
-        },
-      );
+      const buttonStyles = mergeStyles(floatingButtonStyles.base, positionStyles, {
+        background: "linear-gradient(134.86deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)",
+        boxShadow: "0 6px 10px rgba(9, 15, 35, 0.05)",
+        color: TOKENS.colors.white,
+        borderRadius: "0.5rem",
+        padding: "12px 24px 12px 18px",
+      });
       applyStyles(button, buttonStyles);
       button.innerHTML = getZaptimeFreeLogo() + "<span>Zaptime</span>";
     }
@@ -84,8 +70,7 @@ export function createFloatingButton(
         applyStyles(button, floatingButtonStyles.hover);
         // Free account hover - change gradient angle
         if (!isSubscribed) {
-          button.style.background =
-            "linear-gradient(100deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)";
+          button.style.background = "linear-gradient(100deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)";
         }
       }
     });
@@ -95,8 +80,7 @@ export function createFloatingButton(
         // Restore appropriate shadow and background
         if (!isSubscribed) {
           button.style.boxShadow = "0 6px 10px rgba(9, 15, 35, 0.05)";
-          button.style.background =
-            "linear-gradient(134.86deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)";
+          button.style.background = "linear-gradient(134.86deg, #ff8d47, #ff7447 14.76%, #ff4247 45.41%, #e92a5b 63.69%, #dd1c67 74.04%, #d31071 84.3%, #cf0283)";
         } else {
           button.style.boxShadow = TOKENS.shadows.button;
         }

@@ -2,10 +2,7 @@ import ZaptimeLocale from "../types/ZaptimeLocale";
 import DfnsConfig from "../types/DfnsConfig";
 
 import { format } from "date-fns";
-export const getHeaders = (
-  locale: ZaptimeLocale,
-  dfnsConfig: DfnsConfig,
-): string[] => {
+export const getHeaders = (locale: ZaptimeLocale, dfnsConfig: DfnsConfig): string[] => {
   let sun = "";
 
   if (locale && locale.headers && locale.headers.sun) {

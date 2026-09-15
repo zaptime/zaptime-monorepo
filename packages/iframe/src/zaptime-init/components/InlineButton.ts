@@ -6,9 +6,7 @@ import { generateUniqueId } from "../utils/dom";
 import { fetchAccountStatus } from "../utils/accountStatus";
 import { ZaptimeModal } from "./Modal";
 
-export function createInlineButton(
-  options: InlineButtonOptions,
-): ZaptimeInstance {
+export function createInlineButton(options: InlineButtonOptions): ZaptimeInstance {
   const selector = options.selector;
 
   // User's custom styling options

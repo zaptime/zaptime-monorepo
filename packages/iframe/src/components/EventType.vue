@@ -23,10 +23,6 @@ const onTimeSlotChanged = (timeSlot: TimeSlot | undefined) => {
 
 <template>
   <div>
-    <ZaptimeCalendar
-      :calendar-id="calendarId"
-      :config="config"
-      @time-slot-changed="onTimeSlotChanged"
-    ></ZaptimeCalendar>
+    <ZaptimeCalendar :calendar-id="calendarId" :config="config" @time-slot-changed="onTimeSlotChanged"></ZaptimeCalendar>
   </div>
 </template>
