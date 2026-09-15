@@ -47,3 +47,5 @@ export type * from "./calendar/types";
 export type { BillingAddress } from "./types/BillingAddress";
 export type { default as CalendarState } from "./types/CalendarState";
 export type { Analytics, Location, Reservation, StripeConfig, CustomFieldValue } from "./types/InitData";
+export { FormValidationError } from "./booking/validation";
+export type { FieldValidationError } from "./booking/validation";

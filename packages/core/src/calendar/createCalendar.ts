@@ -1,3 +1,7 @@
+import { createFieldActions } from "../forms/fields";
+import { createGuestActions } from "../forms/guests";
+import { createBillingActions } from "../forms/billing";
+import { assertFormEditable, invalid, validateSeats } from "../booking/validation";
 import { CalendarError } from "../api/errors";
 import { createCalendarContext } from "./lifecycle";
 import type { CalendarActions, CalendarFormatters, CalendarInstance, CalendarSelectors, CreateCalendarOptions } from "./types";
@@ -11,7 +15,11 @@ export function createCalendar(options: CreateCalendarOptions): CalendarInstance
     throw new CalendarError("api", `${operation} is not implemented`);
   };
   const pendingAsync = (operation: string) => async (): Promise<never> => pending(operation);
+  const guests = createGuestActions(context);
   const actions: CalendarActions = {
+    ...createFieldActions(context),
+    ...guests.actions,
+    ...createBillingActions(context),
     getDays: pendingAsync("getDays"),
     next: pendingAsync("next"),
     prev: pendingAsync("prev"),
@@ -26,21 +34,12 @@ export function createCalendar(options: CreateCalendarOptions): CalendarInstance
     setConfig: pendingAsync("setConfig"),
     setTimezone: pendingAsync("setTimezone"),
     setHourCycle: () => pending("setHourCycle"),
-    setLocations: () => pending("setLocations"),
-    setStripeConfig: () => pending("setStripeConfig"),
-    setBookingForm: () => pending("setBookingForm"),
-    setCustomFieldValue: () => pending("setCustomFieldValue"),
-    collectFormValues: () => pending("collectFormValues"),
-    setMaxGuests: () => pending("setMaxGuests"),
-    addGuest: () => pending("addGuest"),
-    removeGuest: () => pending("removeGuest"),
-    updateGuest: () => pending("updateGuest"),
-    setBillingAddress: () => pending("setBillingAddress"),
-    updateBillingAddressField: () => pending("updateBillingAddressField"),
-    setSelectedReservation: () => pending("setSelectedReservation"),
-    setSeats: () => pending("setSeats"),
-    setView: () => pending("setView"),
-    setCalendarView: () => pending("setCalendarView"),
+    setLocations(locations) { assertFormEditable(context); store.commit({ locations }); },
+    setStripeConfig(stripeConfig) { assertFormEditable(context); store.commit({ stripeConfig }); },
+    setSelectedReservation(reservation) { assertFormEditable(context); store.commit({ reservation }); },
+    setSeats(seats) { assertFormEditable(context); validateSeats(seats, store.getSnapshot().selectedTimeSlot?.seats); store.commit({ seats }); },
+    setView(view) { context.assertActive(); if (!["calendar", "form", "success"].includes(view)) invalid("view", "option"); if (store.commit({ view })) context.emit({ type: "view-changed", payload: view }); },
+    setCalendarView(calendarView) { context.assertActive(); if (!["pickingDate", "pickingTime"].includes(calendarView)) invalid("calendarView", "option"); store.commit({ calendarView }); },
     book: pendingAsync("book"),
     reserve: pendingAsync("reserve"),
     confirm: pendingAsync("confirm"),
@@ -58,9 +57,8 @@ export function createCalendar(options: CreateCalendarOptions): CalendarInstance
     isSelected: () => pending("isSelected"),
     isSelectedDay: () => pending("isSelectedDay"),
     dayHasTimeSlot: () => pending("dayHasTimeSlot"),
-    guestsEnabled: () => pending("guestsEnabled"),
-    canAddGuest: () => pending("canAddGuest"),
-    isPhoneCall: () => pending("isPhoneCall"),
+    ...guests.selectors,
+    isPhoneCall: () => store.getSnapshot().locations.some(location => location.value === "phone"),
   };
   const formatters: CalendarFormatters = {
     loadDateFnsConfig: pendingAsync("loadDateFnsConfig"),
