@@ -1,9 +1,13 @@
 import type { CalendarSnapshot, DeepReadonly, Unsubscribe } from "./types";
 
 /** Clone inputs before publication, including Dates (freezing alone does not protect them). */
-export function immutableCopy<T>(value: T): DeepReadonly<T> {
+export function immutableCopy<T>(value: T, copies = new WeakMap<object, object>()): DeepReadonly<T> {
+  if (value && typeof value === "object" && copies.has(value)) {
+    return copies.get(value) as DeepReadonly<T>;
+  }
   if (value instanceof Date) {
     const copy = new Date(value.getTime());
+    copies.set(value, copy);
     for (const name of Object.getOwnPropertyNames(Date.prototype)) {
       if (name.startsWith("set")) {
         Object.defineProperty(copy, name, {
@@ -15,18 +19,28 @@ export function immutableCopy<T>(value: T): DeepReadonly<T> {
     }
     return Object.freeze(copy) as DeepReadonly<T>;
   }
-  if (Array.isArray(value)) return Object.freeze(value.map(immutableCopy)) as DeepReadonly<T>;
+  if (Array.isArray(value)) {
+    const copy: unknown[] = [];
+    copies.set(value, copy);
+    for (const item of value) copy.push(immutableCopy(item, copies));
+    return Object.freeze(copy) as DeepReadonly<T>;
+  }
   if (value && typeof value === "object") {
     const copy = Object.create(Object.getPrototypeOf(value));
+    copies.set(value, copy);
     for (const key of Reflect.ownKeys(value)) {
       const descriptor = Object.getOwnPropertyDescriptor(value, key)!;
       if ("value" in descriptor) {
-        descriptor.value = immutableCopy(descriptor.value);
+        // A cause is an opaque diagnostic handle (possibly a native Response or
+        // cyclic Error). Preserve its identity and internal slots as Error.cause promises.
+        if (!(value instanceof Error && key === "cause")) {
+          descriptor.value = immutableCopy(descriptor.value, copies);
+        }
         Object.defineProperty(copy, key, descriptor);
       } else {
         // Capture accessor values now, rather than retaining mutable caller closures.
         Object.defineProperty(copy, key, {
-          value: immutableCopy(Reflect.get(value, key)),
+          value: immutableCopy(Reflect.get(value, key), copies),
           enumerable: descriptor.enumerable,
           configurable: descriptor.configurable,
           writable: false,

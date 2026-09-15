@@ -131,3 +131,18 @@ test("published slot values do not retain caller-owned getter closures", () => {
   expect(a.getSnapshot()).toBe(snapshot);
   expect(snapshot.selectedTimeSlot?.title).toBe("Original appointment");
 });
+
+test("initialization retains an opaque cyclic error cause without corrupting error state", async () => {
+  const cause = new Error("Transport failure");
+  cause.cause = cause;
+  const a = calendar({
+    runtime: {
+      fetch: async () => {
+        throw cause;
+      },
+    },
+  });
+  await expect(a.init()).rejects.toMatchObject({ code: "network" });
+  expect(a.getSnapshot().phase).toBe("error");
+  expect(a.getSnapshot().error?.cause).toBe(cause);
+});
