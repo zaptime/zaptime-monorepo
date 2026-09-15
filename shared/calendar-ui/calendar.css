@@ -42,3 +42,6 @@
 .zaptime-calendar button:disabled { opacity: .5; cursor: default; }
 
 .zaptime-calendar { --c-zaptime-25: #f8fafc; --c-zaptime-50: #f8fafc; --c-zaptime-100: #f1f5f9; --c-zaptime-200: #e2e8f0; --c-zaptime-300: #cbd5e1; --c-zaptime-400: #64748b; --c-zaptime-500: #475569; --c-zaptime-600: #334155; --c-zaptime-700: #384250; --c-zaptime-800: #1e293b; --c-zaptime-900: #020617; --c-zaptime-accent-light: #2ED3B7; --c-zaptime-accent-base: #15B79E; --c-zaptime-accent-dark: #0E9384; }
+
+.zaptime-calendar.dark { color: var(--c-zaptime-100); }
+.zaptime-calendar input[type="checkbox"], .zaptime-calendar input[type="radio"] { accent-color: var(--c-zaptime-accent-base); }

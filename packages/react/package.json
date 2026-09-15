@@ -1,6 +1,6 @@
 {
   "name": "@zaptime/react",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "type": "module",
   "main": "dist/entry.js",
   "types": "dist/entry.d.ts",
@@ -18,7 +18,8 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "build": "vite build && tsc --declaration --emitDeclarationOnly"
+    "build": "vite build && tsc --declaration --emitDeclarationOnly && cp ../../shared/calendar-ui/assets/NOTICE.md dist/NOTICE.md",
+    "prebuild": "cp ../../shared/calendar-ui/messages.ts ../../shared/calendar-ui/locations.ts ../../shared/calendar-ui/countries.ts src/generated/"
   },
   "dependencies": {
     "@zaptime/core": "workspace:*",

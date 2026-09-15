@@ -1,2 +1,2 @@
-export * from "./entry";
+export * from "./entry.js";
 import "../../../shared/calendar-ui/calendar.css";

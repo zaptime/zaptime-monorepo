@@ -54,6 +54,8 @@ test("disabled and initialization failures are accessible", async () => {
   vi.mocked(fetch).mockResolvedValueOnce(new Response("", { status: 500 }));
   render(<ZaptimeCalendar config={config} />);
   expect(await screen.findByRole("alert")).toBeTruthy();
+  expect(screen.queryByRole("button", { name: "Next month" })).toBeNull();
+  expect(screen.queryByText(/1970/)).toBeNull();
 });
 test("announces deferred month loading and preserves compact theme changes", async () => {
   const { rerender } = render(<ZaptimeCalendar config={config} />);
@@ -74,4 +76,42 @@ test("announces deferred month loading and preserves compact theme changes", asy
   await waitFor(() => expect(screen.getByRole("region").getAttribute("data-compact")).toBe("true"));
   expect(screen.getByRole("region").className).toContain("dark");
   expect(screen.getByRole("region").style.getPropertyValue("--c-zaptime-accent-base")).toBe("#ff0000");
+});
+test("keyboard focus follows available dates", async () => {
+  vi.mocked(fetch).mockImplementation(async (input) => Response.json({ success: true, data: String(input).includes("init") ? initData : [slot, { ...slot, start: "2030-05-03T10:00:00Z", end: "2030-05-03T10:30:00Z" }] }));
+  render(<ZaptimeCalendar config={config} />);
+  const first = await screen.findByRole("button", { name: "May 2, 2030" });
+  first.focus();
+  fireEvent.keyDown(first, { key: "ArrowRight" });
+  expect(document.activeElement).toBe(screen.getByRole("button", { name: "May 3, 2030" }));
+});
+test("dark mode activates prefixed Tailwind rules and meeting metadata shows price and platform", async () => {
+  vi.mocked(fetch).mockResolvedValueOnce(
+    Response.json({ success: true, data: { ...initData, locations: [{ type: "google-meet", value: "" }], stripeConfig: { price: 1234, currency: "USD", stripeAccountId: "acct_fixture" } } }),
+  );
+  render(<ZaptimeCalendar config={{ ...config, theme: { mode: "dark" } }} />);
+  await screen.findByRole("button", { name: "May 2, 2030" });
+  expect(screen.getByRole("region", { name: "Booking calendar" }).classList.contains("cal-dark")).toBe(true);
+  expect(screen.getByText("Google Meet")).toBeTruthy();
+  expect(screen.getByText("$12.34")).toBeTruthy();
+});
+test("compact keyboard date selection moves focus into time pane", async () => {
+  render(<ZaptimeCalendar config={{ ...config, compact: true }} />);
+  const day = await screen.findByRole("button", { name: "May 2, 2030" });
+  day.focus();
+  fireEvent.click(day);
+  await waitFor(() => expect(document.activeElement?.tagName).toBe("H2"));
+  expect(document.activeElement?.textContent).toContain("May 2");
+});
+test("compact empty month explains availability and offers next month", async () => {
+  vi.mocked(fetch).mockImplementation(async (input) => Response.json({ success: true, data: String(input).includes("init") ? initData : [] }));
+  render(<ZaptimeCalendar config={{ ...config, compact: true }} />);
+  expect(await screen.findByRole("button", { name: "Show next month" })).toBeTruthy();
+  expect(screen.getByRole("status").textContent).toContain("There is no time slot");
+});
+test("block introduction HTML is rendered in a block container", async () => {
+  render(<ZaptimeCalendar config={{ ...config, locale: { texts: { introduction: '<p>Book <a href="https://example.test">here</a></p>' } } }} />);
+  const link = await screen.findByRole("link", { name: "here" });
+  expect(link.parentElement?.tagName).toBe("P");
+  expect(link.parentElement?.parentElement?.tagName).toBe("DIV");
 });

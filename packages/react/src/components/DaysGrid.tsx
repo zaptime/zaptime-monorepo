@@ -1,8 +1,9 @@
 import { useRef, type KeyboardEvent } from "react";
-import { useCalendar, useCalendarViewState } from "@zaptime/react-headless";
+import { useCalendar, useCalendarViewState, useCurrentTimezone } from "@zaptime/react-headless";
 export function DaysGrid() {
   const c = useCalendar(),
     view = useCalendarViewState();
+  const { timezone } = useCurrentTimezone();
   const grid = useRef<HTMLDivElement>(null);
   function move(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     const delta = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[event.key];
@@ -28,7 +29,7 @@ export function DaysGrid() {
         <button
           key={i}
           type="button"
-          aria-label={day.date ? new Intl.DateTimeFormat(c.config.locale?.preset ?? "en", { month: "long", day: "numeric", year: "numeric" }).format(new Date(day.date.getTime())) : undefined}
+          aria-label={day.date ? new Intl.DateTimeFormat(c.config.locale?.preset ?? "en", { month: "long", day: "numeric", year: "numeric", timeZone: timezone }).format(new Date(day.date.getTime())) : undefined}
           aria-pressed={c.isSelectedDay(day)}
           disabled={!c.dayHasTimeSlot(day) || !!day.isPast || c.state.loading}
           onKeyDown={(e) => move(e, i)}
@@ -36,7 +37,7 @@ export function DaysGrid() {
             c.dayClicked(day);
             view.setCalendarView("pickingTime");
           }}
-          className={`cal-mx-auto cal-h-10 cal-w-10 cal-rounded-md cal-text-sm ${c.isSelectedDay(day) ? "cal-bg-accent-base cal-text-white" : "cal-bg-theme-100 cal-text-theme-700 dark:cal-bg-theme-800 dark:cal-text-theme-100"}`}
+          className={`cal-mx-auto cal-h-10 cal-w-10 cal-rounded-md cal-text-sm ${c.isSelectedDay(day) ? "cal-bg-accent-base cal-text-white" : c.dayHasTimeSlot(day) && !day.isPast ? "cal-bg-theme-100 cal-text-theme-700 dark:cal-bg-theme-800 dark:cal-text-theme-100" : "cal-text-theme-500 dark:cal-text-theme-300"}`}
         >
           {day.label}
         </button>

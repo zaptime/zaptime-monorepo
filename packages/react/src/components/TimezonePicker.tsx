@@ -1,14 +1,16 @@
 import { useId } from "react";
-import { useCurrentTimezone, useHourCycle } from "@zaptime/react-headless";
+import { useCurrentTimezone, useHourCycle, useConfig } from "@zaptime/react-headless";
+import { calendarMessages } from "../generated/messages.js";
 export function TimezonePicker() {
   const { timezone, setTimezone } = useCurrentTimezone(),
     { hourCycle, setHourCycle } = useHourCycle(),
-    id = useId();
+    id = useId(),
+    { config } = useConfig();
   const zones = Array.from(new Set([timezone, "UTC", ...(typeof Intl.supportedValuesOf === "function" ? Intl.supportedValuesOf("timeZone") : ["Europe/Prague", "America/New_York"])]));
   return (
     <div className="cal-mt-6 cal-flex cal-flex-wrap cal-items-center cal-gap-3 cal-text-sm">
       <label className="cal-flex-1" htmlFor={id}>
-        Timezone
+        {calendarMessages(config.locale?.preset).timezone}
         <select className="cal-ui-input cal-mt-1" id={id} value={timezone} onChange={(e) => void setTimezone(e.target.value).catch(() => {})}>
           {zones.map((z) => (
             <option key={z}>{z}</option>
