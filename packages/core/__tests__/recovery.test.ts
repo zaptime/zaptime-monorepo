@@ -87,3 +87,16 @@ it("pending and definitive reconciliation failure remain unresolved without succ
   expect(events.mock.calls.some((c) => c[0].type === "booking-confirmed")).toBe(false);
   await calendar.dispose();
 });
+it("retains a manually selected reschedule UUID before a lost PUT and rejects another reservation", async () => {
+  const { createFixtureFetch, reservation } = await import("../../../tests/contracts/fixtures");
+  const transport = createFixtureFetch();
+  const reconcile = vi.fn().mockResolvedValue({ status: "confirmed", reservation: { ...reservationResponse, data: { ...reservationResponse.data, uuid: "another-reservation" } } });
+  const { calendar } = await fixture({ reconcile, fetch: (url, init) => (init?.method === "PUT" ? Promise.reject(new Error("Lost PUT response")) : transport(url, init)) });
+  calendar.actions.setSelectedReservation(reservation);
+  await expect(calendar.actions.reschedule()).rejects.toMatchObject({ code: "recovery-required" });
+  expect(calendar.getSnapshot().recovery?.reservationUuid).toBe(reservation.uuid);
+  await expect(calendar.actions.recover()).rejects.toMatchObject({ code: "recovery-required" });
+  expect(reconcile).toHaveBeenCalledWith(expect.objectContaining({ reservationUuid: reservation.uuid }));
+  expect(calendar.getSnapshot().phase).toBe("recovery-required");
+  await calendar.dispose();
+});

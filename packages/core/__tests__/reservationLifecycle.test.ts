@@ -133,3 +133,26 @@ it("successful explicit cancellation clears the hold only after valid success", 
   expect(fetcher.mock.calls.some((c) => String(c[0]).endsWith("/refresh"))).toBe(false);
   await calendar.dispose();
 });
+it("disposal waits for a hanging renewal deadline and ignores its late result", async () => {
+  vi.useFakeTimers();
+  const gate = deferred<Response>();
+  const transport = createFixtureFetch();
+  const { calendar } = await fixture({ fetch: (url, init) => (String(url).endsWith("/refresh") ? gate.promise : transport(url, init)) });
+  await calendar.actions.reserve(input);
+  await vi.advanceTimersByTimeAsync(900000);
+  let disposed = false;
+  const disposal = calendar.dispose().then(() => {
+    disposed = true;
+  });
+  await vi.advanceTimersByTimeAsync(0);
+  expect(disposed).toBe(false);
+  await vi.advanceTimersByTimeAsync(30000);
+  await disposal;
+  expect(vi.getTimerCount()).toBe(0);
+  const revision = calendar.getSnapshot().revision;
+  gate.resolve(Response.json({ success: true, data: [] }));
+  await vi.advanceTimersByTimeAsync(0);
+  expect(calendar.getSnapshot().revision).toBe(revision);
+  expect(calendar.getSnapshot().phase).toBe("disposed");
+  expect(vi.getTimerCount()).toBe(0);
+});

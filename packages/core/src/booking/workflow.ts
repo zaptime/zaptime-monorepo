@@ -34,6 +34,7 @@ export function createWorkflow(context: CalendarContext) {
   const client = createZaptimeClient({ fetch: context.runtime.fetch });
   let timer: unknown;
   let hold: Transaction | undefined;
+  let renewal: Promise<void> | undefined;
   let generation = 0;
   function stop() {
     generation++;
@@ -41,7 +42,11 @@ export function createWorkflow(context: CalendarContext) {
     timer = undefined;
     hold = undefined;
   }
-  context.addCleanup(stop);
+  context.addCleanup(async () => {
+    stop();
+    // A refresh is still a sent mutation. Drain its finite local deadline before disposal resolves.
+    await renewal;
+  });
   function unresolved(tx: Transaction, error: CalendarError) {
     store.commit({ phase: "recovery-required", recovery: { ...tx.recovery }, error });
     context.emit({ type: "recovery-required", payload: { ...tx.recovery } });
@@ -53,7 +58,7 @@ export function createWorkflow(context: CalendarContext) {
     // Historical nominal cadence only; deployed expiry/renewal safety is an open release gate.
     const schedule = () => {
       timer = context.runtime.schedule(() => {
-        void renew();
+        renewal = renew();
       }, 15 * 60_000);
     };
     const renew = async () => {
@@ -102,6 +107,7 @@ export function createWorkflow(context: CalendarContext) {
     if (operation === "reschedule") {
       const reservationUuid = tx.snapshot.reservation?.uuid ?? config.reservationUuid;
       if (!reservationUuid) throw new CalendarError("validation", "No reservation to reschedule");
+      tx.recovery.reservationUuid = reservationUuid;
       return complete(tx, await bounded(context, client.reschedule({ ...base, start: slot.start, end: slot.end, timezone, uuid: reservationUuid, overrideToken: config.rescheduleOverrideToken })));
     }
     const response = await bounded(context, client[operation]({ ...base, ...tx.input, timeSlot: { ...slot }, timezone }));
