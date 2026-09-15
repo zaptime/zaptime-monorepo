@@ -27,7 +27,13 @@ function calendar() {
 }
 beforeEach(() => {
   vi.clearAllMocks();
-  sdk.create.mockReturnValue({ track: sdk.track });
+  sdk.create.mockReturnValue({
+    track: sdk.track,
+    ready: (callback: () => void) => {
+      callback();
+      return () => {};
+    },
+  });
   sdk.ga.mockReturnValue({ name: "ga" });
   sdk.gtm.mockReturnValue({ name: "gtm" });
 });
@@ -76,4 +82,38 @@ it("drops an event queued while the lazy integration is loading", async () => {
   off();
   await new Promise((resolve) => setTimeout(resolve, 20));
   expect(sdk.track).not.toHaveBeenCalled();
+});
+it("releases readiness listeners and timeout immediately on cleanup", async () => {
+  vi.useFakeTimers();
+  try {
+    const detach = vi.fn();
+    const ready = vi.fn(() => detach);
+    sdk.create.mockReturnValue({ track: sdk.track, ready });
+    const c = calendar();
+    const off = attachBrowserEffects(c as any, { analytics: [{ name: "google-analytics", data: { measurementId: "G_TEST" } }] });
+    c.emit({ type: "analytics", payload: { name: "booking", properties: {} } });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(ready).toHaveBeenCalledTimes(1);
+    off();
+    expect(detach).toHaveBeenCalledTimes(1);
+    expect(vi.getTimerCount()).toBe(0);
+    await vi.advanceTimersByTimeAsync(30000);
+    expect(sdk.track).not.toHaveBeenCalled();
+  } finally {
+    vi.useRealTimers();
+  }
+});
+it("drops analytics when SDK readiness registration fails", async () => {
+  sdk.create.mockReturnValue({
+    track: sdk.track,
+    ready: () => {
+      throw new Error("Provider unavailable");
+    },
+  });
+  const c = calendar();
+  const off = attachBrowserEffects(c as any, { analytics: [{ name: "google-analytics", data: { measurementId: "G_TEST" } }] });
+  c.emit({ type: "analytics", payload: { name: "booking", properties: {} } });
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  expect(sdk.track).not.toHaveBeenCalled();
+  off();
 });
