@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { createCalendar, type CreateCalendarOptions } from "@zaptime/core";
 import { equal } from "./store";
-/** An inert owner is created during render. Only committed effects start work. */
+/**
+ * An inert owner is created during render. Only committed effects start work.
+ * Configuration updates use core patch semantics: omitted presentation values
+ * retain the current setting. Pass explicit values (for example compact: false)
+ * to change them. Removed endpoint/reservation/authorization options are cleared.
+ */
 export function useCalendarInstance(options: CreateCalendarOptions) {
   const [owner] = useState(() => ({ calendar: createCalendar(options), config: structuredClone(options.config), leases: 0, started: false }));
   useEffect(() => {

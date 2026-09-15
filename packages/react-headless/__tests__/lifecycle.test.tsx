@@ -78,3 +78,21 @@ it("clears removed optional authorization props on reconciliation", async () => 
   await act(async () => {});
   expect(result.current.getSnapshot().config.rescheduleOverrideToken).toBeUndefined();
 });
+it("applies presentation options as patches and accepts explicit reset values", async () => {
+  const opts = options();
+  const { result, rerender } = renderHook(
+    ({ patch }: { patch: { compact?: boolean; externalBooking?: boolean; redirectAfterBookingUrl?: string } }) => useCalendarInstance({ ...opts, config: { ...opts.config, ...patch } }),
+    {
+      initialProps: { patch: { compact: true, externalBooking: true, redirectAfterBookingUrl: "https://example.test/done" } },
+    },
+  );
+  await act(async () => {
+    await result.current.init();
+  });
+  rerender({ patch: {} });
+  await act(async () => {});
+  expect(result.current.getSnapshot().config).toMatchObject({ compact: true, externalBooking: true, redirectAfterBookingUrl: "https://example.test/done" });
+  rerender({ patch: { compact: false, externalBooking: false, redirectAfterBookingUrl: "" } });
+  await act(async () => {});
+  expect(result.current.getSnapshot().config).toMatchObject({ compact: false, externalBooking: false, redirectAfterBookingUrl: "" });
+});
