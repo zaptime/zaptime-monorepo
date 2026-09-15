@@ -8,7 +8,6 @@ import type { ReservationResponse } from "../types/ApiResponses";
 import type { BillingAddress } from "../types/BillingAddress";
 import type { Analytics, Location, StripeConfig, CustomField, CustomFieldValue, Reservation } from "../types/InitData";
 
-export type { CalendarError } from "../api/errors";
 export type { BookingInput, ConfirmationInput, Operation, PaymentDriver, PaymentOutcome, RecoveryContext, RecoveryResult } from "../booking/types";
 export type ReadonlyDate = Omit<Date, Extract<keyof Date, `set${string}`>>;
 export type DeepReadonly<T> = T extends Date ? ReadonlyDate : T extends (...args: any[]) => any ? T : T extends object ? { readonly [K in keyof T]: DeepReadonly<T[K]> } : T;
