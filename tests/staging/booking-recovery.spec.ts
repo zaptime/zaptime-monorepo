@@ -26,6 +26,14 @@ export interface RecoveryObservation {
   bookingStatus: "confirmed" | "pending" | "canceled" | "failed";
   mutationEffectCount?: number;
   originalMutationAttempts?: number;
+  // Fault-injector/server observations for this same original operation identity.
+  mutationReplay?: {
+    responsesDroppedAfterBackendAcceptance: number;
+    retriesAfterDroppedResponse: number;
+    maximumOverlappingRetryRequests: number;
+    lostResponseEvidenceRefs: string[];
+    concurrencyEvidenceRefs: string[];
+  };
   recoveryStatus?: "confirmed" | "pending" | "unsupported";
   browserClosedAtMs?: number;
   webhookProcessedAtMs?: number;
@@ -114,6 +122,17 @@ function expectOnePayment(result: RecoveryObservation) {
   expect(result.paymentConfirmationAttempts).toBe(1);
 }
 
+function expectMutationReplay(result: RecoveryObservation) {
+  // Original accepted mutation loses its response, followed by overlapping retries.
+  expect(result.originalMutationAttempts).toBeGreaterThanOrEqual(3);
+  expect(result.mutationReplay).toBeDefined();
+  expect(result.mutationReplay?.responsesDroppedAfterBackendAcceptance).toBeGreaterThanOrEqual(1);
+  expect(result.mutationReplay?.retriesAfterDroppedResponse).toBeGreaterThanOrEqual(2);
+  expect(result.mutationReplay?.maximumOverlappingRetryRequests).toBeGreaterThanOrEqual(2);
+  expect(result.mutationReplay?.lostResponseEvidenceRefs.length).toBeGreaterThan(0);
+  expect(result.mutationReplay?.concurrencyEvidenceRefs.length).toBeGreaterThan(0);
+}
+
 test("lost confirmation response recovers the original paid reservation", async () => {
   const result = await observe("lost-confirmation-response");
   expectOnePayment(result);
@@ -124,14 +143,14 @@ test("lost confirmation response recovers the original paid reservation", async 
 for (const operation of ["book", "reserve", "confirm", "reschedule", "cancel"] as const) {
   test(`${operation} retry with original identity applies its side effects once`, async () => {
     const result = await observe(`deduplicate-${operation}`);
-    expect(result.originalMutationAttempts).toBeGreaterThanOrEqual(2);
+    expectMutationReplay(result);
     expect(result.mutationEffectCount).toBe(1);
   });
 }
 
 test("payment creation retry retrieves the same intent", async () => {
   const result = await observe("reuse-payment-intent");
-  expect(result.originalMutationAttempts).toBeGreaterThanOrEqual(2);
+  expectMutationReplay(result);
   expectOnePayment(result);
 });
 
