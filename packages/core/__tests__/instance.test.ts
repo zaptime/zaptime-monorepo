@@ -116,3 +116,18 @@ test("snapshot dates cannot be changed through their setters", () => {
   expect(() => (date as Date).setTime(42)).toThrow("readonly");
   expect(date.getTime()).toBe(0);
 });
+
+test("published slot values do not retain caller-owned getter closures", () => {
+  const a = calendar();
+  let title = "Original appointment";
+  a.actions.setSelectedTimeSlot({
+    ...slot,
+    get title() {
+      return title;
+    },
+  });
+  const snapshot = a.getSnapshot();
+  title = "Changed outside the calendar";
+  expect(a.getSnapshot()).toBe(snapshot);
+  expect(snapshot.selectedTimeSlot?.title).toBe("Original appointment");
+});

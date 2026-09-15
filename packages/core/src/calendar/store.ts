@@ -20,8 +20,18 @@ export function immutableCopy<T>(value: T): DeepReadonly<T> {
     const copy = Object.create(Object.getPrototypeOf(value));
     for (const key of Reflect.ownKeys(value)) {
       const descriptor = Object.getOwnPropertyDescriptor(value, key)!;
-      if ("value" in descriptor) descriptor.value = immutableCopy(descriptor.value);
-      Object.defineProperty(copy, key, descriptor);
+      if ("value" in descriptor) {
+        descriptor.value = immutableCopy(descriptor.value);
+        Object.defineProperty(copy, key, descriptor);
+      } else {
+        // Capture accessor values now, rather than retaining mutable caller closures.
+        Object.defineProperty(copy, key, {
+          value: immutableCopy(Reflect.get(value, key)),
+          enumerable: descriptor.enumerable,
+          configurable: descriptor.configurable,
+          writable: false,
+        });
+      }
     }
     return Object.freeze(copy);
   }
