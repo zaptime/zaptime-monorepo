@@ -8,6 +8,11 @@ on:
     paths:
       - "packages/core/**"
       - "packages/vue3/**"
+      - "packages/vue-headless/**"
+      - "packages/browser/**"
+      - "shared/calendar-ui/**"
+      - "pnpm-workspace.yaml"
+      - "package.json"
       - "packages/iframe/**"
       - "pnpm-lock.yaml"
       - ".github/workflows/deploy-iframe.yml"
@@ -20,12 +25,26 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  verification:
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
+
   deploy:
     name: Build and deploy to Cloudflare Pages
+    needs: verification
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Require reviewed backend recovery evidence
+        env:
+          RECOVERY_VERIFIED: ${{ vars.CALENDAR_RECOVERY_VERIFIED }}
+        run: |
+          if [ "$RECOVERY_VERIFIED" != "true" ]; then
+            echo "Deployment blocked: complete the calendar recovery contract and release validation, then set CALENDAR_RECOVERY_VERIFIED=true."
+            exit 1
+          fi
 
       - uses: pnpm/action-setup@v4
         with:
@@ -37,13 +56,10 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - name: Build Core
-        run: pnpm --filter @zaptime/core build
-
-      - name: Build Vue3
-        run: pnpm --filter @zaptime/vue3 build
+      - name: Build Vue calendar dependencies
+        run: pnpm --filter @zaptime/vue3... run build
         env:
           VITE_STRIPE_CLIENT_KEY: ${{ secrets.VITE_STRIPE_CLIENT_KEY }}
 

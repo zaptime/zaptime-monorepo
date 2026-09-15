@@ -1,86 +1,44 @@
-# CLAUDE.md
+# Repository guide
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Zaptime ships one TypeScript calendar engine, granular Vue/React adapters, optional browser effects, and complete Vue/React calendars. See [CONTEXT.md](CONTEXT.md), [ADRs](docs/adr/README.md) and [release validation](docs/validation/calendar-release.md).
 
-## Project Overview
+## Packages
 
-Zaptime is a calendar booking system published as npm packages. The monorepo contains:
-- **@zaptime/core** - Headless Vue 3 composables for calendar logic (published to npm)
-- **@zaptime/vue3** - Vue 3 UI components built on core (published to npm)
-- **iframe** - Zoid.js wrapper for embedding calendar via script tag (private, deployed to Cloudflare Pages)
-- **examples/nuxt-example** - Nuxt 3 integration example
+```text
+iframe / Nuxt -> @zaptime/vue3 -> @zaptime/vue-headless -> @zaptime/core
+React / Next -> @zaptime/react -> @zaptime/react-headless -> @zaptime/core
+Both complete calendars -> @zaptime/browser -> @zaptime/core
+```
+
+Core owns immutable snapshots, initialization, preferences, forms, booking and recovery. It has no framework, CSS, DOM-global or browser-SDK runtime dependency. Headless adapters translate ownership/subscriptions into Vue refs or React render values. Browser effects mount Stripe using element references and deliver analytics/navigation. Shared UI assets are build inputs under `shared/calendar-ui`, emitted independently by each UI package.
+
+Each calendar is independent by default. Providers borrow an explicitly supplied instance. Hiding preserves state; owner disposal rejects new actions, detaches UI and waits for active bounded operations. SSR renders deterministic loading markup and fetches only after client mount.
 
 ## Commands
 
-```bash
-# Install dependencies
-pnpm install
+Use Node22.18.x and pnpm10.6.5:
 
-# Development - runs all packages in parallel
+```sh
+pnpm install --frozen-lockfile
+pnpm -r --if-present run build
 pnpm dev
-# Ports: vue3 (8888), iframe (8887)
-
-# Build individual packages
-pnpm --filter @zaptime/core build
-pnpm --filter @zaptime/vue3 build
-pnpm --filter iframe build
-
-# Lint and format
 pnpm lint
-pnpm format
 pnpm format:check
-
-# iframe specific
-pnpm --filter iframe merge-files  # Merge zoid.js + zaptime-init.js
-pnpm --filter iframe deploy       # Deploy to Cloudflare Pages
+pnpm -r --if-present run typecheck
+pnpm -r --if-present run test
+pnpm test:packages
+pnpm exec playwright test
+pnpm exec changeset status
 ```
 
-## Architecture
+Build workspace dependencies before consumers; do not use production source aliases to hide missing artifacts. Packed-consumer checks validate real tarballs, declarations, CSS exports and framework isolation. Headless imports must not load UI CSS. Preserve `cal-` classes and `--c-zaptime-*` theme variables.
 
-### Package Dependencies
-```
-iframe ─────────────────┐
-                        ├──▶ @zaptime/vue3 ──▶ @zaptime/core
-nuxt-example ───────────┘
-```
+## Payment and release gates
 
-### Core Package (`@zaptime/core`)
-Headless composables providing business logic without UI:
-- `useCalendar` - Main calendar state and day/time slot management
-- `useConfig` - Calendar configuration
-- `useSelectedTimeSlot` - Current selection state
-- `useBookingForm` - Form field management
-- API functions: `book`, `reserve`, `confirm`, `cancel`, `reschedule`, `fetchRemoteConfiguration`
+The frontend build default is `VITE_STRIPE_CLIENT_KEY`; runtime configuration may supply `stripePublishableKey`. These are publishable keys only. Never expose tokens, attendee details or payment secrets in logs, analytics or persisted recovery state.
 
-Built with tsup, exports ESM only.
+Default tests use fictional fixtures. `pnpm test:staging` is opt-in and requires reviewed test-mode setup. [The backend recovery contract](docs/contracts/booking-recovery.md) explicitly distinguishes source facts from deployed guarantees. Do not infer safe payment retry, intent reuse, refunds or webhook completion from mocks.
 
-### Vue3 Package (`@zaptime/vue3`)
-UI components consuming core composables:
-- `ZaptimeCalendar` - Main calendar component (also exported as deprecated `ZapTimeCalendar`)
-- `useCalendarViewState` - View state management
-- Re-exports core API functions
+The release workflow requires the full CI matrix and `CALENDAR_RECOVERY_VERIFIED=true` only after the contract and release matrix contain reviewed staging evidence. Updating workflows is not authorization to publish or deploy.
 
-Built with Vite, outputs ESM and UMD bundles.
-
-### Tailwind CSS Convention
-The vue3 package uses Tailwind with `cal-` prefix to avoid conflicts with host applications. All Tailwind classes must use this prefix (e.g., `cal-flex`, `cal-p-4`). Theme colors use CSS variables (`--c-zaptime-*`).
-
-### iframe Package
-Wraps vue3 in a Zoid.js iframe for script-tag embedding. Build process:
-1. `vite build` compiles Vue app
-2. `merge-files` concatenates `zoid/zoid.js` + `zoid/zaptime-init.js` into `dist/zaptime.js`
-
-For local development without Zoid, run `pnpm dev` which uses `example/` folder with mocked `window.xprops`.
-
-## Release Process
-
-Uses Changesets for version management. On push to main:
-1. CI builds core then vue3 (order matters due to dependency)
-2. Changesets creates release PR or publishes to npm with provenance
-3. GitHub releases created automatically
-
-To add a changeset locally: `pnpm changeset`
-
-## Key Environment Variables
-
-- `VITE_STRIPE_CLIENT_KEY` - Required for vue3 production build (injected at build time)
+The iframe keeps its Zoid IIFE integration. `pnpm --filter iframe merge-files` concatenates `zoid/zoid.js` and `zoid/zaptime-init.js`; deployment remains a separate command/workflow. Preserve existing script-tag embedding modes.

@@ -13,12 +13,7 @@
           class="cal-ml-0.5 cal-rounded-full cal-p-0.5 cal-text-theme-400 hover:cal-bg-theme-200 hover:cal-text-theme-600 dark:cal-text-theme-400 dark:hover:cal-bg-theme-600 dark:hover:cal-text-theme-200"
           @click="removeGuest(index)"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="cal-h-3.5 cal-w-3.5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" class="cal-h-3.5 cal-w-3.5" viewBox="0 0 20 20" fill="currentColor">
             <path
               fill-rule="evenodd"
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -41,36 +36,14 @@
         @keydown.enter.prevent="confirmGuest"
       />
       <!-- Confirm button -->
-      <button
-        type="button"
-        class="cal-flex-shrink-0 cal-rounded-md cal-p-2 cal-text-theme-400 hover:cal-text-theme-600 dark:cal-text-theme-500 dark:hover:cal-text-theme-300"
-        @click="confirmGuest"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="cal-h-5 cal-w-5"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-            clip-rule="evenodd"
-          />
+      <button type="button" class="cal-flex-shrink-0 cal-rounded-md cal-p-2 cal-text-theme-400 hover:cal-text-theme-600 dark:cal-text-theme-500 dark:hover:cal-text-theme-300" @click="confirmGuest">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cal-h-5 cal-w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
         </svg>
       </button>
       <!-- Cancel button -->
-      <button
-        type="button"
-        class="cal-flex-shrink-0 cal-rounded-md cal-p-2 cal-text-theme-400 hover:cal-text-theme-600 dark:cal-text-theme-500 dark:hover:cal-text-theme-300"
-        @click="cancelInput"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="cal-h-5 cal-w-5"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
+      <button type="button" class="cal-flex-shrink-0 cal-rounded-md cal-p-2 cal-text-theme-400 hover:cal-text-theme-600 dark:cal-text-theme-500 dark:hover:cal-text-theme-300" @click="cancelInput">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cal-h-5 cal-w-5" viewBox="0 0 20 20" fill="currentColor">
           <path
             fill-rule="evenodd"
             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -93,19 +66,16 @@
 </template>
 
 <script setup lang="ts">
-import { useGuests, useConfig } from "@zaptime/core";
+import { useGuests, useConfig } from "@zaptime/vue-headless";
 import { inject, ref, nextTick, computed } from "vue";
 
 const calendarId = inject<string | undefined>("calendarId");
 
-const { guests, guestsEnabled, canAddGuest, addGuest, removeGuest } =
-  useGuests(calendarId);
+const { guests, guestsEnabled, canAddGuest, addGuest, removeGuest } = useGuests(calendarId);
 const { config } = useConfig(calendarId);
 
 const guestPlaceholder = "Email";
-const addGuestLabel = computed(
-  () => config.value.locale?.confirmationForm?.addGuests ?? "Add guest",
-);
+const addGuestLabel = computed(() => config.value.locale?.confirmationForm?.addGuests ?? "Add guest");
 
 const showInput = ref(false);
 const inputValue = ref("");

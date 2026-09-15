@@ -8,12 +8,8 @@ describe("error text localization", () => {
   // English value for these keys, the preset-based fallback below could never
   // fire and cs/sk/pl visitors would always see English.
   it("defaultConfig does not shadow the localized fallbacks", () => {
-    expect(
-      defaultConfig.locale?.confirmationForm?.rescheduleNotAllowed,
-    ).toBeUndefined();
-    expect(
-      defaultConfig.locale?.confirmationForm?.slotNoLongerAvailable,
-    ).toBeUndefined();
+    expect(defaultConfig.locale?.confirmationForm?.rescheduleNotAllowed).toBeUndefined();
+    expect(defaultConfig.locale?.confirmationForm?.slotNoLongerAvailable).toBeUndefined();
   });
 
   it("falls back to the preset language", () => {
@@ -33,11 +29,7 @@ describe("error text localization", () => {
   });
 
   it("falls back to English for unknown presets", () => {
-    expect(rescheduleNotAllowedText({ preset: "de" })).toContain(
-      "no longer be rescheduled",
-    );
-    expect(rescheduleNotAllowedText(undefined)).toContain(
-      "no longer be rescheduled",
-    );
+    expect(rescheduleNotAllowedText({ preset: "de" })).toContain("no longer be rescheduled");
+    expect(rescheduleNotAllowedText(undefined)).toContain("no longer be rescheduled");
   });
 });

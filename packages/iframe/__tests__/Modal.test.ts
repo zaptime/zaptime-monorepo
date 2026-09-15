@@ -102,9 +102,7 @@ describe("ZaptimeModal", () => {
     const event = new KeyboardEvent("keydown", { key: "Escape" });
     document.dispatchEvent(event);
 
-    expect(document.getElementById(`${modal.id}-backdrop`)?.style.opacity).toBe(
-      "0",
-    );
+    expect(document.getElementById(`${modal.id}-backdrop`)?.style.opacity).toBe("0");
     vi.useRealTimers();
   });
 

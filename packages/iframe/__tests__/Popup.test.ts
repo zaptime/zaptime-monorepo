@@ -50,16 +50,13 @@ describe("createPopup", () => {
   });
 
   it("should prevent default on click", () => {
-    document.body.innerHTML =
-      '<a href="https://example.com" data-zaptime-link>Book</a>';
+    document.body.innerHTML = '<a href="https://example.com" data-zaptime-link>Book</a>';
 
     createPopup({
       config: { token: "test-token" },
     });
 
-    const link = document.querySelector(
-      "[data-zaptime-link]",
-    ) as HTMLAnchorElement;
+    const link = document.querySelector("[data-zaptime-link]") as HTMLAnchorElement;
     const event = new MouseEvent("click", { bubbles: true, cancelable: true });
     link?.dispatchEvent(event);
 

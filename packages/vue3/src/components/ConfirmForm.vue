@@ -1,86 +1,69 @@
 <template>
   <div
     class="cal-flex cal-h-full cal-min-h-[524px] cal-justify-center cal-rounded-xl cal-bg-white cal-px-[20px] cal-pb-10 dark:cal-bg-theme-900 sm:cal-px-6"
-    :class="[
-      config.compact
-        ? 'cal-w-[330px] sm:cal-w-[400px]'
-        : 'cal-w-[330px] sm:cal-w-[840px]',
-    ]"
+    :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[840px]']"
     :style="{ backgroundColor: color2 }"
   >
-    <form
-      v-if="!reservation && selectedTimeSlot !== undefined"
-      class="cal-mt-12 cal-flex-col sm:cal-w-[370px]"
-      :class="[selectedTimeSlot.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']"
-      @submit.prevent="onSubmit"
-    >
-      <h1
-        class="cal-text-2xl cal-font-medium cal-text-theme-500 dark:cal-text-theme-500"
-      >
+    <form v-if="!reservation && selectedTimeSlot !== undefined" class="cal-mt-12 cal-flex-col sm:cal-w-[370px]" :class="[selectedTimeSlot.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']" @submit.prevent="onSubmit">
+      <h1 class="cal-text-2xl cal-font-medium cal-text-theme-500 dark:cal-text-theme-500">
         {{ locale?.confirmationForm?.confirmBooking }}
       </h1>
-      <h2
-        class="cal-mt-[24px] cal-text-2xl cal-font-semibold cal-text-theme-700 dark:cal-text-theme-100"
-      >
+      <h2 class="cal-mt-[24px] cal-text-2xl cal-font-semibold cal-text-theme-700 dark:cal-text-theme-100">
         {{ getFormattedDayInMonth(selectedTimeSlot.start) }}
       </h2>
-      <h3
-        class="cal-text-[24px] cal-font-semibold cal-leading-[36px] cal-text-theme-500 dark:cal-text-theme-300"
-      >
+      <h3 class="cal-text-[24px] cal-font-semibold cal-leading-[36px] cal-text-theme-500 dark:cal-text-theme-300">
         {{ getFormattedTime(selectedTimeSlot.start) }} -
         {{ getFormattedTime(selectedTimeSlot.end) }}
       </h3>
 
-      <FormBuilder class="" />
+      <fieldset :disabled="disabled">
+        <label v-if="selectedTimeSlot.seats > 1" class="cal-mt-4 cal-block"
+          >{{ messages.seats }}<input type="number" min="1" :max="selectedTimeSlot.seats" :value="snapshot.seats" @input="calendar.actions.setSeats(Number(($event.target as HTMLInputElement).value))"
+        /></label>
+        <label v-if="snapshot.locations.length > 1" class="cal-mt-4 cal-block"
+          >{{ messages.location
+          }}<select v-model="locationIndex">
+            <option v-for="(location, index) in snapshot.locations" :key="index" :value="index">{{ location.value || location.type }}</option>
+          </select></label
+        >
+        <FormBuilder />
+      </fieldset>
 
-      <div v-if="stripeConfig">
+      <fieldset v-if="stripeConfig" :disabled="disabled">
         <Payment></Payment>
-      </div>
+      </fieldset>
 
       <div v-if="paymentError" class="cal-my-5 cal-text-lg cal-text-red-500">
-        Payment has failed
+        {{ messages.paymentFailed }}
       </div>
 
-      <div
-        v-if="slotTakenError"
-        class="cal-my-5 cal-text-lg cal-text-red-500"
-        role="alert"
-      >
+      <div v-if="slotTakenError" class="cal-my-5 cal-text-lg cal-text-red-500" role="alert">
         {{ slotNoLongerAvailableText(locale) }}
       </div>
 
+      <div v-if="snapshot.recovery" role="alert" class="cal-my-5 cal-text-red-500">
+        {{ recoveryMessage }}
+        <p v-if="snapshot.recovery.reservationUuid">{{ messages.reference }}: {{ snapshot.recovery.reservationUuid }}</p>
+      </div>
+      <div v-else-if="snapshot.error && !paymentError && !slotTakenError && !rescheduleNotAllowedError && !rescheduleFailedError" role="alert" class="cal-my-5 cal-text-red-500">{{ snapshot.error.message }}</div>
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
-        <SecondaryButton
-          type="button"
-          :disabled="disabled"
-          @click="emit('go-back')"
-        >
+        <SecondaryButton type="button" :disabled="disabled" @click="emit('go-back')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>
-        <PrimaryButton :loading="disabled" type="submit">
+        <PrimaryButton :loading="submitting" :disabled="disabled" type="submit">
           {{ locale?.confirmationForm?.buttons?.confirmBooking }}
         </PrimaryButton>
       </div>
     </form>
 
-    <form
-      v-if="reservation && selectedTimeSlot !== undefined"
-      class="cal-mt-20 sm:cal-w-[280px]"
-      @submit.prevent="submitReschedule"
-    >
-      <h1
-        class="cal-text-2xl cal-font-medium cal-text-theme-500 dark:cal-text-theme-500"
-      >
+    <form v-if="reservation && selectedTimeSlot !== undefined" class="cal-mt-20 sm:cal-w-[280px]" @submit.prevent="submitReschedule">
+      <h1 class="cal-text-2xl cal-font-medium cal-text-theme-500 dark:cal-text-theme-500">
         {{ locale?.confirmationForm?.reschedulingEvent }}
       </h1>
-      <p
-        class="cal-mt-5 cal-text-2xl cal-font-medium cal-text-theme-700 dark:cal-text-theme-100"
-      >
+      <p class="cal-mt-5 cal-text-2xl cal-font-medium cal-text-theme-700 dark:cal-text-theme-100">
         {{ getFormattedDayInMonth(reservation.start) }}
       </p>
-      <p
-        class="cal-text-[24px] cal-font-medium cal-leading-[36px] cal-text-theme-500 dark:cal-text-theme-300"
-      >
+      <p class="cal-text-[24px] cal-font-medium cal-leading-[36px] cal-text-theme-500 dark:cal-text-theme-300">
         {{ getFormattedTime(reservation.start) }} -
         {{ getFormattedTime(reservation.end) }}
       </p>
@@ -103,43 +86,32 @@
         </svg>
       </div>
 
-      <h2
-        class="cal-text-2xl cal-font-medium cal-text-theme-700 dark:cal-text-theme-100"
-      >
+      <h2 class="cal-text-2xl cal-font-medium cal-text-theme-700 dark:cal-text-theme-100">
         {{ getFormattedDayInMonth(selectedTimeSlot.start) }}
       </h2>
-      <h3
-        class="cal-text-[24px] cal-font-medium cal-leading-[36px] cal-text-theme-500 dark:cal-text-theme-300"
-      >
+      <h3 class="cal-text-[24px] cal-font-medium cal-leading-[36px] cal-text-theme-500 dark:cal-text-theme-300">
         {{ getFormattedTime(selectedTimeSlot.start) }} -
         {{ getFormattedTime(selectedTimeSlot.end) }}
       </h3>
 
-      <div
-        v-if="rescheduleNotAllowedError"
-        class="cal-my-5 cal-text-lg cal-text-red-500"
-        role="alert"
-      >
+      <div v-if="rescheduleNotAllowedError" class="cal-my-5 cal-text-lg cal-text-red-500" role="alert">
         {{ rescheduleNotAllowedText(locale) }}
       </div>
 
-      <div
-        v-if="rescheduleFailedError"
-        class="cal-my-5 cal-text-lg cal-text-red-500"
-        role="alert"
-      >
-        Rescheduling failed. Please try again.
+      <div v-if="rescheduleFailedError" class="cal-my-5 cal-text-lg cal-text-red-500" role="alert">
+        {{ messages.bookingFailed }}
       </div>
 
+      <div v-if="snapshot.recovery" role="alert" class="cal-my-5 cal-text-red-500">
+        {{ recoveryMessage }}
+        <p v-if="snapshot.recovery.reservationUuid">{{ messages.reference }}: {{ snapshot.recovery.reservationUuid }}</p>
+      </div>
+      <div v-else-if="snapshot.error && !paymentError && !slotTakenError && !rescheduleNotAllowedError && !rescheduleFailedError" role="alert" class="cal-my-5 cal-text-red-500">{{ snapshot.error.message }}</div>
       <div class="cal-mt-[32px] cal-flex cal-justify-between">
-        <SecondaryButton
-          :disabled="disabled"
-          type="button"
-          @click="emit('go-back')"
-        >
+        <SecondaryButton :disabled="disabled" type="button" @click="emit('go-back')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>
-        <PrimaryButton :loading="disabled" type="submit">
+        <PrimaryButton :loading="submitting" :disabled="disabled" type="submit">
           {{ locale?.confirmationForm?.buttons?.reschedule }}
         </PrimaryButton>
       </div>
@@ -148,205 +120,49 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref, onMounted } from "vue";
-import {
-  useSelectedTimeSlot,
-  book,
-  reserve,
-  confirm,
-  useConfig,
-  reschedule,
-  useDateFormatters,
-  useLocations,
-  useStripeConfig,
-  useBookingForm,
-  useBillingAddress,
-  useReservationReschedule,
-  useCalendar,
-  cancel,
-  SlotNoLongerAvailableError,
-  slotNoLongerAvailableText,
-  RescheduleNotAllowedError,
-  rescheduleNotAllowedText,
-} from "@zaptime/core";
+import { computed, inject, ref } from "vue";
+import { useSelectedTimeSlot, useConfig, useStripeConfig, useReservationReschedule, useDateFormatters, slotNoLongerAvailableText, rescheduleNotAllowedText } from "@zaptime/vue-headless";
+import { calendarMessages } from "../generated/messages";
+import { useUiCalendar } from "../composables/useUiCalendar";
 import PrimaryButton from "./atomic/PrimaryButton.vue";
 import SecondaryButton from "./atomic/SecondaryButton.vue";
-import { getAnalytics } from "../analytics";
 import Payment from "./Payment.vue";
 import FormBuilder from "./BookingForm/FormBuilder.vue";
-import { useStripe, PaymentError } from "../composables/useStripe";
-import type { ReservationResponse } from "@zaptime/core";
-
-const emit = defineEmits<{
-  (e: "booking-confirmed", reservation: ReservationResponse): void;
-  (e: "go-back"): void;
-}>();
-
-const { selectedTimeSlot } = useSelectedTimeSlot(inject("calendarId"));
+const emit = defineEmits<{ (e: "go-back"): void }>();
+const { calendar, snapshot } = useUiCalendar();
+const { selectedTimeSlot } = useSelectedTimeSlot();
 const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters();
-const { config } = useConfig(inject("calendarId"));
-const { locations } = useLocations(inject("calendarId"));
-const { stripeConfig } = useStripeConfig(inject("calendarId"));
-const { collectFormValues } = useBookingForm(inject("calendarId"));
-const { billingAddress } = useBillingAddress(inject("calendarId"));
-const { reservation } = useReservationReschedule(inject("calendarId"));
-const { getDays } = useCalendar(inject("calendarId"));
-
-const { initGateway, handleSubmit: handleStripePayment } = useStripe();
-
+const { config } = useConfig();
+const { stripeConfig } = useStripeConfig();
+const { reservation } = useReservationReschedule();
 const color2 = inject<string>("color2");
-const calendarId = inject<string>("calendarId");
-const seats = ref(1);
-const disabled = ref(false);
-const analytics = getAnalytics();
-
-const paymentError = ref(false);
-const slotTakenError = ref(false);
-const rescheduleNotAllowedError = ref(false);
-const rescheduleFailedError = ref(false);
-
-class ValidationError extends Error {
-  constructor() {
-    super();
-    this.name = "ValidationError";
+const locale = computed(() => config.value.locale);
+const messages = computed(() => calendarMessages(locale.value?.preset));
+const recoveryMessage = computed(() => {
+  switch (snapshot.value.recovery?.paymentStatus) {
+    case "succeeded":
+      return messages.value.confirmationPending;
+    case "unknown":
+      return messages.value.paymentUnknown;
+    case "failed":
+      return messages.value.paymentFailed;
+    default:
+      return messages.value.bookingPending;
   }
-}
-
-const locale = computed(() => {
-  if (config === undefined) {
-    return;
-  }
-  return config.value.locale;
 });
-
-async function handleSubmittionWithPayment() {
-  try {
-    const collectedValues = collectFormValues();
-
-    const res = await reserve({
-      ...collectedValues,
-      seats: seats.value,
-      calendarId,
-      location: locations.value[0],
-    });
-
-    if (billingAddress.value.email === "") {
-      billingAddress.value.email = collectedValues.email;
-    }
-
-    if (billingAddress.value.name === "") {
-      billingAddress.value.name =
-        collectedValues.firstName + " " + collectedValues.lastName;
-    }
-
-    if (billingAddress.value.country === "") {
-      billingAddress.value.country = "CZ";
-    }
-
-    if (!res.success) {
-      throw new ValidationError();
-    }
-
-    await handleStripePayment({
-      billingAddress: billingAddress.value,
-      reservationUuid: res.data.uuid,
-    });
-
-    const confirmRes = await confirm({ calendarId: calendarId });
-
-    if (!confirmRes.success) {
-      throw new Error("Failed to confirm");
-    }
-
-    return confirmRes;
-  } catch (err) {
-    if (err instanceof SlotNoLongerAvailableError) {
-      throw err;
-    }
-    if (err instanceof PaymentError) {
-      console.error(err.message);
-      await cancel(calendarId);
-    }
-    throw new Error("Failed to reserve");
-  }
-}
-
+const locationIndex = ref(0);
+const submitting = computed(() => snapshot.value.phase === "submitting" || snapshot.value.phase === "disposing");
+const disabled = computed(() => ["submitting", "recovery-required", "disposing"].includes(snapshot.value.phase));
+const paymentError = computed(() => snapshot.value.error?.code === "payment-failed");
+const slotTakenError = computed(() => snapshot.value.error?.code === "slot-unavailable");
+const rescheduleNotAllowedError = computed(() => snapshot.value.error?.code === "reschedule-not-allowed");
+const rescheduleFailedError = computed(() => !!reservation.value && !!snapshot.value.error && !rescheduleNotAllowedError.value);
 async function onSubmit() {
-  disabled.value = true;
-  slotTakenError.value = false;
-
   try {
-    let res;
-
-    if (stripeConfig.value) {
-      res = await handleSubmittionWithPayment();
-    } else {
-      res = await book({
-        seats: seats.value,
-        calendarId,
-        location: locations.value[0],
-        ...collectFormValues(),
-      });
-
-      if (!res.success) {
-        throw new ValidationError();
-      }
-    }
-
-    analytics?.track("zatime:booking_confirmed", {
-      timeSlot: selectedTimeSlot.value
-        ? selectedTimeSlot.value.start
-        : undefined,
-    });
-
-    emit("booking-confirmed", res);
-
-    disabled.value = false;
-  } catch (err) {
-    if (err instanceof SlotNoLongerAvailableError) {
-      slotTakenError.value = true;
-      getDays().catch(() => {
-        // refreshing the calendar in the background is best-effort
-      });
-      return;
-    }
-    if (err instanceof ValidationError) {
-      console.error("Booking failed! Please try again or contact support.");
-      return;
-    }
-    paymentError.value = true;
-    console.error(err);
-  } finally {
-    disabled.value = false;
+    await calendar.actions.submit({ location: snapshot.value.locations[locationIndex.value] });
+  } catch {
+    /* Owner forwards the typed error and snapshot renders it. */
   }
 }
-
-async function submitReschedule() {
-  disabled.value = true;
-  rescheduleNotAllowedError.value = false;
-  rescheduleFailedError.value = false;
-
-  try {
-    const res = await reschedule(calendarId);
-    emit("booking-confirmed", res);
-  } catch (err) {
-    if (err instanceof RescheduleNotAllowedError) {
-      rescheduleNotAllowedError.value = true;
-      return;
-    }
-    rescheduleFailedError.value = true;
-    console.error(err);
-  } finally {
-    disabled.value = false;
-  }
-}
-
-onMounted(async () => {
-  if (stripeConfig.value) {
-    setTimeout(async () => {
-      //@ts-expect-error TS is not aware of chec?
-      initGateway(stripeConfig.value.stripeAccountId);
-    }, 500);
-  }
-});
+const submitReschedule = onSubmit;
 </script>

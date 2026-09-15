@@ -1,13 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import {
-  fetchAccountStatus,
-  getAccountStatus,
-  isAccountSubscribed,
-  isEventTypeDisabled,
-  onAccountStatus,
-  clearAccountStatus,
-  setAccountStatus,
-} from "../src/zaptime-init/utils/accountStatus";
+import { fetchAccountStatus, getAccountStatus, isAccountSubscribed, isEventTypeDisabled, onAccountStatus, clearAccountStatus, setAccountStatus } from "../src/zaptime-init/utils/accountStatus";
 
 describe("accountStatus", () => {
   beforeEach(() => {
@@ -94,9 +86,7 @@ describe("accountStatus", () => {
         status: 401,
       });
 
-      const consoleWarn = vi
-        .spyOn(console, "warn")
-        .mockImplementation(() => {});
+      const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => {});
 
       const status = await fetchAccountStatus(token);
 
@@ -111,9 +101,7 @@ describe("accountStatus", () => {
 
       global.fetch = vi.fn().mockRejectedValue(new Error("Network error"));
 
-      const consoleWarn = vi
-        .spyOn(console, "warn")
-        .mockImplementation(() => {});
+      const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => {});
 
       const status = await fetchAccountStatus(token);
 

@@ -13,12 +13,6 @@ const fallbacks: Record<string, string> = {
  * falls back to a built-in translation matching the locale preset for
  * configurations created before the key existed.
  */
-export default function slotNoLongerAvailableText(
-  locale?: ZaptimeLocale,
-): string {
-  return (
-    locale?.confirmationForm?.slotNoLongerAvailable ??
-    fallbacks[locale?.preset ?? "en"] ??
-    fallbacks.en
-  );
+export default function slotNoLongerAvailableText(locale?: ZaptimeLocale): string {
+  return locale?.confirmationForm?.slotNoLongerAvailable ?? fallbacks[locale?.preset ?? "en"] ?? fallbacks.en;
 }

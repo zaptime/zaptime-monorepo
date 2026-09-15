@@ -56,11 +56,7 @@ describe("mergeStyles", () => {
   });
 
   it("should handle multiple style objects", () => {
-    const result = mergeStyles(
-      { color: "red" },
-      { backgroundColor: "blue" },
-      { fontSize: "14px" },
-    );
+    const result = mergeStyles({ color: "red" }, { backgroundColor: "blue" }, { fontSize: "14px" });
 
     expect(result).toEqual({
       color: "red",
@@ -101,16 +97,12 @@ describe("modalStyles", () => {
 
   it("should have container styles", () => {
     expect(modalStyles.container.borderRadius).toBe(TOKENS.borderRadius.modal);
-    expect(modalStyles.container.maxWidth).toBe(
-      TOKENS.dimensions.modalMaxWidth,
-    );
+    expect(modalStyles.container.maxWidth).toBe(TOKENS.dimensions.modalMaxWidth);
   });
 
   it("should have visible states", () => {
     expect(modalStyles.backdropVisible.opacity).toBe("1");
-    expect(modalStyles.containerVisible.transform).toBe(
-      TOKENS.transforms.modalVisible,
-    );
+    expect(modalStyles.containerVisible.transform).toBe(TOKENS.transforms.modalVisible);
   });
 });
 
@@ -121,20 +113,12 @@ describe("floatingButtonStyles", () => {
   });
 
   it("should have position styles", () => {
-    expect(floatingButtonStyles.positionLeft.left).toBe(
-      TOKENS.dimensions.buttonBottom,
-    );
-    expect(floatingButtonStyles.positionRight.right).toBe(
-      TOKENS.dimensions.buttonBottom,
-    );
+    expect(floatingButtonStyles.positionLeft.left).toBe(TOKENS.dimensions.buttonBottom);
+    expect(floatingButtonStyles.positionRight.right).toBe(TOKENS.dimensions.buttonBottom);
   });
 
   it("should have hover styles", () => {
-    expect(floatingButtonStyles.hover.transform).toBe(
-      TOKENS.transforms.buttonHover,
-    );
-    expect(floatingButtonStyles.hover.boxShadow).toBe(
-      TOKENS.shadows.buttonHover,
-    );
+    expect(floatingButtonStyles.hover.transform).toBe(TOKENS.transforms.buttonHover);
+    expect(floatingButtonStyles.hover.boxShadow).toBe(TOKENS.shadows.buttonHover);
   });
 });

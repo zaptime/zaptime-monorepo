@@ -1,31 +1,27 @@
 <template>
-  <div>
-    <label
-      :for="uuid"
-      class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200"
-    >
+  <label>
+    <span class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200">
       {{ label }}
-    </label>
+    </span>
     <div class="cal-mt-2">
       <textarea
         :name="uuid"
+        :value="typeof value === 'string' || typeof value === 'number' ? value : ''"
         :required="required"
         class="cal-block cal-w-full cal-rounded-md cal-border cal-border-theme-300 cal-bg-theme-50 cal-px-5 cal-py-3.5 cal-text-base cal-font-medium cal-text-theme-900 cal-placeholder-theme-400 focus:cal-border-theme-400 focus:cal-outline-none focus:cal-ring-theme-500 dark:cal-border-theme-600 dark:cal-bg-theme-800 dark:cal-text-theme-100 dark:cal-placeholder-theme-500 dark:focus:cal-border-theme-400 sm:cal-text-sm"
         :placeholder="placeholder"
         @input="onInput"
       ></textarea>
     </div>
-  </div>
+  </label>
 </template>
 
 <script setup lang="ts">
-import { useBookingForm } from "@zaptime/core";
-import type { CustomField } from "@zaptime/core";
+import { useBookingForm } from "@zaptime/vue-headless";
+import { fieldProps } from "../fieldProps";
 import { inject } from "vue";
 
-type Props = CustomField;
-
-const props = defineProps<Props>();
+const props = defineProps(fieldProps);
 
 const { setCustomFieldValue } = useBookingForm(inject("calendarId"));
 

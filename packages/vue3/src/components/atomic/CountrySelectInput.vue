@@ -1,11 +1,5 @@
 <template>
-  <SelectInput
-    v-model="model"
-    :label="label"
-    :options="countries"
-    name="country"
-  >
-  </SelectInput>
+  <SelectInput v-model="model" :label="label" :options="countries" name="country"> </SelectInput>
 </template>
 
 <script setup lang="ts">

@@ -1,0 +1,64 @@
+import { it, expect } from "vitest";
+import { fixture, slot, remote } from "./initialization.fixtures";
+it("isolates formatters and preserves selected instants on appearance updates", async () => {
+  const a = fixture().calendar;
+  const b = fixture().calendar;
+  await Promise.all([a.init(), b.init()]);
+  a.actions.setSelectedTimeSlot(slot);
+  await a.actions.setConfig({ locale: { preset: "cs" }, theme: { preset: "basic" } });
+  expect(a.getSnapshot().selectedTimeSlot?.start).toBe(slot.start);
+  expect(a.formatters.getFormattedDay(slot.start)).toBe("středa");
+  expect(b.formatters.getFormattedDay(slot.start)).toBe("Wednesday");
+  a.actions.setHourCycle("h23");
+  expect(a.formatters.getFormattedTime(slot.start)).toBe("10:00");
+  expect(b.formatters.getFormattedTime(slot.start)).toContain("am");
+});
+it("rejects invalid preferences before state mutation", async () => {
+  const { calendar } = fixture();
+  await calendar.init();
+  const before = calendar.getSnapshot();
+  expect(() => calendar.actions.setTimezone("Invalid/Zone")).toThrow();
+  expect(() => calendar.actions.setConfig({ token: "" })).toThrow();
+  expect(calendar.getSnapshot()).toBe(before);
+});
+it("rejects identity writes synchronously while busy and preserves presentation updates", async () => {
+  const { createCalendarContext } = await import("../src/calendar/lifecycle");
+  const { createInitialization } = await import("../src/calendar/initialization");
+  const context = createCalendarContext({ config: { token: "x" } });
+  const preferences = createInitialization(context);
+  context.store.commit({ phase: "submitting" });
+  expect(() => preferences.actions.setConfig({ token: "y" })).toThrow(expect.objectContaining({ code: "busy" }));
+  expect(() => preferences.actions.setConfig({ rescheduleOverrideToken: "new" })).toThrow(expect.objectContaining({ code: "busy" }));
+  await preferences.actions.setConfig({ theme: { preset: "basic" } });
+  expect(context.store.getSnapshot().config.token).toBe("x");
+  context.store.commit({ phase: "recovery-required" });
+  expect(() => preferences.actions.setConfig({ reservationUuid: "r" })).toThrow(expect.objectContaining({ code: "busy" }));
+});
+it("clears authorization in the published snapshot and retains a remote locale on text edits", async () => {
+  const { calendar } = fixture({ ...remote, configuration: { locale: { preset: "cs", texts: { chooseDate: "Vyberte" } } } });
+  await calendar.init();
+  await calendar.actions.setConfig({ rescheduleOverrideToken: "proof" });
+  await calendar.actions.setConfig({ rescheduleOverrideToken: undefined, locale: { texts: { chooseDate: "Custom" }, headers: { mon: "M" } } });
+  expect(calendar.getSnapshot().config.rescheduleOverrideToken).toBeUndefined();
+  expect(calendar.getSnapshot().config.locale?.preset).toBe("cs");
+  expect(calendar.formatters.getFormattedDay(slot.start)).toBe("středa");
+});
+it("accepts week-start changes during submission and refreshes when editable", async () => {
+  const { createCalendarContext } = await import("../src/calendar/lifecycle");
+  const { createInitialization } = await import("../src/calendar/initialization");
+  const { fetch } = fixture();
+  const context = createCalendarContext({ config: { token: "x" }, runtime: { fetch, now: () => new Date("2026-09-15T12:00:00Z"), getTimezone: () => "UTC" } });
+  const calendar = createInitialization(context);
+  await calendar.init();
+  context.store.commit({ selectedTimeSlot: slot, phase: "submitting" });
+  const requests = fetch.mock.calls.length;
+  await expect(calendar.actions.setConfig({ locale: { startDayOfWeek: "mon" } })).resolves.toBeUndefined();
+  expect(context.store.getSnapshot().calendar.headers[0]).toBe("Mo");
+  expect(fetch.mock.calls).toHaveLength(requests);
+  expect(context.store.getSnapshot().selectedTimeSlot?.start).toBe(slot.start);
+  context.store.commit({ phase: "ready" });
+  await expect.poll(() => fetch.mock.calls.length).toBe(requests + 1);
+  await expect.poll(() => context.store.getSnapshot().calendar.loading).toBe(false);
+  expect(context.store.getSnapshot().calendar.days[0].label).toBe("31");
+  expect(context.store.getSnapshot().selectedTimeSlot?.start).toBe(slot.start);
+});

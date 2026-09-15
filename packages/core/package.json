@@ -21,30 +21,24 @@
   "scripts": {
     "build": "tsdown",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@date-fns/tz": "^1.4.1",
-    "@vueuse/core": "^14.2.1",
     "date-fns": "^4.1.0",
     "ts-results-es": "^5.0.1"
-  },
-  "peerDependencies": {
-    "vue": "^3.4.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/zaptime/zaptime-monorepo"
   },
   "devDependencies": {
-    "@babel/types": "^7.29.0",
     "@types/node": "^22.14.0",
-    "happy-dom": "^20.8.4",
     "tsdown": "^0.21.3",
     "typescript": "^5.9.3",
     "vite": "^8.0.0",
-    "vitest": "^4.1.0",
-    "vue": "^3.5.30"
+    "vitest": "^4.1.0"
   },
   "publishConfig": {
     "access": "public"

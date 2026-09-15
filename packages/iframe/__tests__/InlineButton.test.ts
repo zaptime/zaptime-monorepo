@@ -69,8 +69,7 @@ describe("createInlineButton", () => {
   });
 
   it("should render a button in every container matching the selector", async () => {
-    document.body.innerHTML =
-      '<div class="zaptime-slot"></div><div class="zaptime-slot"></div>';
+    document.body.innerHTML = '<div class="zaptime-slot"></div><div class="zaptime-slot"></div>';
 
     const instance = createInlineButton({
       selector: ".zaptime-slot",
@@ -166,9 +165,7 @@ describe("createInlineButton", () => {
 
     const button = document.getElementById(`${instance.id}-button-0`);
     expect(button).toBeNull();
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Zaptime: No containers found for selector "#non-existent-container"',
-    );
+    expect(consoleSpy).toHaveBeenCalledWith('Zaptime: No containers found for selector "#non-existent-container"');
 
     consoleSpy.mockRestore();
   });

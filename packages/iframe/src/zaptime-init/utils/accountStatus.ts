@@ -21,9 +21,7 @@ const API_BASE_URL = "https://api.zaptime.app";
 /**
  * Fetch account status from API
  */
-export async function fetchAccountStatus(
-  token: string,
-): Promise<AccountStatus | null> {
+export async function fetchAccountStatus(token: string): Promise<AccountStatus | null> {
   // If already fetched, return cached
   const cached = accountStatusMap.get(token);
   if (cached) {
@@ -50,9 +48,7 @@ export async function fetchAccountStatus(
     });
 
     if (!response.ok) {
-      console.warn(
-        `[Zaptime] Failed to fetch account status: ${response.status}`,
-      );
+      console.warn(`[Zaptime] Failed to fetch account status: ${response.status}`);
       fetchingTokens.delete(token);
       return null;
     }
@@ -110,10 +106,7 @@ export function isEventTypeDisabled(token: string): boolean | null {
 /**
  * Register a callback to be called when account status is received
  */
-export function onAccountStatus(
-  token: string,
-  callback: AccountStatusCallback,
-): void {
+export function onAccountStatus(token: string, callback: AccountStatusCallback): void {
   // If we already have the status, call immediately
   const cached = accountStatusMap.get(token);
   if (cached) {
@@ -145,9 +138,6 @@ export function clearAccountStatus(token?: string): void {
 /**
  * Set account status directly (useful for testing)
  */
-export function setAccountStatus(
-  token: string,
-  status: Omit<AccountStatus, "token">,
-): void {
+export function setAccountStatus(token: string, status: Omit<AccountStatus, "token">): void {
   accountStatusMap.set(token, { ...status, token });
 }

@@ -1,12 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="./types/zoid.d.ts" />
 
-import type {
-  FloatingButtonOptions,
-  InlineButtonOptions,
-  PopupOptions,
-  ZaptimeInstance,
-} from "./types/options";
+import type { FloatingButtonOptions, InlineButtonOptions, PopupOptions, ZaptimeInstance } from "./types/options";
 import type { ZaptimeConfig } from "@zaptime/core";
 import { createFloatingButton } from "./components/FloatingButton";
 import { createInlineButton } from "./components/InlineButton";
@@ -24,11 +19,7 @@ declare global {
 
 // Type for the Zoid component with extensions
 interface ZoidComponent {
-  (options: {
-    type?: string;
-    config: ZaptimeConfig;
-    onEventChanged?: (event: unknown) => void;
-  }): {
+  (options: { type?: string; config: ZaptimeConfig; onEventChanged?: (event: unknown) => void }): {
     render: (container: HTMLElement | string) => Promise<void>;
   };
   floatingButton?: (options: FloatingButtonOptions) => ZaptimeInstance;
@@ -78,16 +69,12 @@ const Zaptime: ZoidComponent = zoid.create({
 setZaptimeComponent(Zaptime);
 
 // Add floatingButton method
-Zaptime.floatingButton = function (
-  options: FloatingButtonOptions,
-): ZaptimeInstance {
+Zaptime.floatingButton = function (options: FloatingButtonOptions): ZaptimeInstance {
   return createFloatingButton(options);
 };
 
 // Add inlineButton method
-Zaptime.inlineButton = function (
-  options: InlineButtonOptions,
-): ZaptimeInstance {
+Zaptime.inlineButton = function (options: InlineButtonOptions): ZaptimeInstance {
   return createInlineButton(options);
 };
 

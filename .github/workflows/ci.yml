@@ -2,34 +2,85 @@ name: CI
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [main]
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_call:
 
 permissions:
   contents: read
 
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-
+  verification:
+    name: Calendar verification
+    # Visual baselines are reviewed on macOS; the React matrix also verifies Linux.
+    runs-on: macos-latest
+    env:
+      VITE_STRIPE_CLIENT_KEY: ${{ secrets.VITE_STRIPE_CLIENT_KEY }}
     steps:
       - uses: actions/checkout@v4
-
       - uses: pnpm/action-setup@v4
         with:
           version: 10.6.5
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22.18.x
-          cache: "pnpm"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm format:check
+      - name: Build packages and examples in dependency order
+        run: pnpm -r --if-present run build
+      - run: pnpm -r --if-present run typecheck
+      - run: pnpm -r --if-present run test
+      - run: pnpm test:packages
+      - name: Verify minimum supported Vue consumer
+        run: pnpm test:packages
+        env:
+          PACKED_CONSUMERS: vue
+          VUE_VERSION: 3.4.0
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright test
+      - run: pnpm exec changeset status
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: calendar-browser-results
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
 
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Run Core tests
-        run: pnpm --filter @zaptime/core test
+  react-matrix:
+    name: React ${{ matrix.react }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - react: 18.3.1
+            types: 18
+          - react: 19.0.0
+            types: 19
+    env:
+      VITE_STRIPE_CLIENT_KEY: ${{ secrets.VITE_STRIPE_CLIENT_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.6.5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.18.x
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Select matching React and React DOM for adapter and UI tests
+        run: pnpm --filter @zaptime/react-headless --filter @zaptime/react add -D react@${{ matrix.react }} react-dom@${{ matrix.react }} @types/react@${{ matrix.types }} @types/react-dom@${{ matrix.types }}
+      - run: pnpm -r --filter '@zaptime/*' run build
+      - run: pnpm -r --filter @zaptime/react-headless --filter @zaptime/react run typecheck
+      - run: pnpm -r --filter @zaptime/react-headless --filter @zaptime/react run test
+      - name: Verify clean packed React consumer
+        run: pnpm test:packages
+        env:
+          PACKED_CONSUMERS: react
+          REACT_VERSION: ${{ matrix.react }}

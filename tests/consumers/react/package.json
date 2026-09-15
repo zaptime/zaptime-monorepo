@@ -1,0 +1,24 @@
+{
+  "name": "zaptime-packed-react-consumer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@zaptime/core": "workspace:*",
+    "@zaptime/browser": "workspace:*",
+    "@zaptime/react-headless": "workspace:*",
+    "@zaptime/react": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "vite": "^8.0.0"
+  }
+}
