@@ -49,7 +49,17 @@ export function createInitialization(context: CalendarContext) {
   let promise: Promise<void> | undefined;
   let controller: AbortController | undefined;
   let captured = false;
+  let pendingAvailability = false;
+  const unsubscribe = store.subscribe(() => {
+    if (pendingAvailability && ["ready", "success", "error"].includes(store.getSnapshot().phase) && !context.isDisposed()) {
+      pendingAvailability = false;
+      // Availability publishes typed failures; deferred presentation work must not reject a completed config action.
+      void availability.getDays().catch(() => {});
+    }
+  });
+  context.onDispose(unsubscribe);
   const invalidate = () => {
+    pendingAvailability = false;
     generation++;
     controller?.abort();
     availability.invalidate();
@@ -159,7 +169,10 @@ export function createInitialization(context: CalendarContext) {
     const update = async () => {
       if (patch.locale) await preferences.formatters.loadDateFnsConfig(effective.locale?.preset ?? "en");
       if (context.isDisposed() || generation !== current) return;
-      if (patch.closestBookableDay !== undefined || patch.locale?.startDayOfWeek !== undefined) await availability.getDays();
+      if (patch.closestBookableDay !== undefined || patch.locale?.startDayOfWeek !== undefined) {
+        if (["submitting", "recovery-required"].includes(store.getSnapshot().phase)) pendingAvailability = true;
+        else await availability.getDays();
+      }
     };
     return update();
   }

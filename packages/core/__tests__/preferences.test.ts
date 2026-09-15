@@ -43,3 +43,22 @@ it("clears authorization in the published snapshot and retains a remote locale o
   expect(calendar.getSnapshot().config.locale?.preset).toBe("cs");
   expect(calendar.formatters.getFormattedDay(slot.start)).toBe("středa");
 });
+it("accepts week-start changes during submission and refreshes when editable", async () => {
+  const { createCalendarContext } = await import("../src/calendar/lifecycle");
+  const { createInitialization } = await import("../src/calendar/initialization");
+  const { fetch } = fixture();
+  const context = createCalendarContext({ config: { token: "x" }, runtime: { fetch, now: () => new Date("2026-09-15T12:00:00Z"), getTimezone: () => "UTC" } });
+  const calendar = createInitialization(context);
+  await calendar.init();
+  context.store.commit({ selectedTimeSlot: slot, phase: "submitting" });
+  const requests = fetch.mock.calls.length;
+  await expect(calendar.actions.setConfig({ locale: { startDayOfWeek: "mon" } })).resolves.toBeUndefined();
+  expect(context.store.getSnapshot().calendar.headers[0]).toBe("Mo");
+  expect(fetch.mock.calls).toHaveLength(requests);
+  expect(context.store.getSnapshot().selectedTimeSlot?.start).toBe(slot.start);
+  context.store.commit({ phase: "ready" });
+  await expect.poll(() => fetch.mock.calls.length).toBe(requests + 1);
+  await expect.poll(() => context.store.getSnapshot().calendar.loading).toBe(false);
+  expect(context.store.getSnapshot().calendar.days[0].label).toBe("31");
+  expect(context.store.getSnapshot().selectedTimeSlot?.start).toBe(slot.start);
+});

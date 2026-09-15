@@ -28,7 +28,10 @@ export function createAvailability(context: CalendarContext) {
     if (isBusy()) throw new CalendarError("busy", "Calendar is busy");
   };
   const unsubscribe = context.store.subscribe(() => {
-    if (isBusy()) invalidate();
+    if (isBusy()) {
+      invalidate();
+      if (context.store.getSnapshot().calendar.loading) commitCalendar({ loading: false });
+    }
   });
   context.onDispose(() => {
     invalidate();

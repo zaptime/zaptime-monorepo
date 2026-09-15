@@ -129,6 +129,7 @@ it("rejects availability actions while busy and discards a read overtaken by sub
   expect(context.store.getSnapshot()).toBe(busy);
   context.store.commit({ phase: "ready" });
   const current = context.store.getSnapshot();
+  expect(current.calendar.loading).toBe(false);
   resolve(response([]));
   await old;
   expect(context.store.getSnapshot()).toBe(current);
