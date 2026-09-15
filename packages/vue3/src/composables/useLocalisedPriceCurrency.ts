@@ -1,23 +1,16 @@
-import { computed } from "vue";
-import { useConfig } from "@zaptime/core";
+import { computed, toValue, type MaybeRefOrGetter } from "vue";
+import { useConfig } from "@zaptime/vue-headless";
 
-export function useLocalisedPriceCurrency({
-  currency: currency,
-  price: price,
-  calendarId: calendarId,
-}: {
-  currency: string;
-  price: number;
-  calendarId?: string;
-}) {
+export function useLocalisedPriceCurrency({ currency: currency, price: price, calendarId: calendarId }: { currency: MaybeRefOrGetter<string>; price: MaybeRefOrGetter<number>; calendarId?: string }) {
   const { config } = useConfig(calendarId);
 
   const priceCurrency = computed(() => {
+    if (!toValue(currency)) return "";
     return new Intl.NumberFormat(config.value.locale?.preset, {
       style: "currency",
-      currency: currency,
+      currency: toValue(currency),
       minimumFractionDigits: 0,
-    }).format(price / 100);
+    }).format(toValue(price) / 100);
   });
 
   return {

@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <label
-      :for="uuid"
-      class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200"
-    >
+  <label>
+    <span class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200">
       {{ label }}
-    </label>
+    </span>
     <div class="cal-mt-2">
       <input
+        :value="typeof value === 'string' || typeof value === 'number' ? value : ''"
         :required="required"
         :type="type"
         :name="uuid"
@@ -17,11 +15,11 @@
         @input="onChange"
       />
     </div>
-  </div>
+  </label>
 </template>
 
 <script setup lang="ts">
-import { useBookingForm } from "@zaptime/core";
+import { useBookingForm } from "@zaptime/vue-headless";
 import type { CustomField } from "@zaptime/core";
 import { inject } from "vue";
 

@@ -1,14 +1,6 @@
-import { ref } from "vue";
-
-const isSubscribed = ref(true);
-
+import { computed } from "vue";
+import { useUiCalendar } from "./useUiCalendar";
 export function useIsSubscribed() {
-  function setIsSubscribed(value: boolean) {
-    isSubscribed.value = value;
-  }
-
-  return {
-    setIsSubscribed,
-    isSubscribed,
-  };
+  const { snapshot } = useUiCalendar();
+  return { isSubscribed: computed(() => snapshot.value.isSubscribed) };
 }

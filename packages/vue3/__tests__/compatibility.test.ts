@@ -1,0 +1,91 @@
+import { afterEach, expect, it, vi } from "vitest";
+import { createApp, h, nextTick, ref } from "vue";
+import Calendar from "../src/App.vue";
+import { book, useCalendar, useSelectedTimeSlot, useCalendarViewState, useBookingForm, useBillingAddress, useStripeConfig } from "@zaptime/vue-headless";
+import { config, slot, customFields, createFixtureFetch, reservationResponse } from "../../../tests/contracts/fixtures";
+vi.mock("@zaptime/browser", () => ({ attachBrowserEffects: () => () => {}, createStripePaymentDriver: () => ({ mount: async () => {}, dispose: async () => {}, confirm: async () => ({ status: "succeeded" }) }) }));
+const apps: ReturnType<typeof createApp>[] = [];
+const flush = async () => {
+  for (let i = 0; i < 12; i++) await new Promise((resolve) => setTimeout(resolve, 0));
+  await nextTick();
+};
+afterEach(() => {
+  apps.splice(0).forEach((app) => app.unmount());
+  document.body.innerHTML = "";
+  vi.unstubAllGlobals();
+});
+async function mount(props: Record<string, unknown> = {}) {
+  const host = document.createElement("div");
+  document.body.append(host);
+  const app = createApp(Calendar, { config, calendarId: "test", ...props });
+  apps.push(app);
+  app.mount(host);
+  await flush();
+  return host;
+}
+it("updates existing UI from adapter actions and submits the legacy wire payload once", async () => {
+  const fetch = vi.fn(createFixtureFetch());
+  vi.stubGlobal("fetch", fetch);
+  const confirmed = vi.fn();
+  const host = await mount({ onBookingConfirmed: confirmed });
+  useCalendar("test").selectTimeSlot(slot);
+  useBookingForm("test").setBookingForm(customFields);
+  useCalendarViewState("test").setView("form");
+  await flush();
+  expect(host.querySelector('input[type="email"]')).not.toBeNull();
+  host.querySelector("form")!.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+  await flush();
+  expect(confirmed).toHaveBeenCalledExactlyOnceWith(reservationResponse);
+  expect(useCalendarViewState("test").view.value).toBe("success");
+  const calls = fetch.mock.calls.filter(([url]) => String(url).endsWith("/reservations"));
+  expect(calls).toHaveLength(1);
+  expect(JSON.parse(String(calls[0][1]?.body))).toMatchObject({ firstname: "Test", lastname: "Attendee", email: "attendee@example.test", start: slot.start });
+});
+it("supports external programmatic booking and ID isolation", async () => {
+  vi.stubGlobal("fetch", createFixtureFetch());
+  const confirmed = vi.fn();
+  await mount({ calendarId: "first", config: { ...config, externalBooking: true }, onBookingConfirmed: confirmed });
+  await mount({ calendarId: "second" });
+  useCalendar("first").selectTimeSlot(slot);
+  expect(useSelectedTimeSlot("second").selectedTimeSlot.value).toBeUndefined();
+  await book({ calendarId: "first", email: "attendee@example.test" });
+  await flush();
+  expect(confirmed).toHaveBeenCalledTimes(1);
+  expect(useCalendarViewState("second").view.value).toBe("calendar");
+});
+it("keeps writable billing fields and selected state across hide and reopen", async () => {
+  vi.stubGlobal("fetch", createFixtureFetch());
+  const visible = ref(true);
+  const host = document.createElement("div");
+  document.body.append(host);
+  const app = createApp({ render: () => h("div", { style: { display: visible.value ? "" : "none" } }, h(Calendar, { config, calendarId: "hidden" })) });
+  apps.push(app);
+  app.mount(host);
+  await flush();
+  useStripeConfig("hidden").setStripeConfig({ stripeAccountId: "acct_fixture", price: 1000, currency: "USD" });
+  useCalendar("hidden").selectTimeSlot(slot);
+  useCalendarViewState("hidden").setView("form");
+  await flush();
+  useBillingAddress("hidden").billingAddress.value.company = "Updated company";
+  visible.value = false;
+  await nextTick();
+  visible.value = true;
+  await flush();
+  expect(useBillingAddress("hidden").billingAddress.value.company).toBe("Updated company");
+  expect(useSelectedTimeSlot("hidden").selectedTimeSlot.value).toEqual(slot);
+});
+it("shows a rejected booking error without success or redirect", async () => {
+  const fixture = createFixtureFetch();
+  vi.stubGlobal("fetch", async (input: RequestInfo | URL, init?: RequestInit) => (String(input).endsWith("/reservations") ? Response.json({ success: false }, { status: 500 }) : fixture(input, init)));
+  const confirmed = vi.fn();
+  const host = await mount({ onBookingConfirmed: confirmed });
+  useCalendar("test").selectTimeSlot(slot);
+  useBookingForm("test").setBookingForm(customFields);
+  useCalendarViewState("test").setView("form");
+  await flush();
+  host.querySelector("form")!.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+  await flush();
+  expect(confirmed).not.toHaveBeenCalled();
+  expect(host.querySelector('[role="alert"]')).not.toBeNull();
+  expect(useCalendarViewState("test").view.value).toBe("form");
+});

@@ -1,59 +1,7 @@
 import { afterEach, describe, it, expect, vi } from "vitest";
-import { getDfnsConfig } from "../src/utils/dfnsConfig";
-import { useDateFormatters } from "../src/composables/useDateFormatters";
-import useCurrentTimezone from "../src/composables/useCurrentTimezone";
-import useConfig from "../src/composables/useConfig";
-import mergeObjects from "../src/utils/mergeObjects";
 import { book, reserve, confirm, reschedule } from "../src/api/api";
 import { config, slot, reservationResponse, createFixtureFetch } from "../../../tests/contracts/fixtures";
-
 afterEach(() => vi.unstubAllGlobals());
-
-describe("locale preset override", () => {
-  it("retains local text and preset overrides when merging backend configuration", async () => {
-    const merged = mergeObjects({ locale: { preset: "cs", texts: { chooseDate: "Backend date", pickTime: "Backend time" } } }, { token: "test-token", locale: { preset: "sk", texts: { chooseDate: "Local date" } } });
-    const calendarConfig = useConfig("compat-local-text");
-    calendarConfig.setConfig(merged);
-    expect(calendarConfig.config.value.locale?.preset).toBe("sk");
-    expect(calendarConfig.config.value.locale?.texts?.chooseDate).toBe("Local date");
-    expect(calendarConfig.config.value.locale?.texts?.pickTime).toBe("Backend time");
-    const dfns = await getDfnsConfig(calendarConfig.config.value.locale!.preset!);
-    expect(dfns.locale!.code).toBe("sk");
-  });
-
-  it("retains the backend preset when local configuration omits it", async () => {
-    const merged = mergeObjects({ locale: { preset: "cs" } }, { token: "test-token" });
-    const calendarConfig = useConfig("compat-backend-locale");
-    calendarConfig.setConfig(merged);
-    expect((await getDfnsConfig(calendarConfig.config.value.locale!.preset!)).locale!.code).toBe("cs");
-  });
-
-  it("uses the default English locale when neither source supplies a preset", async () => {
-    // Fresh modules characterize the default independently of legacy shared config mutation.
-    vi.resetModules();
-    const { default: freshUseConfig } = await import("../src/composables/useConfig");
-    const calendarConfig = freshUseConfig("compat-default-locale");
-    calendarConfig.setConfig({ token: "test-token" });
-    expect((await getDfnsConfig(calendarConfig.config.value.locale!.preset!)).locale!.code).toBe("en-US");
-  });
-
-  it("uses the loaded locale for formatting in a deterministic timezone", async () => {
-    const preferences = useCurrentTimezone();
-    const previous = preferences.timezone.value;
-    preferences.setTimezone("UTC");
-    try {
-      const formatter = useDateFormatters();
-      await formatter.loadDateFnsConfig("sk");
-      expect(formatter.getFormattedDay("2030-05-02T10:00:00Z")).toBe("štvrtok");
-      await formatter.loadDateFnsConfig("cs");
-      expect(formatter.getFormattedDay("2030-05-02T10:00:00Z")).toBe("čtvrtek");
-    } finally {
-      preferences.setTimezone(previous);
-      await useDateFormatters().loadDateFnsConfig("en");
-    }
-  });
-});
-
 describe("compatibility wire payloads", () => {
   it.each([
     ["book", book],

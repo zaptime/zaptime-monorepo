@@ -6,5 +6,6 @@ export default defineConfig({
   platform: "browser",
   outDir: "zoid",
   clean: false,
-  skipNodeModulesBundle: true,
+  deps: { skipNodeModulesBundle: true },
+  outputOptions: { entryFileNames: "[name].js" },
 });

@@ -3,7 +3,7 @@
   "version": "3.12.0",
   "author": "Zaptime s.r.o.",
   "license": "MIT",
-  "types": "./dist/types/vue3/src/entry.d.ts",
+  "types": "./dist/entry.d.ts",
   "files": [
     "dist"
   ],
@@ -11,39 +11,40 @@
   "module": "./dist/zaptime-vue3.es.js",
   "exports": {
     ".": {
-      "types": "./dist/types/vue3/src/entry.d.ts",
+      "types": "./dist/entry.d.ts",
       "import": "./dist/zaptime-vue3.es.js"
-    }
+    },
+    "./style.css": "./dist/style.css",
+    "./dist/style.css": "./dist/style.css"
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit  && vite build && pnpm vue-tsc --declaration --emitDeclarationOnly"
+    "build": "vue-tsc --noEmit && vite build && vue-tsc --declaration --emitDeclarationOnly",
+    "test": "vitest run",
+    "typecheck": "vue-tsc --noEmit",
+    "prebuild": "mkdir -p src/generated && cp ../../shared/calendar-ui/messages.ts src/generated/messages.ts"
   },
   "peerDependencies": {
-    "vue": "^3.0.0"
+    "vue": ">=3.4.0 <4"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/zaptime/zaptime-monorepo"
   },
   "dependencies": {
-    "@analytics/google-analytics": "^1.0.7",
-    "@analytics/google-tag-manager": "^0.6.0",
     "@date-fns/tz": "^1.4.1",
     "@headlessui/vue": "^1.7.19",
     "@heroicons/vue": "^2.1.1",
     "@vueuse/core": "^14.2.1",
     "@zaptime/core": "workspace:*",
-    "analytics": "^0.8.19",
     "date-fns": "^4.1.0",
-    "load-script": "^2.0.0",
-    "react-facebook-pixel": "^1.0.4"
+    "@zaptime/vue-headless": "workspace:*",
+    "@zaptime/browser": "workspace:*"
   },
   "devDependencies": {
     "@babel/types": "^7.26.10",
     "@tailwindcss/forms": "^0.5.11",
     "@types/node": "^22.14.0",
-    "@types/stripe-v3": "^3.1.33",
     "@types/web-bluetooth": "^0.0.21",
     "@vitejs/plugin-vue": "^6.0.0",
     "autoprefixer": "^10.4.27",
@@ -52,9 +53,14 @@
     "typescript": "^5.9.3",
     "vite": "^8.0.0",
     "vue": "^3.5.30",
-    "vue-tsc": "^3.2.5"
+    "vue-tsc": "^3.2.5",
+    "vitest": "^4.1.0",
+    "happy-dom": "^20.8.4"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "sideEffects": [
+    "**/*.css"
+  ]
 }

@@ -1,12 +1,11 @@
 import { useBreakpoints } from "@vueuse/core";
 import { watch } from "vue";
-import { useConfig } from "@zaptime/core";
+import { useConfig } from "@zaptime/vue-headless";
 
-export default function useCompactSwitcher(calendarId?: string) {
+export default function useCompactSwitcher(calendarId?: import("@zaptime/vue-headless").CalendarTarget) {
   const { config } = useConfig(calendarId);
 
-  const originalCompactPreference =
-    config.value.compact === true ? true : false;
+  const originalCompactPreference = config.value.compact === true ? true : false;
 
   const breakpoints = useBreakpoints({
     large: 860,

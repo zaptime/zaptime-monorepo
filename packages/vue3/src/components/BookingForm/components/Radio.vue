@@ -1,17 +1,11 @@
 <template>
   <div class="cal-relative">
-    <label
-      class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200"
-    >
+    <label class="cal-block cal-text-sm cal-font-medium cal-text-theme-500 dark:cal-text-theme-200">
       {{ label }}
     </label>
-    <div
-      v-for="(option, i) of options"
-      :key="uuid + '_' + i"
-      class="cal-my-2 cal-flex cal-h-6 cal-items-center"
-    >
+    <label v-for="(option, i) of options" :key="uuid + '_' + i" class="cal-my-2 cal-flex cal-h-6 cal-items-center">
       <input
-        :id="uuid + '_' + i"
+        :checked="value === option"
         :name="uuid"
         type="radio"
         :required="required"
@@ -19,19 +13,15 @@
         @change="onChange(i)"
       />
       <div class="cal-ml-3 cal-text-sm cal-leading-6">
-        <label
-          :for="uuid + '_' + i"
-          class="cal-block cal-text-sm cal-text-theme-500 dark:cal-text-theme-200"
-          v-html="option"
-        ></label>
+        <span class="cal-block cal-text-sm cal-text-theme-500 dark:cal-text-theme-200" v-html="option"></span>
       </div>
-    </div>
+    </label>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { CustomField } from "@zaptime/core";
-import { useBookingForm } from "@zaptime/core";
+import { useBookingForm } from "@zaptime/vue-headless";
 import { inject } from "vue";
 
 type Props = CustomField;

@@ -1,40 +1,23 @@
 <template>
   <div
     class="cal-flex cal-h-full cal-justify-center cal-rounded-xl cal-px-0 sm:cal-px-6"
-    :class="[
-      config.compact
-        ? 'cal-w-[330px] sm:cal-w-[400px]'
-        : 'cal-w-[330px] sm:cal-w-[840px]',
-    ]"
+    :class="[config.compact ? 'cal-w-[330px] sm:cal-w-[400px]' : 'cal-w-[330px] sm:cal-w-[840px]']"
     :style="{ backgroundColor: color2 }"
   >
-    <form
-      v-if="selectedTimeSlot !== undefined"
-      class="cal-mt-8 sm:cal-w-[370px]"
-      :class="[selectedTimeSlot.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']"
-      @submit.prevent="onSubmit"
-    >
+    <form v-if="selectedTimeSlot !== undefined" class="cal-mt-8 sm:cal-w-[370px]" :class="[selectedTimeSlot.seats > 1 ? 'cal-mt-8' : 'cal-mt-20']" @submit.prevent="onSubmit">
       <h1 class="cal-text-2xl cal-text-theme-700 dark:cal-text-theme-200">
         {{ locale?.confirmationForm?.confirmBooking }}
       </h1>
-      <h2
-        class="cal-mt-[15px] cal-text-[32px] cal-font-semibold cal-text-theme-600 dark:cal-text-theme-300"
-      >
+      <h2 class="cal-mt-[15px] cal-text-[32px] cal-font-semibold cal-text-theme-600 dark:cal-text-theme-300">
         {{ getFormattedDay(selectedTimeSlot.start) }}
         {{ getFormattedDayInMonth(selectedTimeSlot.start) }}
       </h2>
-      <h3
-        class="cal-text-[32px] cal-font-semibold cal-leading-[48px] cal-text-theme-400 dark:cal-text-theme-400"
-      >
+      <h3 class="cal-text-[32px] cal-font-semibold cal-leading-[48px] cal-text-theme-400 dark:cal-text-theme-400">
         {{ getFormattedTime(selectedTimeSlot.start) }} -
         {{ getFormattedTime(selectedTimeSlot.end) }}
       </h3>
 
-      <div
-        v-if="slotTakenError"
-        class="cal-my-5 cal-text-lg cal-text-red-500"
-        role="alert"
-      >
+      <div v-if="slotTakenError" class="cal-my-5 cal-text-lg cal-text-red-500" role="alert">
         {{ slotNoLongerAvailableText(locale) }}
       </div>
 
@@ -52,21 +35,12 @@
 
 <script setup lang="ts">
 import { computed, inject, ref } from "vue";
-import {
-  useSelectedTimeSlot,
-  book,
-  useConfig,
-  useDateFormatters,
-  useCalendar,
-  SlotNoLongerAvailableError,
-  slotNoLongerAvailableText,
-} from "@zaptime/core";
+import { useSelectedTimeSlot, book, useConfig, useDateFormatters, useCalendar, SlotNoLongerAvailableError, slotNoLongerAvailableText } from "@zaptime/vue-headless";
 import PrimaryButton from "./atomic/PrimaryButton.vue";
 import SecondaryButton from "./atomic/SecondaryButton.vue";
 
 const { selectedTimeSlot } = useSelectedTimeSlot(inject("calendarId"));
-const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } =
-  useDateFormatters();
+const { getFormattedTime, getFormattedDay, getFormattedDayInMonth } = useDateFormatters();
 const { config } = useConfig(inject("calendarId"));
 const color2 = inject<string>("color2");
 

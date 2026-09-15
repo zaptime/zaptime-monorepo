@@ -1,4 +1,4 @@
-import { mergeObjects } from "@zaptime/core";
+import { mergeObjects } from "@zaptime/vue-headless";
 import type { ZaptimeConfig } from "@zaptime/core";
 import { useBreakpoints } from "@vueuse/core";
 
@@ -13,20 +13,14 @@ import { useBreakpoints } from "@vueuse/core";
  *
  * @returns {ZaptimeConfig}
  */
-export function mergeConfigs(
-  baseConfig: Partial<ZaptimeConfig>,
-  config: Partial<ZaptimeConfig>,
-) {
+export function mergeConfigs(baseConfig: Partial<ZaptimeConfig>, config: Partial<ZaptimeConfig>) {
   const breakpoints = useBreakpoints({
     large: 860,
   });
 
   const isSmaller = breakpoints.smaller("large");
 
-  const merged = mergeObjects(
-    { ...baseConfig },
-    { ...config },
-  ) as ZaptimeConfig;
+  const merged = mergeObjects({ ...baseConfig }, { ...config }) as ZaptimeConfig;
 
   if (isSmaller.value) {
     merged.compact = true;

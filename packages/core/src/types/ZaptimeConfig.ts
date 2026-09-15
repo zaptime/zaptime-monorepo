@@ -3,6 +3,8 @@ import ZaptimeLocale from "./ZaptimeLocale";
 
 export default interface ZaptimeConfig {
   token: string;
+  /** Stripe publishable key override for complete UI integrations. */
+  stripePublishableKey?: string;
   min?: number;
   max?: number;
   closestBookableDay?: number;
