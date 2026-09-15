@@ -76,11 +76,15 @@ export function facade<T extends object>(read: () => T, write?: (value: T, path?
         return true;
       },
       ownKeys() {
-        return Reflect.ownKeys(at(path) ?? {});
+        const keys = Reflect.ownKeys(at(path) ?? {});
+        if (Array.isArray(target) && !keys.includes("length")) keys.push("length");
+        return keys;
       },
       getOwnPropertyDescriptor(_, prop) {
-        if (Array.isArray(target) && prop === "length") return Reflect.getOwnPropertyDescriptor(target, "length");
-        return { enumerable: true, configurable: true };
+        const current = at(path);
+        if (Array.isArray(target) && prop === "length") return { ...Reflect.getOwnPropertyDescriptor(target, "length")!, value: current?.length ?? 0 };
+        if (current == null || !Object.prototype.hasOwnProperty.call(current, prop)) return undefined;
+        return { enumerable: true, configurable: true, writable: Boolean(write), value: current[prop] };
       },
       has(_, prop) {
         return prop in (at(path) ?? {});

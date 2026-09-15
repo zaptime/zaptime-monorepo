@@ -92,3 +92,38 @@ it("rejects invalid guest mutations and replacement before changing any guest", 
   wrapper.unmount();
   await c.dispose();
 });
+
+it("passes a projected slot through core cloning and preserves booking timestamps", async () => {
+  const payloads: Record<string, unknown>[] = [];
+  const fixture = createFixtureFetch();
+  const c = createCalendar({
+    config,
+    runtime: {
+      now: () => new Date("2030-05-01T00:00:00Z"),
+      fetch: async (input, options) => {
+        if (String(input).endsWith("/reservations")) payloads.push(JSON.parse(String(options?.body)));
+        return fixture(input, options);
+      },
+    },
+  });
+  let api!: ReturnType<typeof useCalendar>;
+  const wrapper = mount(
+    defineComponent({
+      setup() {
+        api = useCalendar(c);
+        return () => h("span", String(api.state.timeSlots.length));
+      },
+    }),
+  );
+  await c.init();
+  const projected = api.state.timeSlots[0];
+  expect(Object.getOwnPropertyDescriptor(projected, "start")?.value).toBe(slot.start);
+  expect(Object.getOwnPropertyDescriptor(projected, "missing")).toBeUndefined();
+  expect(Object.getOwnPropertyDescriptor(api.state.timeSlots, "length")?.value).toBe(1);
+  api.selectTimeSlot(projected);
+  expect(c.getSnapshot().selectedTimeSlot).toEqual(slot);
+  await c.actions.book({ email: "test@example.test" });
+  expect(payloads[0]).toMatchObject({ start: slot.start, end: slot.end });
+  wrapper.unmount();
+  await c.dispose();
+});
