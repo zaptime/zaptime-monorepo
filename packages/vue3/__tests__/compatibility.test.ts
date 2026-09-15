@@ -89,3 +89,24 @@ it("shows a rejected booking error without success or redirect", async () => {
   expect(host.querySelector('[role="alert"]')).not.toBeNull();
   expect(useCalendarViewState("test").view.value).toBe("form");
 });
+it("preserves earlier typed values when another initially empty field changes", async () => {
+  vi.stubGlobal("fetch", createFixtureFetch());
+  const host = await mount();
+  useCalendar("test").selectTimeSlot(slot);
+  useBookingForm("test").setBookingForm(customFields.filter((field) => ["field-first-name", "field-email"].includes(field.uuid)).map((field) => ({ ...field, value: "" })));
+  useCalendarViewState("test").setView("form");
+  await flush();
+  const first = host.querySelector('input[name="field-first-name"]') as HTMLInputElement,
+    email = host.querySelector('input[name="field-email"]') as HTMLInputElement;
+  first.value = "Ada";
+  first.dispatchEvent(new Event("input", { bubbles: true }));
+  await flush();
+  expect(useBookingForm("test").collectFormValues().firstName).toBe("Ada");
+  expect(first.value).toBe("Ada");
+  email.value = "ada@example.test";
+  email.dispatchEvent(new Event("input", { bubbles: true }));
+  await flush();
+  expect(useBookingForm("test").collectFormValues()).toMatchObject({ firstName: "Ada", email: "ada@example.test" });
+  expect(first.value).toBe("Ada");
+  expect(email.value).toBe("ada@example.test");
+});
