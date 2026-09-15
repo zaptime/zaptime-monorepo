@@ -1,6 +1,12 @@
 <template>
   <div>
-    <div v-if="!config.externalBooking" ref="target" class="w-full cal-flex cal-items-center cal-space-x-2">
+    <div
+      v-if="!config.externalBooking"
+      ref="target"
+      @keydown.esc="confirmationState = false"
+      @focusout="!($event.currentTarget as HTMLElement).contains($event.relatedTarget as Node) && (confirmationState = false)"
+      class="w-full cal-flex cal-items-center cal-space-x-2"
+    >
       <button
         class="cal-group cal-my-2 cal-inline-flex cal-cursor-pointer cal-items-center cal-justify-center cal-rounded-md cal-bg-theme-100 cal-font-medium cal-outline-none cal-transition-all cal-duration-150 cal-ease-out focus:cal-outline-none focus:cal-ring-2 focus:cal-ring-theme-800 focus:cal-ring-opacity-50 dark:cal-border-theme-600 dark:cal-bg-theme-800"
         :class="[
@@ -52,15 +58,14 @@
 <script setup lang="ts">
 import type { TimeSlot } from "@zaptime/core";
 import { useCalendar, useDateFormatters, useConfig } from "@zaptime/vue-headless";
-import { ref, inject } from "vue";
-import { onClickOutside } from "@vueuse/core";
+import { ref, inject, onMounted, onUnmounted } from "vue";
 import PrimaryButton from "../atomic/PrimaryButton.vue";
 
 const { getFormattedTime } = useDateFormatters();
 const { isSelected } = useCalendar(inject("calendarId"));
 const { config } = useConfig(inject("calendarId"));
 
-const target = ref();
+const target = ref<HTMLElement>();
 const confirmationState = ref(false);
 
 defineProps<{
@@ -69,7 +74,9 @@ defineProps<{
 
 const emit = defineEmits(["selectTimeSlot"]);
 
-onClickOutside(target, () => {
-  confirmationState.value = false;
-});
+const closeOutside = (event: PointerEvent) => {
+  if (target.value && !event.composedPath().includes(target.value)) confirmationState.value = false;
+};
+onMounted(() => document.addEventListener("pointerdown", closeOutside));
+onUnmounted(() => document.removeEventListener("pointerdown", closeOutside));
 </script>

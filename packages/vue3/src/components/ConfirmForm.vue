@@ -50,7 +50,7 @@
         <SecondaryButton type="button" :disabled="disabled" @click="emit('go-back')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>
-        <PrimaryButton :loading="disabled" type="submit">
+        <PrimaryButton :loading="submitting" :disabled="disabled" type="submit">
           {{ locale?.confirmationForm?.buttons?.confirmBooking }}
         </PrimaryButton>
       </div>
@@ -111,7 +111,7 @@
         <SecondaryButton :disabled="disabled" type="button" @click="emit('go-back')">
           {{ locale?.confirmationForm?.buttons?.goBack }}
         </SecondaryButton>
-        <PrimaryButton :loading="disabled" type="submit">
+        <PrimaryButton :loading="submitting" :disabled="disabled" type="submit">
           {{ locale?.confirmationForm?.buttons?.reschedule }}
         </PrimaryButton>
       </div>
@@ -151,6 +151,7 @@ const recoveryMessage = computed(() => {
   }
 });
 const locationIndex = ref(0);
+const submitting = computed(() => snapshot.value.phase === "submitting" || snapshot.value.phase === "disposing");
 const disabled = computed(() => ["submitting", "recovery-required", "disposing"].includes(snapshot.value.phase));
 const paymentError = computed(() => snapshot.value.error?.code === "payment-failed");
 const slotTakenError = computed(() => snapshot.value.error?.code === "slot-unavailable");

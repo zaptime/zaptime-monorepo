@@ -19,7 +19,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build && vue-tsc --declaration --emitDeclarationOnly",
+    "build": "vue-tsc --noEmit && vite build && tsdown && cp ../../shared/calendar-ui/assets/NOTICE.md dist/NOTICE.md",
     "test": "vitest run",
     "typecheck": "vue-tsc --noEmit",
     "prebuild": "mkdir -p src/generated && cp ../../shared/calendar-ui/messages.ts src/generated/messages.ts"
@@ -35,27 +35,26 @@
     "@date-fns/tz": "^1.4.1",
     "@headlessui/vue": "^1.7.19",
     "@heroicons/vue": "^2.1.1",
-    "@vueuse/core": "^14.2.1",
+    "@zaptime/browser": "workspace:*",
     "@zaptime/core": "workspace:*",
-    "date-fns": "^4.1.0",
     "@zaptime/vue-headless": "workspace:*",
-    "@zaptime/browser": "workspace:*"
+    "date-fns": "^4.1.0"
   },
   "devDependencies": {
     "@babel/types": "^7.26.10",
     "@tailwindcss/forms": "^0.5.11",
     "@types/node": "^22.14.0",
-    "@types/web-bluetooth": "^0.0.21",
     "@vitejs/plugin-vue": "^6.0.0",
     "autoprefixer": "^10.4.27",
+    "happy-dom": "^20.8.4",
     "postcss": "^8.5.8",
     "tailwindcss": "3.4.17",
+    "tsdown": "^0.21.3",
     "typescript": "^5.9.3",
     "vite": "^8.0.0",
-    "vue": "^3.5.30",
-    "vue-tsc": "^3.2.5",
     "vitest": "^4.1.0",
-    "happy-dom": "^20.8.4"
+    "vue": "3.4.0",
+    "vue-tsc": "^3.2.5"
   },
   "publishConfig": {
     "access": "public"

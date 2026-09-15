@@ -15,8 +15,7 @@
       "dom"
     ],
     "types": [
-      "node",
-      "web-bluetooth"
+      "node"
     ],
     "stripInternal": true,
     "rootDir": "./src"

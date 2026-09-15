@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-if="!state.loading" class="cal-grid cal-relative cal-grid-cols-7 cal-gap-y-1">
-      <div v-if="!state.monthHasTimeSlots" class="md:cal-hidden cal-absolute cal-inset-0">
+    <div ref="grid" v-if="!state.loading" class="cal-grid cal-relative cal-grid-cols-7 cal-gap-y-1">
+      <div v-if="!state.monthHasTimeSlots" class="md:cal-hidden cal-absolute cal-inset-0 cal-z-10 cal-rounded-xl cal-bg-theme-50 dark:cal-bg-theme-900">
         <div class="dark:cal-text-theme cal-mt-1.5 cal-flex cal-flex-col cal-h-full cal-items-center cal-justify-center cal-rounded-2xl cal-px-5 cal-backdrop-blur-[6px] dark:cal-bg-gray-800/10">
           <p v-if="config.locale && config.locale.texts?.noTimeSlotAvailable" class="dark:cal-text-theme-200 cal-text-sm cal-text-theme-700 cal-text-center" v-html="config.locale.texts?.noTimeSlotAvailable"></p>
 
@@ -20,7 +20,11 @@
       <div v-for="(day, i) in state.days" :key="i" class="cal-mt-2 cal-flex cal-justify-center">
         <div class="cal-flex cal-items-center cal-justify-center">
           <button
-            :disabled="!dayHasTimeSlot(day) || (day.isPast && !day.isCurrentMonth)"
+            :disabled="!dayHasTimeSlot(day) || !!day.isPast"
+            data-calendar-day
+            :aria-label="day.date ? new Intl.DateTimeFormat(config.locale?.preset ?? 'en', { month: 'long', day: 'numeric', year: 'numeric' }).format(day.date) : undefined"
+            :aria-pressed="isSelectedDay(day)"
+            @keydown="moveFocus($event, i)"
             :class="{
               'cal-bg-theme-100 cal-font-medium  cal-text-theme-700 cal-ring-theme-200 focus:cal-outline-none focus:cal-ring-2 dark:cal-bg-theme-800 dark:cal-text-theme-100 dark:hover:cal-text-theme-300':
                 dayHasTimeSlot(day) && !day.isPast && !isSelectedDay(day),
@@ -46,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
+import { inject, ref, onMounted, nextTick } from "vue";
 import { useCalendar, useConfig } from "@zaptime/vue-headless";
 import { Day } from "@zaptime/vue-headless";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
@@ -60,6 +64,23 @@ const { config } = useConfig(inject("calendarId"));
 
 const { dayHasTimeSlot, isSelectedDay, dayClicked, state, next } = useCalendar(inject("calendarId"));
 
+const grid = ref<HTMLElement>();
+function moveFocus(event: KeyboardEvent, index: number) {
+  const delta = ({ ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 } as Record<string, number>)[event.key];
+  if (delta === undefined) return;
+  event.preventDefault();
+  const buttons = grid.value?.querySelectorAll<HTMLButtonElement>("[data-calendar-day]");
+  if (!buttons) return;
+  for (let i = index + delta; i >= 0 && i < buttons.length; i += delta) {
+    if (!buttons[i].disabled) {
+      buttons[i].focus();
+      break;
+    }
+  }
+}
+onMounted(() => {
+  if (config.value.compact && state.selectedDay) void nextTick(() => grid.value?.querySelector<HTMLButtonElement>('[aria-pressed="true"]')?.focus());
+});
 const dayClickedLocalProxy = (day: Day) => {
   dayClicked(day);
   setCalendarView("pickingTime");

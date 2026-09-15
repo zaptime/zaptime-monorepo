@@ -16,11 +16,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { CustomField } from "@zaptime/core";
+import { fieldProps } from "../fieldProps";
 import { useBookingForm } from "@zaptime/vue-headless";
 import { inject } from "vue";
-type Props = CustomField;
-const props = defineProps<Props>();
+
+const props = defineProps(fieldProps);
 
 const { setCustomFieldValue } = useBookingForm(inject("calendarId"));
 

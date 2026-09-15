@@ -27,14 +27,30 @@
     </div>
   </div>
   <div class="cal-flex cal-justify-between cal-py-4">
-    <p class="cal-ml-3 cal-text-base cal-font-medium cal-text-theme-900 dark:cal-text-theme-200">{{ monthName }} {{ currentYear }}</p>
+    <p aria-live="polite" class="cal-ml-3 cal-text-base cal-font-medium cal-text-theme-900 dark:cal-text-theme-200">{{ monthName }} {{ currentYear }}</p>
     <div class="cal-mr-1 cal-flex">
-      <button v-if="!prevDisabled" :disabled="prevDisabled" :class="{ 'cal-cursor-not-allowed': prevDisabled }" class="cal-flex cal-items-center cal-justify-center" @click.prevent="prev">
+      <button
+        type="button"
+        :aria-label="messages.previousMonth"
+        v-if="!prevDisabled"
+        :disabled="prevDisabled || state.loading"
+        :class="{ 'cal-cursor-not-allowed': prevDisabled }"
+        class="cal-flex cal-items-center cal-justify-center"
+        @click.prevent="prev"
+      >
         <svg class="cal-h-6 cal-w-6 cal-rotate-180 cal-text-accent-dark hover:cal-text-accent-base" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
-      <button v-if="!nextDisabled" :disabled="nextDisabled" :class="{ 'cal-cursor-not-allowed': nextDisabled }" class="cal-flex cal-items-center cal-justify-center" @click.prevent="next">
+      <button
+        type="button"
+        :aria-label="messages.nextMonth"
+        v-if="!nextDisabled"
+        :disabled="nextDisabled || state.loading"
+        :class="{ 'cal-cursor-not-allowed': nextDisabled }"
+        class="cal-flex cal-items-center cal-justify-center"
+        @click.prevent="next"
+      >
         <svg class="cal-h-6 cal-w-6 cal-text-accent-dark hover:cal-text-accent-base" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
@@ -44,13 +60,15 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
+import { inject, computed } from "vue";
 import { useCalendar, useConfig, useReservationReschedule, useDateFormatters } from "@zaptime/vue-headless";
+import { calendarMessages } from "../../generated/messages";
 import MeetingInformation from "./MeetingInformation.vue";
 
-const { monthName, currentYear, prev, prevDisabled, next, nextDisabled } = useCalendar(inject("calendarId") as string);
+const { state, monthName, currentYear, prev, prevDisabled, next, nextDisabled } = useCalendar(inject("calendarId") as string);
 
 const { config } = useConfig(inject("calendarId"));
+const messages = computed(() => calendarMessages(config.value.locale?.preset));
 const { reservation } = useReservationReschedule(inject("calendarId"));
 const { getFormattedTime, getFormattedDayInMonth } = useDateFormatters();
 </script>

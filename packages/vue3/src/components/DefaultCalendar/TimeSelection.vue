@@ -1,5 +1,8 @@
 <template>
   <div
+    ref="pane"
+    tabindex="-1"
+    :aria-label="messages.availableTimes"
     class="cal-mx-auto cal-h-full cal-min-h-[524px] cal-bg-white cal-px-[20px] dark:cal-bg-theme-900 sm:cal-mx-0"
     :class="[config.compact ? 'cal-w-[330px] cal-rounded-xl sm:cal-w-[400px]' : 'cal-w-[330px] cal-rounded-r-xl sm:cal-w-[440px]', config.profileImage ? 'cal-pt-4' : 'cal-pt-10']"
   >
@@ -90,8 +93,9 @@
 import { useCalendar, useConfig, useHourCycle, useDateFormatters, useReservationReschedule } from "@zaptime/vue-headless";
 import useCalendarViewState from "../../composables/useCalendarViewState";
 import PrimaryButton from "../atomic/PrimaryButton.vue";
-import { inject, computed } from "vue";
+import { inject, computed, ref, onMounted, nextTick } from "vue";
 import type { TimeSlot } from "@zaptime/core";
+import { calendarMessages } from "../../generated/messages";
 import ConfirmationButton from "./TimeConfirmationButton.vue";
 import TimeZonePicker from "../atomic/TimeZonePicker.vue";
 import Switch from "../atomic/Switch.vue";
@@ -101,6 +105,11 @@ const { hourCycle, setHourCycle } = useHourCycle();
 const { setView, setCalendarView } = useCalendarViewState(inject("calendarId"));
 const { selectTimeSlot, state, next } = useCalendar(inject("calendarId"));
 const { config } = useConfig(inject("calendarId"));
+const pane = ref<HTMLElement>();
+const messages = computed(() => calendarMessages(config.value.locale?.preset));
+onMounted(() => {
+  if (config.value.compact) void nextTick(() => pane.value?.focus());
+});
 const { getFormattedDayInMonth } = useDateFormatters();
 const { reservation } = useReservationReschedule(inject("calendarId"));
 

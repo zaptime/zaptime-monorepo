@@ -25,10 +25,9 @@
 import { computed } from "vue";
 import { useBookingForm } from "@zaptime/vue-headless";
 import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
-import type { CustomField } from "@zaptime/core";
-type Props = CustomField;
+import { fieldProps } from "../fieldProps";
 
-const props = defineProps<Props>();
+const props = defineProps(fieldProps);
 const { setCustomFieldValue } = useBookingForm();
 const enabled = computed({ get: () => props.value === true, set: (value) => setCustomFieldValue(props.uuid, value) });
 </script>

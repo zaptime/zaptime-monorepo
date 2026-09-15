@@ -16,12 +16,11 @@
   </label>
 </template>
 <script setup lang="ts">
-import type { CustomField } from "@zaptime/core";
+import { fieldProps } from "../fieldProps";
 import { useBookingForm } from "@zaptime/vue-headless";
 import { computed, inject } from "vue";
 
-type Props = CustomField;
-const props = defineProps<Props>();
+const props = defineProps(fieldProps);
 
 const { setCustomFieldValue } = useBookingForm(inject("calendarId"));
 const selected = computed({ get: () => (typeof props.value === "string" ? props.value : ""), set: (value) => setCustomFieldValue(props.uuid, value) });
