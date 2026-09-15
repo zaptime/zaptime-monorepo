@@ -50,6 +50,49 @@ importers:
         specifier: ^6.14.0
         version: 6.14.0(magicast@0.5.2)(yaml@2.8.2)
 
+  packages/browser:
+    dependencies:
+      '@analytics/google-analytics':
+        specifier: ^1.0.7
+        version: 1.1.0
+      '@analytics/google-tag-manager':
+        specifier: ^0.6.0
+        version: 0.6.0
+      '@stripe/stripe-js':
+        specifier: ^8.0.0
+        version: 8.11.0
+      '@zaptime/core':
+        specifier: workspace:*
+        version: link:../core
+      analytics:
+        specifier: ^0.8.19
+        version: 0.8.19(@types/dlv@1.1.5)
+      load-script:
+        specifier: ^2.0.0
+        version: 2.0.0
+      react-facebook-pixel:
+        specifier: ^1.0.4
+        version: 1.0.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.14.0
+        version: 22.14.0
+      happy-dom:
+        specifier: ^20.8.4
+        version: 20.8.4
+      tsdown:
+        specifier: ^0.21.3
+        version: 0.21.3(typescript@5.9.3)(vue-tsc@3.2.5(typescript@5.9.3))
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vite:
+        specifier: ^8.0.0
+        version: 8.0.0(@types/node@22.14.0)(esbuild@0.27.4)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2)
+      vitest:
+        specifier: ^4.1.0
+        version: 4.1.0(@types/node@22.14.0)(happy-dom@20.8.4)(vite@8.0.0(@types/node@22.14.0)(esbuild@0.27.4)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))
+
   packages/core:
     dependencies:
       '@date-fns/tz':
@@ -2211,6 +2254,10 @@ packages:
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
+  '@stripe/stripe-js@8.11.0':
+    resolution: {integrity: sha512-3fVF4z3efsgwgyj64nFK+6F4/vMw0mUXD2TBbOfftJtKVNx4JNv3CSfe1fY4DCtCk0JFp8/YPNcRkzgV0HJ8cg==}
+    engines: {node: '>=12.16'}
 
   '@tailwindcss/forms@0.5.11':
     resolution: {integrity: sha512-h9wegbZDPurxG22xZSoWtdzc41/OlNEUQERNqI/0fOwa2aVlWGu7C35E/x6LDyD3lgtztFSSjKZyuVM0hxhbgA==}
@@ -7282,6 +7329,8 @@ snapshots:
   '@speed-highlight/core@1.2.14': {}
 
   '@standard-schema/spec@1.1.0': {}
+
+  '@stripe/stripe-js@8.11.0': {}
 
   '@tailwindcss/forms@0.5.11(tailwindcss@3.4.17)':
     dependencies:
