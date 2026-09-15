@@ -80,6 +80,24 @@ describe("normalized API outcomes", () => {
     await assertion;
     expect(transport.mock.calls[0][1]?.signal?.aborted).toBe(true);
   });
+  it("keeps the read deadline active while a response body stalls", async () => {
+    vi.useFakeTimers();
+    let finishBody!: (value: unknown) => void;
+    const body = new Promise((resolve) => {
+      finishBody = resolve;
+    });
+    const response = new Response();
+    vi.spyOn(response, "json").mockReturnValue(body);
+    const transport = vi.fn<typeof fetch>().mockResolvedValue(response);
+    const pending = createZaptimeClient({ fetch: transport }).getAvailableTimeSlots(options.token, "a", "b");
+    const assertion = expect(pending).rejects.toMatchObject({ code: "network" });
+    await vi.advanceTimersByTimeAsync(30_000);
+    await assertion;
+    expect(transport.mock.calls[0][1]?.signal?.aborted).toBe(true);
+    expect(vi.getTimerCount()).toBe(0);
+    finishBody({ success: true, data: [] });
+    await Promise.resolve();
+  });
   it("propagates read abort and avoids sending already aborted reads", async () => {
     const controller = new AbortController();
     controller.abort();
