@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!isSubscribed"
-    class="cal-flex cal-w-full cal-items-center cal-justify-center cal-gap-1 cal-pb-6 cal-text-xs cal-font-medium cal-tracking-tight cal-text-theme-800 dark:cal-text-theme-100"
+    class="cal-powered-by cal-flex cal-w-full cal-items-center cal-justify-center cal-gap-1 cal-pb-6 cal-text-xs cal-font-medium cal-tracking-tight cal-text-theme-800 dark:cal-text-theme-100"
   >
     <a
       :href="linkUrl"

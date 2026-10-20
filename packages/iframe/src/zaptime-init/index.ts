@@ -13,6 +13,7 @@ import { createInlineButton } from "./components/InlineButton";
 import { createPopup } from "./components/Popup";
 import { setZaptimeComponent } from "./components/Modal";
 import { ZaptimePlugin } from "./plugin/ZaptimePlugin";
+import { attachBrandLink } from "./utils/brandLink";
 
 // Extend the window interface for global Zaptime and ZaptimePlugin
 declare global {
@@ -37,7 +38,7 @@ interface ZoidComponent {
 }
 
 // Create the Zoid component
-const Zaptime: ZoidComponent = zoid.create({
+const zoidComponent = zoid.create({
   tag: "zaptime-component",
   url: "https://iframe.zaptime.app",
 
@@ -71,11 +72,50 @@ const Zaptime: ZoidComponent = zoid.create({
         return "center";
       },
     },
+    hostBranding: {
+      type: "boolean",
+      required: false,
+      default: function () {
+        return false;
+      },
+    },
   },
 });
 
 // Register the Zaptime component for Modal to use
-setZaptimeComponent(Zaptime);
+setZaptimeComponent(zoidComponent);
+
+/**
+ * Show the free-plan attribution on the host page once an inline calendar
+ * renders, and tell the iframe to drop its own copy so it is not shown twice.
+ */
+function withHostBranding(
+  instance: ZoidInstance,
+  config: ZoidRenderOptions["config"],
+): ZoidInstance {
+  const render = instance.render.bind(instance);
+
+  instance.render = (container) => {
+    const rendered = render(container);
+
+    rendered
+      .then(() => attachBrandLink(container, config))
+      .then((shown) =>
+        shown ? instance.updateProps({ hostBranding: true }) : undefined,
+      )
+      .catch(() => undefined);
+
+    return rendered;
+  };
+
+  return instance;
+}
+
+const Zaptime: ZoidComponent = Object.assign(
+  (options: ZoidRenderOptions) =>
+    withHostBranding(zoidComponent(options), options.config),
+  zoidComponent,
+);
 
 // Add floatingButton method
 Zaptime.floatingButton = function (

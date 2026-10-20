@@ -25,6 +25,8 @@ declare global {
       config: ZaptimeConfig | EventTypeGroup;
       onTimeSlotChanged(timeSlot: TimeSlot): void;
       position: "left" | "center" | "right";
+      hostBranding?: boolean;
+      onProps?(handler: (props: { hostBranding?: boolean }) => void): void;
     };
 
     ZaptimeProxy: {

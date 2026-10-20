@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build && pnpm build:init && pnpm merge-files",
     "build:init": "tsdown",
-    "merge-files": "cat ./zoid/zoid.js ./zoid/zaptime-init.js > ./dist/zaptime.js",
+    "merge-files": "cat ./zoid/zoid.js ./zoid/zaptime-init.iife.js > ./dist/zaptime.js",
     "preview": "vite preview",
     "deploy": "wrangler pages deploy dist --project-name iframe --branch main",
     "test": "vitest run",

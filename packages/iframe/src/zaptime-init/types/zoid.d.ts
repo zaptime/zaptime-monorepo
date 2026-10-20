@@ -32,11 +32,13 @@ interface ZoidRenderOptions {
   config: object;
   onEventChanged?: (event: unknown) => void;
   position?: string;
+  hostBranding?: boolean;
 }
 
 interface ZoidInstance {
   render: (container: HTMLElement | string) => Promise<void>;
   close: () => Promise<void>;
+  updateProps: (props: Partial<ZoidRenderOptions>) => Promise<void>;
 }
 
 type ZoidComponent = {
