@@ -9,6 +9,11 @@ const type = window.xprops.type ? window.xprops.type : "single";
 const position = window.xprops.position ? window.xprops.position : "center";
 const config = ref(window.xprops.config);
 const loaded = ref(false);
+const hostBranding = ref(Boolean(window.xprops.hostBranding));
+
+window.xprops.onProps?.((props) => {
+  hostBranding.value = Boolean(props.hostBranding);
+});
 
 function onTimeSlotChanged(timeSlot: TimeSlot | undefined) {
   if (timeSlot === undefined) {
@@ -51,7 +56,11 @@ onMounted(async () => {
 <template>
   <div
     id="iframe-app"
-    :class="[config.theme?.mode === 'dark' ? 'dark' : '', positionCssClass]"
+    :class="[
+      config.theme?.mode === 'dark' ? 'dark' : '',
+      positionCssClass,
+      { 'host-branding': hostBranding },
+    ]"
     class="flex w-full"
   >
     <div v-if="config && loaded">
@@ -86,5 +95,10 @@ onMounted(async () => {
   --c-accent-dark: v-bind(config?.theme?.colors?.accentDark || "#0E9384");
 
   --radius: v-bind(config.theme?.borderRadius || "6px");
+}
+
+/* The host page shows the attribution below the iframe instead. */
+#iframe-app.host-branding .cal-powered-by {
+  display: none;
 }
 </style>

@@ -776,8 +776,47 @@
 		}
 	};
 	//#endregion
+	//#region src/zaptime-init/utils/brandLink.ts
+	/**
+	* Visible "Powered by Zaptime" attribution on the host page for inline
+	* calendars of free accounts. The attribution rendered inside the iframe
+	* belongs to the iframe document, so the embedding site never shows it as
+	* its own link.
+	*/
+	const BRAND_LINK_ATTRIBUTE = "data-zaptime-brand-link";
+	function resolveContainer(container) {
+		return typeof container === "string" ? document.querySelector(container) : container;
+	}
+	function createBrandLink(config) {
+		const isCzech = config.locale?.preset === "cs";
+		const wrapper = document.createElement("p");
+		wrapper.setAttribute(BRAND_LINK_ATTRIBUTE, "");
+		wrapper.style.cssText = "margin:8px 0 0;font:500 12px/1.5 system-ui,-apple-system,sans-serif;text-align:center;opacity:0.75;";
+		wrapper.append(isCzech ? "Vytvořeno službou " : "Powered by ");
+		const link = document.createElement("a");
+		link.href = isCzech ? "https://zaptime.cz/" : "https://zaptime.app/";
+		link.target = "_blank";
+		link.rel = "noopener";
+		link.textContent = "Zaptime";
+		link.style.color = "inherit";
+		wrapper.append(link);
+		return wrapper;
+	}
+	/**
+	* Insert the attribution right after the calendar container when the account
+	* is on the free plan. Resolves to true when the attribution is on the page.
+	*/
+	async function attachBrandLink(container, config) {
+		const element = resolveContainer(container);
+		if (!element || typeof config.token !== "string") return false;
+		const status = await fetchAccountStatus(config.token);
+		if (!status || status.isSubscribed || status.disabled) return false;
+		if (!element.nextElementSibling?.hasAttribute("data-zaptime-brand-link")) element.insertAdjacentElement("afterend", createBrandLink(config));
+		return true;
+	}
+	//#endregion
 	//#region src/zaptime-init/index.ts
-	const Zaptime = zoid.create({
+	const zoidComponent = zoid.create({
 		tag: "zaptime-component",
 		url: "https://iframe.zaptime.app",
 		dimensions: {
@@ -807,10 +846,31 @@
 				default: function() {
 					return "center";
 				}
+			},
+			hostBranding: {
+				type: "boolean",
+				required: false,
+				default: function() {
+					return false;
+				}
 			}
 		}
 	});
-	setZaptimeComponent(Zaptime);
+	setZaptimeComponent(zoidComponent);
+	/**
+	* Show the free-plan attribution on the host page once an inline calendar
+	* renders, and tell the iframe to drop its own copy so it is not shown twice.
+	*/
+	function withHostBranding(instance, config) {
+		const render = instance.render.bind(instance);
+		instance.render = (container) => {
+			const rendered = render(container);
+			rendered.then(() => attachBrandLink(container, config)).then((shown) => shown ? instance.updateProps({ hostBranding: true }) : void 0).catch(() => void 0);
+			return rendered;
+		};
+		return instance;
+	}
+	const Zaptime = Object.assign((options) => withHostBranding(zoidComponent(options), options.config), zoidComponent);
 	Zaptime.floatingButton = function(options) {
 		return createFloatingButton(options);
 	};
